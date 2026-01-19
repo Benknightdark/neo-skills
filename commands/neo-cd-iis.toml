@@ -1,0 +1,62 @@
+[command]
+name = "neo:cd-iis"
+prefix = "neo-cicd"
+description = "自動為專案設置地端 IIS 部署流程 (CD)"
+
+[[parameters]]
+name = "website_name"
+description = "IIS 中的網站名稱"
+required = true
+
+[[parameters]]
+name = "physical_path"
+description = "伺服器上的實體路徑 (例如: C:\\inetpub\\wwwroot\\myapp)"
+required = true
+
+[[parameters]]
+name = "env"
+description = "部署環境名稱 (例如: dev, staging, prod)"
+required = true
+default = "dev"
+
+[implementation]
+steps = [
+    "1. 建立目標目錄: 確保專案根目錄存在 `.azure-pipelines/` 資料夾。",
+    "2. 複製模版: 將 `skills/azure-pipelines/templates/` 目錄下的所有內容複製到 `.azure-pipelines/`。",
+    "3. 產生 CD 檔案: 在根目錄建立 `cd-iis-[website_name]-[env].yml`。",
+    "4. 寫入內容: 內容應使用 Deployment Job 並引用 `.azure-pipelines/deploy/deploy-iis.yml`。",
+    "5. 預設內容範本:",
+    "```yaml",
+    "trigger: none",
+    "",
+    "resources:",
+    "  pipelines:",
+    "    - pipeline: build-pipeline",
+    "      source: 'CI-Pipeline-Name'",
+    "      trigger: true",
+    "",
+    "stages:",
+    "  - stage: Deploy",
+    "    displayName: 'Deploy to IIS'",
+    "    jobs:",
+    "      - deployment: IISDeploy",
+    "        environment: '${{ parameters.env }}-iis-group' # 對應 Azure DevOps Environment",
+    "        strategy:",
+    "          runOnce:",
+    "            deploy:",
+    "              steps:",
+    "                - template: .azure-pipelines/deploy/deploy-iis.yml",
+    "                  parameters:",
+    "                    websiteName: '${{ parameters.website_name }}'",
+    "                    websitePhysicalPath: '${{ parameters.physical_path }}'",
+    "                    appPoolName: '${{ parameters.website_name }}'",
+    "                    backupPath: 'C:\\Backup\\${{ parameters.website_name }}'",
+    "```"
+]
+
+[constraints]
+rules = [
+    "必須使用 Deployment Job 配合 environment 屬性，才能在地端伺服器執行。",
+    "websitePhysicalPath 應使用雙反斜線或原始字串處理路徑。",
+    "建議預設包含備份路徑 (backupPath) 設定。"
+]

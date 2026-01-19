@@ -1,51 +1,51 @@
 # Neo Skills Extension
 
-**Neo Skills Extension** is a specialized extension for the Gemini CLI, designed to standardize and automate DevOps workflows. It acts as a repository of expert "Skills" and executable "Commands," enabling the AI agent to perform complex engineering tasks with precision.
+**Neo Skills Extension** 是一個專為 Gemini CLI 設計的擴充功能，旨在標準化並自動化 DevOps 工作流程。它作為專家級「技能 (Skills)」與可執行「指令 (Commands)」的知識庫，讓 AI Agent 能夠精確地執行複雜的工程任務。
 
-## 🌟 Features
+## 🌟 功能特色
 
-*   **Skill Management**: Structured knowledge bases for specific domains (e.g., Azure Pipelines).
-*   **Automated Workflows**: Pre-defined commands to execute complex tasks in one go.
-*   **Template Library**: A collection of optimized, production-ready YAML templates.
+*   **技能管理 (Skill Management)**：針對特定領域（如 Azure Pipelines）的結構化知識庫。
+*   **自動化工作流 (Automated Workflows)**：透過預定義指令，一次性執行複雜任務。
+*   **模版庫 (Template Library)**：收集經過優化、可直接用於生產環境的 YAML 模版。
 
-## 🚀 Available Commands
+## 🚀 可用指令
 
-### CI/CD Automation (`neo-cicd`)
+### CI/CD 自動化 (`neo-cicd`)
 
-| Command | Description |
+| 指令 | 說明 |
 | :--- | :--- |
-| **`neo:ci-dotnet [project_name]`** | Sets up a complete .NET Continuous Integration pipeline. Automatically detects solution files and configures build caching. |
-| **`neo:cd-app-service --app_name [name]`** | Configures a Continuous Deployment pipeline for Azure App Service. Supports multi-stage deployment. |
-| **`neo:cd-iis --website_name [name]`** | Configures a Continuous Deployment pipeline for On-Premises IIS. Includes automated backup, file deployment, and rollback mechanisms. |
+| **`neo:ci-dotnet [project_name]`** | 建立完整的 .NET 持續整合 (CI) 流程。自動偵測解決方案檔案並設定建置快取機制。 |
+| **`neo:cd-app-service --app_name [name]`** | 設定 Azure App Service 的持續部署 (CD) 流程。支援多階段 (Multi-stage) 部署架構。 |
+| **`neo:cd-iis --website_name [name]`** | 設定地端 IIS (On-Premises) 的持續部署流程。包含自動化備份、檔案部署與還原 (Rollback) 機制。 |
 
-### Core Utilities
+### 核心工具
 
-- **`list-skills`**: List all available skills in the current extension.
-- **`new-skill`**: Scaffold a new skill directory structure.
+- **`list-skills`**: 列出目前擴充功能中所有可用的技能。
+- **`new-skill`**: 快速建立一個新的技能目錄結構。
 
-## 📂 Project Structure
+## 📂 專案結構
 
 ```text
 .
-├── gemini-extension.yaml  # Extension manifest
-├── GEMINI.md              # AI Context & Operational Rules
-├── commands/              # Executable command definitions (TOML)
+├── gemini-extension.yaml  # 擴充功能定義檔
+├── GEMINI.md              # AI Context 與操作準則 (給 Agent 看的)
+├── commands/              # 可執行指令定義 (TOML)
 │   ├── neo-ci-dotnet.toml
 │   ├── neo-cd-app-service.toml
 │   └── neo-cd-iis.toml
-└── skills/                # Knowledge Base & Templates
+└── skills/                # 知識庫與模版
     └── azure-pipelines/
-        ├── SKILL.md       # The "Brain": Logic & Reasoning
-        └── templates/     # The "Hands": Reusable YAML assets
+        ├── SKILL.md       # 「大腦」：定義邏輯與推理過程
+        └── templates/     # 「雙手」：可重用的 YAML 資源
 ```
 
-## 📦 Installation
+## 📦 安裝方式
 
-1.  Clone this repository.
-2.  Link it to your Gemini CLI configuration or use it directly within your project workspace.
+1.  複製此儲存庫 (Clone repository)。
+2.  將其連結至您的 Gemini CLI 設定，或直接在專案工作區中使用。
 
-## 🤝 Contribution
+## 🤝 貢獻指南
 
-1.  **Skills**: Add new domains under `skills/` (e.g., `skills/docker/`).
-2.  **Commands**: Define new workflows in `commands/` using TOML format.
-3.  **Documentation**: Ensure `SKILL.md` follows the **Perceive-Reason-Act** pattern.
+1.  **技能 (Skills)**：在 `skills/` 下新增領域目錄（例如 `skills/docker/`）。
+2.  **指令 (Commands)**：在 `commands/` 中使用 TOML 格式定義新的工作流程。
+3.  **文件 (Documentation)**：確保 `SKILL.md` 遵循 **感知-推理-行動 (Perceive-Reason-Act)** 的模式。

@@ -1,0 +1,11 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "package-name": "neo-skills",
+      "extra-files": [
+        "gemini-extension.yaml"
+      ]
+    }
+  }
+}

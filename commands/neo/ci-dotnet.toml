@@ -1,5 +1,5 @@
 [command]
-name = "neo:ci-dotnet"
+name = "ci-dotnet"
 description = "Automatically configure Azure Pipelines CI process for .NET projects (including template copying)"
 
 [[parameters]]

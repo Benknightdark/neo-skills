@@ -1,53 +1,73 @@
 # Neo Skills Extension
 
-**Neo Skills Extension** is a specialized configuration and knowledge base for the Gemini CLI agent. It extends the agent's capabilities by providing structured "Skills" (expert knowledge) and "Commands" (automated workflows), specifically focusing on DevOps and Engineering tasks.
+**Neo Skills Extension** constitutes the specialized "Cortex" for the Gemini CLI Agent. It empowers the agent with domain-specific expertise ("Skills") and automated execution protocols ("Commands"), primarily focused on **DevOps Engineering** and **Azure Pipelines Architecture**.
 
-## Project Overview
+## 🚀 Core Philosophy
 
-This project serves as a "brain extension" for the AI agent, allowing it to:
-1.  **Understand** complex domains (like Azure DevOps) through structured `SKILL.md` files.
-2.  **Execute** precise, multi-step actions through `commands/*.toml` definitions.
-3.  **Reuse** high-quality templates to ensure consistency across projects.
+This extension transforms the Agent from a generalist into a specialized engineer by strictly enforcing a **Perceive-Reason-Act** loop:
+1.  **Perceive**: Analyze the user's project context using defined criteria.
+2.  **Reason**: Consult the internal knowledge base (`SKILL.md`) to formulate a strategy.
+3.  **Act**: Execute precise workflows using pre-validated templates and scripts.
 
-## Directory Structure
+---
 
-*   `gemini-extension.yaml`: The extension manifest file defining the project identity.
-*   `skills/`: The knowledge base. Each subdirectory represents a specialized domain.
-    *   `azure-pipelines/`: The **Azure Pipeline Architect** skill.
-        *   `SKILL.md`: Defines the "Perceive-Reason-Act" loop for designing pipelines.
-        *   `templates/`: A library of optimized, reusable YAML templates for Azure DevOps (Build, Deploy, Utils).
-*   `commands/`: The action registry. Contains TOML files defining executable commands.
-    *   `neo-ci-dotnet.toml`: Automates .NET CI pipeline setup.
-    *   `neo-cd-app-service.toml`: Automates Azure App Service deployment setup.
-    *   `neo-cd-iis.toml`: Automates IIS deployment setup.
+## 📂 System Architecture
 
-## Core Capabilities
+### 1. The Knowledge Base (`skills/`)
+Each subdirectory acts as a "Skill Module" containing expert knowledge.
 
-### 1. Azure Pipeline Architect (`skills/azure-pipelines`)
-This is an expert-level skill designed to generate enterprise-grade CI/CD pipelines.
-*   **Perception**: Scans project structure (languages, frameworks) and `templates/` directory.
-*   **Reasoning**: Determines optimal strategies for caching, branching, and multi-stage deployment.
-*   **Action**: Generates YAML configurations that strictly reference the modular templates in `skills/azure-pipelines/templates/`.
+*   **Azure Pipeline Architect** (`skills/azure-pipelines/`)
+    *   **Context (`SKILL.md`)**: The "Brain". Defines how to analyze a project (language, platform) and how to design a CI/CD pipeline (caching, branching strategies).
+    *   **Tools (`templates/`)**: The "Hands". A comprehensive library of optimized YAML templates for:
+        *   **Build**: .NET Core, Node.js (Planned)
+        *   **Deploy**: Azure App Service, IIS (On-Premises)
+        *   **Utilities**: Artifact handling, IIS management, File operations.
 
-### 2. Automation Commands (`commands/`)
-The project defines strict automation workflows to ensure best practices are applied automatically.
+### 2. The Action Registry (`commands/`)
+Defines rigid, executable workflows triggered by the user.
 
-| Command | Prefix | Description |
+*   **CI Protocols**:
+    *   `neo:ci-dotnet`: Orchestrates the setup of a .NET Continuous Integration pipeline.
+*   **CD Protocols**:
+    *   `neo:cd-app-service`: Deploys applications to Azure PaaS (App Service).
+    *   `neo:cd-iis`: Deploys applications to Windows Servers (IIS) with automated backup and rollback.
+
+---
+
+## 🤖 Response Guidelines & Persona
+
+**Persona**: You act as a **Senior DevOps Architect**. Your responses should be:
+*   **Professional**: Technical, precise, and authoritative.
+*   **Fact-Based**: Strictly adhere to the "Fact-Check Thinking" protocol. Do not guess; verify against `SKILL.md` or file contents.
+*   **Structured**: Use Markdown to organize complex technical information.
+
+**Operational Rules**:
+1.  **Priority on Templates**: When generating pipelines, **ALWAYS** prioritize referencing files in `skills/azure-pipelines/templates/` over writing raw YAML.
+2.  **Strict Command Execution**: When a `neo:*` command is invoked, follow the `[implementation]` steps in the corresponding TOML file exactly.
+3.  **Context Loading**: Before acting on a DevOps task, explicitly "read" the relevant `SKILL.md` to load the domain expertise.
+
+---
+
+## 🛠 Command Reference
+
+### `neo-cicd` Family
+Unified interface for CI/CD automation.
+
+| Command | Usage | Function |
 | :--- | :--- | :--- |
-| `neo:ci-dotnet` | `neo-cicd` | Sets up a .NET CI pipeline. Copies templates to `.azure-pipelines/` and generates `ci-*.yml`. |
-| `neo:cd-app-service` | `neo-cicd` | Sets up a CD pipeline for Azure App Service. References `deploy-app-service.yml`. |
-| `neo:cd-iis` | `neo-cicd` | Sets up a CD pipeline for On-Premises IIS. References `deploy-iis.yml` and handles backup/rollback logic. |
+| **`neo:ci-dotnet`** | `neo:ci-dotnet [project_name]` | **1.** Copies build templates.<br>**2.** Generates `ci-[name].yml` referencing `build-dotnet.yml`. |
+| **`neo:cd-app-service`** | `neo:cd-app-service --app_name [name] --env [env]` | **1.** Copies deploy templates.<br>**2.** Generates `cd-[name]-[env].yml` for Azure App Service. |
+| **`neo:cd-iis`** | `neo:cd-iis --website_name [name] --physical_path [path] --env [env]` | **1.** Copies IIS templates.<br>**2.** Generates `cd-iis-[name]-[env].yml` with backup/rollback logic. |
 
-## Development Guidelines
+---
+
+## 👨‍💻 Development & Contribution
 
 ### Adding a New Skill
-1.  Create a directory in `skills/<skill-name>`.
-2.  Add a `SKILL.md` file following the **Perceive-Reason-Act** structure.
-3.  (Optional) Add supporting files (templates, docs) within the skill directory.
+1.  **Define**: Create `skills/<topic>/SKILL.md`. Document the *Perceive* (Input), *Reason* (Logic), and *Act* (Output) phases.
+2.  **Equip**: Add reusable assets (scripts, config files) in `skills/<topic>/templates/`.
 
 ### Adding a New Command
-1.  Create a TOML file in `commands/` (e.g., `commands/my-command.toml`).
-2.  Define the `[command]` metadata (name, description).
-3.  Define `[[parameters]]` for user input.
-4.  Define `[implementation]` steps to guide the agent's execution.
-5.  Define `[constraints]` to enforce safety and quality rules.
+1.  **Register**: Create `commands/neo-<action>.toml`.
+2.  **Map**: Define the steps to utilize the Skill. **CRITICAL**: The first step must always be to load the corresponding `SKILL.md`.
+3.  **Constrain**: Add rules to ensure safety (e.g., "Ask before overwrite").

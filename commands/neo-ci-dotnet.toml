@@ -1,6 +1,5 @@
 [command]
-name = "neo:dotnet-ci"
-prefix = "neo-cicd"
+name = "neo:ci-dotnet"
 description = "自動為 .NET 專案設置 Azure Pipelines CI 流程 (包含複製模版)"
 
 [[parameters]]

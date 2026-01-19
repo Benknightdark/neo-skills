@@ -1,6 +1,5 @@
 [command]
-prefix = "neo"
-name = "cd-app-service"
+name = "neo:cd-app-service"
 description = "Automatically configure Azure App Service deployment process (CD) for the project"
 
 [[parameters]]

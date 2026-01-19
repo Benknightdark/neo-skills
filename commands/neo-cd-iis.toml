@@ -1,6 +1,6 @@
 [command]
-name = "neo:cd-iis"
-prefix = "neo-cicd"
+prefix = "neo"
+name = "cd-iis"
 description = "Automatically configure On-Premises IIS deployment process (CD) for the project"
 
 [[parameters]]

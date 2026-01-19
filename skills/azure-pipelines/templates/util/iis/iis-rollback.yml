@@ -1,0 +1,98 @@
+# ==============================================================================
+# 範本名稱: IIS Rollback (iis-rollback.yml)
+# 說明: 
+#   當部署失敗時執行的還原動作。
+#   1. 檢查是否有本次部署產生的備份檔 (變數 _GeneratedBackupPath)。
+#   2. 若有備份，還原檔案至網站實體路徑。
+#   3. 確保 IIS 服務 (WAS, W3SVC) 執行中。
+#   4. 重新啟動 IIS 網站。
+# ==============================================================================
+
+parameters:
+  - name: websiteName
+    type: string
+  - name: websitePhysicalPath
+    type: string
+  - name: runCondition
+    type: string
+    default: 'failed()'
+
+steps:
+  - powershell: |
+      $websiteName = "${{ parameters.websiteName }}"
+      $dest = "${{ parameters.websitePhysicalPath }}"
+      $backupZip = $env:_GeneratedBackupPath
+      
+      Write-Host "啟動 Rollback 程序..."
+      Write-Host "網站名稱: $websiteName"
+      
+      # --- 1. 還原檔案 ---
+      if (-not [string]::IsNullOrWhiteSpace($backupZip) -and (Test-Path $backupZip)) {
+          Write-Host "偵測到備份檔案: $backupZip"
+          Write-Host "正在還原至: $dest"
+          
+          # 確保目標目錄存在
+          if (-not (Test-Path $dest)) {
+              New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          }
+          
+          # 解壓縮覆蓋
+          try {
+              Expand-Archive -Path $backupZip -DestinationPath $dest -Force -ErrorAction Stop
+              Write-Host "檔案還原成功。"
+          } catch {
+              Write-Error "還原失敗: $_"
+              # 還原失敗仍繼續嘗試啟動網站
+          }
+      } else {
+          Write-Host "未偵測到本次執行的備份檔 (可能在備份步驟前失敗)，略過檔案還原。"
+      }
+
+      # --- 2. 啟動網站 ---
+      
+      function Ensure-Service-Running {
+          param($Name)
+          try {
+              $svc = Get-Service -Name $Name -ErrorAction Stop
+              if ($svc.Status -ne 'Running') {
+                  Write-Warning "服務 '$Name' 未執行。正在啟動..."
+                  Start-Service -Name $Name
+                  
+                  # 等待啟動
+                  $timeout = 15
+                  $timer = [System.Diagnostics.Stopwatch]::StartNew()
+                  while ($svc.Status -ne 'Running' -and $timer.Elapsed.TotalSeconds -lt $timeout) {
+                      Start-Sleep -Seconds 1
+                      $svc.Refresh()
+                  }
+              }
+          } catch {
+              Write-Warning "檢查服務 '$Name' 異常: $_"
+          }
+      }
+
+      function Start-Site-WithAppCmd {
+          param($Name)
+          $appCmd = "$env:systemroot\system32\inetsrv\appcmd.exe"
+          if (Test-Path $appCmd) {
+              Start-Process -FilePath $appCmd -ArgumentList "start site /site.name:`"$Name`"" -Wait -NoNewWindow
+          }
+      }
+
+      # 確保核心服務
+      Ensure-Service-Running -Name "WAS"
+      Ensure-Service-Running -Name "W3SVC"
+
+      # 啟動網站
+      try {
+          Import-Module WebAdministration
+          Start-Website -Name $websiteName -ErrorAction Stop
+          Write-Host "網站 '$websiteName' 已重新啟動。"
+      } catch {
+          Write-Warning "PowerShell 啟動失敗，嘗試 appcmd..."
+          Start-Site-WithAppCmd -Name $websiteName
+      }
+      
+    displayName: '執行 Rollback (還原與重啟)'
+    # 僅在先前的步驟失敗，且確認部署流程已啟動 (變數 _IISDeploymentStarted = true) 時執行
+    condition: ${{ parameters.runCondition }}

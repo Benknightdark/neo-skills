@@ -1,0 +1,89 @@
+# ==============================================================================
+# 範本名稱: 啟動 IIS 網站 (iis-start-website.yml)
+# 說明: 
+#   此範本負責安全地啟動指定的 IIS 網站。
+#   具備自我檢測與修復機制：
+#   1. 先檢查 WAS 與 W3SVC 服務狀態，若未執行則嘗試啟動。
+#   2. 優先使用 PowerShell 啟動網站。
+#   3. 若 PowerShell 失敗 (如 RPC 錯誤)，自動降級使用 appcmd.exe 強制啟動。
+# ==============================================================================
+
+parameters:
+  # 網站名稱 (IIS 中的顯示名稱)
+  - name: websiteName
+    type: string
+  
+  # 執行條件
+  - name: runCondition
+    type: string
+    default: 'always()'
+
+steps:
+  # ----------------------------------------------------------------------------
+  # 執行 PowerShell 腳本以啟動 IIS 網站
+  # ----------------------------------------------------------------------------
+  - powershell: |
+      $websiteName = "${{ parameters.websiteName }}"
+      Write-Host "正在嘗試啟動網站: $websiteName"
+      
+      function Ensure-Service-Running {
+          param($Name)
+          try {
+              $svc = Get-Service -Name $Name -ErrorAction Stop
+              if ($svc.Status -ne 'Running') {
+                  Write-Warning "服務 '$Name' 未執行 (目前狀態: $($svc.Status))。正在啟動..."
+                  Start-Service -Name $Name
+                  
+                  # 等待服務啟動 (最多 15 秒)
+                  $timeout = 15
+                  $timer = [System.Diagnostics.Stopwatch]::StartNew()
+                  while ($svc.Status -ne 'Running' -and $timer.Elapsed.TotalSeconds -lt $timeout) {
+                      Start-Sleep -Seconds 1
+                      $svc.Refresh()
+                  }
+                  
+                  if ($svc.Status -eq 'Running') {
+                      Write-Host "服務 '$Name' 已成功啟動。"
+                  } else {
+                      Write-Error "無法啟動服務 '$Name' (逾時或失敗)。"
+                  }
+              }
+          } catch {
+              Write-Warning "檢查服務 '$Name' 時發生異常: $_"
+          }
+      }
+
+      function Start-Site-WithAppCmd {
+          param($Name)
+          Write-Host "嘗試使用 appcmd.exe 啟動網站..."
+          $appCmd = "$env:systemroot\system32\inetsrv\appcmd.exe"
+          if (Test-Path $appCmd) {
+              $p = Start-Process -FilePath $appCmd -ArgumentList "start site /site.name:`"$Name`"" -Wait -PassThru -NoNewWindow
+              if ($p.ExitCode -eq 0) {
+                  Write-Host "appcmd: 網站已啟動。"
+              } else {
+                  Write-Error "appcmd 啟動網站失敗 (Exit Code: $($p.ExitCode))。"
+                  exit 1
+              }
+          } else {
+              Write-Error "找不到 appcmd.exe。"
+              exit 1
+          }
+      }
+
+      # 1. 確保 IIS 核心服務 (WAS, W3SVC) 正常運作
+      # 這是解決 "RPC server is unavailable" 的關鍵
+      Ensure-Service-Running -Name "WAS"
+      Ensure-Service-Running -Name "W3SVC"
+
+      # 2. 嘗試啟動網站
+      try {
+          Import-Module WebAdministration
+          Start-Website -Name $websiteName -ErrorAction Stop
+          Write-Host "網站 '$websiteName' 已成功啟動 (PowerShell)。"
+      } catch {
+          Write-Warning "使用 PowerShell 啟動網站失敗: $_"
+          Start-Site-WithAppCmd -Name $websiteName
+      }
+    displayName: '啟動 IIS 網站'
+    condition: ${{ parameters.runCondition }}

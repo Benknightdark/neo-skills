@@ -1,0 +1,189 @@
+# ==============================================================================
+# 範本名稱: Deploy to IIS on Machine Group (deploy-iis.yml)
+# 說明:
+#   此範本封裝了部署網站至地端 IIS (On-Premises IIS) 的標準流程。
+#   使用 Machine Group 代理程式 (Environment) 執行。
+#   包含三個主要步驟：
+#   1. 下載 Artifact
+#   2. 管理 IIS 網站與應用程式集區 (Task) - 負責網站建立、繫結與 AppPool 設定
+#   3. 部署應用程式實體檔案 - 包含檔案清理與變數替換
+# ==============================================================================
+
+parameters:
+  # 網站名稱 (IIS 中的顯示名稱)
+  - name: websiteName
+    type: string
+
+  # 網站實體路徑 (Server 上的絕對路徑)
+  - name: websitePhysicalPath
+    type: string
+
+  # 站台繫結設定 (JSON List)
+  # 格式範例: '[{"type":"http","port":80,"ip":"*","hostName":"sample.local"}]'
+  - name: bindings
+    type: string
+    default: "[]"
+
+  # 是否建立或更新應用程式集區 (AppPool)
+  - name: createOrUpdateAppPool
+    type: boolean
+    default: true
+
+  # 應用程式集區名稱
+  - name: appPoolName
+    type: string
+
+  # AppPool .NET CLR 版本 (適用於 .NET Core/5+ 建議使用 'No Managed Code')
+  - name: appPoolDotNetVersion
+    type: string
+    default: "No Managed Code"
+    values:
+      - "No Managed Code"
+      - "v4.0"
+      - "v2.0"
+
+  # ASP.NET Core 環境變數 (例如: Development, Production)
+  - name: aspNetCoreEnvironment
+    type: string
+    default: "Production"
+
+  # 來源 Pipeline 名稱 (用於下載 Artifact)
+  - name: sourcePipeline
+    type: string
+    default: "current"
+
+  # 下載的 Artifact 名稱
+  - name: artifactName
+    type: string
+    default: "drop"
+
+  # 是否清除目標資料夾中的額外檔案 (建議開啟以保持環境乾淨，預設 true)
+  - name: cleanDestination
+    type: boolean
+    default: true
+
+  # 備份路徑
+  - name: backupPath
+    type: string
+
+  # 備份保留數量
+  - name: backupRetentionCount
+    type: number
+    default: 5
+
+steps:
+  # ----------------------------------------------------------------------------
+  # 步驟 1: 下載 Artifact
+  # ----------------------------------------------------------------------------
+  - download: ${{ parameters.sourcePipeline }}
+    artifact: ${{ parameters.artifactName }}
+    displayName: "下載網站發佈檔案"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 2: 解壓縮 Artifact (如果它是 zip)
+  # 這是為了讓後續的 web.config 修改與 JSON 變數替換能夠運作
+  # ----------------------------------------------------------------------------
+  - template: ../util/extract-artifact.yml
+    parameters:
+      artifactName: ${{ parameters.artifactName }}
+      sourcePipeline: ${{ parameters.sourcePipeline }}
+      runCondition: "succeeded()"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 3: 預先修改 web.config (設定環境變數)
+  # 透過獨立的 Template 處理 web.config 修改，保持主檔簡潔。
+  # ----------------------------------------------------------------------------
+  - template: ../util/set-aspnetcore-env.yml
+    parameters:
+      aspNetCoreEnvironment: ${{ parameters.aspNetCoreEnvironment }}
+      packagePath: "$(WebDeployPackagePath)"
+      # 執行條件：成功 + 環境變數不為空
+      runCondition: "and(succeeded(), ne('${{ parameters.aspNetCoreEnvironment }}', ''))"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 4: 管理 IIS 網站 (建立/更新)
+  # 建立網站並指派 AppPool。針對 .NET Core/5+ 應用程式，AppPool 建議設為 'No Managed Code'。
+  # 使用外部範本執行 PowerShell 腳本
+  # ----------------------------------------------------------------------------
+  - template: ../util/iis/iis-task.yml
+    parameters:
+      command: manage
+      websiteName: ${{ parameters.websiteName }}
+      websitePhysicalPath: ${{ parameters.websitePhysicalPath }}
+      appPoolName: ${{ parameters.appPoolName }}
+      appPoolDotNetVersion: ${{ parameters.appPoolDotNetVersion }}
+      bindings: ${{ parameters.bindings }}
+      runCondition: "succeeded()"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 5: 標記部署開始
+  # ----------------------------------------------------------------------------
+  - powershell: Write-Host "##vso[task.setvariable variable=_IISDeploymentStarted]true"
+    displayName: "標記部署開始 (Set Deployment Flag)"
+  # ----------------------------------------------------------------------------
+  # 步驟 6: 停止 IIS 網站
+  # ----------------------------------------------------------------------------
+  - template: ../util/iis/iis-task.yml
+    parameters:
+      command: stop
+      websiteName: ${{ parameters.websiteName }}
+      runCondition: "and(succeeded(), eq(variables['_IISDeploymentStarted'], 'true'))"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 7: 備份舊版網站內容
+  # ----------------------------------------------------------------------------
+  - template: ../util/iis/iis-task.yml
+    parameters:
+      command: backup
+      websitePhysicalPath: ${{ parameters.websitePhysicalPath }}
+      backupPath: ${{ parameters.backupPath }}
+      backupRetentionCount: ${{ parameters.backupRetentionCount }}
+      # 執行條件：成功 + 部署已開始 + 備份路徑不為空
+      runCondition: "and(succeeded(), eq(variables['_IISDeploymentStarted'], 'true'), ne('${{ parameters.backupPath }}', ''))"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 8: 部署應用程式檔案
+  # 將 Artifact 複製到目標路徑。
+  # 使用外部範本執行 Copy-Item
+  # ----------------------------------------------------------------------------
+  - template: ../util/iis/iis-task.yml
+    parameters:
+      command: deploy
+      sourcePath: "$(WebDeployPackagePath)"
+      destinationPath: ${{ parameters.websitePhysicalPath }}
+      cleanDestination: ${{ parameters.cleanDestination }}
+      # 執行條件：成功 + 部署已開始
+      runCondition: "and(succeeded(), eq(variables['_IISDeploymentStarted'], 'true'))"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 9: 啟動 IIS 網站
+  # 使用外部範本執行 PowerShell 腳本
+  # ----------------------------------------------------------------------------
+  - template: ../util/iis/iis-task.yml
+    parameters:
+      command: start
+      websiteName: ${{ parameters.websiteName }}
+      # 執行條件：成功 + 部署已開始
+      runCondition: "and(succeeded(), eq(variables['_IISDeploymentStarted'], 'true'))"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 10: Rollback 機制
+  # 當部署失敗時 (Step 6~9 任一失敗)，執行還原與重啟
+  # ----------------------------------------------------------------------------
+  - template: ../util/iis/iis-task.yml
+    parameters:
+      command: rollback
+      websiteName: ${{ parameters.websiteName }}
+      websitePhysicalPath: ${{ parameters.websitePhysicalPath }}
+      # 執行條件：失敗 + 部署已開始
+      runCondition: "and(failed(), eq(variables['_IISDeploymentStarted'], 'true'))"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 9: 清理暫存檔
+  # 無論部署成功與否，皆執行清理以釋放空間 (避免 Artifact 累積在 地端IIS的 azagent 資料夾)
+  # ----------------------------------------------------------------------------
+  - template: ../util/clean-artifact.yml
+    parameters:
+      artifactName: ${{ parameters.artifactName }}
+      sourcePipeline: ${{ parameters.sourcePipeline }}
+      runCondition: "always()"

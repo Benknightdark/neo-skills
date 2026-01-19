@@ -1,0 +1,56 @@
+# 更新看診進度API的免排Token環境變數
+parameters:
+  - name: ServiceConnection
+    type: string
+  - name: ResourceGroup
+    type: string
+  - name: AppName
+    type: string
+  - name: NewToken
+    type: string
+
+steps:
+  - task: AzureCLI@2
+    name: UpdateStep # 設定名稱以便引用 Output Variable
+    displayName: "更新 AppSettings (${{ parameters.AppName }})"
+    inputs:
+      azureSubscription: "${{ parameters.ServiceConnection }}"
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "正在檢查 App Service 設定..."
+        RESOURCE_GROUP="${{ parameters.ResourceGroup }}"
+        APP_NAME="${{ parameters.AppName }}"
+        NEW_TOKEN="${{ parameters.NewToken }}"
+        
+        echo "Resource Group: $RESOURCE_GROUP"
+        echo "App Service: $APP_NAME"
+        
+        if [ -z "$NEW_TOKEN" ]; then
+            echo "警告: 新 Token 為空值，跳過更新。"
+            echo "##vso[task.setvariable variable=UpdateStatus;isOutput=true]Skipped (Empty Token)"
+            exit 0
+        fi
+        
+        # 為了安全，不直接印出完整的 Token
+        echo "New Token Length: ${#NEW_TOKEN}"
+        
+        CURRENT_TOKEN=$(az webapp config appsettings list \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$APP_NAME" \
+            --query "[?name=='MainpiToken'].value" \
+            -o tsv)
+            
+        # echo "Current Token: $CURRENT_TOKEN" 
+        
+        if [ "$CURRENT_TOKEN" == "$NEW_TOKEN" ]; then
+            echo "Token 與目前設定相同，無需更新。"
+            echo "##vso[task.setvariable variable=UpdateStatus;isOutput=true]NoChange"
+        else
+            echo "Token 不同，正在更新 App Service..."
+            az webapp config appsettings set \
+              --resource-group "$RESOURCE_GROUP" \
+              --name "$APP_NAME" \
+              --settings MainpiToken="$NEW_TOKEN"
+            echo "##vso[task.setvariable variable=UpdateStatus;isOutput=true]Updated"
+        fi

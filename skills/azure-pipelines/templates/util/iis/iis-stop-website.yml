@@ -1,0 +1,80 @@
+# ==============================================================================
+# 範本名稱: 停止 IIS 網站 (iis-stop-website.yml)
+# 說明: 
+#   此範本負責安全地停止指定的 IIS 網站。
+#   具備錯誤處理機制：優先使用 PowerShell，若失敗 (如 RPC 錯誤) 則自動降級使用 appcmd.exe 強制停止。
+# ==============================================================================
+
+parameters:
+  # 網站名稱 (IIS 中的顯示名稱)
+  - name: websiteName
+    type: string
+  
+  # 執行條件
+  - name: runCondition
+    type: string
+    default: 'succeeded()'
+
+steps:
+  # ----------------------------------------------------------------------------
+  # 執行 PowerShell 腳本以停止 IIS 網站
+  # ----------------------------------------------------------------------------
+  - powershell: |
+      $websiteName = "${{ parameters.websiteName }}"
+      Write-Host "正在嘗試停止網站: $websiteName"
+      
+      if ([string]::IsNullOrWhiteSpace($websiteName)) {
+          Write-Error "網站名稱為空。"
+          exit 1
+      }
+
+      function Stop-Site-WithAppCmd {
+          param($Name)
+          Write-Host "嘗試使用 appcmd.exe 停止網站..."
+          $appCmd = "$env:systemroot\system32\inetsrv\appcmd.exe"
+          if (Test-Path $appCmd) {
+              # 使用 appcmd 停止，忽略可能的錯誤 (例如網站已停止)
+              $p = Start-Process -FilePath $appCmd -ArgumentList "stop site /site.name:`"$Name`"" -Wait -PassThru -NoNewWindow
+              if ($p.ExitCode -eq 0) {
+                  Write-Host "appcmd: 網站已停止。"
+              } else {
+                  Write-Warning "appcmd 執行完畢，Exit Code: $($p.ExitCode) (若網站已停止可能會回傳非 0，此為預期行為)。"
+              }
+          } else {
+              Write-Error "找不到 appcmd.exe。"
+              exit 1
+          }
+      }
+
+      try {
+          Import-Module WebAdministration
+          # 嘗試取得網站狀態
+          $site = Get-Website -Name $websiteName -ErrorAction Stop
+
+          if ($site) {
+              if ($site.State -eq "Stopped") {
+                  Write-Host "網站 '$websiteName' 已經處於停止狀態。"
+              } else {
+                  Write-Host "網站目前狀態: $($site.State)。正在停止..."
+                  Stop-Website -Name $websiteName -ErrorAction Stop
+                  Write-Host "網站 '$websiteName' 已成功停止。"
+              }
+          } else {
+              Write-Host "網站 '$websiteName' 不存在，略過停止動作。"
+          }
+      } catch {
+          Write-Warning "使用 PowerShell 管理網站時發生錯誤 (可能為 RPC 服務異常): $_"
+          
+          # 檢查是否因為 W3SVC 服務未啟動導致的錯誤
+          $w3svc = Get-Service -Name "W3SVC" -ErrorAction SilentlyContinue
+          if ($w3svc -and $w3svc.Status -ne 'Running') {
+              Write-Host "檢測到 W3SVC (World Wide Web Publishing Service) 未執行 (Status: $($w3svc.Status))。"
+              Write-Host "由於 IIS 服務未執行，網站已自然處於停止狀態。略過停止動作。"
+              exit 0
+          }
+
+          # 發生其他錯誤，嘗試使用 appcmd
+          Stop-Site-WithAppCmd -Name $websiteName
+      }
+    displayName: '停止 IIS 網站'
+    condition: ${{ parameters.runCondition }}

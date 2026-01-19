@@ -1,0 +1,157 @@
+# ==============================================================================
+# 範本名稱: IIS 任務調度器 (iis-task.yml)
+# 說明: 
+#   這是一個統一的介面 (Facade)，用於呼叫各種 IIS 相關的子任務。
+#   透過傳入 `command` 參數來決定要執行的具體動作。
+#   
+# 支援的指令 (command):
+#   - manage:   建立或更新網站與 AppPool (iis-manage-website.yml)
+#   - start:    啟動網站 (iis-start-website.yml)
+#   - stop:     停止網站 (iis-stop-website.yml)
+#   - backup:   備份網站檔案 (iis-backup.yml)
+#   - deploy:   部署檔案 (iis-deploy-files.yml)
+#   - rollback: 還原備份並重啟 (iis-rollback.yml)
+# ==============================================================================
+
+parameters:
+  # 指定要執行的任務指令
+  - name: command
+    type: string
+    values:
+      - manage
+      - start
+      - stop
+      - backup
+      - deploy
+      - rollback
+
+  # --- 通用/共用參數 ---
+  # 網站名稱 (manage, start, stop, rollback 需使用)
+  - name: websiteName
+    type: string
+    default: ''
+  
+  # 網站實體路徑 (manage, backup, deploy, rollback 需使用)
+  - name: websitePhysicalPath
+    type: string
+    default: ''
+
+  # 執行條件 (預設值為空字串，將依據各 command 的預設行為自動填入)
+  - name: runCondition
+    type: string
+    default: ''
+
+  # --- Manage 專用參數 ---
+  # 應用程式集區名稱
+  - name: appPoolName
+    type: string
+    default: ''
+  
+  # AppPool .NET CLR 版本
+  - name: appPoolDotNetVersion
+    type: string
+    default: 'No Managed Code'
+
+  # 站台繫結設定 (JSON List)
+  - name: bindings
+    type: string
+    default: '[]'
+
+  # --- Backup 專用參數 ---
+  # 備份存放路徑
+  - name: backupPath
+    type: string
+    default: ''
+  
+  # 備份保留數量
+  - name: backupRetentionCount
+    type: number
+    default: 5
+
+  # --- Deploy 專用參數 ---
+  # 來源路徑 (Artifact)
+  - name: sourcePath
+    type: string
+    default: ''
+  
+  # 目標路徑 (若未指定，將預設使用 websitePhysicalPath)
+  - name: destinationPath
+    type: string
+    default: ''
+  
+  # 是否清空目標
+  - name: cleanDestination
+    type: boolean
+    default: true
+
+steps:
+
+  # ----------------------------------------------------------------------------
+  # Command: manage
+  # ----------------------------------------------------------------------------
+  - ${{ if eq(parameters.command, 'manage') }}:
+    - template: iis-manage-website.yml
+      parameters:
+        websiteName: ${{ parameters.websiteName }}
+        websitePhysicalPath: ${{ parameters.websitePhysicalPath }}
+        appPoolName: ${{ parameters.appPoolName }}
+        appPoolDotNetVersion: ${{ parameters.appPoolDotNetVersion }}
+        bindings: ${{ parameters.bindings }}
+        # 預設: succeeded()
+        runCondition: ${{ coalesce(parameters.runCondition, 'succeeded()') }}
+
+  # ----------------------------------------------------------------------------
+  # Command: start
+  # ----------------------------------------------------------------------------
+  - ${{ if eq(parameters.command, 'start') }}:
+    - template: iis-start-website.yml
+      parameters:
+        websiteName: ${{ parameters.websiteName }}
+        # 預設: always() (確保即使部署失敗也能嘗試重啟，或視需求調整)
+        runCondition: ${{ coalesce(parameters.runCondition, 'always()') }}
+
+  # ----------------------------------------------------------------------------
+  # Command: stop
+  # ----------------------------------------------------------------------------
+  - ${{ if eq(parameters.command, 'stop') }}:
+    - template: iis-stop-website.yml
+      parameters:
+        websiteName: ${{ parameters.websiteName }}
+        # 預設: succeeded()
+        runCondition: ${{ coalesce(parameters.runCondition, 'succeeded()') }}
+
+  # ----------------------------------------------------------------------------
+  # Command: backup
+  # ----------------------------------------------------------------------------
+  - ${{ if eq(parameters.command, 'backup') }}:
+    - template: iis-backup.yml
+      parameters:
+        websitePhysicalPath: ${{ parameters.websitePhysicalPath }}
+        backupPath: ${{ parameters.backupPath }}
+        backupRetentionCount: ${{ parameters.backupRetentionCount }}
+        # 預設: succeeded()
+        runCondition: ${{ coalesce(parameters.runCondition, 'succeeded()') }}
+
+  # ----------------------------------------------------------------------------
+  # Command: deploy
+  # ----------------------------------------------------------------------------
+  - ${{ if eq(parameters.command, 'deploy') }}:
+    - template: iis-deploy-files.yml
+      parameters:
+        sourcePath: ${{ parameters.sourcePath }}
+        # 若 destinationPath 為空，則使用 websitePhysicalPath
+        destinationPath: ${{ coalesce(parameters.destinationPath, parameters.websitePhysicalPath) }}
+        cleanDestination: ${{ parameters.cleanDestination }}
+        # 預設: succeeded()
+        runCondition: ${{ coalesce(parameters.runCondition, 'succeeded()') }}
+
+  # ----------------------------------------------------------------------------
+  # Command: rollback
+  # ----------------------------------------------------------------------------
+  - ${{ if eq(parameters.command, 'rollback') }}:
+    - template: iis-rollback.yml
+      parameters:
+        websiteName: ${{ parameters.websiteName }}
+        websitePhysicalPath: ${{ parameters.websitePhysicalPath }}
+        # 預設: failed() (僅在失敗時執行)
+        runCondition: ${{ coalesce(parameters.runCondition, 'failed()') }}

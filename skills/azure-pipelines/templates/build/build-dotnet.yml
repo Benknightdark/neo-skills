@@ -1,0 +1,92 @@
+# 範本名稱: .NET CI Build Steps (Optimized with Caching)
+# 說明: 此範本包含 .NET 專案持續整合所需的核心步驟，並已整合 NuGet 快取機制。
+
+parameters:
+  - name: solution
+    type: string
+  - name: testSolution
+    type: string
+    default: ""
+  - name: buildPlatform
+    type: string
+    default: "Any CPU"
+  - name: buildConfiguration
+    type: string
+    default: "Release"
+  - name: dotnetSdkVersion
+    type: string
+  - name: nugetCachePath
+    type: string
+    default: "$(Pipeline.Workspace)/.nuget/packages"
+  - name: publishWebProjects
+    type: boolean
+    default: true
+   
+
+steps:
+  # 步驟 1: 設定 .NET 環境
+  - task: UseDotNet@2
+    displayName: "安裝 .NET SDK"
+    inputs:
+      packageType: "sdk"
+      version: "${{ parameters.dotnetSdkVersion }}"
+
+  # 步驟 2: NuGet 快取
+  - task: Cache@2
+    displayName: "快取 NuGet 套件"
+    inputs:
+      # 你的 Key 設定現在看起來很正確 (matches: 2 表示找到了 2 個專案檔)
+      key: 'nuget | "$(Agent.OS)" | **/*.csproj,!**/bin/**,!**/obj/**'
+      restoreKeys: |
+        nuget | "$(Agent.OS)"
+      path: "${{ parameters.nugetCachePath }}"
+
+  # 步驟 3: 還原專案相依性
+  # - env: NUGET_PACKAGES: 強制將還原路徑指向快取資料夾。
+  - task: DotNetCoreCLI@2
+    displayName: "還原 NuGet 套件"
+    inputs:
+      command: "restore"
+      projects: "${{ parameters.solution }}"
+      feedsToUse: "select"
+    env:
+      NUGET_PACKAGES: "${{ parameters.nugetCachePath }}"
+
+  # 步驟 4: 建置解決方案
+  # - noRestore: 因為上一步驟已還原，這裡加入 --no-restore 加快速度。
+  - task: DotNetCoreCLI@2
+    displayName: "建置專案"
+    inputs:
+      command: "build"
+      projects: "${{ parameters.solution }}"
+      arguments: "--configuration ${{ parameters.buildConfiguration }} --no-restore"
+
+  # 步驟 5: 如果testSolution是true，才執行單元測試
+  - ${{ if ne(parameters.testSolution, '') }}:
+      - task: DotNetCoreCLI@2
+        displayName: "執行測試"
+        inputs:
+          command: "test"
+          projects: "${{ parameters.testSolution }}"
+          # 加入 --no-build 與 --no-restore 避免重複編譯與還原，因為建置步驟已完成編譯
+          arguments: "--configuration ${{ parameters.buildConfiguration }} --no-build --no-restore"
+
+  # 步驟 6: 發佈應用程式
+  - task: DotNetCoreCLI@2
+    displayName: "產生發佈檔案"
+    inputs:
+      command: "publish"
+      publishWebProjects: ${{ parameters.publishWebProjects }}
+      projects: "${{ parameters.solution }}"
+      # 注意: Publish 通常需要重新建置以確保正確的 artifacts 結構，視專案設定而定，這裡保留標準行為
+      arguments: "--configuration ${{ parameters.buildConfiguration }} --output $(Build.ArtifactStagingDirectory) --no-restore"
+      # zipAfterPublish: false
+      # modifyOutputPath: false # 禁止自動建立專案名稱目錄，避免 Artifact 產生多餘的嵌套層級 (e.g. drop/Sample.WebSite/...)
+
+  # 步驟 7: 上傳發佈檔案
+  - task: PublishPipelineArtifact@1
+    displayName: "上傳發佈檔案"
+    inputs:
+      targetPath: "$(Build.ArtifactStagingDirectory)" # 必填 (要發佈的資料夾或檔案路徑。)
+      artifact: "drop" # 選填 (預設是drop)
+      publishLocation: "pipeline" # 選填 (預設是pipeline)

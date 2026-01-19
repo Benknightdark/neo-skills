@@ -1,0 +1,77 @@
+# ==============================================================================
+# 範本名稱: Set ASP.NET Core Environment (set-aspnetcore-env.yml)
+# 說明: 
+#   在部署前修改 web.config，注入或更新 ASPNETCORE_ENVIRONMENT 環境變數。
+#   這確保應用程式啟動時即使用正確的環境設定，避免二次重啟。
+# ==============================================================================
+
+parameters:
+  - name: aspNetCoreEnvironment
+    type: string
+  - name: packagePath
+    type: string
+  
+  # 執行條件
+  - name: runCondition
+    type: string
+    default: 'succeeded()'
+
+steps:
+  - powershell: |
+      $envValue = "${{ parameters.aspNetCoreEnvironment }}"
+      $packagePath = "${{ parameters.packagePath }}"
+      
+      Write-Host "Target Package Path: $packagePath"
+      
+      # 檢查路徑是否存在且為資料夾
+      if (Test-Path $packagePath -PathType Container) {
+          $webConfigPath = Get-ChildItem -Path $packagePath -Filter "web.config" -Recurse | Select-Object -First 1
+          
+          if ($webConfigPath) {
+              Write-Host "Found web.config at: $($webConfigPath.FullName)"
+              
+              # 讀取 XML
+              $xml = [xml](Get-Content $webConfigPath.FullName)
+              
+              # 使用 XPath 尋找 aspNetCore 節點，這樣可以忽略結構差異 (例如是否有 <location> 包覆)
+              $aspNetCore = $xml.SelectSingleNode("//system.webServer/aspNetCore")
+
+              if ($aspNetCore) {
+                  # 確保 environmentVariables 節點存在
+                  if (-not $aspNetCore.SelectSingleNode("environmentVariables")) {
+                      Write-Host "Creating environmentVariables node..."
+                      $envVars = $xml.CreateElement("environmentVariables")
+                      $aspNetCore.AppendChild($envVars) | Out-Null
+                  }
+                  
+                  # 取得 environmentVariables 節點 (使用 SelectSingleNode 確保取得的是 XmlElement)
+                  $envVarsNode = $aspNetCore.SelectSingleNode("environmentVariables")
+
+                  # 檢查是否已存在該變數，若有則移除舊的
+                  $existing = $envVarsNode.SelectSingleNode("environmentVariable[@name='ASPNETCORE_ENVIRONMENT']")
+                  if ($existing) {
+                      Write-Host "Removing existing ASPNETCORE_ENVIRONMENT setting..."
+                      $envVarsNode.RemoveChild($existing) | Out-Null
+                  }
+                  
+                  # 建立新的環境變數節點
+                  Write-Host "Injecting ASPNETCORE_ENVIRONMENT='$envValue'..."
+                  $newEnv = $xml.CreateElement("environmentVariable")
+                  $newEnv.SetAttribute("name", "ASPNETCORE_ENVIRONMENT")
+                  $newEnv.SetAttribute("value", $envValue)
+                  $envVarsNode.AppendChild($newEnv) | Out-Null
+                  
+                  # 存檔
+                  $xml.Save($webConfigPath.FullName)
+                  Write-Host "web.config updated successfully."
+              } else {
+                  Write-Warning "Element system.webServer/aspNetCore not found in web.config (XPath: //system.webServer/aspNetCore). Skipping."
+              }
+          } else {
+              Write-Warning "web.config not found in artifact. Skipping environment variable injection."
+          }
+      } else {
+          Write-Warning "Artifact path is not a directory (possibly a ZIP file?). Cannot modify web.config directly."
+      }
+    displayName: '預先修改 web.config (注入環境變數)'
+    condition: ${{ parameters.runCondition }}

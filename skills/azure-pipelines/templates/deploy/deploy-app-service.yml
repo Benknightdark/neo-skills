@@ -1,0 +1,71 @@
+# ==============================================================================
+# 範本名稱: Deploy to Azure App Service (deploy-app-service.yml)
+# 說明:
+#   此範本封裝了部署網站至 Azure App Service 的標準流程。
+#   包含兩個主要步驟：
+#   1. 下載 Pipeline Artifact
+#   2. 部署至 Azure App Service
+# ==============================================================================
+
+parameters:
+  # Azure 服務連線名稱 (Service Connection Name)
+  - name: azureSubscription
+    type: string
+
+  # App Service 名稱
+  - name: webAppName
+    type: string
+
+  # App Service 類型
+  - name: appType
+    type: string
+    default: "webApp"
+    values:
+      - "webApp" # Windows Web App
+      - "webAppLinux" # Linux Web App
+
+  # 來源 Pipeline 名稱 (用於下載 Artifact)
+  - name: sourcePipeline
+    type: string
+    default: "current"
+
+  # 下載的 Artifact 名稱
+  - name: artifactName
+    type: string
+    default: "drop"
+
+  # 部署套件路徑 (支援萬用字元，例如: $(Pipeline.Workspace)/drop/**/*.zip)
+  - name: packagePath
+    type: string
+    default: "$(Pipeline.Workspace)/drop/**/*.zip"
+
+  # 部署槽名稱 (預設為 production，若非 production 則會嘗試部署至該 Slot)
+  - name: slotName
+    type: string
+    default: "production"
+
+  # 資源群組名稱
+  - name: resourceGroupName
+    type: string
+
+steps:
+  # ----------------------------------------------------------------------------
+  # 步驟 1: 下載 Artifact
+  # ----------------------------------------------------------------------------
+  - download: ${{ parameters.sourcePipeline }}
+    artifact: ${{ parameters.artifactName }}
+    displayName: "下載網站發佈檔案"
+
+  # ----------------------------------------------------------------------------
+  # 步驟 2: 部署至 Azure App Service
+  # ----------------------------------------------------------------------------
+  - task: AzureWebApp@1
+    displayName: "部署至 Azure App Service"
+    inputs:
+      azureSubscription: ${{ parameters.azureSubscription }} # Azure 訂用帳戶服務連線名稱
+      appType: ${{ parameters.appType }} # Web App 類型 (webApp 或 webAppLinux)
+      appName: ${{ parameters.webAppName }} # Azure App Service 名稱
+      package: ${{ parameters.packagePath }} # 部署套件路徑 (.zip)
+      deployToSlotOrASE: ${{ ne(parameters.slotName, 'production') }} # 是否部署至 Slot 或 App Service Environment
+      resourceGroupName: ${{ parameters.resourceGroupName }} # 資源群組名稱 (當部署至 Slot 時需要)
+      slotName: ${{ parameters.slotName }} # 部署 Slot 名稱 (預設為 production)

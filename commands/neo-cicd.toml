@@ -1,0 +1,39 @@
+[command]
+name = "neo:dotnet-ci"
+prefix = "neo-cicd"
+description = "自動為 .NET 專案設置 Azure Pipelines CI 流程 (包含複製模版)"
+
+[[parameters]]
+name = "project_name"
+description = "專案名稱或路徑，用於命名生成的 YAML 檔案與設定 solution 路徑"
+required = true
+
+[implementation]
+steps = [
+    "1. 建立目標目錄: 在專案根目錄建立 `.azure-pipelines/` 資料夾（如果不存在）。",
+    "2. 複製模版: 將 `skills/azure-pipelines/templates/` 目錄下的所有內容複製到 `.azure-pipelines/`。",
+    "3. 產生 Pipeline 檔案: 在根目錄建立 `ci-[project_name].yml`。",
+    "4. 寫入內容: 產生的 YAML 必須引用 `.azure-pipelines/build/build-dotnet.yml` 並帶入正確參數。",
+    "5. 預設內容範本:",
+    "```yaml",
+    "trigger:",
+    "  - main",
+    "",
+    "pool:",
+    "  vmImage: 'ubuntu-latest'",
+    "",
+    "steps:",
+    "  - template: .azure-pipelines/build/build-dotnet.yml",
+    "    parameters:",
+    "      solution: '**/*.sln' # 或根據 project_name 調整",
+    "      dotnetSdkVersion: '8.x'",
+    "      buildConfiguration: 'Release'",
+    "```"
+]
+
+[constraints]
+rules = [
+    "必須使用相對路徑引用模版，確保 Pipeline 在 Azure DevOps 中可執行。",
+    "若專案中已存在同名檔案，應詢問使用者是否覆蓋。",
+    "確保複製後的目錄結構與 `skills/azure-pipelines/templates/` 保持一致。"
+]

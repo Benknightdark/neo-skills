@@ -1,9 +1,9 @@
 # ==============================================================================
-# 範本名稱: Clean Artifact (clean-artifact.yml)
-# 說明: 
-#   清理下載至 Agent 的 Artifact 暫存檔。
-#   通常在部署流程的最後執行，確保硬碟空間釋放。
-#   設定了 condition: always()，確保無論部署成功失敗皆執行。
+# Template Name: Clean Artifact (clean-artifact.yml)
+# Description: 
+#   Clean up Artifact temporary files downloaded to the Agent.
+#   Usually executed at the end of the deployment process to ensure disk space is released.
+#   Configured with condition: always() to ensure execution regardless of deployment success or failure.
 # ==============================================================================
 
 parameters:
@@ -12,7 +12,7 @@ parameters:
   - name: sourcePipeline
     type: string
   
-  # 執行條件
+  # Execution Condition
   - name: runCondition
     type: string
     default: 'always()'
@@ -22,7 +22,7 @@ steps:
       $artifactName = "${{ parameters.artifactName }}"
       $sourcePipeline = "${{ parameters.sourcePipeline }}"
       
-      # 決定 Artifact 路徑
+      # Determine Artifact Path
       $artifactPath = "$(Pipeline.Workspace)/$artifactName"
       if ($sourcePipeline -ne 'current') {
           $artifactPath = "$(Pipeline.Workspace)/$sourcePipeline/$artifactName"
@@ -36,5 +36,5 @@ steps:
       } else {
           Write-Host "Artifact path not found, nothing to clean."
       }
-    displayName: '清理 Artifact 暫存檔'
+    displayName: 'Clean Artifact Temporary Files'
     condition: ${{ parameters.runCondition }}

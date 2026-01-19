@@ -1,0 +1,42 @@
+[command]
+name = "neo:ci-dotnet"
+description = "Automatically configure Azure Pipelines CI process for .NET projects (including template copying)"
+
+[[parameters]]
+name = "project_name"
+description = "Project name or path, used for naming the generated YAML file and setting the solution path"
+required = true
+
+[implementation]
+steps = [
+    "1. **Load Context**: Load `skills/azure-pipelines/SKILL.md` to understand the Perceive-Reason-Act workflow for Azure Pipelines.",
+    "2. **Perceive**: Execute the 'Perceive' phase from SKILL.md. Scan `skills/azure-pipelines/templates/` to identify relevant templates.",
+    "3. **Create Target Directory**: Create `.azure-pipelines/` folder in the project root (if it doesn't exist).",
+    "4. **Copy Templates**: Copy all contents from `skills/azure-pipelines/templates/` to `.azure-pipelines/`.",
+    "5. **Reason**: Execute the 'Reason' phase from SKILL.md to determine the build strategy (caching, triggers).",
+    "6. **Act (Generate Pipeline File)**: Create `ci-[project_name].yml` in the project root.",
+    "7. **Write Content**: Content must follow SKILL.md guidelines, using `template` syntax to reference `.azure-pipelines/build/build-dotnet.yml`.",
+    "8. **Default Content Template**:",
+    "```yaml",
+    "trigger:",
+    "  - main",
+    "",
+    "pool:",
+    "  vmImage: 'ubuntu-latest'",
+    "",
+    "steps:",
+    "  - template: .azure-pipelines/build/build-dotnet.yml",
+    "    parameters:",
+    "      solution: '**/*.sln' # Or adjust based on project_name",
+    "      dotnetSdkVersion: '8.x'",
+    "      buildConfiguration: 'Release'",
+    "```"
+]
+
+[constraints]
+rules = [
+    "Must strictly follow the Perceive-Reason-Act flow defined in `skills/azure-pipelines/SKILL.md`.",
+    "Must use relative paths to reference templates, ensuring the Pipeline is executable in Azure DevOps.",
+    "If a file with the same name exists, ask the user before overwriting.",
+    "Ensure the copied directory structure matches `skills/azure-pipelines/templates/`."
+]

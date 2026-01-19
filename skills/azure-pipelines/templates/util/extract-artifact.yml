@@ -1,9 +1,9 @@
 # ==============================================================================
-# 範本名稱: Extract Artifact (extract-artifact.yml)
-# 說明: 
-#   檢查指定的 Artifact 是否為 ZIP 壓縮檔。
-#   如果是，則解壓縮至 'extracted' 子目錄。
-#   最後設定變數 'WebDeployPackagePath' 供後續部署步驟使用。
+# Template Name: Extract Artifact (extract-artifact.yml)
+# Description: 
+#   Check if the specified Artifact is a ZIP archive.
+#   If so, extract it to the 'extracted' subdirectory.
+#   Finally, set the variable 'WebDeployPackagePath' for subsequent deployment steps.
 # ==============================================================================
 
 parameters:
@@ -13,7 +13,7 @@ parameters:
     type: string
     default: 'current'
   
-  # 執行條件
+  # Execution Condition
   - name: runCondition
     type: string
     default: 'succeeded()'
@@ -23,7 +23,7 @@ steps:
       $artifactName = "${{ parameters.artifactName }}"
       $sourcePipeline = "${{ parameters.sourcePipeline }}"
       
-      # 決定基礎路徑
+      # Determine base path
       $basePath = "$(Pipeline.Workspace)/$artifactName"
       if ($sourcePipeline -ne 'current') {
           $basePath = "$(Pipeline.Workspace)/$sourcePipeline/$artifactName"
@@ -32,7 +32,7 @@ steps:
       Write-Host "Checking artifact at: $basePath"
       $packagePath = $basePath
 
-      # 檢查是否有 ZIP 檔
+      # Check for ZIP file
       if (Test-Path $basePath) {
           $zipFile = Get-ChildItem -Path $basePath -Filter "*.zip" | Select-Object -First 1
           
@@ -41,7 +41,7 @@ steps:
               $extractPath = "$basePath/extracted"
               
               Write-Host "Extracting to: $extractPath"
-              # 清理舊的解壓目錄 (如果存在)
+              # Clean old extraction directory (if exists)
               if (Test-Path $extractPath) { Remove-Item $extractPath -Recurse -Force }
               
               Expand-Archive -Path $zipFile.FullName -DestinationPath $extractPath -Force
@@ -53,5 +53,5 @@ steps:
       
       Write-Host "Setting WebDeployPackagePath to: $packagePath"
       Write-Host "##vso[task.setvariable variable=WebDeployPackagePath]$packagePath"
-    displayName: '檢查並解壓縮 Artifact'
+    displayName: 'Check and Extract Artifact'
     condition: ${{ parameters.runCondition }}

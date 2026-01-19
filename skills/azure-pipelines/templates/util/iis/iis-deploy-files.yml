@@ -1,112 +1,112 @@
 # ==============================================================================
-# 範本名稱: 部署檔案 (iis-deploy-files-robocopy.yml)
-# 說明: 
-#   將檔案從來源路徑複製到目標路徑。
-#   支援「清除模式」：先清空目標資料夾，再執行複製。
-#   改用 PowerShell Copy-Item 替代 Robocopy，以簡化邏輯並確保潔淨部署。
+# Template Name: Deploy Files (iis-deploy-files-robocopy.yml)
+# Description: 
+#   Copy files from source path to destination path.
+#   Supports "Clean Mode": Empty destination folder before copying.
+#   Uses PowerShell Copy-Item instead of Robocopy to simplify logic and ensure clean deployment.
 # ==============================================================================
 
 parameters:
-  # 來源路徑 (例如 Artifact 下載路徑)
+  # Source Path (e.g. Artifact download path)
   - name: sourcePath
     type: string
   
-  # 目標路徑 (例如 網站實體路徑)
+  # Destination Path (e.g. Website physical path)
   - name: destinationPath
     type: string
   
-  # 是否先清空目標資料夾
+  # Whether to empty destination folder first
   - name: cleanDestination
     type: boolean
     default: true
   
-  # 執行條件
+  # Execution Condition
   - name: runCondition
     type: string
     default: 'succeeded()'
 
 steps:
   # ----------------------------------------------------------------------------
-  # 執行 PowerShell 腳本進行檔案部署
+  # Execute PowerShell script for file deployment
   # ----------------------------------------------------------------------------
   - powershell: |
       $sourceRaw = "${{ parameters.sourcePath }}"
       $destRaw = "${{ parameters.destinationPath }}"
       $clean = "${{ parameters.cleanDestination }}"
       
-      # 展開環境變數 (例如將 %SystemDrive% 轉換為 C:)
+      # Expand Environment Variables (e.g. convert %SystemDrive% to C:)
       $source = [System.Environment]::ExpandEnvironmentVariables($sourceRaw)
       $dest = [System.Environment]::ExpandEnvironmentVariables($destRaw)
 
-      # 1. 路徑正規化 (移除結尾斜線)
+      # 1. Path Normalization (Remove trailing slash)
       if ($source.EndsWith("\") -or $source.EndsWith("/")) { $source = $source.Substring(0, $source.Length - 1) }
       if ($dest.EndsWith("\") -or $dest.EndsWith("/")) { $dest = $dest.Substring(0, $dest.Length - 1) }
 
-      Write-Host "準備部署檔案"
-      Write-Host "來源路徑 (原始): $sourceRaw"
-      Write-Host "來源路徑 (展開): $source"
-      Write-Host "目標路徑 (原始): $destRaw"
-      Write-Host "目標路徑 (展開): $dest"
+      Write-Host "Preparing to deploy files"
+      Write-Host "Source Path (Raw): $sourceRaw"
+      Write-Host "Source Path (Expanded): $source"
+      Write-Host "Destination Path (Raw): $destRaw"
+      Write-Host "Destination Path (Expanded): $dest"
       
       if (-not (Test-Path $source)) {
-          Write-Error "來源路徑不存在: $source"
+          Write-Error "Source path does not exist: $source"
           exit 1
       }
 
-      # 2. 處理目標目錄 (建立或清理)
+      # 2. Handle Destination Directory (Create or Clean)
       if (Test-Path $dest) {
           if ($clean -eq 'true') {
-              Write-Host "模式: 清空目標目錄 (Clean Destination)"
-              Write-Host "正在移除整個目標目錄: $dest"
+              Write-Host "Mode: Clean Destination"
+              Write-Host "Removing entire destination directory: $dest"
               try {
-                  # 強制移除整個目錄
+                  # Force remove entire directory
                   Remove-Item -Path $dest -Recurse -Force -ErrorAction Stop
-                  Write-Host "目錄已移除。"
+                  Write-Host "Directory removed."
               } catch {
-                  Write-Warning "移除目錄時發生錯誤 (可能檔案被鎖定): $_"
-                  # 如果移除失敗，嘗試僅清空內容作為備案
+                  Write-Warning "Error removing directory (files might be locked): $_ "
+                  # If remove fails, try clearing contents only as fallback
                   Get-ChildItem -Path $dest -Recurse | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
               }
           } else {
-              Write-Host "模式: 覆蓋/合併 (保留現有檔案)"
+              Write-Host "Mode: Overwrite/Merge (Keep existing files)"
           }
       }
 
-      # 確保目標目錄存在 (若已刪除或原本就不存在，則建立之)
+      # Ensure destination directory exists (Create if deleted or not exists)
       if (-not (Test-Path $dest)) {
-          Write-Host "目標目錄不存在，正在建立: $dest"
+          Write-Host "Destination directory does not exist, creating: $dest"
           New-Item -ItemType Directory -Force -Path $dest | Out-Null
       }
 
-      # 3. 執行複製
-      Write-Host "正在複製檔案..."
+      # 3. Execute Copy
+      Write-Host "Copying files..."
       
       try {
-          # 除錯資訊：檢查來源
-          # 使用 Recurse 列出所有層級，確認是否有巢狀目錄問題
+          # Debug Info: Check Source
+          # Use Recurse to list all levels, check for nested directory issues
           $items = Get-ChildItem -Path $source -Recurse
-          Write-Host "來源目錄 ($source) 包含 $($items.Count) 個項目 (含子目錄/檔案)。"
+          Write-Host "Source directory ($source) contains $($items.Count) items (subdirs/files)."
           if ($items.Count -gt 0) {
-              Write-Host "檔案列表預覽 (前 10 個):"
+              Write-Host "File list preview (first 10):"
               $items | Select-Object -First 10 | ForEach-Object { Write-Host "  - $($_.FullName)" }
           }
           
-          # 除錯資訊：檢查目標
-          Write-Host "目標路徑: $dest"
-          Write-Host "目標是否存在: $(Test-Path $dest)"
+          # Debug Info: Check Destination
+          Write-Host "Destination Path: $dest"
+          Write-Host "Destination Exists: $(Test-Path $dest)"
 
           if ($items.Count -gt 0) {
-              # 使用最基本的 Copy-Item 語法，並加上詳細日誌
-              # 注意: 若來源包含子目錄，必須加 -Recurse
-              # 確保 Destination 指向的是資料夾路徑
+              # Use basic Copy-Item syntax, add verbose log
+              # Note: If source contains subdirectories, -Recurse must be added
+              # Ensure Destination points to a folder path
               Copy-Item -Path "$source\*" -Destination $dest -Recurse -Force -ErrorAction Stop -Verbose
-              Write-Host "檔案部署成功。"
+              Write-Host "File deployment successful."
           } else {
-              Write-Warning "來源目錄是空的，沒有檔案被複製。"
+              Write-Warning "Source directory is empty, no files copied."
           }
       } catch {
-          Write-Error "檔案複製失敗: $_"
+          Write-Error "File copy failed: $_ "
           exit 1
       }
-    displayName: '部署應用程式檔案 (Copy-Item)'
+    displayName: 'Deploy Application Files (Copy-Item)'
     condition: ${{ parameters.runCondition }}

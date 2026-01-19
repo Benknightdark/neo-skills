@@ -1,24 +1,24 @@
 # ==============================================================================
-# 範本名稱: 管理 IIS 網站 (iis-manage-website.yml)
-# 說明: 
-#   此範本負責建立或更新 IIS 網站、應用程式集區 (AppPool) 以及設定站台繫結 (Bindings)。
-#   使用 PowerShell (WebAdministration 模組) 實作，確保設定符合預期。
+# Template Name: Manage IIS Website (iis-manage-website.yml)
+# Description: 
+#   This template is responsible for creating or updating IIS Website, Application Pool (AppPool), and setting Site Bindings.
+#   Implemented using PowerShell (WebAdministration module) to ensure settings meet expectations.
 # ==============================================================================
 
 parameters:
-  # 網站名稱 (IIS 中的顯示名稱)
+  # Website Name (Display name in IIS)
   - name: websiteName
     type: string
   
-  # 網站實體路徑 (Server 上的絕對路徑)
+  # Website Physical Path (Absolute path on Server)
   - name: websitePhysicalPath
     type: string
   
-  # 應用程式集區名稱
+  # Application Pool Name
   - name: appPoolName
     type: string
   
-  # AppPool .NET CLR 版本 (適用於 .NET Core/5+ 建議使用 'No Managed Code')
+  # AppPool .NET CLR Version (For .NET Core/5+, 'No Managed Code' is recommended)
   - name: appPoolDotNetVersion
     type: string
     default: 'No Managed Code'
@@ -27,21 +27,21 @@ parameters:
       - 'v4.0'
       - 'v2.0'
 
-  # 站台繫結設定 (JSON List)
-  # 格式範例: '[{"type":"http","port":80,"ip":"*","hostName":"sample.local"}]'
+  # Site Binding Settings (JSON List)
+  # Format example: '[{"type":"http","port":80,"ip":"*","hostName":"sample.local"}]'
   - name: bindings
     type: string
     default: '[]'
   
-  # 執行條件
+  # Execution Condition
   - name: runCondition
     type: string
     default: 'succeeded()'
 
 steps:
   # ----------------------------------------------------------------------------
-  # 執行 PowerShell 腳本以管理 IIS 網站
-  # 包含：建立/設定 AppPool、建立/設定 Website、套用 Bindings
+  # Execute PowerShell script to manage IIS Website
+  # Includes: Create/Config AppPool, Create/Config Website, Apply Bindings
   # ----------------------------------------------------------------------------
   - powershell: |
       $websiteName = "${{ parameters.websiteName }}"
@@ -50,63 +50,63 @@ steps:
       $appPoolDotNetVersion = "${{ parameters.appPoolDotNetVersion }}"
       $bindingsJson = '${{ parameters.bindings }}'
       
-      Write-Host "正在管理 IIS 網站: $websiteName"
+      Write-Host "Managing IIS Website: $websiteName"
       
-      # 確保 WebAdministration 模組已載入
+      # Ensure WebAdministration module is loaded
       Import-Module WebAdministration
 
-      # --- 1. 設定應用程式集區 (AppPool) ---
+      # --- 1. Configure Application Pool (AppPool) ---
       if (!(Test-Path "IIS:\AppPools\$appPoolName")) {
-          Write-Host "建立應用程式集區: $appPoolName"
+          Write-Host "Creating Application Pool: $appPoolName"
           New-WebAppPool -Name $appPoolName
       }
       
-      # 設定 .NET CLR 版本
-      # 若為 .NET Core/5+，通常設為 'No Managed Code' (空字串)
+      # Set .NET CLR Version
+      # If .NET Core/5+, usually set to 'No Managed Code' (Empty string)
       $runtime = if ($appPoolDotNetVersion -eq 'No Managed Code') { "" } else { $appPoolDotNetVersion }
       Set-ItemProperty "IIS:\AppPools\$appPoolName" -Name "managedRuntimeVersion" -Value $runtime
-      Write-Host "應用程式集區 '$appPoolName' 執行階段版本已設定為: '$runtime'"
+      Write-Host "Application Pool '$appPoolName' managed runtime version set to: '$runtime'"
 
-      # --- 2. 設定網站 (Website) ---
+      # --- 2. Configure Website ---
       if (!(Test-Path "IIS:\Sites\$websiteName")) {
-          Write-Host "建立新網站: $websiteName"
-          # 建立網站時先給一個暫時的 Port 80，稍後會由 Apply Bindings 邏輯覆蓋
+          Write-Host "Creating new website: $websiteName"
+          # Assign a temporary Port 80 when creating, will be overwritten by Apply Bindings logic later
           New-Website -Name $websiteName -PhysicalPath $physicalPath -ApplicationPool $appPoolName -Port 80 -Force
       } else {
-          Write-Host "更新網站設定 (實體路徑與應用程式集區)"
+          Write-Host "Updating website settings (Physical Path and Application Pool)"
           Set-ItemProperty "IIS:\Sites\$websiteName" -Name "physicalPath" -Value $physicalPath
           Set-ItemProperty "IIS:\Sites\$websiteName" -Name "applicationPool" -Value $appPoolName
       }
 
-      # --- 3. 套用繫結設定 (Apply Bindings) ---
-      # 採用同步模式：移除舊有所有繫結，僅保留 JSON 設定中的項目
+      # --- 3. Apply Bindings ---
+      # Sync Mode: Remove all existing bindings, keep only items in JSON settings
       if (-not [string]::IsNullOrWhiteSpace($bindingsJson)) {
           try {
               $bindings = $bindingsJson | ConvertFrom-Json
               
               if ($bindings.Count -gt 0) {
-                  Write-Host "正在套用繫結設定..."
+                  Write-Host "Applying binding settings..."
                   
-                  # 移除現有所有 Bindings
+                  # Remove all existing Bindings
                   Get-WebBinding -Name $websiteName | Remove-WebBinding
                   
-                  # 逐一新增定義的 Bindings
+                  # Add defined Bindings one by one
                   foreach ($b in $bindings) {
                       $protocol = if ($b.type) { $b.type } else { "http" }
                       $port = if ($b.port) { $b.port } else { 80 }
                       $ip = if ($b.ip) { $b.ip } else { "*" }
                       $hostName = if ($b.hostName) { $b.hostName } else { "" }
                       
-                      Write-Host "新增繫結: ${protocol}://${ip}:${port}/${hostName}"
+                      Write-Host "Adding Binding: ${protocol}://${ip}:${port}/${hostName}"
                       New-WebBinding -Name $websiteName -Protocol $protocol -Port $port -IPAddress $ip -HostHeader $hostName
                   }
               } else {
-                  Write-Host "繫結設定列表為空，略過更新。"
+                  Write-Host "Binding settings list is empty, skipping update."
               }
           } catch {
-              Write-Warning "解析繫結 JSON 失敗: $_"
-              Write-Warning "原始 JSON 內容: $bindingsJson"
+              Write-Warning "Failed to parse Bindings JSON: $_"
+              Write-Warning "Original JSON Content: $bindingsJson"
           }
       }
-    displayName: '管理 IIS 網站 (建立/更新) - PowerShell'
+    displayName: 'Manage IIS Website (Create/Update) - PowerShell'
     condition: ${{ parameters.runCondition }}

@@ -1,10 +1,10 @@
 # ==============================================================================
-# 範本名稱: IIS Website Backup (backup-iis.yml)
-# 說明: 
-#   將指定的網站實體路徑內容壓縮備份。
-#   1. 壓縮成 zip (檔名為 yyyy-MM-dd-HH-mm-ss.zip)
-#   2. 儲存至 backupPath
-#   3. 根據 backupRetentionCount 保留最新的 N 份備份
+# Template Name: IIS Website Backup (backup-iis.yml)
+# Description: 
+#   Compress and backup the contents of the specified website physical path.
+#   1. Compress to zip (Filename: yyyy-MM-dd-HH-mm-ss.zip)
+#   2. Save to backupPath
+#   3. Keep the latest N backups based on backupRetentionCount
 # ==============================================================================
 
 parameters:
@@ -16,7 +16,7 @@ parameters:
     type: number
     default: 5
   
-  # 執行條件
+  # Execution Condition
   - name: runCondition
     type: string
     default: 'succeeded()'
@@ -27,7 +27,7 @@ steps:
       $destDirRaw = "${{ parameters.backupPath }}"
       $limit = ${{ parameters.backupRetentionCount }}
       
-      # 展開環境變數 (例如 %SystemDrive% -> C:)
+      # Expand Environment Variables (e.g. %SystemDrive% -> C:)
       $src = [System.Environment]::ExpandEnvironmentVariables($srcRaw)
       $destDir = [System.Environment]::ExpandEnvironmentVariables($destDirRaw)
       
@@ -38,25 +38,25 @@ steps:
       Write-Host "Destination (Expanded): $destDir"
       Write-Host "Retention Count: $limit"
 
-      # 1. 檢查來源是否存在
+      # 1. Check if source exists
       if (-not (Test-Path $src)) {
           Write-Warning "Source path '$src' does not exist. Skipping backup."
           exit 0
       }
 
-      # 2. 檢查來源是否為空
+      # 2. Check if source is empty
       if ((Get-ChildItem $src -Force).Count -eq 0) {
           Write-Host "Source directory is empty. Nothing to backup."
           exit 0
       }
 
-      # 3. 建立備份目錄 (如果不存在)
+      # 3. Create backup directory (if not exists)
       if (-not (Test-Path $destDir)) {
           Write-Host "Backup directory does not exist. Creating: $destDir"
           New-Item -ItemType Directory -Force -Path $destDir | Out-Null
       }
 
-      # 4. 執行壓縮
+      # 4. Execute Compression
       $timestamp = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
       $zipName = "$timestamp.zip"
       $zipPath = Join-Path $destDir $zipName
@@ -66,7 +66,7 @@ steps:
       try {
           Compress-Archive -Path "$src\*" -DestinationPath $zipPath -Force -ErrorAction Stop
           Write-Host "Backup created successfully."
-          # 設定變數供 Rollback 使用
+          # Set variable for Rollback use
           Write-Host "##vso[task.setvariable variable=_GeneratedBackupPath]$zipPath"
       }
       catch {
@@ -74,7 +74,7 @@ steps:
           exit 0
       }
 
-      # 5. 執行保留策略
+      # 5. Apply Retention Policy
       Write-Host "Applying retention policy (Keep latest $limit)..."
       $backups = Get-ChildItem -Path $destDir -Filter "*.zip" | Sort-Object CreationTime -Descending
       
@@ -88,5 +88,5 @@ steps:
           Write-Host "Current backup count ($($backups.Count)) is within limit ($limit)."
       }
       
-    displayName: '執行 IIS 網站備份'
+    displayName: 'Execute IIS Website Backup'
     condition: ${{ parameters.runCondition }}

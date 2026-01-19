@@ -44,7 +44,7 @@
 您可以透過以下指令直接從 GitHub 安裝此擴充功能：
 
 ```bash
-gemini extension install https://github.com/Benknightdark/neo-skills
+gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
 
 或者手動安裝：

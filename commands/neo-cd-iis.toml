@@ -10,7 +10,7 @@ required = true
 
 [[parameters]]
 name = "physical_path"
-description = "Physical path on the server (e.g., C:\inetpub\wwwroot\myapp)"
+description = "Physical path on the server (e.g., C:\\inetpub\\wwwroot\\myapp)"
 required = true
 
 [[parameters]]
@@ -21,11 +21,14 @@ default = "dev"
 
 [implementation]
 steps = [
-    "1. Create Target Directory: Ensure `.azure-pipelines/` folder exists in the project root.",
-    "2. Copy Templates: Copy all contents from `skills/azure-pipelines/templates/` to `.azure-pipelines/`.",
-    "3. Generate CD File: Create `cd-iis-[website_name]-[env].yml` in the project root.",
-    "4. Write Content: Content should use Deployment Job and reference `.azure-pipelines/deploy/deploy-iis.yml`.",
-    "5. Default Content Template:",
+    "1. **Load Context**: Load `skills/azure-pipelines/SKILL.md` to understand the Perceive-Reason-Act workflow for Azure Pipelines.",
+    "2. **Perceive**: Execute the 'Perceive' phase from SKILL.md. Scan `skills/azure-pipelines/templates/` to identify relevant templates.",
+    "3. **Create Target Directory**: Ensure `.azure-pipelines/` folder exists in the project root.",
+    "4. **Copy Templates**: Copy all contents from `skills/azure-pipelines/templates/` to `.azure-pipelines/`.",
+    "5. **Reason**: Execute the 'Reason' phase from SKILL.md to determine the deployment strategy (Deployment Job) and backup logic.",
+    "6. **Act (Generate CD File)**: Create `cd-iis-[website_name]-[env].yml` in the project root.",
+    "7. **Write Content**: Content must follow SKILL.md guidelines, using `template` syntax to reference `.azure-pipelines/deploy/deploy-iis.yml`.",
+    "8. **Default Content Template**:",
     "```yaml",
     "trigger: none",
     "",
@@ -56,6 +59,7 @@ steps = [
 
 [constraints]
 rules = [
+    "Must strictly follow the Perceive-Reason-Act flow defined in `skills/azure-pipelines/SKILL.md`.",
     "Must use Deployment Job with the environment property to execute on on-premises servers.",
     "websitePhysicalPath should use double backslashes or raw strings for paths.",
     "Recommended to include backupPath setting by default."

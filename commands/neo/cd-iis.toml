@@ -1,5 +1,5 @@
 [command]
-name = "neo:cd-iis"
+name = "cd-iis"
 description = "Automatically configure On-Premises IIS deployment process (CD) for the project"
 
 [[parameters]]

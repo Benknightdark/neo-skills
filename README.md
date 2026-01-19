@@ -6,6 +6,7 @@
 
 - **`list-skills`**: 列出目前專案中所有可用的技能。
 - **`new-skill`**: 快速建立一個新的技能模版結構。
+- **`neo:dotnet-ci [project_name]`**: 自動為 .NET 專案設置 Azure Pipelines CI 流程 (包含複製模版)。
 
 ## 安裝
 

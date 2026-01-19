@@ -56,3 +56,30 @@ All responses must strictly adhere to the following guidelines and in Traditiona
 1.  在 `skills/` 目錄下建立新的資料夾 (e.g., `skills/docker-expert/`)。
 2.  建立 `SKILL.md`，定義該技能的 Persona、感知、推理與行動準則。
 3.  (選擇性) 建立 `templates/` 或其他輔助檔案，提供該技能所需的知識庫或程式碼片段。
+
+## 指令擴充 (Command Extensions)
+
+### Neo CI/CD (`neo-cicd`)
+
+#### `neo:dotnet-ci [project_name]`
+當使用者輸入此指令時，執行以下自動化流程：
+1.  **複製模版**: 將 `skills/azure-pipelines/templates/` 資料夾完整複製到專案根目錄下的 `.azure-pipelines/`。
+2.  **生成 Pipeline**: 在專案根目錄建立 `ci-[project_name].yml`。
+3.  **引用模版**: 內容必須引用 `.azure-pipelines/build/build-dotnet.yml` (使用相對路徑)，並設定參數：
+    *   `solution`: 若 `project_name` 為路徑則填入，否則預設 `**/*.sln`。
+    *   `dotnetSdkVersion`: 預設 `8.x` (或根據專案自動偵測)。
+    *   `buildConfiguration`: `Release`
+    *   範例內容：
+        ```yaml
+        trigger:
+          - main
+
+        pool:
+          vmImage: 'ubuntu-latest'
+
+        steps:
+          - template: .azure-pipelines/build/build-dotnet.yml
+            parameters:
+              solution: '**/*.sln'
+              dotnetSdkVersion: '8.x'
+        ```

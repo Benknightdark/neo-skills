@@ -1,20 +1,51 @@
 # Neo Skills Extension
 
-這是一個基於 Gemini CLI 架構的技能管理擴充功能。參考了 `conductor` 的設計模式，用於標準化管理專案中的各種「技能 (Skills)」。
+**Neo Skills Extension** is a specialized extension for the Gemini CLI, designed to standardize and automate DevOps workflows. It acts as a repository of expert "Skills" and executable "Commands," enabling the AI agent to perform complex engineering tasks with precision.
 
-## 功能
+## 🌟 Features
 
-- **`list-skills`**: 列出目前專案中所有可用的技能。
-- **`new-skill`**: 快速建立一個新的技能模版結構。
-- **`neo:dotnet-ci [project_name]`**: 自動為 .NET 專案設置 Azure Pipelines CI 流程 (包含複製模版)。
+*   **Skill Management**: Structured knowledge bases for specific domains (e.g., Azure Pipelines).
+*   **Automated Workflows**: Pre-defined commands to execute complex tasks in one go.
+*   **Template Library**: A collection of optimized, production-ready YAML templates.
 
-## 安裝
+## 🚀 Available Commands
 
-在您的 Gemini CLI 設定中連結此目錄，或直接在專案根目錄使用。
+### CI/CD Automation (`neo-cicd`)
 
-## 結構
+| Command | Description |
+| :--- | :--- |
+| **`neo:ci-dotnet [project_name]`** | Sets up a complete .NET Continuous Integration pipeline. Automatically detects solution files and configures build caching. |
+| **`neo:cd-app-service --app_name [name]`** | Configures a Continuous Deployment pipeline for Azure App Service. Supports multi-stage deployment. |
+| **`neo:cd-iis --website_name [name]`** | Configures a Continuous Deployment pipeline for On-Premises IIS. Includes automated backup, file deployment, and rollback mechanisms. |
 
-- `gemini-extension.yaml`: 擴充功能配置
-- `GEMINI.md`: AI Context
-- `commands/`: 指令腳本
-- `skills/`: 技能存放區
+### Core Utilities
+
+- **`list-skills`**: List all available skills in the current extension.
+- **`new-skill`**: Scaffold a new skill directory structure.
+
+## 📂 Project Structure
+
+```text
+.
+├── gemini-extension.yaml  # Extension manifest
+├── GEMINI.md              # AI Context & Operational Rules
+├── commands/              # Executable command definitions (TOML)
+│   ├── neo-ci-dotnet.toml
+│   ├── neo-cd-app-service.toml
+│   └── neo-cd-iis.toml
+└── skills/                # Knowledge Base & Templates
+    └── azure-pipelines/
+        ├── SKILL.md       # The "Brain": Logic & Reasoning
+        └── templates/     # The "Hands": Reusable YAML assets
+```
+
+## 📦 Installation
+
+1.  Clone this repository.
+2.  Link it to your Gemini CLI configuration or use it directly within your project workspace.
+
+## 🤝 Contribution
+
+1.  **Skills**: Add new domains under `skills/` (e.g., `skills/docker/`).
+2.  **Commands**: Define new workflows in `commands/` using TOML format.
+3.  **Documentation**: Ensure `SKILL.md` follows the **Perceive-Reason-Act** pattern.

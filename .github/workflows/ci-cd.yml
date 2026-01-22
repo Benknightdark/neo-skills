@@ -27,8 +27,7 @@ jobs:
 
       - name: Create Release Archive
         run: |
-          tar -czf neo-skills.tar.gz \
-            --exclude='neo-skills.tar.gz' \
+          tar -czf ../neo-skills.tar.gz \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='node_modules' \
@@ -39,6 +38,7 @@ jobs:
             --exclude='release-please-config.json' \
             --exclude='.release-please-manifest.json' \
             .
+          mv ../neo-skills.tar.gz ./neo-skills.tar.gz
 
       - name: Upload Release Artifact
         env:

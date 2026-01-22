@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - develop
+  release:
+    types: [created]
 
 permissions:
   contents: write
@@ -41,6 +43,7 @@ jobs:
           mv ../neo-skills.tar.gz ./neo-skills.tar.gz
 
       - name: Upload Release Artifact
+        if: github.event_name == 'release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.9.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.8.1...neo-skills-v0.9.0) (2026-01-22)
+
+
+### Features
+
+* Add git commit mcp ([3d61694](https://github.com/Benknightdark/neo-skills/commit/3d61694668705fd2fc041ad0adf41a2abd6bd67a))
+* **neo-skills:** 整合 neo-mcp 功能，升級為混合型擴充套件 ([b68ce11](https://github.com/Benknightdark/neo-skills/commit/b68ce113dc5b583145f2680332e3d26d3fd9471a))
+
+
+### Bug Fixes
+
+* **ci:** 修復發布流程中的 tar 歸檔錯誤 ([14ec7e7](https://github.com/Benknightdark/neo-skills/commit/14ec7e776a420aa480f3e452fd00dbb486373d62))
+
 ## [0.8.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.8.0...neo-skills-v0.8.1) (2026-01-22)
 
 

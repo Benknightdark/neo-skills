@@ -50,41 +50,41 @@ server.registerTool(
   }
 );
 
-// 定義 Prompt
-server.registerPrompt(
-  "neo:git_commit",
-  {
-    description: prompts.description,
-  },
-  async () => {
-    // 1. 執行 git add .
-    spawnSync("git", ["add", "."], { cwd: process.cwd() });
+// // 定義 Prompt
+// server.registerPrompt(
+//   "neo:git_commit",
+//   {
+//     description: prompts.description,
+//   },
+//   async () => {
+//     // 1. 執行 git add .
+//     spawnSync("git", ["add", "."], { cwd: process.cwd() });
 
-    // 2. 取得 git diff --staged
-    const { stdout } = spawnSync("git", ["diff", "--staged"], { 
-      cwd: process.cwd(),
-      encoding: "utf-8"
-    });
-    const diff = stdout;
+//     // 2. 取得 git diff --staged
+//     const { stdout } = spawnSync("git", ["diff", "--staged"], { 
+//       cwd: process.cwd(),
+//       encoding: "utf-8"
+//     });
+//     const diff = stdout;
 
-    // 3. 組合 Prompt
-    const promptTemplate = prompts.prompt;
+//     // 3. 組合 Prompt
+//     const promptTemplate = prompts.prompt;
 
-    const finalPrompt = promptTemplate.replace("{{args}}", diff);
+//     const finalPrompt = promptTemplate.replace("{{args}}", diff);
 
-    return {
-      messages: [
-        {
-          role: "user",
-          content: {
-            type: "text",
-            text: finalPrompt,
-          },
-        },
-      ],
-    };
-  }
-);
+//     return {
+//       messages: [
+//         {
+//           role: "user",
+//           content: {
+//             type: "text",
+//             text: finalPrompt,
+//           },
+//         },
+//       ],
+//     };
+//   }
+// );
 
 // 啟動 Server
 async function main() {

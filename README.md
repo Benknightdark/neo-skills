@@ -1,4 +1,4 @@
-# Neo Skills Extension
+# Neo Skills Extension1
 
 **Neo Skills Extension** 是一個專為 Gemini CLI 設計的擴充功能，旨在標準化並自動化 DevOps 工作流程。它作為專家級「技能 (Skills)」與可執行「指令 (Commands)」的知識庫，讓 AI Agent 能夠精確地執行複雜的工程任務。
 

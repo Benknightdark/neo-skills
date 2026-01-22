@@ -39,8 +39,7 @@ jobs:
       - name: Create Release Archive
         if: ${{ steps.release.outputs.release_created }}
         run: |
-          tar -czf neo-skills.tar.gz \
-            --exclude='neo-skills.tar.gz' \
+          tar -czf /tmp/neo-skills.tar.gz \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='node_modules' \
@@ -51,6 +50,7 @@ jobs:
             --exclude='release-please-config.json' \
             --exclude='.release-please-manifest.json' \
             .
+          mv /tmp/neo-skills.tar.gz ./neo-skills.tar.gz
 
       - name: Upload Release Artifact
         if: ${{ steps.release.outputs.release_created }}

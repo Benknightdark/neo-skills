@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.7.0...neo-skills-v0.8.0) (2026-01-22)
+
+
+### Features
+
+* 更新Gemini.md ([a9107db](https://github.com/Benknightdark/neo-skills/commit/a9107db0e720beb707fdc5b23f50a6914e08dd89))
+* 更新Gemini.md ([9b7e106](https://github.com/Benknightdark/neo-skills/commit/9b7e10665022df8189f4b26f21ed25475ba3eee1))
+* 調整腳本 ([3749578](https://github.com/Benknightdark/neo-skills/commit/3749578331171efa8f2775cb05fc6e8923cd0c70))
+
 ## [0.7.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.6.0...neo-skills-v0.7.0) (2026-01-22)
 
 

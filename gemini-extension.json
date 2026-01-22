@@ -1,7 +1,7 @@
 {
   "name": "neo-skills",
   "description": "A collection of specialized skills and tools for the Neo environment.",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "mcpServers": {
     "neo-skills": {
       "command": "node",

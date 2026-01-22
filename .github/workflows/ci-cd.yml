@@ -1,13 +1,9 @@
 name: Build and Deploy
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
     branches:
-      - develop
-      - main
+      - release
   release:
     types: [created]
 

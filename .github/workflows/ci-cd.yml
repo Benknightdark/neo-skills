@@ -1,6 +1,9 @@
 name: Build and Deploy
 
 on:
+  push:
+    branches:
+      - release
   pull_request:
     branches:
       - release
@@ -28,7 +31,7 @@ jobs:
         run: bun run build
 
       - name: Create Release Archive
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' || (github.event_name == 'push' && github.ref == 'refs/heads/release')
         run: |
           tar -czf ../neo-skills.tar.gz \
             --exclude='.git' \
@@ -42,6 +45,14 @@ jobs:
             --exclude='.release-please-manifest.json' \
             .
           mv ../neo-skills.tar.gz ./neo-skills.tar.gz
+
+      - name: Upload Build Artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: neo-skills-release-build
+          path: ./neo-skills.tar.gz
+          retention-days: 5
 
       - name: Upload Release Artifact
         if: github.event_name == 'release'

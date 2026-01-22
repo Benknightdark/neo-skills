@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.6.0...neo-skills-v0.7.0) (2026-01-22)
+
+
+### Features
+
+* **neo:** 更新 CI/CD 命令的 Prompt 為英文並優化版本 ([70e1dcf](https://github.com/Benknightdark/neo-skills/commit/70e1dcf69ed9086b7cd773a423189ec301ee2bf9))
+* **neo:** 更新 CI/CD 命令的 Prompt 為英文並優化版本 ([63b15ae](https://github.com/Benknightdark/neo-skills/commit/63b15ae29d3656ac9edb8e82e4971388a1494748))
+
 ## [0.6.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.5.0...neo-skills-v0.6.0) (2026-01-19)
 
 

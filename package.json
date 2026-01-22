@@ -1,0 +1,31 @@
+{
+  "name": "neo-skills",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Neo Tools MCP Server",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "bun run clean && bun run build:bundle",
+    "build:bundle": "bun build src/server.ts --outdir dist --target node --minify",
+    "install-deps": "npm install",
+    "clean": "rm -rf dist",
+    "start": "node dist/server.js",
+    "dev": "bun src/server.ts",
+    "prepare": "bun run build",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^22.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "toml": "^3.0.0",
+    "zod": "^4.2.1"
+  }
+}

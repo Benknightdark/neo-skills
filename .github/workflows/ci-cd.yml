@@ -2,8 +2,8 @@ name: Build and Deploy
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - develop
 
 permissions:
   contents: write
@@ -14,11 +14,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+
       - name: Create Release Archive
         run: |
           tar -czf neo-skills.tar.gz \
             --exclude='.git' \
             --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='src' \
+            --exclude='.gitignore' \
+            --exclude='bun.lock' \
+            --exclude='tsconfig.json' \
             --exclude='release-please-config.json' \
             --exclude='.release-please-manifest.json' \
             .

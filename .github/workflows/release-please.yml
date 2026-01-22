@@ -20,22 +20,3 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
-
-      - name: Create Release Archive
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          tar -czf neo-skills.tar.gz \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='release-please-config.json' \
-            --exclude='.release-please-manifest.json' \
-            .
-
-      - name: Upload Release Artifact
-        if: ${{ steps.release.outputs.release_created }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release upload ${{ steps.release.outputs.tag_name }} ./neo-skills.tar.gz

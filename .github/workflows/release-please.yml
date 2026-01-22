@@ -40,6 +40,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         run: |
           tar -czf neo-skills.tar.gz \
+            --exclude='neo-skills.tar.gz' \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='node_modules' \

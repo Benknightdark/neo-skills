@@ -52,7 +52,7 @@ server.registerTool(
 
 // 定義 Prompt
 server.registerPrompt(
-  "git_commit",
+  "neo:git_commit",
   {
     description: prompts.description,
   },

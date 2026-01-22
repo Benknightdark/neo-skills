@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.8.0...neo-skills-v0.8.1) (2026-01-22)
+
+
+### Bug Fixes
+
+* 調整文件內容 ([ef6bac4](https://github.com/Benknightdark/neo-skills/commit/ef6bac4295abcaedfac88e840065699aaefc0434))
+* 調整文件內容 ([c8790c4](https://github.com/Benknightdark/neo-skills/commit/c8790c4d7ae50f965361fa1bce5490054b177dbf))
+
 ## [0.8.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.7.0...neo-skills-v0.8.0) (2026-01-22)
 
 

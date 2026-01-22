@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.8.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.8.0...neo-skills-v0.8.1) (2026-01-22)
+
+
+### Bug Fixes
+
+* 調整文件內容 ([ef6bac4](https://github.com/Benknightdark/neo-skills/commit/ef6bac4295abcaedfac88e840065699aaefc0434))
+* 調整文件內容 ([c8790c4](https://github.com/Benknightdark/neo-skills/commit/c8790c4d7ae50f965361fa1bce5490054b177dbf))
+
+## [0.8.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.7.0...neo-skills-v0.8.0) (2026-01-22)
+
+
+### Features
+
+* 更新Gemini.md ([a9107db](https://github.com/Benknightdark/neo-skills/commit/a9107db0e720beb707fdc5b23f50a6914e08dd89))
+* 更新Gemini.md ([9b7e106](https://github.com/Benknightdark/neo-skills/commit/9b7e10665022df8189f4b26f21ed25475ba3eee1))
+* 調整腳本 ([3749578](https://github.com/Benknightdark/neo-skills/commit/3749578331171efa8f2775cb05fc6e8923cd0c70))
+
+## [0.7.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.6.0...neo-skills-v0.7.0) (2026-01-22)
+
+
+### Features
+
+* **neo:** 更新 CI/CD 命令的 Prompt 為英文並優化版本 ([70e1dcf](https://github.com/Benknightdark/neo-skills/commit/70e1dcf69ed9086b7cd773a423189ec301ee2bf9))
+* **neo:** 更新 CI/CD 命令的 Prompt 為英文並優化版本 ([63b15ae](https://github.com/Benknightdark/neo-skills/commit/63b15ae29d3656ac9edb8e82e4971388a1494748))
+
+## [0.6.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.5.0...neo-skills-v0.6.0) (2026-01-19)
+
+
+### Features
+
+* **azure-pipelines:** 強制技能優先使用模組化模版並建立專案核心文件 ([5922639](https://github.com/Benknightdark/neo-skills/commit/5922639fe4625250b6eb33cc4249c5a8308ef23e))
+* **commands:** 新增 neo:cd-app-service 指令與重構指令結構 ([b3e755a](https://github.com/Benknightdark/neo-skills/commit/b3e755a610592899c1fc295dd020a6ba0145d9c8))
+* **commands:** 新增 neo:cd-iis 指令定義檔 (TOML) ([8414176](https://github.com/Benknightdark/neo-skills/commit/84141767119c18e81ecb6b476a1ef795992fb2b1))
+* **commands:** 新增 neo:dotnet-ci 指令定義檔 (TOML) ([0f2997a](https://github.com/Benknightdark/neo-skills/commit/0f2997aa7b2075e56b8997ee685b30a3ea37b8cf))
+* **core:** 初始專案架構與自動化發布流程 ([e56db68](https://github.com/Benknightdark/neo-skills/commit/e56db680942410b70cbfe81443bffd3fd958f2e7))
+* **neo-cicd:** 新增 neo:dotnet-ci 自動化指令支援 ([db8780e](https://github.com/Benknightdark/neo-skills/commit/db8780eb9f0f31ef4c4de218e7cb172ae0657a0b))
+
+
+### Bug Fixes
+
+* **commands:** 修正指令命名空間與前綴定義以解決載入錯誤 ([bab55f9](https://github.com/Benknightdark/neo-skills/commit/bab55f9753b4c64ead1916f1d40eef5154a92ee3))
+* **commands:** 修正指令命名空間與前綴定義以解決載入錯誤 ([cb005d9](https://github.com/Benknightdark/neo-skills/commit/cb005d9c8afcd39884540354542305d1bd6f9f7b))
+
 ## [0.4.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.3.0...neo-skills-v0.4.0) (2026-01-19)
 
 

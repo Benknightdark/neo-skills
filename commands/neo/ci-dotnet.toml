@@ -1,42 +1,21 @@
-[command]
-name = "ci-dotnet"
 description = "Automatically configure Azure Pipelines CI process for .NET projects (including template copying)"
 
-[[parameters]]
-name = "project_name"
-description = "Project name or path, used for naming the generated YAML file and setting the solution path"
-required = true
+prompt = """
+Act as a **Senior DevOps Architect** to configure the Azure Pipelines CI process for this .NET project:
 
-[implementation]
-steps = [
-    "1. **Load Context**: Load `skills/azure-pipelines/SKILL.md` to understand the Perceive-Reason-Act workflow for Azure Pipelines.",
-    "2. **Perceive**: Execute the 'Perceive' phase from SKILL.md. Scan `skills/azure-pipelines/templates/` to identify relevant templates.",
-    "3. **Create Target Directory**: Create `.azure-pipelines/` folder in the project root (if it doesn't exist).",
-    "4. **Copy Templates**: Copy all contents from `skills/azure-pipelines/templates/` to `.azure-pipelines/`.",
-    "5. **Reason**: Execute the 'Reason' phase from SKILL.md to determine the build strategy (caching, triggers).",
-    "6. **Act (Generate Pipeline File)**: Create `ci-[project_name].yml` in the project root.",
-    "7. **Write Content**: Content must follow SKILL.md guidelines, using `template` syntax to reference `.azure-pipelines/build/build-dotnet.yml`.",
-    "8. **Default Content Template**:",
-    "```yaml",
-    "trigger:",
-    "  - main",
-    "",
-    "pool:",
-    "  vmImage: 'ubuntu-latest'",
-    "",
-    "steps:",
-    "  - template: .azure-pipelines/build/build-dotnet.yml",
-    "    parameters:",
-    "      solution: '**/*.sln' # Or adjust based on project_name",
-    "      dotnetSdkVersion: '8.x'",
-    "      buildConfiguration: 'Release'",
-    "```"
-]
+1. **Perceive**:
+   - Read `skills/azure-pipelines/SKILL.md` to load design specifications.
+   - Scan the project directory to identify the .NET version (e.g., .NET 6/8), project name, and solution file (.sln).
+   - Check for any existing pipeline configurations.
 
-[constraints]
-rules = [
-    "Must strictly follow the Perceive-Reason-Act flow defined in `skills/azure-pipelines/SKILL.md`.",
-    "Must use relative paths to reference templates, ensuring the Pipeline is executable in Azure DevOps.",
-    "If a file with the same name exists, ask the user before overwriting.",
-    "Ensure the copied directory structure matches `skills/azure-pipelines/templates/`."
-]
+2. **Reason**:
+   - Determine the build strategy based on `SKILL.md` guidelines.
+   - Plan to copy `skills/azure-pipelines/templates/build/build-dotnet.yml` and relevant `util` templates to the `.pipelines/templates/` directory within the project.
+   - Design the main pipeline file (e.g., `azure-pipelines-ci.yml`) to reference these templates with the correct parameters.
+
+3. **Act**:
+   - Create the `.pipelines/templates/build/` and `.pipelines/templates/util/` directories.
+   - Copy `skills/azure-pipelines/templates/build/build-dotnet.yml` and `skills/azure-pipelines/templates/util/clean-artifact.yml` to their respective locations.
+   - Generate `azure-pipelines-ci.yml` in the project root, ensuring the structure complies with `SKILL.md` and uses proper `template` syntax.
+   - Provide a brief explanation of the configuration and how to use it.
+"""

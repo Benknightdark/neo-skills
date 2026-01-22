@@ -1,58 +1,20 @@
-[command]
-name = "cd-app-service"
-description = "Automatically configure Azure App Service deployment process (CD) for the project"
+description = "utomatically configure Azure App Service deployment process (CD) for the project"
 
-[[parameters]]
-name = "app_name"
-description = "Name of the Azure App Service"
-required = true
+prompt = """
+Act as a **Senior DevOps Architect** to configure the Continuous Deployment (CD) process for Azure App Service:
 
-[[parameters]]
-name = "env"
-description = "Deployment environment name (e.g., dev, staging, prod)"
-required = true
-default = "dev"
+1. **Perceive**:
+   - Read `skills/azure-pipelines/SKILL.md` to load design specifications.
+   - Confirm the Azure App Service name, environment name (e.g., Production/Staging), and Service Connection name with the user or from the project context.
+   - Identify the Build Artifact name.
 
-[implementation]
-steps = [
-    "1. **Load Context**: Load `skills/azure-pipelines/SKILL.md` to understand the Perceive-Reason-Act workflow for Azure Pipelines.",
-    "2. **Perceive**: Execute the 'Perceive' phase from SKILL.md. Scan `skills/azure-pipelines/templates/` to identify relevant templates.",
-    "3. **Create Target Directory**: Ensure `.azure-pipelines/` folder exists in the project root.",
-    "4. **Copy Templates**: Copy all contents from `skills/azure-pipelines/templates/` to `.azure-pipelines/`.",
-    "5. **Reason**: Execute the 'Reason' phase from SKILL.md to determine the Multi-stage architecture and required parameters.",
-    "6. **Act (Generate CD File)**: Create `cd-[app_name]-[env].yml` in the project root.",
-    "7. **Write Content**: Content must follow SKILL.md guidelines, using `template` syntax to reference `.azure-pipelines/deploy/deploy-app-service.yml`.",
-    "8. **Default Content Template**:",
-    "```yaml",
-    "trigger: none # CD is usually triggered by a pipeline or manually",
-    "",
-    "resources:",
-    "  pipelines:",
-    "    - pipeline: build-pipeline",
-    "      source: 'CI-Pipeline-Name'",
-    "      trigger: true",
-    "",
-    "stages:",
-    "  - stage: Deploy",
-    "    displayName: 'Deploy to ${{ parameters.env }}'",
-    "    jobs:",
-    "      - job: DeployJob",
-    "        pool:",
-    "          vmImage: 'ubuntu-latest'",
-    "        steps:",
-    "          - template: .azure-pipelines/deploy/deploy-app-service.yml",
-    "            parameters:",
-    "              azureSubscription: 'Your-Service-Connection'",
-    "              webAppName: '${{ parameters.app_name }}'",
-    "              resourceGroupName: 'Your-Resource-Group'",
-    "              slotName: 'production'",
-    "```"
-]
+2. **Reason**:
+   - Plan to copy `skills/azure-pipelines/templates/deploy/deploy-app-service.yml` to the project's `.pipelines/templates/deploy/` directory.
+   - Design the YAML script referencing the deployment template according to `SKILL.md` standards.
 
-[constraints]
-rules = [
-    "Must strictly follow the Perceive-Reason-Act flow defined in `skills/azure-pipelines/SKILL.md`.",
-    "Must include resources/pipelines definition to retrieve Artifacts from the CI pipeline.",
-    "Must correctly pass key parameters like azureSubscription.",
-    "Ensure the directory structure is complete after copying."
-]
+3. **Act**:
+   - Create directories and copy the deployment templates to the project.
+   - Generate the deployment pipeline file (e.g., `azure-pipelines-cd-appservice.yml`) in the project root.
+   - Ensure the YAML correctly configures `environment`, `strategy: runOnce`, and template calls.
+   - Advise the user on setting up corresponding Environments and Approvals in Azure DevOps.
+"""

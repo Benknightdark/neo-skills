@@ -1,65 +1,20 @@
-[command]
-name = "cd-iis"
 description = "Automatically configure On-Premises IIS deployment process (CD) for the project"
 
-[[parameters]]
-name = "website_name"
-description = "Website name in IIS"
-required = true
+prompt = """
+Act as a **Senior DevOps Architect** to configure the Continuous Deployment (CD) process for On-Premises IIS:
 
-[[parameters]]
-name = "physical_path"
-description = "Physical path on the server (e.g., C:\\inetpub\\wwwroot\\myapp)"
-required = true
+1. **Perceive**:
+   - Read `skills/azure-pipelines/SKILL.md` to load design specifications.
+   - Confirm IIS parameters: Website Name, Physical Path, Deployment Group name, and target environment.
+   - Verify if the project requires specific ASP.NET Core environment settings.
 
-[[parameters]]
-name = "env"
-description = "Deployment environment name (e.g., dev, staging, prod)"
-required = true
-default = "dev"
+2. **Reason**:
+   - Plan to copy the entire `skills/azure-pipelines/templates/util/iis/` directory and the `deploy/deploy-iis.yml` template.
+   - Design a pipeline with staged tasks including backup and rollback logic as required by `SKILL.md`.
 
-[implementation]
-steps = [
-    "1. **Load Context**: Load `skills/azure-pipelines/SKILL.md` to understand the Perceive-Reason-Act workflow for Azure Pipelines.",
-    "2. **Perceive**: Execute the 'Perceive' phase from SKILL.md. Scan `skills/azure-pipelines/templates/` to identify relevant templates.",
-    "3. **Create Target Directory**: Ensure `.azure-pipelines/` folder exists in the project root.",
-    "4. **Copy Templates**: Copy all contents from `skills/azure-pipelines/templates/` to `.azure-pipelines/`.",
-    "5. **Reason**: Execute the 'Reason' phase from SKILL.md to determine the deployment strategy (Deployment Job) and backup logic.",
-    "6. **Act (Generate CD File)**: Create `cd-iis-[website_name]-[env].yml` in the project root.",
-    "7. **Write Content**: Content must follow SKILL.md guidelines, using `template` syntax to reference `.azure-pipelines/deploy/deploy-iis.yml`.",
-    "8. **Default Content Template**:",
-    "```yaml",
-    "trigger: none",
-    "",
-    "resources:",
-    "  pipelines:",
-    "    - pipeline: build-pipeline",
-    "      source: 'CI-Pipeline-Name'",
-    "      trigger: true",
-    "",
-    "stages:",
-    "  - stage: Deploy",
-    "    displayName: 'Deploy to IIS'",
-    "    jobs:",
-    "      - deployment: IISDeploy",
-    "        environment: '${{ parameters.env }}-iis-group' # Corresponds to Azure DevOps Environment",
-    "        strategy:",
-    "          runOnce:",
-    "            deploy:",
-    "              steps:",
-    "                - template: .azure-pipelines/deploy/deploy-iis.yml",
-    "                  parameters:",
-    "                    websiteName: '${{ parameters.website_name }}'",
-    "                    websitePhysicalPath: '${{ parameters.physical_path }}'",
-    "                    appPoolName: '${{ parameters.website_name }}'",
-    "                    backupPath: 'C:\\Backup\\${{ parameters.website_name }}'",
-    "```"
-]
-
-[constraints]
-rules = [
-    "Must strictly follow the Perceive-Reason-Act flow defined in `skills/azure-pipelines/SKILL.md`.",
-    "Must use Deployment Job with the environment property to execute on on-premises servers.",
-    "websitePhysicalPath should use double backslashes or raw strings for paths.",
-    "Recommended to include backupPath setting by default."
-]
+3. **Act**:
+   - Copy all necessary IIS deployment templates to the project's `.pipelines/templates/` directory.
+   - Generate the deployment script (e.g., `azure-pipelines-cd-iis.yml`) in the project root, referencing `deploy-iis.yml` with parameters like `websiteName` and `physicalPath`.
+   - Ensure the script integrates `iis-backup.yml` and `iis-rollback.yml` logic.
+   - Explain the requirements for Service Connection permissions and Deployment Group configuration.
+"""

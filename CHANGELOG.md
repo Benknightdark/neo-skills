@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.11.0...neo-skills-v0.12.0) (2026-01-22)
+
+
+### Features
+
+* 調整GIT MCP ([16bd0ce](https://github.com/Benknightdark/neo-skills/commit/16bd0cebcf3c520759fa2b6efaada55e41f8a7a4))
+
 ## [0.11.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.10.0...neo-skills-v0.11.0) (2026-01-22)
 
 

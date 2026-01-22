@@ -3,7 +3,10 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - develop
+      - release
+  pull_request:
+    branches:
+      - release
   release:
     types: [created]
 
@@ -28,6 +31,7 @@ jobs:
         run: bun run build
 
       - name: Create Release Archive
+        if: github.event_name == 'release' || (github.event_name == 'push' && github.ref == 'refs/heads/release')
         run: |
           tar -czf ../neo-skills.tar.gz \
             --exclude='.git' \
@@ -42,14 +46,13 @@ jobs:
             .
           mv ../neo-skills.tar.gz ./neo-skills.tar.gz
 
-      - name: Commit dist to branch (develop only)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f dist/
-          git commit -m "build: auto-generate dist for development [skip ci]" || echo "No changes to commit"
-          git push origin develop
+      - name: Upload Build Artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: neo-skills-release-build
+          path: ./neo-skills.tar.gz
+          retention-days: 5
 
       - name: Upload Release Artifact
         if: github.event_name == 'release'

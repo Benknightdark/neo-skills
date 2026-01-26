@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.1...neo-skills-v0.17.2) (2026-01-26)
+
+
+### Bug Fixes
+
+* **mcp:** 禁止自動執行 git commit 以避免干擾使用者 ([488706b](https://github.com/Benknightdark/neo-skills/commit/488706b1af33844f56e0240ea912ea5e7349c767))
+* **mcp:** 禁止自動執行 git commit 以避免干擾使用者 ([4c78515](https://github.com/Benknightdark/neo-skills/commit/4c78515c116375576c28d15f292ac04d9a57c0f3))
+
 ## [0.17.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.0...neo-skills-v0.17.1) (2026-01-26)
 
 

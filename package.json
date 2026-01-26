@@ -2,7 +2,7 @@
   "name": "neo-skills",
   "version": "1.0.0",
   "type": "module",
-  "description": "Neo Tools MCP Server",
+  "description": "Neo Skills: A Universal Expert Agent Extension for Gemini CLI",
   "main": "dist/server.js",
   "scripts": {
     "build": "bun run clean && bun run build:bundle",

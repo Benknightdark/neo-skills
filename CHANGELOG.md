@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.0...neo-skills-v0.17.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* 調整Context ([a0993d0](https://github.com/Benknightdark/neo-skills/commit/a0993d075a6dbcf82104133e52a56699106acb08))
+* 調整Context ([a680a62](https://github.com/Benknightdark/neo-skills/commit/a680a629f00abe5fa347012eaf5037dddc322508))
+
 ## [0.17.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.16.0...neo-skills-v0.17.0) (2026-01-22)
 
 

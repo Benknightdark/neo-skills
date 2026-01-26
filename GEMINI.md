@@ -1,6 +1,6 @@
 # Neo Skills Extension
 
-**Neo Skills** is a Gemini CLI extension that transforms the agent into a specialized DevOps Engineer. It utilizes the Model Context Protocol (MCP) to provide domain-specific expertise ("Skills") and automated execution protocols ("Commands"), with a primary focus on **Azure Pipelines Architecture** and standardizing engineering workflows.
+**Neo Skills** is a Gemini CLI extension that transforms the agent into a **Universal Expert Agent**. It utilizes the Model Context Protocol (MCP) to provide domain-specific expertise ("Skills") and automated execution protocols ("Commands"). While currently equipped with specialized **DevOps** modules (Azure Pipelines, Git), its architecture is designed to host skills from any domain.
 
 ## Constraints
 - All MCP commands must be manually executed by the user and cannot be automated!
@@ -13,9 +13,9 @@ You must engage in "fact-check thinking" before answering. Unless explicitly pro
 ## 🚀 Project Overview
 
 This project serves as a "Cortex" for the Gemini agent, enabling it to:
-1.  **Understand** complex DevOps contexts via structured knowledge bases (`SKILL.md`).
+1.  **Understand** complex contexts across various domains via structured knowledge bases (`SKILL.md`).
 2.  **Execute** precise workflows using pre-validated templates (`templates/`) and command definitions (`.toml`).
-3.  **Standardize** outputs like CI/CD pipelines and Git commit messages.
+3.  **Standardize** outputs to ensure consistency and reliability.
 
 ## 📂 System Architecture
 
@@ -30,7 +30,7 @@ The entry point of the extension. It runs an MCP server that:
 Each subdirectory represents a "Skill Module" containing expert knowledge.
 *   **Structure:**
     *   `SKILL.md`: The "Brain". Defines the **Perceive-Reason-Act** loop for the domain. It instructs the agent on how to analyze the environment and make decisions.
-    *   `templates/`: The "Hands". A library of reusable assets (e.g., Azure DevOps YAML templates) that the agent should use instead of writing code from scratch.
+    *   `templates/`: The "Hands". A library of reusable assets that the agent should use instead of writing code from scratch.
 *   **Example:** `skills/azure-pipelines/` contains logic for designing CI/CD pipelines and templates for .NET builds, IIS deployments, etc.
 
 ### 3. The Action Registry (`commands/`)
@@ -81,7 +81,7 @@ When interacting with this codebase or using the extension, the agent follows th
 2.  **Reason:** Consult the internal knowledge base (`SKILL.md`) to formulate a strategy.
 3.  **Act:** Execute the workflow, prioritizing the use of existing templates in `skills/**/templates/` over generating new code.
 
-### Available Capabilities (Inferred from files)
+### Available Capabilities (Current Built-in Skills)
 *   **Git Automation:** Smart commit message generation (`neo:git_commit`).
 *   **CI Protocols:** Setting up .NET CI pipelines (`neo:ci-dotnet`).
 *   **CD Protocols:** Deploying to Azure App Service (`neo:cd-app-service`) and IIS (`neo:cd-iis`).

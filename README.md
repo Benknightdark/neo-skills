@@ -1,15 +1,18 @@
 # Neo Skills (Gemini CLI Extension)
 
-**Neo Skills** 是專為 Gemini CLI 設計的高級擴充套件，旨在賦予 AI 代理專業的 DevOps 工程能力。透過 Model Context Protocol (MCP)，本擴充套件將 Gemini 轉化為一位具備「感知-推理-行動」能力的資深 DevOps 架構師，專精於 Azure Pipelines 自動化與標準化工程流程。
+**Neo Skills** 是專為 Gemini CLI 設計的**全方位能力擴充套件**。本專案透過 Model Context Protocol (MCP) 架構，為 AI 代理安裝可插拔的「技能模組 (Skills)」，使其不僅僅是一個聊天機器人，而是能轉化為具備「感知-推理-行動」能力的**多領域專家**。
+
+無論是 DevOps 自動化、軟體架構設計，或是未來的資料分析與專案管理，Neo Skills 都能透過掛載不同的知識庫與工具，讓 Gemini 成為您最強大的全能助手。
 
 ## 🚀 核心願景
 
-本專案作為 Gemini Agent 的「大腦皮層 (Cortex)」，透過以下機制提升 AI 的專業度：
-1.  **領域專精 (Skills)**：內建 Azure DevOps 等領域的專家知識庫 (`SKILL.md`)。
-2.  **標準化執行 (Commands)**：提供預先驗證的自動化腳本與模板，確保產出的一致性。
-3.  **架構思維**：強制執行「感知 (Perceive) -> 推理 (Reason) -> 行動 (Act)」的決策迴圈，避免 AI 產生幻覺或非標準化的程式碼。
+本專案作為 Gemini Agent 的「大腦皮層 (Cortex)」，旨在打造一個**全能型 Agent 框架**，透過以下機制提升 AI 的專業度：
 
-## ✨ 主要功能
+1.  **領域專精 (Skills)**：可擴充的專家知識庫 (`SKILL.md`)。目前已內建 DevOps 模組，未來將持續擴增更多領域。
+2.  **標準化執行 (Commands)**：提供預先驗證的自動化腳本與模板，確保產出的一致性與可靠性。
+3.  **架構思維**：強制執行「感知 (Perceive) -> 推理 (Reason) -> 行動 (Act)」的決策迴圈，避免 AI 產生幻覺，確保解決方案的精準度。
+
+## ✨ 目前內建技能 (Built-in Skills)
 
 ### 1. Azure Pipelines 架構師
 自動化設計與生成符合微軟最佳實踐的 CI/CD 流程。
@@ -23,12 +26,12 @@
 
 ## 📂 系統架構
 
-本專案由三個核心層次組成：
+本專案由三個核心層次組成，支援無限擴充：
 
 | 層次 | 目錄 | 描述 |
 | :--- | :--- | :--- |
 | **MCP Server** | `src/server.ts` | 擴充套件的進入點，負責註冊 Tool 與 Prompt，處理與 Gemini CLI 的通訊。 |
-| **Knowledge Base** | `skills/` | **"大腦"**。包含領域知識 (`SKILL.md`) 與可重用的 YAML 模板 (`templates/`)。AI 必須優先使用此處的資源。 |
+| **Knowledge Base** | `skills/` | **"大腦"**。包含各領域知識 (`SKILL.md`) 與可重用的模板 (`templates/`)。 |
 | **Action Registry** | `commands/` | **"指令集"**。定義了使用者可呼叫的具體指令 (TOML 格式)，將請求映射至特定的 Skill。 |
 
 ## 📦 安裝與使用

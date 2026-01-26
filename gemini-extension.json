@@ -1,6 +1,6 @@
 {
   "name": "neo-skills",
-  "description": "A collection of specialized skills and tools for the Neo environment.",
+  "description": "A universal capability extension for Gemini CLI, currently featuring DevOps skills.",
   "version": "0.6.0",
   "mcpServers": {
     "neo-skills": {

@@ -1,5 +1,96 @@
 # Changelog
 
+## [0.17.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.1...neo-skills-v0.17.2) (2026-01-26)
+
+
+### Bug Fixes
+
+* **mcp:** 禁止自動執行 git commit 以避免干擾使用者 ([488706b](https://github.com/Benknightdark/neo-skills/commit/488706b1af33844f56e0240ea912ea5e7349c767))
+* **mcp:** 禁止自動執行 git commit 以避免干擾使用者 ([4c78515](https://github.com/Benknightdark/neo-skills/commit/4c78515c116375576c28d15f292ac04d9a57c0f3))
+
+## [0.17.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.0...neo-skills-v0.17.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* 調整Context ([a0993d0](https://github.com/Benknightdark/neo-skills/commit/a0993d075a6dbcf82104133e52a56699106acb08))
+* 調整Context ([a680a62](https://github.com/Benknightdark/neo-skills/commit/a680a629f00abe5fa347012eaf5037dddc322508))
+
+## [0.17.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.16.0...neo-skills-v0.17.0) (2026-01-22)
+
+
+### Features
+
+* update ([c472e3f](https://github.com/Benknightdark/neo-skills/commit/c472e3f5152d47892e4aa082f94abb53776075c9))
+* update ([350650f](https://github.com/Benknightdark/neo-skills/commit/350650f8eb38e4d707f32cf1f24f2f5fae004132))
+
+## [0.16.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.15.0...neo-skills-v0.16.0) (2026-01-22)
+
+
+### Features
+
+* update ([f1d8926](https://github.com/Benknightdark/neo-skills/commit/f1d8926a2ad3889af1493de8aa6474f201836d73))
+* update ([22c8237](https://github.com/Benknightdark/neo-skills/commit/22c8237317f3d74f859565575c630e58b041ea79))
+
+## [0.15.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.14.0...neo-skills-v0.15.0) (2026-01-22)
+
+
+### Features
+
+* update ([1e95f4b](https://github.com/Benknightdark/neo-skills/commit/1e95f4b3c3361eab878ec20b582dd6cc1cfed49c))
+* update ([da44cf0](https://github.com/Benknightdark/neo-skills/commit/da44cf013502ab95e439db6a3774496b71350e59))
+
+## [0.14.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.13.0...neo-skills-v0.14.0) (2026-01-22)
+
+
+### Features
+
+* udpate ([b253354](https://github.com/Benknightdark/neo-skills/commit/b253354111b2ee1d78ff5b6ffc005b7a105a1f55))
+* udpate ([33fab92](https://github.com/Benknightdark/neo-skills/commit/33fab928cf645f4b62920b029378881607d517ee))
+
+## [0.13.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.12.0...neo-skills-v0.13.0) (2026-01-22)
+
+
+### Features
+
+* update ([cf48e8e](https://github.com/Benknightdark/neo-skills/commit/cf48e8e81d0efd5fc8a970086c7092d53c1e0ebe))
+* update ([ca0cf15](https://github.com/Benknightdark/neo-skills/commit/ca0cf1513f2d34fcdbc3100f0a661c27b92c1f26))
+* update cicd ([f96d96a](https://github.com/Benknightdark/neo-skills/commit/f96d96ad32e7f2ecab7303e3212fd78cd2aeea33))
+
+## [0.12.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.11.0...neo-skills-v0.12.0) (2026-01-22)
+
+
+### Features
+
+* 調整GIT MCP ([16bd0ce](https://github.com/Benknightdark/neo-skills/commit/16bd0cebcf3c520759fa2b6efaada55e41f8a7a4))
+
+## [0.11.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.10.0...neo-skills-v0.11.0) (2026-01-22)
+
+
+### Features
+
+* update version ([dac4d76](https://github.com/Benknightdark/neo-skills/commit/dac4d7608a27d833bc9486101eaaddb5e8f5fda2))
+
+## [0.10.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.9.0...neo-skills-v0.10.0) (2026-01-22)
+
+
+### Features
+
+* update doc context ([818915c](https://github.com/Benknightdark/neo-skills/commit/818915ca076f6eea2013cfd3a90da256e3e5a63c))
+
+## [0.9.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.8.1...neo-skills-v0.9.0) (2026-01-22)
+
+
+### Features
+
+* Add git commit mcp ([3d61694](https://github.com/Benknightdark/neo-skills/commit/3d61694668705fd2fc041ad0adf41a2abd6bd67a))
+* **neo-skills:** 整合 neo-mcp 功能，升級為混合型擴充套件 ([b68ce11](https://github.com/Benknightdark/neo-skills/commit/b68ce113dc5b583145f2680332e3d26d3fd9471a))
+
+
+### Bug Fixes
+
+* **ci:** 修復發布流程中的 tar 歸檔錯誤 ([14ec7e7](https://github.com/Benknightdark/neo-skills/commit/14ec7e776a420aa480f3e452fd00dbb486373d62))
+
 ## [0.8.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.8.0...neo-skills-v0.8.1) (2026-01-22)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "neo-skills",
-  "description": "A universal capability extension for Gemini CLI, currently featuring DevOps skills.",
+  "description": "A universal capability extension for Gemini CLI",
   "version": "0.6.0",
   "mcpServers": {
     "neo-skills": {

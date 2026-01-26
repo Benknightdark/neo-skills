@@ -4,7 +4,7 @@
 
 ## Constraints
 - All MCP commands must be manually executed by the user and cannot be automated!
-- The `run_git_commit` MCP tool is only allowed to be called after the user explicitly executes the `neo:git-commit` command. Calling it without this specific trigger is strictly prohibited.
+- The `run_git_commit` MCP tool is STRICTLY PROHIBITED from being called automatically by the agent after code modifications. It can ONLY be called when the user explicitly executes the `neo:git-commit` command or explicitly asks to commit.
 
 ## Response Style
 All responses must strictly adhere to the following guidelines and in 「Traditional Taiwanese Chinese」:

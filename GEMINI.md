@@ -85,3 +85,4 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **Git Automation:** Smart commit message generation (`neo:git_commit`).
 *   **CI Protocols:** Setting up .NET CI pipelines (`neo:ci-dotnet`).
 *   **CD Protocols:** Deploying to Azure App Service (`neo:cd-app-service`) and IIS (`neo:cd-iis`).
+*   **Architectural Planning:** Analyze requirements and generate execution plans (`neo:plan`).

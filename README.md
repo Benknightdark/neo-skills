@@ -24,6 +24,9 @@
 ### 2. 智慧 Git 助手
 *   **Smart Commit (`neo:git_commit`)**：根據 `git diff` 暫存區內容，自動生成符合 Conventional Commits 規範的提交訊息。
 
+### 3. 技術架構師
+*   **Execution Planner (`neo:plan`)**：分析用戶需求與專案現況，生成包含感知、推理與行動步驟的詳細執行計畫。
+
 ## 📂 系統架構
 
 本專案由三個核心層次組成，支援無限擴充：
@@ -71,6 +74,8 @@ gemini extension install https://github.com/Benknightdark/neo-skills --auto-upda
     > "幫這個專案設定 CI 流程" 或 `/neo:ci-dotnet`
 *   **部署至 IIS**：
     > "我要部署到 IIS，站台名稱是 MySite" 或 `/neo:cd-iis`
+*   **規劃開發任務**：
+    > "幫我規劃如何重構這個模組" 或 `/neo:plan`
 
 ## 🛠 開發指南
 

@@ -18,7 +18,7 @@
 自動化設計與生成符合微軟最佳實踐的 CI/CD 流程。
 *   **CI 自動化 (`neo:ci-dotnet`)**：針對 .NET 專案生成建置管線，整合單元測試與構件發佈。
 *   **CD 自動化**：
-    *   **Azure App Service (`neo:cd-app-service`)**：部署至 Azure PaaS 平台。
+    *   **Azure App Service (`neo:cd-app-service`)**：部署至Azure App Service。
     *   **IIS On-Premises (`neo:cd-iis`)**：部署至地端 IIS 伺服器，包含備份與復原機制。
 
 ### 2. 智慧 Git 助手

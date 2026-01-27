@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.4...neo-skills-v0.18.0) (2026-01-27)
+
+
+### Features
+
+* **neo:** 新增 plan 指令以支援技術架構規劃 ([79beab0](https://github.com/Benknightdark/neo-skills/commit/79beab078d3e7cc9bc804352550380ab6c024409))
+* **neo:** 新增 plan 指令以支援技術架構規劃 ([d066b4b](https://github.com/Benknightdark/neo-skills/commit/d066b4b289ea9b2d3e9ab605566702d69ba0208e))
+
 ## [0.17.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.3...neo-skills-v0.17.4) (2026-01-27)
 
 

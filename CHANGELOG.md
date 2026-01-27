@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.3...neo-skills-v0.17.4) (2026-01-27)
+
+
+### Bug Fixes
+
+* 調整git-commit指令 ([a3d8d7f](https://github.com/Benknightdark/neo-skills/commit/a3d8d7f926717d193405264786d07fa7ac9ec408))
+
 ## [0.17.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.2...neo-skills-v0.17.3) (2026-01-26)
 
 

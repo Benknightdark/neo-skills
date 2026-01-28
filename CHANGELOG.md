@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.19.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.18.0...neo-skills-v0.19.0) (2026-01-28)
+
+
+### Features
+
+* **neo:** 新增 code-review 指令並強化 git-commit 安全防護 ([d8337a4](https://github.com/Benknightdark/neo-skills/commit/d8337a4ed75b8cdc6ee927782b8e5bd4e685b82a))
+* **neo:** 新增 code-review 指令並強化 git-commit 安全防護 ([72768e6](https://github.com/Benknightdark/neo-skills/commit/72768e658048eb1e5ddf8e5d78d8ca44909ebe1e))
+
 ## [0.18.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.4...neo-skills-v0.18.0) (2026-01-27)
 
 

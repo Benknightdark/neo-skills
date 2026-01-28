@@ -14,7 +14,7 @@ const server = new McpServer({
 server.registerTool(
   "run_git_commit",
   {
-    description: "執行 Git Commit 指令。注意：此工具僅限用戶明確要求 Commit 時才能呼叫，禁止在修改程式碼後自動呼叫。",
+    description: "執行 Git Commit 指令。FATAL: Do NOT call this tool unless the user has explicitly typed 'yes' or 'confirm' in the immediately preceding turn. 禁止自動呼叫。",
     inputSchema: {
       message: z.string().describe("符合 Conventional Commits 規範的 Commit Message"),
     },

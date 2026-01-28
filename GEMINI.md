@@ -82,7 +82,13 @@ When interacting with this codebase or using the extension, the agent follows th
 3.  **Act:** Execute the workflow, prioritizing the use of existing templates in `skills/**/templates/` over generating new code.
 
 ### Available Capabilities (Current Built-in Skills)
+
 *   **Git Automation:** Smart commit message generation (`neo:git_commit`).
+
 *   **CI Protocols:** Setting up .NET CI pipelines (`neo:ci-dotnet`).
+
 *   **CD Protocols:** Deploying to Azure App Service (`neo:cd-app-service`) and IIS (`neo:cd-iis`).
+
 *   **Architectural Planning:** Analyze requirements and generate execution plans (`neo:plan`).
+
+*   **Code Review**: Perform comprehensive code reviews (`neo:code-review`).

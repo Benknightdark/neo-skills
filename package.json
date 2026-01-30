@@ -5,8 +5,9 @@
   "description": "Neo Skills: A Universal Expert Agent Extension for Gemini CLI",
   "main": "dist/server.js",
   "scripts": {
-    "build": "bun run clean && bun run build:bundle",
-    "build:bundle": "bun build src/server.ts --outdir dist --target node --minify",
+    "build": "bun run clean && bun run build:server && bun run build:hooks",
+    "build:server": "bun build src/server.ts --outdir dist --target node --minify",
+    "build:hooks": "bun build src/hooks/*.ts --outdir dist/hooks --target node --minify",
     "install-deps": "npm install",
     "clean": "rm -rf dist",
     "start": "node dist/server.js",

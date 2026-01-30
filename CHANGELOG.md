@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.20.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.19.0...neo-skills-v0.20.0) (2026-01-30)
+
+
+### Features
+
+* **hooks:** 實作機密檔案存取防護機制 ([dd7dea1](https://github.com/Benknightdark/neo-skills/commit/dd7dea1c403107227d658ee3806e6a0d1c5a3144))
+* **hooks:** 實作機密檔案存取防護機制 ([67e258f](https://github.com/Benknightdark/neo-skills/commit/67e258fa008e53dd1ebf5ccbfaacc2abc0e20624))
+
 ## [0.19.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.18.0...neo-skills-v0.19.0) (2026-01-28)
 
 

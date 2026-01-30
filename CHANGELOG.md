@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.20.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.19.0...neo-skills-v0.20.0) (2026-01-30)
+
+
+### Features
+
+* **hooks:** 實作機密檔案存取防護機制 ([dd7dea1](https://github.com/Benknightdark/neo-skills/commit/dd7dea1c403107227d658ee3806e6a0d1c5a3144))
+* **hooks:** 實作機密檔案存取防護機制 ([67e258f](https://github.com/Benknightdark/neo-skills/commit/67e258fa008e53dd1ebf5ccbfaacc2abc0e20624))
+
+## [0.19.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.18.0...neo-skills-v0.19.0) (2026-01-28)
+
+
+### Features
+
+* **neo:** 新增 code-review 指令並強化 git-commit 安全防護 ([d8337a4](https://github.com/Benknightdark/neo-skills/commit/d8337a4ed75b8cdc6ee927782b8e5bd4e685b82a))
+* **neo:** 新增 code-review 指令並強化 git-commit 安全防護 ([72768e6](https://github.com/Benknightdark/neo-skills/commit/72768e658048eb1e5ddf8e5d78d8ca44909ebe1e))
+
+## [0.18.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.4...neo-skills-v0.18.0) (2026-01-27)
+
+
+### Features
+
+* **neo:** 新增 plan 指令以支援技術架構規劃 ([79beab0](https://github.com/Benknightdark/neo-skills/commit/79beab078d3e7cc9bc804352550380ab6c024409))
+* **neo:** 新增 plan 指令以支援技術架構規劃 ([d066b4b](https://github.com/Benknightdark/neo-skills/commit/d066b4b289ea9b2d3e9ab605566702d69ba0208e))
+
+## [0.17.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.3...neo-skills-v0.17.4) (2026-01-27)
+
+
+### Bug Fixes
+
+* 調整git-commit指令 ([a3d8d7f](https://github.com/Benknightdark/neo-skills/commit/a3d8d7f926717d193405264786d07fa7ac9ec408))
+
 ## [0.17.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.17.2...neo-skills-v0.17.3) (2026-01-26)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.21.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.20.0...neo-skills-v0.21.0) (2026-02-02)
+
+
+### Features
+
+* **core:** 新增程式碼解釋助手並完善安全守衛文件說明 ([c5a5012](https://github.com/Benknightdark/neo-skills/commit/c5a501256ea7341554b6163f122db10dd1197ded))
+* **core:** 新增程式碼解釋助手並完善安全守衛文件說明 ([4082ace](https://github.com/Benknightdark/neo-skills/commit/4082ace66821935d4a704d7d32dfa4a55a0465b7))
+
 ## [0.20.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.19.0...neo-skills-v0.20.0) (2026-01-30)
 
 

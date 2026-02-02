@@ -38,6 +38,10 @@ Defines rigid, executable workflows triggered by the user.
 *   **Format:** TOML files (e.g., `ci-dotnet.toml`, `git-commit.toml`).
 *   **Purpose:** These files contain the "System Prompt" or "Instructions" that are fed to the agent when a specific task is requested. They explicitly link a user request to a specific Skill.
 
+### 4. Security Layer (`src/hooks/`)
+Mechanisms to ensure operational safety and data privacy.
+*   **Secret Guard (`secret-guard.ts`)**: An interception hook that analyzes tool execution arguments in real-time. It blocks operations involving sensitive files (e.g., `.env`, private keys, credentials) to prevent accidental leakage.
+
 ## 🛠 Building and Running
 
 This project uses **Bun** for development and building, and **Node.js** for the runtime environment.
@@ -90,5 +94,7 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **CD Protocols:** Deploying to Azure App Service (`neo:cd-app-service`) and IIS (`neo:cd-iis`).
 
 *   **Architectural Planning:** Analyze requirements and generate execution plans (`neo:plan`).
+
+*   **Code Explanation:** Deep dive into source code or project structures (`neo:explain`).
 
 *   **Code Review**: Perform comprehensive code reviews (`neo:code-review`).

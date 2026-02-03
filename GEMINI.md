@@ -98,3 +98,5 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **Code Explanation:** Deep dive into source code or project structures (`neo:explain`).
 
 *   **Code Review**: Perform comprehensive code reviews (`neo:code-review`).
+
+*   **C# Interface Generation**: Generate .NET interfaces from classes with smart property filtering and file overwriting logic (`neo:dotnet-gen-interface`).

@@ -1,7 +1,7 @@
 {
   "name": "neo-skills",
   "description": "A universal capability extension for Gemini CLI",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "mcpServers": {
     "neo-skills": {
       "command": "node",

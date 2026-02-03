@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.23.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.22.0...neo-skills-v0.23.0) (2026-02-03)
+
+
+### Features
+
+* **skills:** 強制 C# Interface 屬性為唯讀 (Getter Only) ([1d0f95e](https://github.com/Benknightdark/neo-skills/commit/1d0f95e0407ed33301ac78a26073d094d1f003bf))
+* **skills:** 強制 C# Interface 屬性為唯讀 (Getter Only) ([2135a52](https://github.com/Benknightdark/neo-skills/commit/2135a52b9b3755607ab53a793182773b21d9ea37))
+
 ## [0.22.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.21.0...neo-skills-v0.22.0) (2026-02-03)
 
 

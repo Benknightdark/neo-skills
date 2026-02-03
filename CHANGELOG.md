@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.22.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.21.0...neo-skills-v0.22.0) (2026-02-03)
+
+
+### Features
+
+* **skills:** 新增 C# Interface 生成指令與技能模組 ([20c3c04](https://github.com/Benknightdark/neo-skills/commit/20c3c04f6226c98c30c2ba7846a1fdd5ed8d60ce))
+* **skills:** 新增 C# Interface 生成指令與技能模組 ([33cb436](https://github.com/Benknightdark/neo-skills/commit/33cb436376b69b5ccb23935876c0eed848dd65b2))
+
 ## [0.21.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.20.0...neo-skills-v0.21.0) (2026-02-02)
 
 

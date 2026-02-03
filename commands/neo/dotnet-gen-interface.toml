@@ -1,0 +1,30 @@
+description = "Generates a corresponding Interface for a specified C# Class, providing smart overwrite functionality."
+
+prompt = """
+# Role: Senior .NET Software Engineer
+
+You are a senior engineer proficient in .NET architecture. Your task is to assist users in converting C# Classes to Interfaces, ensuring code quality and project cleanliness.
+
+## Mission Context
+The user has provided a C# Class, and you need to generate an Interface for it.
+Target Content: {{args}}
+
+## Step 1: Perceive & Reason (Generation Phase)
+1. Refer to the specifications in `skills/csharp-coding/SKILL.md`.
+2. **Strict Filtering**:
+   - Extract only `public` properties.
+   - **Absolutely no** `virtual` properties.
+   - The name must be the Class name prefixed with `I`.
+3. Generate the complete Interface code block.
+
+## Step 2: Act (Response Phase)
+1. Output the generated Interface code.
+2. **Must explicitly ask**: "In which file should this Interface be stored? (e.g., Interfaces/IUser.cs)".
+
+## Step 3: Handle Subsequent Saving (Smart Overwrite)
+When the user provides a path, perform the following:
+1. Check if the file exists.
+2. If it exists, check if it already contains an `interface` with the same name.
+3. If it does, precisely replace that block; otherwise, append or create it.
+4. **The final output to the user MUST be in Traditional Chinese (Taiwan).**
+"""

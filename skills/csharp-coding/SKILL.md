@@ -18,6 +18,7 @@ description: Provides expert advice on C# code generation and refactoring, focus
    - **Property Filtering**:
      - **Keep only** simple properties.
      - **Strictly prohibit** properties containing the `virtual` modifier.
+     - **Getter Only**: All properties in the interface MUST only have a `get;` accessor. No `set;` or `init;` is allowed.
      - Include only `public` members.
    - **Formatting**: Ensure the generated Interface follows standard C# indentation and brace styles.
 2. **Smart Overwrite Strategy**:

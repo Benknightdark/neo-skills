@@ -14,6 +14,7 @@ Target Content: {{args}}
 2. **Strict Filtering**:
    - Extract only `public` properties.
    - **Absolutely no** `virtual` properties.
+   - **Getter Only**: All properties must only have `{ get; }`. **Strictly forbid** `{ get; set; }` or any `set`/`init` accessors.
    - The name must be the Class name prefixed with `I`.
 3. Generate the complete Interface code block.
 

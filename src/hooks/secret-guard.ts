@@ -3,13 +3,13 @@ import { readFileSync } from 'fs';
 
 // Define the sensitive patterns
 const SENSITIVE_PATTERNS = [
-  /\.env(\..+)?(["']|$)/,       // Matches .env, .env.local, .env.production
-  /\.pem(["']|$)/,              // Private keys
-  /\.key(["']|$)/,              // Private keys
-  /\.git\//,             // Git directory internals
-  /id_rsa/,              // SSH keys
-  /credentials\.json/,   // Common cloud credentials
-  /secrets\./            // Explicit 'secrets' files
+  /\.env/i,                     // Matches .env, .env.local, .envrc
+  /\.pem\b/i,                   // Private keys
+  /\.key\b/i,                   // Private keys
+  /\.git\//i,                   // Git directory internals
+  /\bid_rsa/i,                  // SSH keys
+  /credentials\.json/i,         // Common cloud credentials
+  /\bsecrets?\./i               // Explicit 'secret' or 'secrets' files
 ];
 
 async function main() {
@@ -24,9 +24,10 @@ async function main() {
 
     const inputData = JSON.parse(inputBuffer.toString('utf-8'));
     
-    // 2. Extract tool info
-    // Structure: { hook: "tool:before_execute", data: { tool_name: "...", tool_args: { ... } } }
-    const { tool_name, tool_args } = inputData.data || {};
+    // 2. Extract tool info - Support both nested and flat structures
+    const data = inputData.data || inputData;
+    const tool_name = data.tool_name;
+    const tool_args = data.tool_args || data.tool_input;
 
     // 3. Analyze arguments for sensitive data
     if (tool_args) {
@@ -35,27 +36,24 @@ async function main() {
       for (const pattern of SENSITIVE_PATTERNS) {
         if (pattern.test(argsString)) {
            // 4. Block if sensitive data found
+           // Using standard Gemini CLI hook response format
            console.log(JSON.stringify({
-             action: 'reject', // or "block" depending on specific CLI version, but usually non-success exit code or specific response is key. 
-                               // For Gemini CLI hooks, often just exiting with code 2 blocks it, but returning JSON is required.
-                               // We will return a message explaining why.
-             message: `Security Alert: Access to sensitive file matching pattern '${pattern}' is blocked by Neo Skills.`
+             decision: 'deny',
+             reason: `Security Alert: Access to sensitive file matching pattern '${pattern}' is blocked by Neo Skills.`,
+             systemMessage: '🔒 Security Alert: Sensitive data access blocked.'
            }));
-           process.exit(2); // Exit code 2 usually signifies a "block" or "interception" in many hook systems.
+           process.exit(0); // Exit code 0 is required for structured JSON response
         }
       }
     }
 
     // 5. Allow if no issues found
-    // Outputting an empty JSON object or specific "allow" action
-    console.log(JSON.stringify({ action: 'continue' }));
+    console.log(JSON.stringify({ decision: 'allow' }));
     process.exit(0);
 
   } catch (error) {
     // Log error to stderr to not break JSON parsing on stdout
     console.error('Error in secret-guard hook:', error);
-    // If hook fails, we usually decide to fail open or fail closed. 
-    // Failing closed (exit 1) is safer for security hooks.
     process.exit(1); 
   }
 }

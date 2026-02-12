@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.1...neo-skills-v0.23.2) (2026-02-12)
+
+
+### Bug Fixes
+
+* **hooks:** 調整 hooks.json 的配置結構格式 ([b0a7c20](https://github.com/Benknightdark/neo-skills/commit/b0a7c20cda5f9c34a64635b366c5318eefbda374))
+
 ## [0.23.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.0...neo-skills-v0.23.1) (2026-02-12)
 
 

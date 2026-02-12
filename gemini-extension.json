@@ -10,5 +10,6 @@
       ]
     }
   },
+  "hooks": "hooks/hooks.json",
   "contextFileName": "GEMINI.md"
 }

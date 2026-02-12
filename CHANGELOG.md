@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.23.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.3...neo-skills-v0.23.4) (2026-02-12)
+
+
+### Bug Fixes
+
+* **security:** 修復安全攔截掛鉤失效與格式相容性問題 ([8d7e1b1](https://github.com/Benknightdark/neo-skills/commit/8d7e1b106ce283ece11d9a8b481d3a662503dbbb))
+* **security:** 修復安全攔截掛鉤失效與格式相容性問題 ([64096bb](https://github.com/Benknightdark/neo-skills/commit/64096bb6874b8fcfe0005980f8bf6343e820de73))
+
 ## [0.23.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.2...neo-skills-v0.23.3) (2026-02-12)
 
 

@@ -10,8 +10,5 @@
       ]
     }
   },
-  "contextFileName": "GEMINI.md",
-  "hooks": {
-    "tool:before_execute": "${extensionPath}/dist/hooks/secret-guard.js"
-  }
+  "contextFileName": "GEMINI.md"
 }

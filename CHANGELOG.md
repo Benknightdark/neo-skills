@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.23.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.0...neo-skills-v0.23.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* **hooks:** 修正擴充功能 Hooks 無法被 CLI 識別與執行的問題 ([6be2cbd](https://github.com/Benknightdark/neo-skills/commit/6be2cbdad587addc9f866c7dbf3feb14cbd4b2cc))
+* **hooks:** 修正擴充功能 Hooks 無法被 CLI 識別與執行的問題 ([ca59b8c](https://github.com/Benknightdark/neo-skills/commit/ca59b8c982e2dee509ccfbde612875152b84d1cf))
+
 ## [0.23.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.22.0...neo-skills-v0.23.0) (2026-02-03)
 
 

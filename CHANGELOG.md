@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.2...neo-skills-v0.23.3) (2026-02-12)
+
+
+### Bug Fixes
+
+* **hooks:** 在擴充功能清單中註冊 hooks 配置文件路徑 ([97cc73b](https://github.com/Benknightdark/neo-skills/commit/97cc73b3184841c747e6b06f951bd97dfdd0023b))
+
 ## [0.23.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.1...neo-skills-v0.23.2) (2026-02-12)
 
 

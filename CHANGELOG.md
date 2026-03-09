@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.24.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.24.0...neo-skills-v0.24.1) (2026-03-09)
+
+
+### Bug Fixes
+
+* **security:** 修復 Secret Guard 可能遺漏敏感模式的檢查漏洞 ([1fd453d](https://github.com/Benknightdark/neo-skills/commit/1fd453dad6b004fa92fa1c06a8d8374c125b02e1))
+* **security:** 修復 Secret Guard 可能遺漏敏感模式的檢查漏洞 ([4e2bf1e](https://github.com/Benknightdark/neo-skills/commit/4e2bf1e2aa3b612c0107f189e64fb749ac38918d))
+
 ## [0.24.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.4...neo-skills-v0.24.0) (2026-03-09)
 
 

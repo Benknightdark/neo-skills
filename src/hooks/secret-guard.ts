@@ -33,24 +33,18 @@ async function main() {
       throw new Error('No input received from Gemini CLI.');
     }
 
-    const inputData = JSON.parse(rawInput);
-    const data = inputData.data || inputData;
-    const tool_args = data.tool_args || data.tool_input;
+   // const inputData = JSON.parse(rawInput);
 
-    // 2. 掃描敏感資訊
-    if (tool_args) {
-      const argsString = JSON.stringify(tool_args);
-      
-      for (const pattern of SENSITIVE_PATTERNS) {
-        if (pattern.test(argsString)) {
-           // 發現敏感模式：回傳標準 JSON 拒絕格式
-           process.stdout.write(JSON.stringify({
-             decision: 'deny',
-             reason: `Security Alert: Access to sensitive file matching pattern is blocked by Neo Skills Secret Guard.`,
-             systemMessage: '🔒 Security Alert: Sensitive data access blocked.'
-           }));
-           process.exit(0); 
-        }
+    // 2. 掃描敏感資訊 (全面掃描 rawInput 以確保無漏洞)
+    for (const pattern of SENSITIVE_PATTERNS) {
+      if (pattern.test(rawInput)) {
+         // 發現敏感模式：回傳標準 JSON 拒絕格式
+         process.stdout.write(JSON.stringify({
+           decision: 'deny',
+           reason: `Security Alert: Access to sensitive file matching pattern is blocked by Neo Skills Secret Guard.`,
+           systemMessage: '🔒 Security Alert: Sensitive data access blocked.'
+         }));
+         process.exit(0); 
       }
     }
 

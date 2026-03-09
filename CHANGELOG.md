@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.24.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.4...neo-skills-v0.24.0) (2026-03-09)
+
+
+### Features
+
+* 調整hook ([3fa93dc](https://github.com/Benknightdark/neo-skills/commit/3fa93dca75a72ffb7b10dba5a8041f871d5bc82d))
+* 調整hook ([acc46d5](https://github.com/Benknightdark/neo-skills/commit/acc46d56f86844853b349f7d9ed1a14f7008c6a5))
+
 ## [0.23.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.23.3...neo-skills-v0.23.4) (2026-02-12)
 
 

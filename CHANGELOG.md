@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.25.0...neo-skills-v0.25.1) (2026-03-09)
+
+
+### Bug Fixes
+
+* **hook:** 移除 hooks/hooks.json 中的 BeforeAgent Hook 配置 ([75c1bc4](https://github.com/Benknightdark/neo-skills/commit/75c1bc4f6cc60ba7f4753ecf5f566fe006efd168))
+
 ## [0.25.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.24.1...neo-skills-v0.25.0) (2026-03-09)
 
 

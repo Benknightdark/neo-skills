@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.25.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.24.1...neo-skills-v0.25.0) (2026-03-09)
+
+
+### Features
+
+* **hook:** 將 launchSettings.json 加入 Secret Guard 掃描清單 ([65b2f43](https://github.com/Benknightdark/neo-skills/commit/65b2f43543e19eedd4b5f4ae4e2b91bd6aeddbf7))
+* **hook:** 新增 BeforeAgent Hook 以攔截主動輸入中的敏感資訊 ([d0e4d6a](https://github.com/Benknightdark/neo-skills/commit/d0e4d6ad3404255c91c5d6883e486e009a67a0dc))
+* **hook:** 新增 BeforeAgent Hook 以攔截主動輸入中的敏感資訊 ([98b0a34](https://github.com/Benknightdark/neo-skills/commit/98b0a3483e22bfd78ffa6b374c07516b49b19217))
+
 ## [0.24.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.24.0...neo-skills-v0.24.1) (2026-03-09)
 
 

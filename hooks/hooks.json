@@ -7,7 +7,7 @@
           {
             "name": "secret-guard",
             "type": "command",
-            "command": "${extensionPath}/dist/hooks/secret-guard.js",
+            "command": "node \"${extensionPath}/dist/hooks/secret-guard.js\"",
             "description": "Security guard to prevent sensitive data leakage"
           }
         ]

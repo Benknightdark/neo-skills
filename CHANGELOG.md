@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.26.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.26.0...neo-skills-v0.26.1) (2026-03-10)
+
+
+### Bug Fixes
+
+* **plan:** 調整skill ([439d7cb](https://github.com/Benknightdark/neo-skills/commit/439d7cb4e4bc03097d610e8519731dd68694f7c2))
+* **plan:** 調整skill ([74332f7](https://github.com/Benknightdark/neo-skills/commit/74332f70ad884c883acf82a76ee5ad32bdb1b594))
+
 ## [0.26.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.25.1...neo-skills-v0.26.0) (2026-03-10)
 
 

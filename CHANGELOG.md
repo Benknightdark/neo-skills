@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.26.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.25.1...neo-skills-v0.26.0) (2026-03-10)
+
+
+### Features
+
+* **clarification:** 新增需求釐清技能與指令並在地化所有指令描述 ([02a3509](https://github.com/Benknightdark/neo-skills/commit/02a350904324b5676ebdef140c1b67715eb07dd7))
+* **clarification:** 新增需求釐清技能與指令並在地化所有指令描述 ([0f86304](https://github.com/Benknightdark/neo-skills/commit/0f863045fc9e110ed29fe28714ab39f013d9bcd3))
+* **plan:** 建立獨立的開發計畫規劃技能並優化指令結構 ([6c59613](https://github.com/Benknightdark/neo-skills/commit/6c59613b53701541f302d0a042c0f06ba031e1cf))
+* **plan:** 建立獨立的開發計畫規劃技能並優化指令結構 ([bb1cf6f](https://github.com/Benknightdark/neo-skills/commit/bb1cf6f626c9b109a135a731f65385b096e05e27))
+
 ## [0.25.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.25.0...neo-skills-v0.25.1) (2026-03-09)
 
 

@@ -1,4 +1,4 @@
-description = "自動產生結構良好、正體中文的 Conventional Commits 訊息，並在用戶確認後執行 commit。"
+description = "根據變更自動產生正體中文的 Conventional Commits 訊息並執行 commit"
 prompt = """
 # Role: Senior Git Commit Message Generator
 

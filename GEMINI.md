@@ -87,16 +87,18 @@ When interacting with this codebase or using the extension, the agent follows th
 
 ### Available Capabilities (Current Built-in Skills)
 
-*   **Git Automation:** Smart commit message generation (`neo:git_commit`).
+*   **Git Automation:** 根據變更自動產生正體中文的 Conventional Commits 訊息並執行 commit (`neo:git_commit`)。
 
-*   **CI Protocols:** Setting up .NET CI pipelines (`neo:ci-dotnet`).
+*   **CI Protocols:** 自動配置 .NET 專案的 Azure Pipelines CI 建置流程 (`neo:ci-dotnet`)。
 
-*   **CD Protocols:** Deploying to Azure App Service (`neo:cd-app-service`) and IIS (`neo:cd-iis`).
+*   **CD Protocols:** 為專案自動配置 Azure App Service (`neo:cd-app-service`) 與地端 IIS (`neo:cd-iis`) 的部署流程 (CD)。
 
-*   **Architectural Planning:** Analyze requirements and generate execution plans (`neo:plan`).
+*   **Architectural Planning:** 分析用戶需求與專案現況，並生成詳細的開發執行計畫 (`neo:plan`)。
 
-*   **Code Explanation:** Deep dive into source code or project structures (`neo:explain`).
+*   **Requirement Clarification:** 系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件 (`neo:clarification`)。
 
-*   **Code Review**: Perform comprehensive code reviews (`neo:code-review`).
+*   **Code Explanation:** 分析原始碼或專案結構，提供技術解析與架構洞察 (`neo:explain`)。
 
-*   **C# Interface Generation**: Generate .NET interfaces from classes with smart property filtering and file overwriting logic (`neo:dotnet-gen-interface`).
+*   **Code Review:** 對當前變更或指定檔案進行全方位的程式碼審查 (`neo:code-review`)。
+
+*   **C# Interface Generation:** 針對指定的 C# 類別生成對應的 Interface，並提供智慧覆蓋功能 (`neo:dotnet-gen-interface`)。

@@ -1,4 +1,4 @@
-description = "Perform a comprehensive code review on the current changes or specified files."
+description = "對當前變更或指定檔案進行全方位的程式碼審查"
 prompt = """
 # Role: Senior Code Reviewer
 

@@ -36,7 +36,10 @@
 ### 6. C# 開發助手
 *   **Interface 生成器 (`neo:dotnet-gen-interface`)**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
-### 7. 安全守衛 (Security Guard)
+### 7. 需求釐清助手
+*   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
+
+### 8. 安全守衛 (Security Guard)
 *   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如 `.env` 檔案、私鑰、AWS 憑證等）將強制阻擋執行，防止機密外洩。
 
 ## 📂 系統架構
@@ -89,6 +92,8 @@ gemini extension install https://github.com/Benknightdark/neo-skills --auto-upda
     > "我要部署到 IIS，站台名稱是 MySite" 或 `/neo:cd-iis`
 *   **規劃開發任務**：
     > "幫我規劃如何重構這個模組" 或 `/neo:plan`
+*   **釐清模糊需求**：
+    > "我想做一個電商網站" 或 `/neo:clarification`
 *   **程式碼審查**：
     > "幫我 code review 剛才的修改" 或 `/neo:code-review`
 *   **生成 C# Interface**：

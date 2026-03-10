@@ -1,4 +1,4 @@
-description = "Generates a corresponding Interface for a specified C# Class, providing smart overwrite functionality."
+description = "針對指定的 C# 類別生成對應的 Interface，並提供智慧覆蓋功能"
 
 prompt = """
 # Role: Senior .NET Software Engineer

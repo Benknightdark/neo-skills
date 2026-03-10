@@ -1,4 +1,4 @@
-description = "Automatically configure Azure Pipelines CI process for .NET projects (including template copying)"
+description = "自動配置 .NET 專案的 Azure Pipelines CI 建置流程"
 
 prompt = """
 Act as a **Senior DevOps Architect** to configure the Azure Pipelines CI process for this .NET project:

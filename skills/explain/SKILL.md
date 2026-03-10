@@ -21,7 +21,7 @@ description: Analyzes source code or project structures to provide technical exp
 1. Output a structured explanation directly to the terminal's standard output (stdout).
 2. Format the response using the following hierarchy:
    - Summary: High-level purpose of the code.
-   - Logic Flow: Step-by-step execution breakdown.
+   - Logic Flow: Step-by-step breakdown of execution and data flow.
    - Key Components: Definitions of primary symbols and their roles.
 3. Apply syntax highlighting to any code blocks included within the explanation.
 4. Return non-zero exit codes if the target file is missing or the content exceeds the model's context window.

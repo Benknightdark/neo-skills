@@ -1,4 +1,4 @@
-description = "utomatically configure Azure App Service deployment process (CD) for the project"
+description = "為專案自動配置 Azure App Service 的部署流程 (CD)"
 
 prompt = """
 Act as a **Senior DevOps Architect** to configure the Continuous Deployment (CD) process for Azure App Service:

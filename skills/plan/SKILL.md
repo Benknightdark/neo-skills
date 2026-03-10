@@ -20,6 +20,10 @@ description: Analyzes requirements and current project state to generate detaile
 1. **Structure the Plan**: Present the plan to the user in **Traditional Chinese (Taiwan)** using the following mandatory sections:
    - **🧐 現況分析 (Context Analysis)**: Relevant files and architectural overview.
    - **🎯 執行目標 (Objectives)**: Concise summary of the mission.
-   - **🛠️ 詳細執行計畫 (Step-by-Step Plan)**: Concrete steps including Action Type, File Path, Description, and Verification.
+   - **🛠️ 詳細執行計畫 (Step-by-Step Plan)**: Concrete steps presented as a **numbered list** (DO NOT use Markdown tables). Each step must include:
+     - **類型**: Action Type
+     - **路徑**: File Path
+     - **說明**: Detailed description
+     - **驗證**: Verification method
    - **⚠️ 風險與確認事項 (Risks & Questions)**: Side effects or points requiring clarification.
 2. **Constraint**: Do not write code or modify files during the planning phase.

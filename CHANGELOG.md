@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.27.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.27.0...neo-skills-v0.27.1) (2026-03-14)
+
+
+### Bug Fixes
+
+* **docker-gen:** 修正 Docker 配置生成規範並同步更新 README ([7b90d1c](https://github.com/Benknightdark/neo-skills/commit/7b90d1ca97466a6ba5680d8225ee9148c6f177fa))
+* **docker-gen:** 修正 Docker 配置生成規範並同步更新 README ([7da98e6](https://github.com/Benknightdark/neo-skills/commit/7da98e6f2b764661d8ddba018548553376d320ef))
+
 ## [0.27.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.26.1...neo-skills-v0.27.0) (2026-03-14)
 
 

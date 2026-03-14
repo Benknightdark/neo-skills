@@ -39,7 +39,10 @@
 ### 7. 需求釐清助手
 *   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
-### 8. 安全守衛 (Security Guard)
+### 8. Docker 配置生成器
+*   **容器化自動配置 (`neo:docker-gen`)**：自動分析專案結構與依賴，生成最佳化的 `Dockerfile` 與 `docker-compose.yml`，並針對持續型服務（如 DB, Queue）強制配置資料持久化 Volume.
+
+### 9. 安全守衛 (Security Guard)
 *   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如 `.env` 檔案、私鑰、AWS 憑證等）將強制阻擋執行，防止機密外洩。
 
 ## 📂 系統架構
@@ -98,6 +101,8 @@ gemini extension install https://github.com/Benknightdark/neo-skills --auto-upda
     > "幫我 code review 剛才的修改" 或 `/neo:code-review`
 *   **生成 C# Interface**：
     > "幫我針對這個 class 產生介面" 或 `/neo:dotnet-gen-interface`
+*   **生成 Docker 配置**：
+    > "幫我為這個專案產生 Docker 配置" 或 `/neo:docker-gen`
 
 ## 🛠 開發指南
 

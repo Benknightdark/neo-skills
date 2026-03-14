@@ -16,7 +16,7 @@ description: Automatically analyzes project structure and generates correspondin
 2. Evaluate the necessity of applying multi-stage builds to separate the compilation environment from the execution environment.
 3. Plan the layer caching strategy for the Dockerfile, placing low-frequency change dependency installation commands before source code copy commands.
 4. Define corresponding `.dockerignore` rules to exclude local development files and sensitive information (e.g., `.git`, `node_modules`, `venv`, `.env`).
-5. Construct the services, networks, and volumes structures in `docker-compose.yml` based on associated external services, and configure the dependency startup sequence (`depends_on`).
+5. Construct the services, networks, and volumes structures in `docker-compose.yml` based on associated external services, and configure the dependency startup sequence (`depends_on`). For persistent services (e.g., PostgreSQL, Redis, RabbitMQ, MongoDB), dedicated volumes MUST be configured to ensure data persistence.
 6. Enforce security best practices (e.g., configure non-root user permissions to execute the application).
 
 ## Act

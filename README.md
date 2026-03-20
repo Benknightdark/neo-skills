@@ -24,25 +24,22 @@
 ### 2. 智慧 Git 助手
 *   **Smart Commit (`neo:git_commit`)**：根據 `git diff` 暫存區內容，自動生成符合 Conventional Commits 規範的提交訊息。
 
-### 3. 技術架構師
-*   **Execution Planner (`neo:plan`)**：分析用戶需求與專案現況，生成包含感知、推理與行動步驟的詳細執行計畫。
-
-### 4. Code Review 專家
+### 3. Code Review 專家
 *   **智能審查 (`neo:code-review`)**：針對程式碼變更進行多面向 (正確性、安全性、效能、可讀性) 的深度審查。
 
-### 5. 程式碼解釋助手
+### 4. 程式碼解釋助手
 *   **技術解析 (`neo:explain`)**：深入分析原始碼或專案結構，提供高階用途摘要、邏輯流程分解以及核心元件說明。
 
-### 6. C# 開發助手
+### 5. .NET / C# 開發專家
+*   **Web API 專家 (`skills/dotnet-webapi`)**：協助遵循最新產業最佳實踐來開發 ASP.NET Core Web API。
+*   **Minimal APIs 專家 (`skills/dotnet-minimal-apis`)**：提供高效能、輕量級 .NET Minimal API 的開發指引。
+*   **MVC 專家 (`skills/dotnet-mvc`)**：針對使用 Razor 視圖的 ASP.NET Core MVC 應用程式提供專家指引。
 *   **Interface 生成器 (`neo:dotnet-gen-interface`)**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
-### 7. 需求釐清助手
+### 6. 需求釐清助手
 *   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
-### 8. Docker 配置生成器
-*   **容器化自動配置 (`neo:docker-gen`)**：自動分析專案結構與依賴，生成最佳化的 `Dockerfile` 與 `docker-compose.yml`，並針對持續型服務（如 DB, Queue）強制配置資料持久化 Volume.
-
-### 9. 安全守衛 (Security Guard)
+### 7. 安全守衛 (Security Guard)
 *   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如 `.env` 檔案、私鑰、AWS 憑證等）將強制阻擋執行，防止機密外洩。
 
 ## 📂 系統架構
@@ -93,16 +90,12 @@ gemini extension install https://github.com/Benknightdark/neo-skills --auto-upda
     > "幫這個專案設定 CI 流程" 或 `/neo:ci-dotnet`
 *   **部署至 IIS**：
     > "我要部署到 IIS，站台名稱是 MySite" 或 `/neo:cd-iis`
-*   **規劃開發任務**：
-    > "幫我規劃如何重構這個模組" 或 `/neo:plan`
 *   **釐清模糊需求**：
     > "我想做一個電商網站" 或 `/neo:clarification`
 *   **程式碼審查**：
     > "幫我 code review 剛才的修改" 或 `/neo:code-review`
 *   **生成 C# Interface**：
     > "幫我針對這個 class 產生介面" 或 `/neo:dotnet-gen-interface`
-*   **生成 Docker 配置**：
-    > "幫我為這個專案產生 Docker 配置" 或 `/neo:docker-gen`
 
 ## 🛠 開發指南
 

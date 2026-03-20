@@ -2,7 +2,7 @@
 name: dotnet
 version: "1.0.0"
 category: "Core"
-description: "Primary router skill for broad .NET work. Classify the repo by app model and cross-cutting concern first, then switch to the narrowest matching .NET skill instead of staying at a generic layer."
+description: "用於廣泛 .NET 工作的核心路由技能。首先根據應用模型與跨切點關注點對儲存庫進行分類，然後切換到最精確匹配的 .NET 技能，而不是停留在通用層級。"
 compatibility: "Requires a .NET repository, solution, or project tree."
 ---
 
@@ -23,7 +23,7 @@ compatibility: "Requires a .NET repository, solution, or project tree."
    - test framework and runner
    - analyzers, formatters, coverage, and CI quality gates
 2. Route to the narrowest platform skill as soon as the stack is known:
-   - Web: `dotnet-aspnet-core`, `dotnet-minimal-apis`, `aspnet-core-webapi`, `dotnet-blazor`, `dotnet-signalr`, `dotnet-grpc`
+   - Web: `dotnet-aspnet-core`, `dotnet-minimal-apis`, `dotnet-webapi`, `dotnet-blazor`, `dotnet-signalr`, `dotnet-grpc`
    - Cloud and hosting: `dotnet-aspire`, `dotnet-azure-functions`, `dotnet-worker-services`
    - Desktop and client: `dotnet-maui`, `dotnet-wpf`, `dotnet-winforms`, `dotnet-winui`
    - Data and distributed: `dotnet-entity-framework-core`, `dotnet-entity-framework6`, `dotnet-orleans`

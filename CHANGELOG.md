@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.28.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.27.1...neo-skills-v0.28.0) (2026-03-20)
+
+
+### Features
+
+* **docs:** 更新文件並清理過時技能與指令 ([6bbfb2d](https://github.com/Benknightdark/neo-skills/commit/6bbfb2dcf19ec34ee79c42f999341fa6f8df336b))
+* **docs:** 更新文件並清理過時技能與指令 ([ec698e4](https://github.com/Benknightdark/neo-skills/commit/ec698e40915200580efe884ca4523543e348a970))
+* **dotnet:** 新增 Minimal APIs 與 MVC 技能並優化路由結構 ([894ae62](https://github.com/Benknightdark/neo-skills/commit/894ae62f09df697ff5420a056f42c6d3b1a0953d))
+* **dotnet:** 新增 Minimal APIs 與 MVC 技能及地端化 (修正檔案路徑與補足) ([02568d9](https://github.com/Benknightdark/neo-skills/commit/02568d9abc25c96e8c0f373bad3c4201b2290596))
+* **generate-skill:** 實作技能生成器規格與設計模式參考文件 ([5e6bd2f](https://github.com/Benknightdark/neo-skills/commit/5e6bd2fe7489f10f8f53ffc9055fc5c30900e7a8))
+
 ## [0.27.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.27.0...neo-skills-v0.27.1) (2026-03-14)
 
 

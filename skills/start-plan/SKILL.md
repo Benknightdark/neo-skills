@@ -1,5 +1,5 @@
 ---
-name: plan
+name: start-plan
 description: 分析需求與專案現況，並生成詳細的開發執行計畫。
 ---
 

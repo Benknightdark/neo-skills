@@ -1,6 +1,6 @@
 ---
 name: docker-config-generator
-description: Automatically analyzes project structure and generates corresponding Dockerfile and docker-compose.yml files.
+description: 自動分析專案結構並生成對應的 Dockerfile 與 docker-compose.yml 檔案。
 ---
 
 # Containerization Configuration Generation Specification

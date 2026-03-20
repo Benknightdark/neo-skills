@@ -1,6 +1,6 @@
 ---
 name: csharp-coding
-description: Provides expert advice on C# code generation and refactoring, focusing on Interface generation and file structure management.
+description: 提供 C# 程式碼生成與重構的專業建議，專注於介面生成與檔案結構管理。
 ---
 
 # C# Coding Skill Specification

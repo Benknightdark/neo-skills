@@ -1,6 +1,6 @@
 ---
 name: explain
-description: Analyzes source code or project structures to provide technical explanations and architectural insights.
+description: 分析原始碼或專案結構，提供技術解析與架構洞察。
 ---
 
 # Project Code Explanation Specification

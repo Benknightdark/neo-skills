@@ -1,6 +1,6 @@
 ---
 name: azure-pipeline-architect
-description: Design and generate Azure Pipelines YAML scripts that comply with the latest standards based on official Microsoft documentation and project requirements. Prioritize using modular Templates.
+description: 根據微軟官方文件與專案需求，設計並生成符合最新標準的 Azure Pipelines YAML 腳本。優先使用模組化範本 (Templates)。
 ---
 
 # Azure Pipeline Script Design Specifications

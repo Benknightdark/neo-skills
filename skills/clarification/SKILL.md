@@ -1,6 +1,6 @@
 ---
 name: clarification
-description: Systematically guides users to clarify vague requirements and converts them into structured specification documents.
+description: 系統化引導使用者釐清模糊需求，並將其轉換為結構化的規格文件。
 ---
 
 # Requirement Clarification Assistant

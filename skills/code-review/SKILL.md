@@ -1,6 +1,6 @@
 ---
 name: code-review-architect
-description: Analyze code changes to identify issues, potential bugs, and areas for improvement across multiple dimensions like security, performance, and style.
+description: 分析程式碼變更，從安全性、效能與風格等多個面向找出問題、潛在 Bug 與改善空間。
 ---
 
 # Code Review Specifications

@@ -1,6 +1,6 @@
 # ASP.NET Core Web API Anti-patterns & Best Practices
 
-This guide lists common development errors (Anti-patterns) and their corresponding correct practices (Patterns) for .NET 8/9.
+This guide lists common development errors (Anti-patterns) and their corresponding correct practices (Patterns) based on the latest standards.
 
 ---
 
@@ -43,7 +43,7 @@ public async Task<IActionResult> UpdateProfile(User user) // ❌ Incorrect: Expo
 ```
 
 ### ✅ Best Practice: Input/Output DTOs
-Use dedicated Data Transfer Objects (DTOs) and a mapper (e.g., Mapster, AutoMapper).
+Use dedicated Data Transfer Objects (DTOs) and a mapper.
 ```csharp
 public record ProfileUpdateDto(string Nickname, string AvatarUrl); // ✅ Correct
 
@@ -100,7 +100,7 @@ catch (Exception ex)
 ```
 
 ### ✅ Best Practice: Global Problem Details
-Use the built-in `ProblemDetails` service for standardized errors.
+Use standardized error reporting.
 ```csharp
 // Use app.UseExceptionHandler() globally
 return TypedResults.Problem(
@@ -130,19 +130,3 @@ var usersWithRoles = await _context.Users
     .Include(u => u.Roles) // Load all in one query (or split query)
     .ToListAsync();
 ```
-
----
-
-## 6. .NET 9+ Specifics
-
-### ❌ Anti-pattern: Overusing IDistributedCache
-Using `IDistributedCache` for everything without considering cache stampede or serialization costs.
-
-### ✅ Best Practice: Use HybridCache (.NET 9)
-Switch to `HybridCache` for better performance and built-in L1/L2 management.
-
-### ❌ Anti-pattern: Reflection-based JSON for Native AOT
-Using default JSON serialization when deploying with Native AOT.
-
-### ✅ Best Practice: JSON Source Generation
-Use `JsonSourceGenerationOptions` to ensure your DTOs are AOT-compatible.

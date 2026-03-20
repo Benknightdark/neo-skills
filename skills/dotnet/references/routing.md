@@ -7,30 +7,9 @@ Use this guide to route .NET tasks to the most specific skill available.
 Identify the primary hosting or execution model:
 
 - **Web / API**
-  - High-level ASP.NET Core: `dotnet-aspnet-core`
-  - Minimal APIs focus: `dotnet-minimal-apis`
-  - Web API (Clean Architecture focus): `aspnet-core-webapi`
-  - Frontend-heavy / Razor: `dotnet-blazor`
-  - Real-time: `dotnet-signalr`
-  - RPC: `dotnet-grpc`
-
-- **Cloud & Distributed**
-  - Cloud-native orchestration: `dotnet-aspire`
-  - Serverless: `dotnet-azure-functions`
-  - Background processing: `dotnet-worker-services`
-  - Distributed Actors: `dotnet-orleans`
-
-- **Desktop & Mobile**
-  - Cross-platform: `dotnet-maui`
-  - Windows specific: `dotnet-wpf`, `dotnet-winforms`, `dotnet-winui`
-
-- **Data Access**
-  - Modern ORM: `dotnet-entity-framework-core`
-  - Legacy ORM: `dotnet-entity-framework6`
-
-- **AI & Emerging**
-  - LLM Orchestration: `dotnet-semantic-kernel`
-  - Generic AI extensions: `dotnet-microsoft-extensions-ai`
+  - Web API: `dotnet-webapi`
+  - Minimal APIs: `dotnet-minimal-apis`
+  - MVC: `dotnet-mvc`
 
 ## 2. Cross-Cutting Concerns
 
@@ -53,5 +32,5 @@ Even if an app model is identified, route specific concerns to these companion s
 ## 3. Decision Logic
 
 1. **Specific over General**: If you see `Microsoft.NET.Sdk.Web`, do not use `dotnet`. Use a web-specific skill.
-2. **Behavior over Tooling**: If the task is "Fix a bug in the API", use `aspnet-core-webapi`. If the task is "Add a unit test for the API", use `aspnet-core-webapi` first for context, then pull in `dotnet-xunit` logic.
+2. **Behavior over Tooling**: If the task is "Fix a bug in the API", use `dotnet-webapi`. If the task is "Add a unit test for the API", use `dotnet-webapi` first for context, then pull in `dotnet-xunit` logic.
 3. **Legacy over Modern**: If the target framework is `.NET Framework 4.x`, use `dotnet-legacy-aspnet` or `dotnet-wcf`.

@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.31.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.30.0...neo-skills-v0.31.0) (2026-03-23)
+
+
+### Features
+
+* **python:** 新增 Python 3.14 專家技能模組與參考指南 ([fa58113](https://github.com/Benknightdark/neo-skills/commit/fa581139b7a42462aee3b61ab8d2779cfc0f4bd0))
+* **python:** 新增環境管理技能並全面英文化技能文件 ([5954d66](https://github.com/Benknightdark/neo-skills/commit/5954d66ba089fdc6d4b7352743d2f3530c724c37))
+* **python:** 重構 Python 專家技能，專注於 3.10-3.14 現代標準 ([9554a04](https://github.com/Benknightdark/neo-skills/commit/9554a04ae6e6875b9547e1e828f120168f8ab564))
+
 ## [0.30.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.29.0...neo-skills-v0.30.0) (2026-03-23)
 
 

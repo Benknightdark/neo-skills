@@ -2,8 +2,8 @@
 name: dotnet-webapi
 version: "1.0.0"
 category: "Web"
-description: "協助遵循最新產業最佳實踐來開發 ASP.NET Core Web API。涵蓋控制器設計、動作過濾器、問題詳情 (Problem Details) 與 API 版本控制。"
-compatibility: "Requires ASP.NET Core 6+, preferably .NET 8+."
+description: "協助遵循最新產業最佳實踐來開發 ASP.NET Core Web API。涵蓋控制器設計、動作過濾器、問題詳情與 API 版本控制。"
+compatibility: "Requires ASP.NET Core 6+, supports up to .NET 10.0."
 ---
 
 # ASP.NET Core Web API
@@ -87,9 +87,9 @@ builder.Services.AddProblemDetails();
 if (id <= 0)
 {
     return TypedResults.Problem(
-        detail: "ID must be a positive integer",
+        detail: "識別碼必須是正整數",
         statusCode: StatusCodes.Status400BadRequest,
-        title: "Invalid Parameter");
+        title: "無效的參數");
 }
 ```
 

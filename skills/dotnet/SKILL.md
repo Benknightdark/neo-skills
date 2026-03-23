@@ -3,7 +3,7 @@ name: dotnet
 version: "1.0.0"
 category: "Core"
 description: "用於廣泛 .NET 工作的核心路由技能。首先根據應用模型與跨切點關注點對儲存庫進行分類，然後切換到最精確匹配的 .NET 技能，而不是停留在通用層級。"
-compatibility: "Requires a .NET repository, solution, or project tree."
+compatibility: "Requires a .NET repository, solution, or project tree. Supports .NET 6.0 up to .NET 10.0."
 ---
 
 # .NET Router Skill

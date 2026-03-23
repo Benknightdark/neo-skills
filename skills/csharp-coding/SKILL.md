@@ -1,6 +1,9 @@
 ---
 name: csharp-coding
-description: 提供 C# 程式碼生成與重構的專業建議，專注於介面生成與檔案結構管理。
+version: "1.0.0"
+category: "Core"
+description: "提供 C# 程式碼生成與重構的專業建議，專注於介面生成與檔案結構管理。"
+compatibility: "Supports C# 12/13 and .NET 10.0."
 ---
 
 # C# Coding Skill Specification

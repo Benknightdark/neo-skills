@@ -1,40 +1,107 @@
-# ASP.NET Core Web API Anti-patterns & Best Practices
+# ASP.NET Core Web API Anti-Patterns
 
-This guide lists common development errors (Anti-patterns) and their corresponding correct practices (Patterns) based on the latest standards.
+## 1. Async & Resource Anti-Patterns
 
----
+### Sync over Async
+Using `.Result` or `.Wait()` in asynchronous methods.
 
-## 1. Asynchrony
+**Problem**: This causes thread pool starvation, potentially leading to deadlocks and poor scalability.
 
-### ❌ Anti-pattern: Sync over Async
-Using `.Result` or `.Wait()` in asynchronous methods, causing thread pool starvation or deadlocks.
 ```csharp
+// BAD: Sync blocks thread
 public IActionResult Get()
 {
-    var data = _service.GetDataAsync().Result; // ❌ Incorrect: Sync blocks thread
+    var data = _service.GetDataAsync().Result;
     return Ok(data);
 }
 ```
 
-### ✅ Best Practice: Async all the way
-Always use `await` and propagate `CancellationToken` for cancellation support.
+**Solution**: Always use `await` and propagate `CancellationToken`.
+
 ```csharp
+// GOOD: Fully async
 public async Task<IActionResult> Get(CancellationToken ct)
 {
-    var data = await _service.GetDataAsync(ct); // ✅ Correct: Fully async
+    var data = await _service.GetDataAsync(ct);
     return Ok(data);
 }
 ```
 
----
+## 2. Structural & Architectural Anti-Patterns
 
-## 2. Data Security & DTOs
+### Fat Controllers
+Putting business logic, validation, and data access inside controller actions.
 
-### ❌ Anti-pattern: Direct Entity Binding (Mass Assignment)
-Exposing database entities as API parameters.
+**Problem**: Controllers become bloated, hard to test, and difficult to maintain.
+
 ```csharp
+// BAD: Controller does everything
 [HttpPost]
-public async Task<IActionResult> UpdateProfile(User user) // ❌ Incorrect: Exposes internals
+public async Task<IActionResult> PlaceOrder(int itemId)
+{
+    var item = await _context.Items.FindAsync(itemId);
+    if (item.Stock < 1) return BadRequest("No stock");
+    
+    // Complex business logic...
+    _context.Orders.Add(new Order { ItemId = itemId });
+    await _context.SaveChangesAsync();
+    
+    return Ok();
+}
+```
+
+**Solution**: Keep controllers thin and delegate logic to a Service or Handler.
+
+```csharp
+// GOOD: Delegate to handler (CQRS)
+[HttpPost]
+public async Task<IActionResult> PlaceOrder(int itemId)
+{
+    var result = await _mediator.Send(new PlaceOrderCommand(itemId));
+    return result.ToActionResult();
+}
+```
+
+### Exposing Domain Entities
+Returning EF Core entities directly to the client.
+
+**Problem**: This leaks database structure, may cause circular reference errors, and risks exposing sensitive fields.
+
+```csharp
+// BAD: Exposing domain entity
+[HttpGet("{id}")]
+public async Task<ActionResult<User>> GetUser(int id)
+{
+    var user = await _context.Users.FindAsync(id);
+    return Ok(user); // PasswordHash and SecretFields are leaked
+}
+```
+
+**Solution**: Use DTOs or Records for output.
+
+```csharp
+// GOOD: Return DTO
+public record UserResponse(int Id, string Username, string Email);
+
+[HttpGet("{id}")]
+public async Task<ActionResult<UserResponse>> GetUser(int id)
+{
+    var user = await _service.GetByIdAsync(id);
+    return Ok(new UserResponse(user.Id, user.Username, user.Email));
+}
+```
+
+## 3. Data & Security Anti-Patterns
+
+### Mass Assignment (Direct Entity Binding)
+Binding incoming requests directly to database entities.
+
+**Problem**: Over-posting vulnerability allows attackers to update fields they shouldn't (e.g., `IsAdmin`).
+
+```csharp
+// BAD: Direct entity binding
+[HttpPost]
+public async Task<IActionResult> UpdateProfile(User user)
 {
     _context.Users.Update(user); // Can update sensitive fields like "IsAdmin"
     await _context.SaveChangesAsync();
@@ -42,91 +109,67 @@ public async Task<IActionResult> UpdateProfile(User user) // ❌ Incorrect: Expo
 }
 ```
 
-### ✅ Best Practice: Input/Output DTOs
-Use dedicated Data Transfer Objects (DTOs) and a mapper.
+**Solution**: Use dedicated Input DTOs.
+
 ```csharp
-public record ProfileUpdateDto(string Nickname, string AvatarUrl); // ✅ Correct
+// GOOD: Input DTO
+public record ProfileUpdateDto(string Nickname, string AvatarUrl);
 
 [HttpPost]
 public async Task<IActionResult> UpdateProfile(ProfileUpdateDto dto)
 {
-    var user = await _context.Users.FindAsync(GetUserId());
+    var user = await _context.Users.FindAsync(GetCurrentUserId());
     user.Nickname = dto.Nickname; // Only update allowed fields
     await _context.SaveChangesAsync();
     return Ok();
 }
 ```
 
----
-
-## 3. Controller Design
-
-### ❌ Anti-pattern: Fat Controllers & Business in UI
-Putting database or business logic inside controllers.
-```csharp
-[HttpPost]
-public async Task<IActionResult> Order(int itemId)
-{
-    var item = await _context.Items.FindAsync(itemId); // ❌ Incorrect
-    if (item.Stock < 1) return BadRequest("No stock"); 
-    // ... complex logic ...
-    return Ok();
-}
-```
-
-### ✅ Best Practice: Thin Controllers (CQRS)
-Delegate to handlers using MediatR or a dedicated Service Layer.
-```csharp
-[HttpPost]
-public async Task<IActionResult> Order(int itemId)
-{
-    var result = await _mediator.Send(new PlaceOrderCommand(itemId)); // ✅ Correct
-    return result.ToActionResult(); // Use Result Pattern extension
-}
-```
-
----
-
-## 4. Error Handling
-
-### ❌ Anti-pattern: Returning Raw Exceptions
-Returning full exception details to the client in production.
-```csharp
-try { /* Logic */ }
-catch (Exception ex)
-{
-    return StatusCode(500, ex.ToString()); // ❌ Incorrect: Leaks server internals
-}
-```
-
-### ✅ Best Practice: Global Problem Details
-Use standardized error reporting.
-```csharp
-// Use app.UseExceptionHandler() globally
-return TypedResults.Problem(
-    detail: "Insufficient stock for item #123",
-    statusCode: StatusCodes.Status400BadRequest
-);
-```
-
----
-
-## 5. Performance & Data
-
-### ❌ Anti-pattern: N+1 Query Issue
+### N+1 Query Issue
 Querying related data in a loop.
+
+**Problem**: Causes many small database roundtrips, significantly degrading performance.
+
 ```csharp
+// BAD: Querying in a loop
 var users = await _context.Users.ToListAsync();
 foreach (var user in users) {
-    user.Roles = await _context.Roles.Where(r => r.UserId == user.Id).ToListAsync(); // ❌ Incorrect
+    user.Roles = await _context.Roles.Where(r => r.UserId == user.Id).ToListAsync();
 }
 ```
 
-### ✅ Best Practice: Eager Loading & No-Tracking
-Use `.Include()` or `.AsSplitQuery()` and `.AsNoTracking()` for read operations.
+**Solution**: Use Eager Loading (`Include`) or Projecting with DTOs.
+
 ```csharp
+// GOOD: Eager loading
 var usersWithRoles = await _context.Users
-    .AsNoTracking() // Performance boost for reads
-    .Include(u => u.Roles) // Load all in one query (or split query)
+    .AsNoTracking()
+    .Include(u => u.Roles)
     .ToListAsync();
+```
+
+## 4. Error Handling Anti-Patterns
+
+### Raw Exception Leaks
+Returning raw `ex.ToString()` or `ex.Message` to the client in production.
+
+**Problem**: Leaks internal server details, stack traces, and environment information, which is a security risk.
+
+```csharp
+// BAD: Leak internal details
+try { ... }
+catch (Exception ex)
+{
+    return StatusCode(500, ex.ToString());
+}
+```
+
+**Solution**: Use global exception handling and Problem Details.
+
+```csharp
+// GOOD: Standard Problem Details
+return Problem(
+    detail: "An unexpected error occurred. Please try again later.",
+    statusCode: StatusCodes.Status500InternalServerError
+);
 ```

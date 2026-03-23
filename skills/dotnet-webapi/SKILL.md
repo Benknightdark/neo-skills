@@ -1,6 +1,6 @@
 ---
 name: dotnet-webapi
-version: "1.0.0"
+version: "1.1.0"
 category: "Web"
 description: "協助遵循最新產業最佳實踐來開發 ASP.NET Core Web API。涵蓋控制器設計、動作過濾器、問題詳情與 API 版本控制。"
 compatibility: "Requires ASP.NET Core 6+, supports up to .NET 10.0."
@@ -16,106 +16,86 @@ compatibility: "Requires ASP.NET Core 6+, supports up to .NET 10.0."
 - refactoring logic from controllers to services
 - implementing API versioning or security enhancements
 
-## Documentation
-
-- [Controllers Overview](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-10.0)
-- [Action Results](https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-10.0)
-- [Filters in Web API](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-10.0)
-- [Model Binding](https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-10.0)
-- [API Versioning](https://github.com/dotnet/aspnet-api-versioning)
-
-### References
-
-- [patterns.md](reference/patterns.md) - detailed architectural, controller, and performance patterns
-- [anti-patterns.md](reference/anti-patterns.md) - common Web API mistakes like fat controllers and mass assignment
-
 ## Workflow
 
-1. **Analyze Environment**: Confirm ASP.NET Core version and architectural style (Controllers).
-2. **Define DTOs**: Create separate request and response records to avoid exposing domain entities.
-3. **Implement Controllers**: Use thin controllers that delegate business logic to services or MediatR.
-4. **Apply Validation**: Use FluentValidation with action filters or global middleware.
-5. **Handle Errors**: Implement global exception handling returning RFC 7807 Problem Details.
-6. **Optimize Data**: Use `.AsNoTracking()` for read operations and propagate `CancellationToken`.
+1. **Perceive (Perception Phase):**
+   - Use `grep_search` to locate `[ApiController]` and `[Route]` attributes.
+   - Detect if the project uses `Startup.cs` or the modern `Program.cs` pattern.
+   - Identify the dependency injection pattern (Standard vs. Primary Constructors).
+   - Check for API Versioning packages (`Asp.Versioning.Http`).
+2. **Reason (Planning Phase):**
+   - Decide on the Controller structure (e.g., grouping by Domain).
+   - Define Request/Response DTOs as `record` for immutability.
+   - Produce a **Web API Implementation Plan** (in Traditional Chinese) covering Routes, DTOs, and Security requirements.
+3. **Act (Execution Phase):**
+   - Implement "Thin Controllers" delegating to services or MediatR.
+   - Use **Primary Constructors** (.NET 8+) for cleaner dependency injection.
+   - Apply `ProducesResponseType` and OpenAPI metadata.
+   - Use `TypedResults` where appropriate (compatible with Controllers in modern .NET).
+4. **Validate (Validation Phase):**
+   - Ensure all public endpoints are documented via OpenAPI.
+   - Verify `CancellationToken` propagation to all async calls.
+   - Check that domain entities are NOT leaked in response types.
+   - Confirm that validation filters are active and returning Problem Details.
 
-## Basic Patterns
+## Best Practices & Patterns
 
-### Controller Basics
+### Modern Controller with Primary Constructors (.NET 8+)
 ```csharp
 [ApiController]
 [Route("api/[controller]")]
-public class ProductsController(IProductService service) : ControllerBase
+public class ProductsController(IProductService service, ILogger<ProductsController> logger) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAll(CancellationToken ct)
     {
-        var products = await service.GetAllAsync(ct);
-        return Ok(products);
-    }
-
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<ProductResponse>> GetById(int id, CancellationToken ct)
-    {
-        var product = await service.GetByIdAsync(id, ct);
-        return product != null ? Ok(product) : NotFound();
+        logger.LogInformation("Fetching all products");
+        return Ok(await service.GetAllAsync(ct));
     }
 }
 ```
 
-### Action Filters
+### Problem Details & TypedResults
 ```csharp
-public class ValidationFilter : IAsyncActionFilter
+[HttpPost]
+[ProducesResponseType(StatusCodes.Status201Created)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
+public async Task<Results<Created<ProductResponse>, BadRequest<ProblemDetails>>> Create(CreateProductRequest request)
 {
-    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-    {
-        if (!context.ModelState.IsValid)
-        {
-            context.Result = new BadRequestObjectResult(context.ModelState);
-            return;
-        }
-        await next();
-    }
+    var result = await service.CreateAsync(request);
+    return TypedResults.Created($"/api/products/{result.Id}", result);
 }
 ```
 
-### Problem Details
+### Keyed Services Injection (.NET 8+)
 ```csharp
-// In Program.cs
-builder.Services.AddProblemDetails();
-
-// In Controller
-if (id <= 0)
+[HttpGet("export")]
+public IActionResult Export([FromKeyedServices("csv-exporter")] IExporter exporter)
 {
-    return TypedResults.Problem(
-        detail: "識別碼必須是正整數",
-        statusCode: StatusCodes.Status400BadRequest,
-        title: "無效的參數");
+    return File(exporter.Export(), "text/csv");
 }
 ```
 
-## Anti-Patterns to Avoid
+## Documentation
 
-| Anti-Pattern | Why It's Bad | Better Approach |
-|--------------|--------------|-----------------|
-| Sync over Async | Thread starvation | Use `async/await` throughout |
-| Mass Assignment | Security risk | Use DTOs for input |
-| Fat Controllers | Hard to test | Use Service Layer or CQRS |
-| Exposing Entities | Tight coupling | Use Response DTOs |
-| Raw Exceptions | Leaks internals | Use Problem Details |
-| N+1 Queries | Performance hit | Use Eager Loading (`Include`) |
+- [Controllers Overview](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-10.0)
+- [API Versioning Guide](https://github.com/dotnet/aspnet-api-versioning)
+
+### References
+
+- [patterns.md](reference/patterns.md) - architectural and performance patterns
+- [anti-patterns.md](reference/anti-patterns.md) - common Web API mistakes to avoid
 
 ## Deliver
 
-- clean, thin Controllers delegating to services
-- robust DTOs for input/output data transfer
-- standardized error responses via Problem Details
-- propagated `CancellationToken` for resource management
-- comprehensive OpenAPI (Swagger) documentation
+- **Web API Implementation Plan:** Summary of routes, DTOs, and filters (in Traditional Chinese).
+- **Modern Controller Code:** Clean, thin controllers using Primary Constructors and async patterns.
+- **Robust DTOs:** Record-based data transfer objects.
+- **OpenAPI Integration:** Fully documented endpoints.
 
 ## Validate
 
-- endpoints return appropriate HTTP status codes (200, 201, 400, 404, etc.)
-- validation logic prevents invalid data from reaching the service layer
-- database queries are optimized (no-tracking for reads)
-- API documentation matches implementation
-- controllers are free of business and persistence logic
+- Endpoints return standard HTTP status codes.
+- Problem Details (RFC 7807) are returned for all error cases.
+- `CancellationToken` is propagated to the database layer.
+- No business logic exists within the controller actions.

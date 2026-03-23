@@ -36,7 +36,11 @@
 *   **MVC 專家 (`skills/dotnet-mvc`)**：針對使用 Razor 視圖的 ASP.NET Core MVC 應用程式提供專家指引。
 *   **Interface 生成器 (`neo:dotnet-gen-interface`)**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
-### 6. 需求釐清助手
+### 6. Python 開發與環境管理專家
+*   **Python 3.10+ 專家 (`skills/python`)**：專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
+*   **環境管理專家 (`skills/python-manager`)**：智慧偵測與管理 Python 專案環境，支援 uv, Poetry, venv/pip 並提供自動化安裝建議。
+
+### 7. 需求釐清助手
 *   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
 ### 7. 安全守衛 (Security Guard)

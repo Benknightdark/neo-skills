@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.30.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.29.0...neo-skills-v0.30.0) (2026-03-23)
+
+
+### Features
+
+* **dotnet:** 升級 .NET 核心與專案特定技能至 .NET 9/10 與現代化標準 ([952bca7](https://github.com/Benknightdark/neo-skills/commit/952bca7063f8311e1643b844bd90953a205630b6))
+* **dotnet:** 升級 .NET 核心與專案特定技能至 .NET 9/10 與現代化標準 ([59869ac](https://github.com/Benknightdark/neo-skills/commit/59869acbf5c60b211753b24490e599e71fab67d1))
+
 ## [0.29.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.28.0...neo-skills-v0.29.0) (2026-03-23)
 
 

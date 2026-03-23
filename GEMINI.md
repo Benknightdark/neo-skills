@@ -106,3 +106,7 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **Code Review:** 對當前變更或指定檔案進行全方位的程式碼審查 (`neo:code-review`)。
 
 *   **C# Interface Generation:** 針對指定的 C# 類別生成對應的 Interface，並提供智慧覆蓋功能 (`neo:dotnet-gen-interface`)。
+
+*   **Python 3.10+ 現代開發專家:** 專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
+
+*   **Python 環境管理專家:** 智慧偵測並管理 Python 專案的虛擬環境與相依套件工具（支援 uv, Poetry, venv/pip）。

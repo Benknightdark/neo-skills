@@ -1,134 +1,177 @@
-# Python Anti-Patterns & Modern Guide (3.13 - 3.14+)
+# Python Modernization & Evolution Guide (3.10 - 3.14+)
 
-這份文件列出了應避免的過時 Python 寫法、常見錯誤，以及針對 Python 3.13 與 3.14 最新標準的寫法指南。
-
-## 1. 基礎陷阱：使用可變物件作為預設引數
-這會導致預設引數在多次呼叫間共享狀態。
-
-### ❌ 錯誤
-```python
-def add_item(item, items=[]):
-    items.append(item)
-    return items
-```
-
-### ✅ 修正
-```python
-def add_item(item, items: list | None = None):
-    if items is None:
-        items = []
-    items.append(item)
-    return items
-```
+這份文件彙整了從 Python 3.10 到最新版本的重要語法演進，對比了「舊式/錯誤寫法」與「現代/正確寫法」，旨在協助開發者編寫更具可讀性、安全性與效能的程式碼。
 
 ---
 
-## 2. Python 3.13+ 最新寫法指南
+## 0. 基礎陷阱 (不限版本)
+這些是 Python 開發中最常見的邏輯錯誤。
 
-### A. 不可變物件的副本建立 (copy.replace)
-在 3.13 以前，修改 `namedtuple` 或 `dataclass` 的副本通常需要使用 `._replace()` 或 `dataclasses.replace()`。3.13 統一了這個介面。
-
-* **❌ 舊式寫法：**
+### A. 使用可變物件作為預設引數
+*   **❌ 錯誤：** `def add_item(item, items=[]):` (導致多次呼叫間共享狀態)
+*   **✅ 正確：**
     ```python
-    from dataclasses import replace
-    new_obj = replace(old_obj, field="value")
-    # 或者針對 namedtuple
-    new_point = old_point._replace(x=10)
+    def add_item(item, items: list | None = None):
+        if items is None:
+            items = []
+        items.append(item)
+        return items
     ```
-* **✅ 最新寫法 (3.13+)：**
+
+### B. 手動檢查型別
+*   **❌ 錯誤：** `if type(val) == str:` (破壞繼承關係)
+*   **✅ 正確：** `if isinstance(val, str):`
+
+---
+
+## 1. Python 3.10：聯集與結構化比對
+
+### A. 聯集型別運算子 (Union Type Operator)
+*   **❌ 舊式寫法：** `from typing import Union; def func(data: Union[int, str]):`
+*   **✅ 現代寫法：**
+    ```python
+    def process_data(data: int | str) -> int | str:
+        # 使用直覺的位元或運算子 | 取代 Union[]
+        pass
+    ```
+
+### B. 結構化模式比對 (Structural Pattern Matching)
+*   **❌ 舊式寫法：** 使用冗長的 `if-elif-else` 鏈結。
+*   **✅ 現代寫法：**
+    ```python
+    def http_status(status):
+        match status:
+            case 200:
+                return "OK"
+            case 404:
+                return "Not Found"
+            case _:
+                return "Unknown"
+    ```
+
+---
+
+## 2. Python 3.11：型別參照與例外群組
+
+### A. Self 型別 (The `Self` Type)
+*   **❌ 舊式寫法：** 需要依賴 `TypeVar` 進行繁瑣的類別自身參照。
+*   **✅ 現代寫法：**
+    ```python
+    from typing import Self
+
+    class Config:
+        def clone(self) -> Self:
+            return self
+    ```
+
+### B. 例外群組 (Exception Groups)
+*   **❌ 舊式寫法：** 傳統 `except` 容易遺漏併發任務中的其他例外。
+*   **✅ 現代寫法：**
+    ```python
+    try:
+        await asyncio.gather(task1(), task2())
+    except* ValueError as e:
+        print("處理所有 ValueError 群組")
+    except* TypeError as e:
+        print("處理所有 TypeError 群組")
+    ```
+
+---
+
+## 3. Python 3.12：泛型與字串升級
+
+### A. 泛型語法 (Type Parameter Syntax)
+*   **❌ 舊式寫法：** 需宣告 `T = TypeVar('T')`。
+*   **✅ 現代寫法：**
+    ```python
+    # 宣告語法大幅簡化，完全移除對 TypeVar 模組的依賴
+    def get_first[T](items: list[T]) -> T:
+        return items[0]
+    ```
+
+### B. F-string 巢狀引號解除限制
+*   **❌ 舊式寫法：** 內外引號必須交錯使用，如 `f"{employee['name']}"`。
+*   **✅ 現代寫法：**
+    ```python
+    employee = {"name": "Alice"}
+    # 允許直接重複使用雙引號，降低修改代碼時的心智負擔
+    message = f"Employee name is {employee["name"]}"
+    ```
+
+---
+
+## 4. Python 3.13：棄用標示與型別預設值
+
+### A. 標示棄用 (Deprecation Decorator)
+*   **❌ 舊式寫法：** 手動呼叫 `warnings.warn()`。
+*   **✅ 現代寫法：**
+    ```python
+    from warnings import deprecated
+
+    @deprecated("請改用 new_api()")
+    def old_api():
+        pass
+    ```
+
+### B. 不可變物件的副本建立 (copy.replace)
+*   **❌ 舊式寫法：** 針對不同型別需調用不同方法（如 `._replace()` 或 `replace()`）。
+*   **✅ 現代寫法：**
     ```python
     import copy
-    # 支援 namedtuple, dataclass, datetime 等多種不可變物件
+    # 3.13 統一了 namedtuple, dataclass, datetime 等物件的副本修改介面
     new_obj = copy.replace(old_obj, field="value")
     ```
 
-### B. 類型縮減與靜態檢查 (Typing Improvements)
-3.13 引入了更精確的類型檢查工具，避免開發時的邏輯漏洞。
-
-* **❌ 舊式 / 較不精確寫法：**
+### C. 泛型預設值 (Type Parameter Defaults)
+*   **✅ 現代寫法：**
     ```python
-    from typing import TypeGuard, TypedDict
-
-    class User(TypedDict):
-        name: str
-        age: int # 難以在靜態檢查中防止被修改
-
-    def is_str_list(val: list[object]) -> TypeGuard[list[str]]:
-        return all(isinstance(x, str) for x in val)
+    # 允許為泛型指定預設型別
+    class Box[T = int]:
+        def __init__(self, item: T):
+            self.item = item
     ```
-* **✅ 最新寫法 (3.13+)：**
+
+### D. 精確類型縮減與唯讀保護
+*   **✅ 現代寫法：**
     ```python
     from typing import TypeIs, ReadOnly, TypedDict
 
     class User(TypedDict):
-        name: str
         age: ReadOnly[int] # 標記為唯讀，防止靜態檢查錯誤
 
     def is_str_list(val: list[object]) -> TypeIs[list[str]]:
-        # TypeIs 比 TypeGuard 提供更直觀的類型縮減邏輯
+        # 提供比 TypeGuard 更直觀的類型縮減
         return all(isinstance(x, str) for x in val)
     ```
 
-### C. 移除過時的「電池」 (PEP 594)
-3.13 正式移除了 19 個舊版標準庫。請停止使用這些模組並尋找替代方案。
-
-* **❌ 應避免使用的模組 (3.13 已移除)：**
-    * `cgi`, `cgitb` (請改用 `fastapi`, `flask` 等 Web 框架)
-    * `telnetlib` (請改用 `netmiko` 或 `paramiko`)
-    * `crypt`, `nis`, `nntplib`, `pipes`, `sndhdr`, `uu`, `xdrlib` 等。
+### E. 移除過時的「電池」 (PEP 594)
+*   **⚠️ 注意：** Python 3.13 已正式移除 `cgi`, `telnetlib`, `crypt` 等 19 個舊版模組，請改用現代替代方案（如 `fastapi`, `paramiko`）。
 
 ---
 
-## 3. Python 3.14+ 最新寫法指南
+## 5. Python 3.14 (最新預覽)
 
-### A. 例外處理 (Exception Handling - PEP 758)
-Python 3.14 捕捉多個例外時不再強制需要括號。
+### A. 無括號例外捕捉 (Unparenthesized Exceptions)
+*   **❌ 舊式寫法：** `except (ValueError, TypeError):`
+*   **✅ 現代寫法：** `except ValueError, TypeError:` (減少視覺雜訊)
 
-* **❌ 舊式寫法：**
+### B. 標記延遲評估 (Deferred Annotations)
+*   **❌ 舊式寫法：** `def set_next(self, node: "Node"):` (需用字串包裝前向引用)
+*   **✅ 現代寫法：**
     ```python
-    try:
-        process_data()
-    except (ValueError, TypeError): # 舊版必須使用 tuple 括號
-        pass
-    ```
-* **✅ 最新寫法 (3.14+)：**
-    ```python
-    try:
-        process_data()
-    except ValueError, TypeError: # 3.14 起可省略括號
-        pass
+    class Node:
+        # 3.14 預設延遲評估，直接寫類別名稱即可，不再需要引號
+        def set_next(self, node: Node):
+            pass
     ```
 
-### B. 型別提示 (Type Hinting)
-3.14 支援型別延遲評估，不再需要用字串包裝尚未定義的類別（前向引用）。
+### C. Pathlib 原生複製與移動
+*   **❌ 舊式寫法：** `shutil.copy(file, dest)`
+*   **✅ 現代寫法：** `from pathlib import Path; Path("f.txt").copy("dest.txt")`
 
-* **❌ 舊式寫法：**
-    ```python
-    def process(node: "Node"): # 舊版需要引號包裝
-        pass
-    ```
-* **✅ 最新寫法 (3.14+)：**
-    ```python
-    def process(node: Node): # 直接引用，支援延遲評估
-        pass
-    ```
+---
 
-### C. 路徑操作 (Pathlib Improvements)
-3.14 為 `Path` 物件加入了原生的複製與移動方法。
-
-* **❌ 舊式寫法：**
-    ```python
-    import shutil
-    shutil.copy(file_path, "dest.txt")
-    ```
-* **✅ 最新寫法 (3.14+)：**
-    ```python
-    from pathlib import Path
-    Path("file.txt").copy("dest.txt") # 3.14 支援原生 .copy()
-    ```
-
-## 4. 資源管理 (通用最佳實踐)
+## 6. 資源管理 (通用最佳實踐)
 始終使用 `with` 語句處理檔案與連線。
-
-* **❌ 錯誤：** 手動呼叫 `f.close()`。
-* **✅ 正確：** `with open(...) as f:`。
+*   **❌ 錯誤：** 手動呼叫 `f.close()`。
+*   **✅ 正確：** `with open(...) as f:`。

@@ -15,37 +15,41 @@ compatibility: "Requires a .NET repository, solution, or project tree. Supports 
 - tasks that combine platform work with testing, quality, architecture, setup, or migration decisions
 
 ## Workflow
-1. Detect the real stack first:
-   - target frameworks and SDK version
-   - `LangVersion`
-   - project SDKs and workload hints
-   - hosting model and app entry points
-   - test framework and runner
-   - analyzers, formatters, coverage, and CI quality gates
-2. Route to the narrowest platform skill as soon as the stack is known:
-   - Web: `dotnet-aspnet-core`, `dotnet-minimal-apis`, `dotnet-webapi`
-3. If more than one specialized skill applies, prefer the one closest to the user-visible behavior first, then pull in the quality or tooling skill second.
-4. Do not stop at this skill once a narrower match exists. This skill should classify and hand off, not become a generic dumping ground.
-5. After code changes, validate with the repository's actual build, test, and quality workflow instead of generic `.NET` commands.
+1. **Perceive (Perception Phase):**
+   - Use `glob "**/*.csproj"` to locate project files.
+   - Use `grep_search` to detect key patterns in `Program.cs` or `Startup.cs`.
+   - Identify:
+     - Target Framework (`<TargetFramework>`) and SDK version.
+     - App Model (Web API, Minimal API, MVC, Worker, etc.).
+     - Primary packages (EF Core, MediatR, etc.).
+     - Test frameworks (xUnit, NUnit, MSTest).
+2. **Reason (Routing Phase):**
+   - Compare the detected stack against available specialized skills:
+     - Web API: `dotnet-webapi`
+     - Minimal APIs: `dotnet-minimal-apis`
+     - MVC: `dotnet-mvc`
+     - Generic C# / Interface Generation: `csharp-coding`
+   - Produce a concise **Tech Stack Summary** (in Traditional Chinese) justifying the chosen route.
+3. **Act (Execution Phase):**
+   - Route to the narrowest platform skill as soon as the stack is known.
+   - If more than one specialized skill applies, prefer the one closest to the user-visible behavior first.
+   - Do not stop at this skill once a narrower match exists. This skill should classify and hand off.
 
 ## Routing Heuristics
-- If the repo contains `Microsoft.NET.Sdk.Web`, start from a web skill, not generic `.NET`.
-- If the repo contains Blazor, Razor Components, or `.razor` pages, prefer `dotnet-blazor`.
-- If the repo contains `package.json`, frontend lint configs, or browser-facing asset pipelines inside the `.NET` solution, prefer the dedicated frontend analysis skills instead of generic `.NET`.
+- If the repo contains `Microsoft.NET.Sdk.Web` and uses `WebApplication.CreateBuilder`, route to `dotnet-minimal-apis` or `dotnet-webapi`.
+- If the repo contains `Controllers` and `Views` folder with Razor files, route to `dotnet-mvc`.
+- If the repo contains `package.json` or browser-facing assets inside the `.NET` solution, prefer dedicated frontend skills after the backend work is identified.
 - If the user asks about “which skill should I use?”, answer with the narrowest matching skill and explain why in one short sentence.
-- If no narrower skill matches, keep the work here and stay explicit about the missing specialization.
 
 ## Deliver
-- the correct specialized skill choice for the task
-- repo-compatible code or documentation changes that stay aligned with the detected stack
-- validation evidence that matches the real project runner and quality toolchain
+- **Tech Stack Summary:** A brief summary of the detected environment (Framework, App Model, Quality Tools).
+- **Correct Specialized Skill Choice:** Clear instruction on which skill to activate next.
+- **Validation Evidence:** Brief explanation of why the chosen skill is the best fit for the repository.
 
 ## Validate
-- the chosen downstream skill actually exists in the catalog
-- platform assumptions match project SDKs, packages, and workloads
-- generic guidance has been replaced by framework-specific guidance whenever possible
-- runner-specific commands are not mixed incorrectly
-- language or runtime features are only used when the repo supports them
+- The chosen downstream skill actually exists in the catalog.
+- Platform assumptions match project SDKs, packages, and workloads.
+- Language or runtime features (e.g., C# 12 Primary Constructors) are only used when the repo supports them.
 
 ## Documentation
 ### References

@@ -2,8 +2,8 @@
 name: dotnet-minimal-apis
 version: "1.0.0"
 category: "Web"
-description: "Design and implement Minimal APIs in ASP.NET Core using handler-first endpoints, route groups, filters, and lightweight composition suited to modern .NET services."
-compatibility: "Requires ASP.NET Core 6+, preferably .NET 8+ for full features."
+description: "開發高效能、輕量級 .NET Minimal API 的專家指引。涵蓋路由群組、端點過濾器與適合現代服務的輕量化實作模式。"
+compatibility: "Requires ASP.NET Core 6+, supports up to .NET 10.0 for full features."
 ---
 
 # Minimal APIs
@@ -37,7 +37,7 @@ compatibility: "Requires ASP.NET Core 6+, preferably .NET 8+ for full features."
 | Microservices | Complex model binding |
 | Simple CRUD APIs | OData, JsonPatch |
 | Lightweight handlers | Heavy use of attributes |
-| .NET 8+ projects | Need `[ApiController]` features |
+| .NET 8/10+ projects | Need `[ApiController]` features |
 
 ## Workflow
 
@@ -253,8 +253,8 @@ app.MapOpenApi();  // Serves OpenAPI spec
 
 app.MapGet("/products", GetProducts)
     .WithName("GetProducts")
-    .WithSummary("Get all products")
-    .WithDescription("Returns a list of all available products")
+    .WithSummary("取得所有產品")
+    .WithDescription("取得所有可用產品的列表")
     .Produces<List<Product>>(StatusCodes.Status200OK)
     .ProducesProblem(StatusCodes.Status500InternalServerError);
 ```

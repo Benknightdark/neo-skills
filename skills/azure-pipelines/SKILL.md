@@ -1,6 +1,9 @@
 ---
 name: azure-pipeline-architect
-description: 根據微軟官方文件與專案需求，設計並生成符合最新標準的 Azure Pipelines YAML 腳本。優先使用模組化範本 (Templates)。
+version: "1.0.0"
+category: "DevOps"
+description: "根據微軟官方文件與專案需求，設計並生成符合最新標準的 Azure Pipelines YAML 腳本。優先使用模組化範本 (Templates)。"
+compatibility: "Supports .NET 6.0 up to .NET 10.0."
 ---
 
 # Azure Pipeline Script Design Specifications

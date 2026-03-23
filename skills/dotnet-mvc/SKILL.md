@@ -2,8 +2,8 @@
 name: dotnet-mvc
 version: "1.0.0"
 category: "Web"
-description: "開發使用 Razor 視圖的 ASP.NET Core MVC (Model-View-Controller) 應用程式的專家指引。涵蓋 ViewModel 模式、標記協助程式 (Tag Helpers) 與視圖元件 (View Components)。"
-compatibility: "Requires ASP.NET Core 2.1+, preferably .NET 8+."
+description: "開發使用 Razor 視圖的 ASP.NET Core MVC 應用程式的專家指引。涵蓋視圖模型 (ViewModel) 模式、標記協助程式 (Tag Helpers) 與視圖元件 (View Components)。"
+compatibility: "Requires ASP.NET Core 2.1+, supports up to .NET 10.0."
 ---
 
 # ASP.NET Core MVC

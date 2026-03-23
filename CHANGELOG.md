@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.29.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.28.0...neo-skills-v0.29.0) (2026-03-23)
+
+
+### Features
+
+* **skills:** 更新 .NET 相關技能以支援 .NET 10 並全面中文化描述 ([5010bff](https://github.com/Benknightdark/neo-skills/commit/5010bff1a08db270d9978e24f6db567aea36d191))
+* **skills:** 統一 .NET Web 相關技能模組結構與內容品質 ([6a3ca7d](https://github.com/Benknightdark/neo-skills/commit/6a3ca7de0b3113210613187c1036a79a9b9bcb32))
+
 ## [0.28.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.27.1...neo-skills-v0.28.0) (2026-03-20)
 
 

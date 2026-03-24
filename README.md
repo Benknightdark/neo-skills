@@ -45,6 +45,7 @@
 
 ### 7. Swift 開發專家
 *   **Swift 5.0+ 專家 (`skills/swift`)**：支援從基礎語法到 Swift 6 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency、記憶體安全以及高效能 App 開發指引。
+*   **SwiftUI 專家 (`skills/swift-ui`)**：支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。
 
 ### 8. 需求釐清助手
 *   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。

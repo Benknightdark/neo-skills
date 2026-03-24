@@ -34,3 +34,8 @@ compatibility: "Supports .NET 6.0 and above. Requires .NET SDK installed on the 
 
 ## 使用指引
 當此技能被觸發時，請優先確認 SDK 環境，接著回答使用者的 .NET 相關問題，若發現問題屬於上述四個專業領域，請主動建議並準備委派給對應的專家技能處理。
+
+## 文件 (Documentation)
+
+### 官方參考資料 (Official References)
+- [.NET CLI 工具概觀](https://learn.microsoft.com/dotnet/core/tools/)

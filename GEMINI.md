@@ -110,3 +110,5 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **Python 環境管理專家:** 智慧偵測並管理 Python 專案的虛擬環境與相依套件工具（支援 uv, Poetry, venv/pip）。
 
 *   **Swift 專家:** 支援 Swift 5.0 至 6.0+ 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency 與記憶體安全。
+
+*   **SwiftUI 專家:** 支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。

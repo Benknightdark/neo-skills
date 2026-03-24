@@ -1,156 +1,52 @@
-# ASP.NET Core Web API Patterns
+# .NET Web API 現代開發模式 (Modern Patterns)
 
-## 1. Architectural Patterns
+本文件介紹 .NET 6 至 10+ 在控制器模式 (Controller-based) 下的推薦開發模式。
 
-### Clean Architecture
-Decouple business logic from external dependencies (databases, UI, frameworks).
+## 1. 錯誤處理與回應格式
 
-- **Domain**: Entities, Value Objects, Domain Exceptions.
-- **Application**: Commands & Queries (CQRS), Interfaces, DTOs, Validation.
-- **Infrastructure**: Database implementation (EF Core), External API clients.
-- **API (Web)**: Controllers, Filters, Middleware.
+### 1.1 Problem Details (RFC 7807)
+**推薦做法**：統一使用 `ProblemDetails` 處理錯誤回應。在 .NET 7+ 中，可在 `Program.cs` 呼叫 `builder.Services.AddProblemDetails()`。
 
-### CQRS with MediatR
-Use **MediatR** to decouple the request from the handler.
+### 1.2 全域異常處理器 (IExceptionHandler) - .NET 8+
+**推薦做法**：實作 `IExceptionHandler` 介面來集中處理未捕獲的異常，取代舊式的 Middleware 方式。
 
-```csharp
-[HttpPost]
-public async Task<ActionResult<int>> Create(CreateProductCommand command)
-{
-    var id = await _mediator.Send(command);
-    return CreatedAtAction(nameof(GetById), new { id }, id);
-}
+---
 
-// Handler
-public class CreateProductHandler(IAppDbContext context) : IRequestHandler<CreateProductCommand, int>
-{
-    public async Task<int> Handle(CreateProductCommand command, CancellationToken ct)
-    {
-        var product = new Product { Name = command.Name, Price = command.Price };
-        context.Products.Add(product);
-        await context.SaveChangesAsync(ct);
-        return product.Id;
-    }
-}
-```
+## 2. 參數綁定與驗證
 
-## 2. Controller & Action Patterns
+### 2.1 原始型別以外的綁定 (Complex Type Binding)
+**推薦做法**：善用 `[FromRoute]`, `[FromQuery]`, `[FromBody]` 與 `[FromHeader]` 顯式定義綁定源。
 
-### Thin Controllers
-Controllers should only handle routing, model binding, and returning results.
+### 2.2 FluentValidation 整合
+**推薦做法**：結合 `FluentValidation` 進行複雜的模型驗證，將驗證邏輯與 DTO 定義分離。
 
-```csharp
-[ApiController]
-[Route("api/[controller]")]
-public class ProductsController(IProductService service) : ControllerBase
-{
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ProductResponse>> Get(int id)
-    {
-        var product = await service.GetByIdAsync(id);
-        return product != null ? Ok(product) : NotFound();
-    }
-}
-```
+---
 
-### Result Pattern Integration
-Use a `Result<T>` type to handle business errors without exceptions.
+## 3. 架構設計
 
-```csharp
-[HttpPost]
-public async Task<ActionResult> Create(CreateProductRequest request)
-{
-    var result = await service.CreateAsync(request);
-    
-    return result.IsSuccess 
-        ? CreatedAtAction(nameof(GetById), new { id = result.Value.Id }, result.Value)
-        : result.Error.ToActionResult(); // Extension to map Result.Error to ObjectResult
-}
-```
-
-## 3. Error Handling Patterns
-
-### Global Problem Details
-Use standardized **RFC 7807 Problem Details** for all error responses.
-
-```csharp
-// Program.cs
-app.UseExceptionHandler(); // Maps exceptions to ProblemDetails
-
-// Controller
-if (id <= 0)
-{
-    return Problem(
-        detail: "Product ID must be greater than zero.",
-        statusCode: StatusCodes.Status400BadRequest,
-        title: "Invalid ID");
-}
-```
-
-## 4. Performance & Data Patterns
-
-### Read-Only Queries (AsNoTracking)
-Improve performance for GET requests by disabling change tracking.
-
-```csharp
-public async Task<List<ProductResponse>> GetAllAsync(CancellationToken ct)
-{
-    return await dbContext.Products
-        .AsNoTracking()
-        .Select(p => new ProductResponse(p.Id, p.Name))
-        .ToListAsync(ct);
-}
-```
-
-### Distributed Caching (IDistributedCache)
-Cache expensive results across multiple server instances.
-
-```csharp
-public async Task<ProductResponse?> GetByIdAsync(int id)
-{
-    var cacheKey = $"product-{id}";
-    var cached = await cache.GetStringAsync(cacheKey);
-    
-    if (cached != null) 
-        return JsonSerializer.Deserialize<ProductResponse>(cached);
-
-    var product = await dbContext.Products.FindAsync(id);
-    if (product != null)
-    {
-        await cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(product), 
-            new DistributedCacheEntryOptions { SlidingExpiration = TimeSpan.FromMinutes(10) });
-    }
-    
-    return product;
-}
-```
-
-## 5. Security & Versioning
-
-### API Versioning (Asp.Versioning.Http)
-Prioritize URL versioning for clear client expectations.
-
+### 3.1 API 版本控制 (Asp.Versioning.Http)
+**推薦做法**：使用官方版本控制套件，透過 URL 或 Header 支援多版本並存。
 ```csharp
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
-public class ProductsController : ControllerBase { ... }
 ```
 
-### Rate Limiting (Microsoft.AspNetCore.RateLimiting)
-Protect your API from abuse and DDoS attacks.
+### 3.2 動作過濾器 (Action Filters)
+**推薦做法**：對於橫切關注點（如權限校驗、日誌），實作 `IAsyncActionFilter`。
 
-```csharp
-// Program.cs
-builder.Services.AddRateLimiter(options =>
-{
-    options.AddFixedWindowLimiter("fixed", opt =>
-    {
-        opt.PermitLimit = 100;
-        opt.Window = TimeSpan.FromMinutes(1);
-    });
-});
+---
 
-// Controller
-[EnableRateLimiting("fixed")]
-public class ProductsController : ControllerBase { ... }
-```
+## 4. 文件化與效能
+
+### 4.1 Swagger/OpenAPI 豐富化
+**推薦做法**：使用 `[ProducesResponseType]` 標記所有可能的 HTTP 狀態碼與回應型別。
+
+### 4.2 輸出快取 (Output Caching) - .NET 7+
+**推薦做法**：使用 `builder.Services.AddOutputCache()` 提供伺服器端的高效能緩存，減少控制器處理壓力。
+
+---
+
+## 5. C# 14+ 前瞻模式
+
+### 5.1 Extension Types 為控制器增加輔助功能
+**推薦做法**：利用 Extension Types 為基底 `ControllerBase` 擴充常用的輔助屬性或方法。

@@ -1,122 +1,56 @@
-# ASP.NET Core MVC Patterns
+# .NET MVC 現代開發模式 (Modern Patterns)
 
-## 1. The ViewModel Pattern
+本文件介紹 .NET 6 至 10+ 在 ASP.NET Core MVC 模式下的推薦開發模式。
 
-Always use **ViewModels** instead of **Domain Entities** in your Views. This decouples the UI from the database and prevents "over-posting" vulnerabilities.
+## 1. UI 模組化
 
+### 1.1 視圖元件 (View Components)
+**推薦做法**：對於邏輯複雜且可重用的 UI 區塊（如導覽選單、購物車摘要），使用 `ViewComponent` 代替 `Partial View`。
 ```csharp
-public class UserViewModel
+public class ShoppingCartViewComponent : ViewComponent
 {
-    public int Id { get; set; }
-    public string DisplayName { get; set; }
-    public string Email { get; set; }
-    // Only UI-relevant properties, no navigation properties
+    public async Task<IViewComponentResult> InvokeAsync() => View(await _service.GetItems());
 }
 ```
 
-## 2. Strongly-Typed Views
+### 1.2 標記協助程式組件化
+**推薦做法**：實作 `TagHelper` 來封裝複雜的 HTML 生成邏輯，使 Razor 視圖更具聲明性。
 
-Always define the `@model` in your Razor files to get IntelliSense and compile-time type checking.
+---
 
-```razor
-@model UserViewModel
+## 2. 數據流與驗證
 
-<h2>Welcome, @Model.DisplayName!</h2>
-<p>Email: @Model.Email</p>
-```
+### 2.1 遠端驗證 (Remote Validation)
+**推薦做法**：使用 `[Remote]` 特性來實作即時的用戶端驗證（如檢查帳號是否已存在），提升使用者體驗。
 
-## 3. Tag Helpers & Form Patterns
+### 2.2 抗掃描與安全性 (Antiforgery)
+**推薦做法**：確保表單使用 `asp-antiforgery="true"`。在 .NET 8+ 中，全局配置更加簡便。
 
-Modern ASP.NET Core MVC prefers **Tag Helpers** over **HTML Helpers**.
+---
 
+## 3. 效能優化
+
+### 3.1 快取標籤協助程式 (Cache Tag Helper)
+**推薦做法**：對不需要頻繁更新的視圖片段使用 `<cache>` 或 `<distributed-cache>` 標籤。
 ```html
-<!-- Tag Helper (Recommended) -->
-<div class="form-group">
-    <label asp-for="Username"></label>
-    <input asp-for="Username" class="form-control" />
-    <span asp-validation-for="Username" class="text-danger"></span>
-</div>
-
-<!-- Older HTML Helper Style (Avoid) -->
-<div class="form-group">
-    @Html.LabelFor(m => m.Username)
-    @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
-</div>
+<cache expires-after="@TimeSpan.FromMinutes(10)">
+    @await Component.InvokeAsync("TopNews")
+</cache>
 ```
 
-## 4. Reusable UI Composition
+### 3.2 回應壓縮與靜態資源
+**推薦做法**：配置回應壓縮中介軟體，並使用 `asp-append-version="true"` 確保瀏覽器緩存能隨資源更新失效。
 
-### View Components
-For complex, self-contained UI logic (e.g., shopping carts, dynamic menus).
+---
 
-```csharp
-// View Component Class
-public class CartSummaryViewComponent(ICartService cartService) : ViewComponent
-{
-    public async Task<IViewComponentResult> InvokeAsync()
-    {
-        var items = await cartService.GetItemsAsync();
-        return View(items);
-    }
-}
+## 4. 架構演進
 
-// In Layout or View
-@await Component.InvokeAsync("CartSummary")
-```
+### 4.1 垂直切片架構 (Vertical Slice Architecture)
+**推薦做法**：對於大型 MVC 應用程式，考慮將 Controller、ViewModel 與 Views 放置在功能目錄中（例如 `Features/Orders/`），利用 `Area` 或自定義 `ViewLocationExpander`。
 
-### Partial Views
-For simple, reusable HTML fragments that don't require independent logic.
+---
 
-```razor
-@await Html.PartialAsync("_ProductCard", product)
-```
+## 5. C# 14+ 前瞻模式
 
-## 5. Layout & Content Organization
-
-### Layout Sections
-Use sections to inject scripts or styles only when needed by specific views.
-
-```razor
-<!-- _Layout.cshtml -->
-<head>
-    @RenderSection("Styles", required: false)
-</head>
-<body>
-    @RenderBody()
-    @RenderSection("Scripts", required: false)
-</body>
-
-<!-- View.cshtml -->
-@section Scripts {
-    <script src="~/js/custom.js"></script>
-}
-```
-
-## 6. Controller & Validation Patterns
-
-### Post-Redirect-Get (PRG) Pattern
-Always redirect after a successful POST to prevent duplicate form submissions.
-
-```csharp
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Create(ProductViewModel model)
-{
-    if (!ModelState.IsValid) return View(model);
-    
-    await _service.CreateAsync(model);
-    return RedirectToAction(nameof(Index)); // PRG
-}
-```
-
-### Model Validation (Remote)
-Use the `[Remote]` attribute for client-side validation that requires server checks (e.g., username availability).
-
-```csharp
-public class UserViewModel
-{
-    [Remote(action: "IsUsernameAvailable", controller: "Users")]
-    public string Username { get; set; }
-}
-```
+### 5.1 擴充型別為 HTML Helper 增加輔助方法
+**推薦做法**：利用 C# 14 的 Extension Types 為 `IHtmlHelper` 擴充特定領域的渲染方法，而不僅僅是靜態擴充方法。

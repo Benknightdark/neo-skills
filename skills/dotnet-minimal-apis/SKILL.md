@@ -6,73 +6,73 @@ description: "開發高效能、輕量級 .NET Minimal API 的專家指引。支
 compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK installed locally."
 ---
 
-# .NET Minimal APIs 專家技能
+# .NET Minimal APIs Expert Skill
 
 ## Trigger On
-- 使用者要求建立、除錯、重構或審查 .NET Minimal APIs。
-- 專案 `Program.cs` 包含 `WebApplication.CreateBuilder(args)` 且未配置 Controllers 目錄。
-- 目標框架為 .NET 6.0 (LTS) 及以上版本。
-- 需要優化 API 效能或簡化 Web API 架構。
+- The user requests to create, debug, refactor, or review .NET Minimal APIs.
+- The project's `Program.cs` contains `WebApplication.CreateBuilder(args)` and is not configured with a Controllers directory.
+- The target framework is .NET 6.0 (LTS) and above.
+- There is a need to optimize API performance or simplify Web API architecture.
 
 ## Workflow
-1. **Perceive (架構感知):**
-   - 檢查 `.csproj` 識別 `TargetFramework`。
-   - 分析 `Program.cs` 以區分簡單端點還是採用了 Module-based 或 Vertical Slice 的組織方式。
-   - 識別是否已配置 OpenAPI (Swagger) 支援。
-2. **Reason (規劃階段):**
-   - 評估是否需要引入「路由群組 (Route Groups)」來優化組織結構。
-   - 決定是否使用「端點過濾器 (Endpoint Filters)」來處理跨切點關注點（如參數驗證）。
-   - 根據 .NET 版本選擇最適語法（如 .NET 7+ 的 `TypedResults`）。
-3. **Act (執行階段):**
-   - 編寫乾淨、高效的 Minimal API 代碼，優先使用 Lambda 或擴充方法。
-   - 實作強型別與 DTO (優先使用 `record`)。
-   - 整合依賴注入，避免 Service Locator 模式。
-4. **Validate (規範驗證):**
-   - 驗證端點是否正確回傳預期的 HTTP 狀態碼。
-   - 檢查 OpenAPI 文件生成是否完整。
-   - 確保異步操作正確傳遞了 `CancellationToken`。
+1. **Perceive (Architecture Awareness):**
+   - Check `.csproj` to identify `TargetFramework`.
+   - Analyze `Program.cs` to distinguish whether it uses simple endpoints or adopts a Module-based or Vertical Slice organization.
+   - Identify whether OpenAPI (Swagger) support has been configured.
+2. **Reason (Planning Phase):**
+   - Evaluate whether "Route Groups" need to be introduced to optimize organizational structure.
+   - Determine whether to use "Endpoint Filters" to handle cross-cutting concerns (such as parameter validation).
+   - Choose the most appropriate syntax based on the .NET version (e.g., `TypedResults` in .NET 7+).
+3. **Act (Execution Phase):**
+   - Write clean, high-performance Minimal API code, prioritizing Lambdas or extension methods.
+   - Implement strong typing and DTOs (prioritize using `record`).
+   - Integrate dependency injection, avoiding the Service Locator pattern.
+4. **Validate (Standard Validation):**
+   - Validate whether the endpoints correctly return expected HTTP status codes.
+   - Check whether the generated OpenAPI documentation is complete.
+   - Ensure asynchronous operations correctly pass the `CancellationToken`.
 
 ## Feature Roadmap (.NET 6 - 10)
 
 ### .NET 6 & 7 (Foundation)
-- **Minimal Hosting**: 簡化啟動流程與頂層陳述式。
-- **Route Groups**: 使用 `MapGroup` 整合前綴與認證。
-- **Endpoint Filters**: 在 Minimal APIs 中實作攔截邏輯。
-- **Typed Results**: 改善單元測試與 Swagger 支援。
+- **Minimal Hosting**: Simplified startup process and top-level statements.
+- **Route Groups**: Use `MapGroup` to consolidate prefixes and authentication.
+- **Endpoint Filters**: Implement interception logic within Minimal APIs.
+- **Typed Results**: Improved unit testing and Swagger support.
 
 ### .NET 8 & 9 (Productivity)
-- **Antiforgery**: 內建防偽標記支援。
-- **Form Binding**: 支援 `[FromForm]` 參數綁定。
-- **HybridCache**: 高效能的多級緩存支援。
-- **OpenAPI Improvements**: 更好的 OpenAPI 代碼生成。
+- **Antiforgery**: Built-in anti-forgery token support.
+- **Form Binding**: Support for `[FromForm]` parameter binding.
+- **HybridCache**: High-performance multi-level caching support.
+- **OpenAPI Improvements**: Better OpenAPI code generation.
 
 ### .NET 10+ (Cutting Edge)
-- **Native AOT Optimization**: 針對 Minimal APIs 的 AOT 最佳化編譯。
-- **Enhanced Middleware Patterns**: 針對輕量級架構的新型中介軟體。
+- **Native AOT Optimization**: AOT-optimized compilation tailored for Minimal APIs.
+- **Enhanced Middleware Patterns**: New middleware designed for lightweight architectures.
 
 ## Coding Standards
-- **Clean Routing**: 優先使用擴充方法將路由模組化。
-- **Strong Typing**: 優先使用 `TypedResults` 與 `Results<T1, T2>`。
-- **Async Safety**: 始終接受並傳遞 `CancellationToken`。
-- **DI Best Practices**: 服務應直接在 Handler 參數中定義。
+- **Clean Routing**: Prioritize using extension methods to modularize routes.
+- **Strong Typing**: Prioritize using `TypedResults` and `Results<T1, T2>`.
+- **Async Safety**: Always accept and pass down `CancellationToken`.
+- **DI Best Practices**: Services should be defined directly in the Handler parameters.
 
 ## Deliver
-- **Version-Optimized API Code**: 根據目標 .NET 版本提供最合適的現代化 API 代碼。
-- **Modular Architecture**: 提供將 `Program.cs` 路由抽離至擴充方法的結構建議。
-- **OpenAPI Configuration**: 提供完整的 Swagger/OpenAPI 配置建議。
+- **Version-Optimized API Code**: Provide the most appropriate modern API code based on the target .NET version.
+- **Modular Architecture**: Provide structural suggestions for extracting `Program.cs` routes into extension methods.
+- **OpenAPI Configuration**: Provide comprehensive Swagger/OpenAPI configuration suggestions.
 
 ## Validate
-- 確保提供的代碼在 .NET 6+ 環境中可正確執行。
-- 驗證端點安全性（認證、授權、Antiforgery）。
-- 檢查代碼是否符合 Minimal APIs 的高效能最佳實踐（如避免閉包、減少分配）。
+- Ensure the provided code executes correctly in a .NET 6+ environment.
+- Validate endpoint security (authentication, authorization, Antiforgery).
+- Check if the code complies with high-performance best practices for Minimal APIs (e.g., avoiding closures, reducing allocations).
 
 ## Documentation
 ### Official References
-- [.NET Minimal API 概觀](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis)
-- [路由群組與過濾器實作](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/route-handlers)
-- [Minimal APIs 中的強型別回應 (TypedResults)](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/responses)
+- [Minimal APIs Overview](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis)
+- [Route groups and filters](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/route-handlers)
+- [Typed responses in Minimal APIs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/responses)
 
 ### Internal References
-- [Minimal APIs 程式碼風格與命名規範](reference/coding-style.md)
-- [Minimal APIs 反模式與最佳實踐](reference/anti-patterns.md)
-- [Minimal APIs 現代開發模式指南](reference/patterns.md)
+- [Minimal APIs Coding Style and Naming Conventions](reference/coding-style.md)
+- [Minimal APIs Anti-Patterns and Best Practices](reference/anti-patterns.md)
+- [Minimal APIs Modern Patterns Guide](reference/patterns.md)

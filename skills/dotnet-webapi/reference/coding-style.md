@@ -1,31 +1,31 @@
-# .NET Web API 程式碼風格與命名規範 (Coding Conventions)
+# .NET Web API Coding Conventions
 
-本指南基於 ASP.NET Core Web API 的產業標準，旨在提升控制器模式下 API 的組織與維護效率。
+This guide is based on industry standards for ASP.NET Core Web API, aiming to improve organization and maintenance efficiency in the Controller-based pattern.
 
-## 1. 控制器 (Controllers)
+## 1. Controllers
 
-### 1.1 命名與屬性
-- **PascalCase**：所有控制器類別必須使用 `PascalCase` 並以 `Controller` 結尾（如 `UsersController`）。
-- **[ApiController]**：所有 API 控制器必須標記 `[ApiController]` 特性，以啟用自動模型驗證、推斷參數綁定源及 `ProblemDetails` 回應。
-- **[Route]**：建議使用 `[Route("api/[controller]")]` 或顯式版本路徑（如 `[Route("api/v1/users")]`）。
+### 1.1 Naming and Attributes
+- **PascalCase**: All controller class names must use `PascalCase` and end with `Controller` (e.g., `UsersController`).
+- **[ApiController]**: All API controllers must be marked with the `[ApiController]` attribute to enable automatic model validation, inferred parameter binding sources, and `ProblemDetails` responses.
+- **[Route]**: It is recommended to use `[Route("api/[controller]")]` or explicit version paths (e.g., `[Route("api/v1/users")]`).
 
-### 1.2 動作方法 (Action Methods)
-- **語意化命名**：方法名稱應反映業務意圖（如 `GetUserAsync`），且非同步方法必須以 `Async` 結尾。
-- **HTTP 動詞**：明確使用 `[HttpGet]`, `[HttpPost]`, `[HttpPut]`, `[HttpDelete]` 或 `[HttpPatch]`。
-
----
-
-## 2. 數據傳輸 (Data Transfer)
-
-- **DTO 命名**：使用 `Request` 或 `Response` 作為字尾（如 `UserCreateRequest`, `UserSummaryResponse`）。
-- **Record 類型**：對於唯讀的資料傳輸物件，優先使用 `record` 類型。
+### 1.2 Action Methods
+- **Semantic Naming**: Method names should reflect business intent (e.g., `GetUserAsync`), and asynchronous methods must end with `Async`.
+- **HTTP Verbs**: Explicitly use `[HttpGet]`, `[HttpPost]`, `[HttpPut]`, `[HttpDelete]`, or `[HttpPatch]`.
 
 ---
 
-## 3. 回應處理 (Response Handling)
+## 2. Data Transfer
 
-- **ActionResult<T>**：方法應回傳 `Task<ActionResult<T>>`，這比 `IActionResult` 具備更好的型別安全性與 Swagger 支持。
-- **標準回應方法**：
+- **DTO Naming**: Use `Request` or `Response` as suffixes (e.g., `UserCreateRequest`, `UserSummaryResponse`).
+- **Record Types**: For read-only data transfer objects, prioritize using `record` types.
+
+---
+
+## 3. Response Handling
+
+- **ActionResult<T>**: Methods should return `Task<ActionResult<T>>`, which offers better type safety and Swagger support compared to `IActionResult`.
+- **Standard Response Methods**:
   - `Ok(data)` (200)
   - `CreatedAtAction(...)` (201)
   - `NoContent()` (204)
@@ -34,14 +34,14 @@
 
 ---
 
-## 4. 依賴注入與服務 (DI & Services)
+## 4. Dependency Injection (DI) & Services
 
-- **建構函式注入**：一律使用建構函式注入服務（優先考慮使用 C# 12+ 的 Primary Constructors）。
-- **介面導向**：注入介面而非具體類別，以利單元測試。
+- **Constructor Injection**: Always use constructor injection for services (prioritize C# 12+ Primary Constructors).
+- **Interface-Oriented**: Inject interfaces instead of concrete classes to facilitate unit testing.
 
 ---
 
-## 5. 檔案與命名空間
+## 5. File Organization and Namespaces
 
-- **垂直切片 (Vertical Slicing)**：對於大型專案，建議按功能領域（Feature）組織資料夾，而非傳統的 Controllers/Models/Services 分層。
-- **File-scoped Namespace**：一律使用 File-scoped Namespace (C# 10+)。
+- **Vertical Slicing**: For large projects, it is recommended to organize folders by feature domain instead of the traditional Controllers/Models/Services layering.
+- **File-scoped Namespace**: Always use File-scoped Namespaces (C# 10+).

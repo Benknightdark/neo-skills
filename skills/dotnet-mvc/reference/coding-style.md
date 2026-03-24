@@ -1,42 +1,43 @@
-# .NET MVC 程式碼風格與命名規範 (Coding Conventions)
+# .NET MVC Coding Conventions
 
-本指南旨在提升 ASP.NET Core MVC 應用程式的結構化程度，並優化 Razor 視圖與控制器的開發效率。
+This guide aims to improve the structural degree of ASP.NET Core MVC applications and optimize the development efficiency of Razor views and controllers.
 
-## 1. 視圖模型 (ViewModels)
+## 1. ViewModels
 
-### 1.1 命名與角色
-- **ViewModel 字尾**：所有專為視圖設計的資料模型必須以 `ViewModel` 結尾（如 `UserLoginViewModel`）。
-- **嚴格區分**：**禁止**直接將資料庫實體 (Entity) 傳遞給視圖。視圖模型應僅包含視圖所需的資料。
+### 1.1 Naming and Roles
+- **ViewModel Suffix**: All data models designed specifically for views must end with `ViewModel` (e.g., `UserLoginViewModel`).
+- **Strict Separation**: **Prohibited** to pass database entities directly to views. View models should only contain data required by the view.
 
-### 1.2 資料註釋 (Data Annotations)
-- **驗證屬性**：在 ViewModel 上使用 `[Required]`, `[StringLength]`, `[EmailAddress]` 等特性來宣告驗證規則。
-- **顯示名稱**：使用 `[Display(Name = "使用者名稱")]` 以確保標籤在不同語言下的一致性。
-
----
-
-## 2. 視圖與佈局 (Views & Layouts)
-
-- **PascalCase 視圖名**：視圖檔案名稱應與動作方法一致，使用 `PascalCase`（如 `Index.cshtml`, `Edit.cshtml`）。
-- **強型別視圖**：所有視圖必須在頂部使用 `@model` 宣告強型別。
-- **佈局管理**：善用 `_ViewStart.cshtml` 與 `_Layout.cshtml` 統一樣式。使用 `@section` 處理各頁面專屬的腳本或樣式。
+### 1.2 Data Annotations
+- **Validation Attributes**: Use attributes like `[Required]`, `[StringLength]`, `[EmailAddress]` on ViewModels to declare validation rules.
+- **Display Names**: Use `[Display(Name = "User Name")]` to ensure label consistency across different languages.
 
 ---
 
-## 3. 標籤協助程式 (Tag Helpers)
+## 2. Views & Layouts
 
-- **優先使用**：優先使用標籤協助程式（如 `asp-for`, `asp-action`）而非傳統的 HTML Helper（如 `@Html.TextBoxFor`）。
-- **自定義標籤**：對於重複的 UI 邏輯（如分頁導覽、複雜按鈕），建議實作自定義 `TagHelper`。
-
----
-
-## 4. 控制器 (Controllers)
-
-- **繼承 Controller**：繼承自 `Microsoft.AspNetCore.Mvc.Controller`（而非 `ControllerBase`），以獲得 View 相關的支援。
-- **動作回傳**：動作方法應明確回傳 `IActionResult` 或 `Task<IActionResult>`。
+### 2.1 View Naming
+- **PascalCase View Names**: View file names should match action methods and use `PascalCase` (e.g., `Index.cshtml`, `Edit.cshtml`).
+- **Strongly Typed Views**: All views must declare a strong type using `@model` at the top.
+- **Layout Management**: Make good use of `_ViewStart.cshtml` and `_Layout.cshtml` to unify styles. Use `@section` to handle scripts or styles specific to individual pages.
 
 ---
 
-## 5. 檔案組織
+## 3. Tag Helpers
 
-- **標準結構**：遵循 `Controllers/`, `Models/` (ViewModels), `Views/` 的標準目錄結構。
-- **部分視圖 (Partial Views)**：通用的視圖組件應放置於 `Views/Shared/` 且名稱以底線開頭（如 `_UserCard.cshtml`）。
+- **Prioritize Use**: Prioritize using Tag Helpers (e.g., `asp-for`, `asp-action`) over traditional HTML Helpers (e.g., `@Html.TextBoxFor`).
+- **Custom Tags**: For repetitive UI logic (like pagination navigation, complex buttons), it is recommended to implement custom `TagHelper`s.
+
+---
+
+## 4. Controllers
+
+- **Inherit Controller**: Inherit from `Microsoft.AspNetCore.Mvc.Controller` (instead of `ControllerBase`) to gain View-related support.
+- **Action Returns**: Action methods should explicitly return `IActionResult` or `Task<IActionResult>`.
+
+---
+
+## 5. File Organization
+
+- **Standard Structure**: Follow the standard directory structure of `Controllers/`, `Models/` (ViewModels), and `Views/`.
+- **Partial Views**: Common view components should be placed in `Views/Shared/` and start with an underscore (e.g., `_UserCard.cshtml`).

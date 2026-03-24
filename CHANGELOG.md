@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.32.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.31.0...neo-skills-v0.32.0) (2026-03-24)
+
+
+### Features
+
+* **dotnet:** 新增 .NET Minimal APIs 專家技能與參考指南 ([746d9a0](https://github.com/Benknightdark/neo-skills/commit/746d9a04e706ecec2cc4a589b241131f8a7e9813))
+* **dotnet:** 新增 .NET 核心路由技能 ([f10b589](https://github.com/Benknightdark/neo-skills/commit/f10b589dbed7d7cafaf05581e70d37f033777835))
+* **dotnet:** 新增 Web API, MVC 與 EF Core 專家技能及參考指南 ([fc75b65](https://github.com/Benknightdark/neo-skills/commit/fc75b65e52c244968ed46adfcdfb62eb04978ee9))
+* **skills:** 新增 C# 10+ 現代開發專家技能並同步更新 Python 參考文件 ([fc7b179](https://github.com/Benknightdark/neo-skills/commit/fc7b179c57074e84890fd3fb9e0a145bec82a2de))
+* **swift:** 新增 Swift 5.0+ 專家技能與參考指南 ([62b5394](https://github.com/Benknightdark/neo-skills/commit/62b539426228c95dc80df08a600145c92db14a8c))
+* **swift:** 新增 Swift 5.0+ 專家技能與參考指南 ([9b7b648](https://github.com/Benknightdark/neo-skills/commit/9b7b648fe77e99a42b4934199be4ea7ed38cc167))
+
 ## [0.31.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.30.0...neo-skills-v0.31.0) (2026-03-23)
 
 

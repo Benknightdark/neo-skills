@@ -52,13 +52,10 @@ compatibility: "Supports Python 3.10 to 3.14. Requires a Python project structur
 - All public APIs should have complete type hints.
 
 ## Documentation
-### References
+### Official References
 - [Python 3 Official Documentation](https://docs.python.org/3/)
-- [`reference/coding-style.md`](reference/coding-style.md)
-- Modern Python syntax evolution (3.10-3.14) and PEP 8 naming conventions.
-- [`reference/patterns.md`](reference/patterns.md)
-- Recommended modern Python 3.10 - 3.14 development patterns and best practices.
-- [`reference/anti-patterns.md`](reference/anti-patterns.md)
-- Outdated Python practices to avoid, common pitfalls, and security traps.
-- [`python-manager`](../python-manager/SKILL.md)
-- Intelligent detection and management of Python project virtual environments and dependency tools.
+### Internal References
+- [Modern Python syntax evolution (3.10-3.14) and PEP 8 naming conventions](reference/coding-style.md)
+- [Recommended modern Python 3.10 - 3.14 development patterns and best practices](reference/patterns.md)
+- [Outdated Python practices to avoid, common pitfalls, and security traps](reference/anti-patterns.md)
+- [Intelligent detection and management of Python project virtual environments and dependency tools](../python-manager/SKILL.md)

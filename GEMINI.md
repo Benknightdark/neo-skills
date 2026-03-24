@@ -93,12 +93,6 @@ When interacting with this codebase or using the extension, the agent follows th
 
 *   **CD Protocols:** 為專案自動配置 Azure App Service (`neo:cd-app-service`) 與地端 IIS (`neo:cd-iis`) 的部署流程 (CD)。
 
-*   **.NET Web API 專家:** 協助遵循最新產業最佳實踐來開發 ASP.NET Core Web API。
-
-*   **.NET Minimal APIs 專家:** 開發高效能、輕量級 .NET Minimal API 的專家指引。
-
-*   **.NET MVC 專家:** 開發使用 Razor 視圖的 ASP.NET Core MVC (Model-View-Controller) 應用程式的專家指引。
-
 *   **Requirement Clarification:** 系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件 (`neo:clarification`)。
 
 *   **Code Explanation:** 分析原始碼或專案結構，提供技術解析與架構洞察 (`neo:explain`)。

@@ -108,3 +108,5 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **Python 3.10+ 現代開發專家:** 專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
 
 *   **Python 環境管理專家:** 智慧偵測並管理 Python 專案的虛擬環境與相依套件工具（支援 uv, Poetry, venv/pip）。
+
+*   **Swift 專家:** 支援 Swift 5.0 至 6.0+ 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency 與記憶體安全。

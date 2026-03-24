@@ -54,7 +54,7 @@ compatibility: "Supports Python 3.10 to 3.14. Requires a Python project structur
 ## Documentation
 ### References
 - [Python 3 Official Documentation](https://docs.python.org/3/)
-- [`reference/dev-style.md`](reference/dev-style.md)
+- [`reference/coding-style.md`](reference/coding-style.md)
 - Modern Python syntax evolution (3.10-3.14) and PEP 8 naming conventions.
 - [`reference/patterns.md`](reference/patterns.md)
 - Recommended modern Python 3.10 - 3.14 development patterns and best practices.

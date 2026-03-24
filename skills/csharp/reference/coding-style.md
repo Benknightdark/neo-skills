@@ -19,7 +19,7 @@
 - **區域變數 (Local Variable)**：`var totalCount = 0;`
 - **方法參數 (Parameter)**：`public void UpdateUser(int userId)`
 - **私有欄位 (Private Field)**：**必須加上底線前綴 `_`**。這能一眼辨識出它是類別的狀態，而非區域變數或參數。
-  - ✅ `private readonly ILogger _logger;`
+  - 推薦做法：`private readonly ILogger _logger;`
 
 ---
 
@@ -30,7 +30,7 @@
 - **命名空間 (Namespace)**：
   - 優先使用 **File-scoped Namespace** (C# 10+) 以減少代碼嵌套層級：
     ```csharp
-    namespace MyProject.Services; // ✅ C# 10+ 推薦做法
+    namespace MyProject.Services; // 推薦做法 (C# 10+)
     ```
 
 ---
@@ -40,7 +40,7 @@
 ### 3.1 Allman 風格 (大括號換行)
 大括號 `{` 必須獨立成行，與類別、方法或控制語句對齊，這是 C# 的標準風格。
 ```csharp
-// ✅ 正確做法
+// 正確做法
 public void Process()
 {
     if (isReady)
@@ -72,11 +72,11 @@ public async Task<User?> GetUserByIdAsync(int id, CancellationToken ct = default
 ## 5. 現代 C# 語法建議 (Modern C# Best Practices)
 
 - **型別推導 (var)**：當變數型別在指派側顯而易見時（如 `new`、轉型），建議使用 `var`。
-  - ✅ `var users = new List<User>();`
+  - 推薦：`var users = new List<User>();`
 - **空值檢查**：使用 `is not null` 進行檢查，語意更接近自然語言且避開運算子多載。
-  - ✅ `if (input is not null) { ... }`
+  - 推薦：`if (input is not null) { ... }`
 - **物件初始化**：優先使用物件初始設定式與集合運算式 (C# 12+)。
-  - ✅ `List<int> numbers = [1, 2, 3];`
+  - 推薦：`List<int> numbers = [1, 2, 3];`
 
 ---
 

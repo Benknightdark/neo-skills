@@ -64,14 +64,14 @@ compatibility: "Supports C# 10 through 14. Adaptive to .NET 6.0, 7.0, 8.0, 9.0, 
 
 
 ## Deliver
-- **Version-Optimized Code:** 根據專案 SDK 提供最合適的先進代碼。
-- **Modernization Insights:** 提供具體的重構路徑與版本升級建議。
-- **Unit Tests:** 附帶符合現代測試模式（xUnit/NUnit）的驗證代碼。
+- **Version-Optimized Code:** 根據目標 C# 版本提供最合適的現代化語法代碼。
+- **Modernization Insights:** 提供從舊版 C# 語法升級至新版特性的具體重構建議（例如：從巢狀命名空間改為 File-scoped namespaces）。
+- **Syntax Explanations:** 清晰解釋所使用的 C# 新特性其背後的設計意圖與語法優勢。
 
 ## Validate
-- 代碼必須在對應版本的 .NET SDK 中通過編譯與測試。
-- 使用 `dotnet format` 檢查代碼風格一致性。
-- 驗證是否正確利用了該版本特有的效能最佳化。
+- 確保提供的代碼符合目標 C# 版本的語法規範。
+- 驗證代碼是否遵循 C# 的強型別與 Null 安全（NRT）原則。
+- 確認代碼在純 C# 語言層面具有良好的可讀性與最佳實踐（例如：適當使用 `Span<T>`、`record` 等）。
 
 ## Documentation
 ### Official References

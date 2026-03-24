@@ -43,10 +43,13 @@
 *   **Python 3.10+ 專家 (`skills/python`)**：專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
 *   **環境管理專家 (`skills/python-manager`)**：智慧偵測與管理 Python 專案環境，支援 uv, Poetry, venv/pip 並提供自動化安裝建議。
 
-### 7. 需求釐清助手
+### 7. Swift 開發專家
+*   **Swift 5.0+ 專家 (`skills/swift`)**：支援從基礎語法到 Swift 6 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency、記憶體安全以及高效能 App 開發指引。
+
+### 8. 需求釐清助手
 *   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
-### 7. 安全守衛 (Security Guard)
+### 9. 安全守衛 (Security Guard)
 *   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如 `.env` 檔案、私鑰、AWS 憑證等）將強制阻擋執行，防止機密外洩。
 
 ## 📂 系統架構

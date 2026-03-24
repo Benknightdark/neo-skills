@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.33.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.32.0...neo-skills-v0.33.0) (2026-03-24)
+
+
+### Features
+
+* **swift-ui:** 新增 SwiftUI 專家技能與專屬參考文件 ([1c43515](https://github.com/Benknightdark/neo-skills/commit/1c43515c63f9375e17740c36acbb3789a9c2cf11))
+* **swift-ui:** 新增 SwiftUI 專家技能與專屬參考文件 ([618dd46](https://github.com/Benknightdark/neo-skills/commit/618dd465735ec5a13c7e805216c2ef46429cecfe))
+
 ## [0.32.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.31.0...neo-skills-v0.32.0) (2026-03-24)
 
 

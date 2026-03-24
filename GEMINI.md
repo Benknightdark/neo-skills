@@ -99,6 +99,10 @@ When interacting with this codebase or using the extension, the agent follows th
 
 *   **Code Review:** 對當前變更或指定檔案進行全方位的程式碼審查 (`neo:code-review`)。
 
+*   **C# 現代語法專家:** 跨版本 C# 專家 (10-14+)，專注於現代化語法、強型別與高效能開發模式。
+
+*   **.NET 開發專家群:** 包含核心環境路由，以及針對 Minimal APIs、Web API、MVC 與 EF Core 的深度技術指引與開發規範。
+
 *   **C# Interface Generation:** 針對指定的 C# 類別生成對應的 Interface，並提供智慧覆蓋功能 (`neo:dotnet-gen-interface`)。
 
 *   **Python 3.10+ 現代開發專家:** 專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。

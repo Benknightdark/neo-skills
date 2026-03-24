@@ -31,9 +31,6 @@
 *   **技術解析 (`neo:explain`)**：深入分析原始碼或專案結構，提供高階用途摘要、邏輯流程分解以及核心元件說明。
 
 ### 5. .NET / C# 開發專家
-*   **Web API 專家 (`skills/dotnet-webapi`)**：協助遵循最新產業最佳實踐來開發 ASP.NET Core Web API。
-*   **Minimal APIs 專家 (`skills/dotnet-minimal-apis`)**：提供高效能、輕量級 .NET Minimal API 的開發指引。
-*   **MVC 專家 (`skills/dotnet-mvc`)**：針對使用 Razor 視圖的 ASP.NET Core MVC 應用程式提供專家指引。
 *   **Interface 生成器 (`neo:dotnet-gen-interface`)**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
 ### 6. Python 開發與環境管理專家

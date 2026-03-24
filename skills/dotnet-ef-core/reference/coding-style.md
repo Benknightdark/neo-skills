@@ -1,42 +1,42 @@
-# EF Core 程式碼風格與命名規範 (Coding Conventions)
+# EF Core Coding Conventions
 
-本指南旨在提升 Entity Framework Core 的代碼可讀性與維護性，並確保資料庫模型的定義具有高度一致性。
+This guide aims to improve the readability and maintainability of Entity Framework Core code, ensuring a high degree of consistency in database model definitions.
 
-## 1. 實體與建模 (Entities & Modeling)
+## 1. Entities and Modeling
 
-### 1.1 實體類別
-- **PascalCase**：所有實體類別名稱必須與資料庫資料表對應，並使用 `PascalCase`（如 `Order`, `ProductCategory`）。
-- **陰影屬性 (Shadow Properties)**：對於不需要暴露給業務邏輯但資料庫需要的欄位（如 `CreatedDate`, `LastUpdated`），應使用陰影屬性定義。
+### 1.1 Entity Classes
+- **PascalCase**: All entity class names must correspond to database tables and use `PascalCase` (e.g., `Order`, `ProductCategory`).
+- **Shadow Properties**: For fields that don't need to be exposed to business logic but are required by the database (like `CreatedDate`, `LastUpdated`), shadow properties should be used.
 
-### 1.2 關聯命名
-- **導覽屬性 (Navigation Properties)**：集合型別應使用複數（如 `public ICollection<Order> Orders { get; set; }`），單一實體則使用單數。
-- **外鍵命名**：優先遵循 `<EntityName>Id` 的慣例（如 `CategoryId`）。
-
----
-
-## 2. DbContext 配置
-
-- **Fluent API 優先**：優先使用 `IEntityTypeConfiguration<T>` 類別來進行實體配置，而非在 `OnModelCreating` 中堆疊代碼，或在實體上使用 Data Annotations。
-- **配置目錄**：將所有配置類別放置於 `Data/Configurations` 目錄下。
+### 1.2 Relationship Naming
+- **Navigation Properties**: Collection types should use plural nouns (e.g., `public ICollection<Order> Orders { get; set; }`), while single entities use singular nouns.
+- **Foreign Key Naming**: Prioritize the `<EntityName>Id` convention (e.g., `CategoryId`).
 
 ---
 
-## 3. 查詢規範 (Querying)
+## 2. DbContext Configuration
 
-- **非同步執行**：所有資料庫存取操作必須優先使用非同步方法（如 `ToListAsync()`, `FirstOrDefaultAsync()`）。
-- **唯讀查詢**：對於不需要更新的查詢，必須顯式呼叫 `.AsNoTracking()` 以減少記憶體開銷。
-- **特定欄位投影**：避免 `Select *`，應使用 `.Select(x => new Dto { ... })` 僅擷取所需的資料。
-
----
-
-## 4. 移轉管理 (Migrations)
-
-- **具名移轉**：移轉名稱必須反映變更內容（如 `AddUserPhoneNumber`, `FixOrderDiscountTypo`），禁止使用亂數或無意義名稱。
-- **預防數據遺失**：在手動修改移轉腳本時，必須檢查是否有隱含的刪除動作。
+- **Fluent API First**: Prioritize using `IEntityTypeConfiguration<T>` classes for entity configuration over piling up code in `OnModelCreating` or using Data Annotations on entities.
+- **Configuration Directory**: Place all configuration classes in the `Data/Configurations` directory.
 
 ---
 
-## 5. 檔案組織
+## 3. Querying Conventions
 
-- **Data 目錄**：將 `DbContext`、實體定義與配置放置於 `Data/` 或 `Infrastructure/Persistence/` 下。
-- **File-scoped Namespace**：一律使用 File-scoped Namespace (C# 10+)。
+- **Asynchronous Execution**: All database access operations must prioritize asynchronous methods (e.g., `ToListAsync()`, `FirstOrDefaultAsync()`).
+- **Read-Only Queries**: For queries that do not require updates, you must explicitly call `.AsNoTracking()` to reduce memory overhead.
+- **Specific Field Projections**: Avoid `Select *`, and use `.Select(x => new Dto { ... })` to retrieve only the required data.
+
+---
+
+## 4. Migrations Management
+
+- **Named Migrations**: Migration names must reflect the content of the change (e.g., `AddUserPhoneNumber`, `FixOrderDiscountTypo`). Random or meaningless names are prohibited.
+- **Prevent Data Loss**: When manually editing migration scripts, you must check for any implicit deletion actions.
+
+---
+
+## 5. File Organization
+
+- **Data Directory**: Place `DbContext`, entity definitions, and configurations under `Data/` or `Infrastructure/Persistence/`.
+- **File-scoped Namespace**: Always use File-scoped Namespaces (C# 10+).

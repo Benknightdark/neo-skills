@@ -1,48 +1,48 @@
-# .NET Web API 反模式與最佳實踐 (Anti-Patterns & Best Practices)
+# .NET Web API Anti-Patterns & Best Practices
 
-本文件列出控制器式 Web API 開發中常見的錯誤做法及其對應的正確實踐。
+This document lists common mistakes in Controller-based Web API development and their corresponding correct practices.
 
-## 1. 控制器組織 (Controller Organization)
+## 1. Controller Organization
 
-### 1.1 避免過大的控制器 (Fat Controllers)
-**問題**：在控制器動作中直接撰寫大量業務邏輯、資料庫存取或複雜驗證。
+### 1.1 Avoid Fat Controllers
+**Problem**: Writing massive amounts of business logic, database access, or complex validation directly in controller actions.
 
-- **錯誤**：Action 超過 20 行，且包含直接操作 `DbContext` 的程式碼。
-- **正確**：將業務邏輯封裝至 Service 層或使用 MediatR (CQRS 模式)，使 Action 僅負責協調請求與回應。
+- **Bad**: Action exceeds 20 lines and includes direct manipulation of `DbContext` code.
+- **Good**: Encapsulate business logic into a Service layer or use MediatR (CQRS pattern), making the Action only responsible for orchestrating requests and responses.
 
-### 1.2 避免忽視 `[ApiController]` 特性
-**問題**：遺漏此特性會導致模型驗證需要手動處理 `if (!ModelState.IsValid)`。
+### 1.2 Avoid Ignoring the `[ApiController]` Attribute
+**Problem**: Omitting this attribute requires manual model validation handling using `if (!ModelState.IsValid)`.
 
-- **正確**：始終在 API 控制器上加上 `[ApiController]`。
-
----
-
-## 2. 非同步與資源 (Async & Resources)
-
-### 2.1 避免忽視 `CancellationToken`
-- **問題**：在長時間運行的查詢中不傳遞取消權杖，當客戶端取消連線時，伺服器資源仍被無效佔用。
-- **正確**：Action 參數應包含 `CancellationToken ct`，並將其傳遞給非同步資料庫操作或外部 HTTP 呼叫。
-
-### 2.2 避免同步讀取請求主體
-- **問題**：同步讀取 Body 會造成執行緒阻塞。
-- **正確**：使用框架提供的非同步參數綁定。
+- **Good**: Always apply `[ApiController]` on API controllers.
 
 ---
 
-## 3. 異常與安全性 (Security & Exceptions)
+## 2. Async & Resources
 
-### 3.1 避免返回敏感的異常訊息
-- **問題**：在生產環境將 `ex.StackTrace` 直接回傳給客戶端。
-- **正確**：透過全域異常處理轉化為 `ProblemDetails`，僅記錄詳細日誌於後端，回傳標準錯誤格式給前端。
+### 2.1 Avoid Ignoring `CancellationToken`
+- **Problem**: Failing to pass cancellation tokens in long-running queries; server resources remain uselessly occupied when clients cancel connections.
+- **Good**: Action parameters should include `CancellationToken ct`, passing it down to async database operations or external HTTP calls.
 
-### 3.2 避免過度暴露實體模型 (Domain Models)
-- **問題**：直接將資料庫實體物件當作回應回傳，可能洩漏敏感欄位（如密碼 Hash）或導致循環引用。
-- **正確**：建立專屬的 `Response DTO`，並使用 AutoMapper 或手動對應。
+### 2.2 Avoid Synchronously Reading the Request Body
+- **Problem**: Synchronously reading the Body blocks the thread.
+- **Good**: Use framework-provided asynchronous parameter binding.
 
 ---
 
-## 4. 文件化 (Documentation)
+## 3. Security & Exceptions
 
-### 4.1 忽視狀態碼定義
-- **問題**：Swagger UI 只顯示 `200`，使前端開發者難以得知其他錯誤情況。
-- **正確**：使用 `[ProducesResponseType(StatusCodes.Status404NotFound)]` 等標記。
+### 3.1 Avoid Returning Sensitive Exception Messages
+- **Problem**: Directly returning `ex.StackTrace` to the client in production environments.
+- **Good**: Use global exception handling to convert it into `ProblemDetails`, logging details only on the backend and returning a standard error format to the frontend.
+
+### 3.2 Avoid Over-exposing Domain Models
+- **Problem**: Directly returning database entity objects as responses, which might leak sensitive fields (like password hashes) or cause circular references.
+- **Good**: Create dedicated `Response DTO`s and use AutoMapper or manual mapping.
+
+---
+
+## 4. Documentation
+
+### 4.1 Ignoring Status Code Definitions
+- **Problem**: Swagger UI only displays `200`, making it hard for frontend developers to know other error scenarios.
+- **Good**: Use markers like `[ProducesResponseType(StatusCodes.Status404NotFound)]`.

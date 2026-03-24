@@ -1,18 +1,18 @@
-# .NET Minimal APIs 程式碼風格與命名規範 (Coding Conventions)
+# .NET Minimal APIs Coding Conventions
 
-本指南旨在提升 Minimal APIs 的開發效率，並確保端點與路由邏輯的組織具有高度一致性。
+This guide aims to improve the development efficiency of Minimal APIs and ensure a high degree of consistency in endpoint and routing logic organization.
 
-## 1. 路由命名與語法 (Routing)
+## 1. Routing Naming and Syntax
 
-### 1.1 路由範本
-- **Kebab-case**：路由路徑優先使用小寫字母並以破折號分隔（如 `/api/v1/user-profiles`）。
-- **參數命名**：路徑參數應與處理常式 (Handler) 的參數名稱一致，使用大寫或小寫皆可，但建議保持專案一致性（如 `/{id}` 對應 `int id`）。
+### 1.1 Route Templates
+- **Kebab-case**: Route paths should prioritize lowercase letters separated by hyphens (e.g., `/api/v1/user-profiles`).
+- **Parameter Naming**: Route parameter names should match the Handler's parameter names. Uppercase or lowercase can be used, but maintaining project consistency is recommended (e.g., `/{id}` matches `int id`).
 
-### 1.2 路由群組 (Route Groups)
-- **語意化前綴**：對於具備相同前綴或中介軟體的端點，必須使用 `MapGroup` 進行邏輯分組。
-- **隔離宣告**：避免在 `Program.cs` 中直接寫入大量路由。推薦使用擴充方法將群組路由抽離至單獨檔案。
+### 1.2 Route Groups
+- **Semantic Prefixes**: For endpoints sharing the same prefix or middleware, `MapGroup` must be used for logical grouping.
+- **Isolated Declarations**: Avoid writing massive amounts of routes directly in `Program.cs`. It is recommended to extract group routes into separate files using extension methods.
   ```csharp
-  // 推薦做法：抽離至 UserEndpoints.cs
+  // Recommended: Extracted into UserEndpoints.cs
   public static class UserEndpoints
   {
       public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder routes)
@@ -26,18 +26,18 @@
 
 ---
 
-## 2. 處理常式 (Handlers)
+## 2. Handlers
 
-- **匿名函式 vs 具名方法**：對於單行或簡單邏輯，可使用 Lambda。若邏輯超過 3 行，應改用靜態具名方法或抽離至服務。
-- **依賴注入**：直接在 Handler 參數中注入服務。
-- **CancellationToken**：所有回傳 `Task` 的非同步 Handler 應優先接受 `CancellationToken` 並傳遞給下游。
+- **Anonymous Functions vs. Named Methods**: For single-line or simple logic, Lambdas can be used. If the logic exceeds 3 lines, it should be changed to static named methods or extracted into services.
+- **Dependency Injection**: Inject services directly into the Handler parameters.
+- **CancellationToken**: All asynchronous Handlers returning `Task` should prioritize accepting `CancellationToken` and passing it downstream.
 
 ---
 
-## 3. 回應型別 (Results)
+## 3. Response Types (Results)
 
-- **TypedResults**：為了提升 OpenAPI (Swagger) 的靜態分析能力，優先使用 `TypedResults` 而非 `Results`。
-- **Results<T1, T2>**：當一個端點可能回傳多種狀態碼時，使用 `Results<T1, T2>` 提供強型別支援。
+- **TypedResults**: To enhance OpenAPI (Swagger) static analysis capabilities, prioritize using `TypedResults` over `Results`.
+- **Results<T1, T2>**: When an endpoint may return multiple status codes, use `Results<T1, T2>` to provide strong typing support.
   ```csharp
   public static async Task<Results<Ok<User>, NotFound>> GetUser(int id, IUserRepository repo)
   {
@@ -48,7 +48,7 @@
 
 ---
 
-## 4. 檔案組織 (Organization)
+## 4. File Organization
 
-- **Vertical Slice**：推薦按功能模組組織檔案，而非按類別（如 `Features/Users/UserEndpoints.cs`, `Features/Users/UserDto.cs`）。
-- **File-scoped Namespace**：一律使用 File-scoped Namespace (C# 10+) 以減少嵌套。
+- **Vertical Slice**: It is recommended to organize files by feature module rather than by class type (e.g., `Features/Users/UserEndpoints.cs`, `Features/Users/UserDto.cs`).
+- **File-scoped Namespace**: Always use File-scoped Namespaces (C# 10+) to reduce nesting.

@@ -1,52 +1,52 @@
-# .NET Web API 現代開發模式 (Modern Patterns)
+# .NET Web API Modern Patterns
 
-本文件介紹 .NET 6 至 10+ 在控制器模式 (Controller-based) 下的推薦開發模式。
+This document introduces recommended development patterns in the Controller-based mode for .NET 6 to 10+.
 
-## 1. 錯誤處理與回應格式
+## 1. Error Handling and Response Formats
 
 ### 1.1 Problem Details (RFC 7807)
-**推薦做法**：統一使用 `ProblemDetails` 處理錯誤回應。在 .NET 7+ 中，可在 `Program.cs` 呼叫 `builder.Services.AddProblemDetails()`。
+**Recommendation**: Unified use of `ProblemDetails` to handle error responses. In .NET 7+, call `builder.Services.AddProblemDetails()` in `Program.cs`.
 
-### 1.2 全域異常處理器 (IExceptionHandler) - .NET 8+
-**推薦做法**：實作 `IExceptionHandler` 介面來集中處理未捕獲的異常，取代舊式的 Middleware 方式。
-
----
-
-## 2. 參數綁定與驗證
-
-### 2.1 原始型別以外的綁定 (Complex Type Binding)
-**推薦做法**：善用 `[FromRoute]`, `[FromQuery]`, `[FromBody]` 與 `[FromHeader]` 顯式定義綁定源。
-
-### 2.2 FluentValidation 整合
-**推薦做法**：結合 `FluentValidation` 進行複雜的模型驗證，將驗證邏輯與 DTO 定義分離。
+### 1.2 Global Exception Handler (IExceptionHandler) - .NET 8+
+**Recommendation**: Implement the `IExceptionHandler` interface to centrally handle uncaught exceptions, replacing the legacy Middleware approach.
 
 ---
 
-## 3. 架構設計
+## 2. Parameter Binding and Validation
 
-### 3.1 API 版本控制 (Asp.Versioning.Http)
-**推薦做法**：使用官方版本控制套件，透過 URL 或 Header 支援多版本並存。
+### 2.1 Complex Type Binding
+**Recommendation**: Make good use of `[FromRoute]`, `[FromQuery]`, `[FromBody]`, and `[FromHeader]` to explicitly define binding sources.
+
+### 2.2 FluentValidation Integration
+**Recommendation**: Combine with `FluentValidation` for complex model validation, separating validation logic from DTO definitions.
+
+---
+
+## 3. Architectural Design
+
+### 3.1 API Versioning (Asp.Versioning.Http)
+**Recommendation**: Use the official versioning package to support multiple coexisting versions via URL or Header.
 ```csharp
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 ```
 
-### 3.2 動作過濾器 (Action Filters)
-**推薦做法**：對於橫切關注點（如權限校驗、日誌），實作 `IAsyncActionFilter`。
+### 3.2 Action Filters
+**Recommendation**: For cross-cutting concerns (like permission checks, logging), implement `IAsyncActionFilter`.
 
 ---
 
-## 4. 文件化與效能
+## 4. Documentation and Performance
 
-### 4.1 Swagger/OpenAPI 豐富化
-**推薦做法**：使用 `[ProducesResponseType]` 標記所有可能的 HTTP 狀態碼與回應型別。
+### 4.1 Swagger/OpenAPI Enrichment
+**Recommendation**: Use `[ProducesResponseType]` to mark all possible HTTP status codes and response types.
 
-### 4.2 輸出快取 (Output Caching) - .NET 7+
-**推薦做法**：使用 `builder.Services.AddOutputCache()` 提供伺服器端的高效能緩存，減少控制器處理壓力。
+### 4.2 Output Caching - .NET 7+
+**Recommendation**: Use `builder.Services.AddOutputCache()` to provide high-performance server-side caching, reducing pressure on controllers.
 
 ---
 
-## 5. C# 14+ 前瞻模式
+## 5. C# 14+ Forward-looking Patterns
 
-### 5.1 Extension Types 為控制器增加輔助功能
-**推薦做法**：利用 Extension Types 為基底 `ControllerBase` 擴充常用的輔助屬性或方法。
+### 5.1 Extension Types for Controllers
+**Recommendation**: Leverage Extension Types to expand common auxiliary properties or methods for the base `ControllerBase`.

@@ -1,175 +1,48 @@
-# ASP.NET Core Web API Anti-Patterns
+# .NET Web API 反模式與最佳實踐 (Anti-Patterns & Best Practices)
 
-## 1. Async & Resource Anti-Patterns
+本文件列出控制器式 Web API 開發中常見的錯誤做法及其對應的正確實踐。
 
-### Sync over Async
-Using `.Result` or `.Wait()` in asynchronous methods.
+## 1. 控制器組織 (Controller Organization)
 
-**Problem**: This causes thread pool starvation, potentially leading to deadlocks and poor scalability.
+### 1.1 避免過大的控制器 (Fat Controllers)
+**問題**：在控制器動作中直接撰寫大量業務邏輯、資料庫存取或複雜驗證。
 
-```csharp
-// BAD: Sync blocks thread
-public IActionResult Get()
-{
-    var data = _service.GetDataAsync().Result;
-    return Ok(data);
-}
-```
+- **錯誤**：Action 超過 20 行，且包含直接操作 `DbContext` 的程式碼。
+- **正確**：將業務邏輯封裝至 Service 層或使用 MediatR (CQRS 模式)，使 Action 僅負責協調請求與回應。
 
-**Solution**: Always use `await` and propagate `CancellationToken`.
+### 1.2 避免忽視 `[ApiController]` 特性
+**問題**：遺漏此特性會導致模型驗證需要手動處理 `if (!ModelState.IsValid)`。
 
-```csharp
-// GOOD: Fully async
-public async Task<IActionResult> Get(CancellationToken ct)
-{
-    var data = await _service.GetDataAsync(ct);
-    return Ok(data);
-}
-```
+- **正確**：始終在 API 控制器上加上 `[ApiController]`。
 
-## 2. Structural & Architectural Anti-Patterns
+---
 
-### Fat Controllers
-Putting business logic, validation, and data access inside controller actions.
+## 2. 非同步與資源 (Async & Resources)
 
-**Problem**: Controllers become bloated, hard to test, and difficult to maintain.
+### 2.1 避免忽視 `CancellationToken`
+- **問題**：在長時間運行的查詢中不傳遞取消權杖，當客戶端取消連線時，伺服器資源仍被無效佔用。
+- **正確**：Action 參數應包含 `CancellationToken ct`，並將其傳遞給非同步資料庫操作或外部 HTTP 呼叫。
 
-```csharp
-// BAD: Controller does everything
-[HttpPost]
-public async Task<IActionResult> PlaceOrder(int itemId)
-{
-    var item = await _context.Items.FindAsync(itemId);
-    if (item.Stock < 1) return BadRequest("No stock");
-    
-    // Complex business logic...
-    _context.Orders.Add(new Order { ItemId = itemId });
-    await _context.SaveChangesAsync();
-    
-    return Ok();
-}
-```
+### 2.2 避免同步讀取請求主體
+- **問題**：同步讀取 Body 會造成執行緒阻塞。
+- **正確**：使用框架提供的非同步參數綁定。
 
-**Solution**: Keep controllers thin and delegate logic to a Service or Handler.
+---
 
-```csharp
-// GOOD: Delegate to handler (CQRS)
-[HttpPost]
-public async Task<IActionResult> PlaceOrder(int itemId)
-{
-    var result = await _mediator.Send(new PlaceOrderCommand(itemId));
-    return result.ToActionResult();
-}
-```
+## 3. 異常與安全性 (Security & Exceptions)
 
-### Exposing Domain Entities
-Returning EF Core entities directly to the client.
+### 3.1 避免返回敏感的異常訊息
+- **問題**：在生產環境將 `ex.StackTrace` 直接回傳給客戶端。
+- **正確**：透過全域異常處理轉化為 `ProblemDetails`，僅記錄詳細日誌於後端，回傳標準錯誤格式給前端。
 
-**Problem**: This leaks database structure, may cause circular reference errors, and risks exposing sensitive fields.
+### 3.2 避免過度暴露實體模型 (Domain Models)
+- **問題**：直接將資料庫實體物件當作回應回傳，可能洩漏敏感欄位（如密碼 Hash）或導致循環引用。
+- **正確**：建立專屬的 `Response DTO`，並使用 AutoMapper 或手動對應。
 
-```csharp
-// BAD: Exposing domain entity
-[HttpGet("{id}")]
-public async Task<ActionResult<User>> GetUser(int id)
-{
-    var user = await _context.Users.FindAsync(id);
-    return Ok(user); // PasswordHash and SecretFields are leaked
-}
-```
+---
 
-**Solution**: Use DTOs or Records for output.
+## 4. 文件化 (Documentation)
 
-```csharp
-// GOOD: Return DTO
-public record UserResponse(int Id, string Username, string Email);
-
-[HttpGet("{id}")]
-public async Task<ActionResult<UserResponse>> GetUser(int id)
-{
-    var user = await _service.GetByIdAsync(id);
-    return Ok(new UserResponse(user.Id, user.Username, user.Email));
-}
-```
-
-## 3. Data & Security Anti-Patterns
-
-### Mass Assignment (Direct Entity Binding)
-Binding incoming requests directly to database entities.
-
-**Problem**: Over-posting vulnerability allows attackers to update fields they shouldn't (e.g., `IsAdmin`).
-
-```csharp
-// BAD: Direct entity binding
-[HttpPost]
-public async Task<IActionResult> UpdateProfile(User user)
-{
-    _context.Users.Update(user); // Can update sensitive fields like "IsAdmin"
-    await _context.SaveChangesAsync();
-    return Ok();
-}
-```
-
-**Solution**: Use dedicated Input DTOs.
-
-```csharp
-// GOOD: Input DTO
-public record ProfileUpdateDto(string Nickname, string AvatarUrl);
-
-[HttpPost]
-public async Task<IActionResult> UpdateProfile(ProfileUpdateDto dto)
-{
-    var user = await _context.Users.FindAsync(GetCurrentUserId());
-    user.Nickname = dto.Nickname; // Only update allowed fields
-    await _context.SaveChangesAsync();
-    return Ok();
-}
-```
-
-### N+1 Query Issue
-Querying related data in a loop.
-
-**Problem**: Causes many small database roundtrips, significantly degrading performance.
-
-```csharp
-// BAD: Querying in a loop
-var users = await _context.Users.ToListAsync();
-foreach (var user in users) {
-    user.Roles = await _context.Roles.Where(r => r.UserId == user.Id).ToListAsync();
-}
-```
-
-**Solution**: Use Eager Loading (`Include`) or Projecting with DTOs.
-
-```csharp
-// GOOD: Eager loading
-var usersWithRoles = await _context.Users
-    .AsNoTracking()
-    .Include(u => u.Roles)
-    .ToListAsync();
-```
-
-## 4. Error Handling Anti-Patterns
-
-### Raw Exception Leaks
-Returning raw `ex.ToString()` or `ex.Message` to the client in production.
-
-**Problem**: Leaks internal server details, stack traces, and environment information, which is a security risk.
-
-```csharp
-// BAD: Leak internal details
-try { ... }
-catch (Exception ex)
-{
-    return StatusCode(500, ex.ToString());
-}
-```
-
-**Solution**: Use global exception handling and Problem Details.
-
-```csharp
-// GOOD: Standard Problem Details
-return Problem(
-    detail: "An unexpected error occurred. Please try again later.",
-    statusCode: StatusCodes.Status500InternalServerError
-);
-```
+### 4.1 忽視狀態碼定義
+- **問題**：Swagger UI 只顯示 `200`，使前端開發者難以得知其他錯誤情況。
+- **正確**：使用 `[ProducesResponseType(StatusCodes.Status404NotFound)]` 等標記。

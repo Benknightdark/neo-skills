@@ -1,12 +1,12 @@
 ---
-name: csharp-coding
+name: csharp-interface-generator
 version: "1.0.0"
 category: "Core"
-description: "提供 C# 程式碼生成與重構的專業建議，專注於介面生成與檔案結構管理。"
+description: "專注於C#介面生成與檔案結構管理。"
 compatibility: "Supports C# 12/13 and .NET 10.0."
 ---
 
-# C# Coding Skill Specification
+# C# Interface Generator Skill Specification
 
 ## Perceive
 1. **Code Structure Recognition**: Parse C# Class content, identify properties, methods, and access modifiers.

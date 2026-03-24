@@ -5,7 +5,7 @@ This document lists recommended patterns and best practices for development in P
 ## 1. Structural Pattern Matching (3.10+)
 Use `match` statements to handle complex branching logic, data deconstruction, and Guard conditions.
 
-### ✅ Recommended
+### Recommended
 ```python
 def handle_event(event: dict):
     match event:
@@ -20,7 +20,7 @@ def handle_event(event: dict):
 ## 2. Union Type Operator (3.10+)
 Use `X | Y` instead of `Union[X, Y]` for more readable type annotations.
 
-### ✅ Recommended
+### Recommended
 ```python
 def process_data(data: int | str | None) -> None:
     # Supports both type hints and isinstance()
@@ -31,7 +31,7 @@ def process_data(data: int | str | None) -> None:
 ## 3. Exception Handling and Concurrent Tasks (3.11+)
 Use Exception Groups and `asyncio.TaskGroup` to manage concurrency.
 
-### ✅ Recommended
+### Recommended
 ```python
 import asyncio
 
@@ -51,7 +51,7 @@ except* ValueError as eg: # Use except* to handle Exception Groups
 ## 4. Modern Generics and Type Aliases (3.12+)
 Use the new square bracket syntax for generic declarations and the `type` keyword for type aliases.
 
-### ✅ Recommended
+### Recommended
 ```python
 # Generic function declaration (PEP 695)
 def get_first[T](items: list[T]) -> T:
@@ -68,7 +68,7 @@ class Container[T]:
 ## 5. Enhanced f-strings (3.12+)
 Leverage unrestricted f-strings to improve code flexibility.
 
-### ✅ Recommended
+### Recommended
 ```python
 songs = ["Playlist A", "Playlist B"]
 # Supports quote reuse and multiline comments
@@ -80,7 +80,7 @@ message = f"Songs: {
 ## 6. PEP 758: Unparenthesized Exception Handling (3.14+)
 Parentheses can be omitted when catching multiple exceptions if the exception instance is not accessed.
 
-### ✅ Recommended
+### Recommended
 ```python
 try:
     resource = fetch()
@@ -91,7 +91,7 @@ except ConnectionError, TimeoutError: # Omit parentheses allowed from 3.14+
 ## 7. Deferred Annotation Evaluation (3.14+)
 String quotes are no longer required when a class refers to itself or classes not yet defined.
 
-### ✅ Recommended
+### Recommended
 ```python
 class Node:
     # 3.14 supports deferred evaluation; Node name can be used directly
@@ -102,7 +102,7 @@ class Node:
 ## 8. Pathlib Native Operations (3.14+)
 Prefer native copy and move methods built into `pathlib`.
 
-### ✅ Recommended
+### Recommended
 ```python
 from pathlib import Path
 

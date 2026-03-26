@@ -1,0 +1,22 @@
+{
+  "name": "neo-skills",
+  "description": "Neo Skills: 通用專家代理人技能套件，提供 .NET、Azure Pipelines、程式碼審查、Git 工作流程與 Swift/Python 開發支援",
+  "version": "1.0.0",
+  "author": {
+    "name": "Benknightdark"
+  },
+  "homepage": "https://github.com/Benknightdark/neo-skills",
+  "repository": "https://github.com/Benknightdark/neo-skills",
+  "license": "MIT",
+  "keywords": [
+    "dotnet",
+    "csharp",
+    "azure-pipelines",
+    "devops",
+    "code-review",
+    "git",
+    "swift",
+    "swiftui",
+    "python"
+  ]
+}

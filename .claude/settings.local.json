@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/ben/projects/neo-skills.worktrees/feature-new-claude-plugins remote get-url origin)",
+      "Bash(chmod:*)"
+    ]
+  }
+}

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.42.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.3...neo-skills-v0.42.0) (2026-03-26)
+
+
+### Features
+
+* **cli:** 重命名安裝指令並升級版本至 1.0.4 ([eea22f5](https://github.com/Benknightdark/neo-skills/commit/eea22f5a53a6df741a23c2a08f07e0368338c96a))
+
+
+### Bug Fixes
+
+* **cli:** 重命名安裝指令並升級版本至 1.0.4 ([5463c4b](https://github.com/Benknightdark/neo-skills/commit/5463c4bd88e3b9504b215d44797f1aea16b899a0))
+
 ## [0.41.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.2...neo-skills-v0.41.3) (2026-03-26)
 
 

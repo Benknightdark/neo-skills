@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(git -C /Users/ben/projects/neo-skills.worktrees/feature-new-claude-plugins remote get-url origin)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(node:*)",
+      "Bash(npm pack:*)",
+      "Read(//Users/ben/**)",
+      "Bash(npx --yes --package /Users/ben/projects/neo-skills -- install-claude-skills)"
     ]
   }
 }

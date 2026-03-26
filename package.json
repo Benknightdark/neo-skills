@@ -4,7 +4,6 @@
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension for Gemini CLI",
   "bin": {
-    "neo-skills": "install/install-claude-skills.js",
     "install-claude-skills": "install/install-claude-skills.js"
   },
   "scripts": {

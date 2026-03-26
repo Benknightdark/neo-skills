@@ -1,12 +1,12 @@
-# Neo Skills (Gemini CLI Extension)
+# Neo Skills
 
-**Neo Skills** 是專為 Gemini CLI 設計的**全方位能力擴充套件**。本專案透過 Model Context Protocol (MCP) 架構，為 AI 代理安裝可插拔的「技能模組 (Skills)」，使其不僅僅是一個聊天機器人，而是能轉化為具備「感知-推理-行動」能力的**多領域專家**。
+**Neo Skills** 是專為現代 **AI Agent** 設計的**全方位能力擴充套件**。本專案透過標準化的通訊架構，為 AI 代理安裝可插拔的「技能模組 (Skills)」，使其不僅僅是一個聊天機器人，而是能轉化為具備「感知-推理-行動」能力的**多領域專家**。
 
-無論是 DevOps 自動化、軟體架構設計，或是未來的資料分析與專案管理，Neo Skills 都能透過掛載不同的知識庫與工具，讓 Gemini 成為您最強大的全能助手。
+無論是 DevOps 自動化、軟體架構設計，或是未來的資料分析與專案管理，Neo Skills 都能透過掛載不同的知識庫與工具，讓 AI 成為您最強大的全能助手。
 
 ## 🚀 核心願景
 
-本專案作為 Gemini Agent 的「大腦皮層 (Cortex)」，旨在打造一個**全能型 Agent 框架**，透過以下機制提升 AI 的專業度：
+本專案作為 AI Agent 的「大腦皮層 (Cortex)」，旨在打造一個**全能型 Agent 框架**，透過以下機制提升 AI 的專業度：
 
 1.  **領域專精 (Skills)**：可擴充的專家知識庫 (`SKILL.md`)。目前已內建 DevOps 模組，未來將持續擴增更多領域。
 2.  **標準化執行 (Commands)**：提供預先驗證的自動化腳本與模板，確保產出的一致性與可靠性。
@@ -51,7 +51,7 @@
 *   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
 ### 9. 安全守衛 (Security Guard)
-*   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如 `.env` 檔案、私鑰、AWS 憑證等）將強制阻擋執行，防止機密外洩。
+*   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如環境設定檔、私鑰、雲端憑證等）將強制阻擋執行，防止機密外洩。
 
 ## 📂 系統架構
 
@@ -59,29 +59,32 @@
 
 | 層次 | 目錄 | 描述 |
 | :--- | :--- | :--- |
-| **MCP Server** | `src/server.ts` | 擴充套件的進入點，負責註冊 Tool 與 Prompt，處理與 Gemini CLI 的通訊。 |
+| **Server** | `src/server.ts` | 擴充套件的進入點，負責註冊 Tool 與 Prompt，處理與 AI Agent CLI 的通訊。 |
 | **Knowledge Base** | `skills/` | **"大腦"**。包含各領域知識 (`SKILL.md`) 與可重用的模板 (`templates/`)。 |
 | **Action Registry** | `commands/` | **"指令集"**。定義了使用者可呼叫的具體指令 (TOML 格式)，將請求映射至特定的 Skill。 |
-| **Security Layer** | `src/hooks/` | **"安全守衛"**。攔截並掃描工具執行參數，防止敏感資訊 (如私鑰、密碼) 外洩。 |
+| **Security Layer** | `src/hooks/` | **"安全守衛"**。攔截並掃描工具執行參數，防止敏感資訊外洩。 |
 
 ## 📦 安裝與使用
 
-此擴充套件設計用於 Gemini CLI 環境。
+本套件目前支援多種 AI Agent CLI 環境。
 
-### 安裝方式
+### 1. Claude Code 安裝方式 (推薦)
 
-您可以使用以下指令直接從 GitHub 遠端安裝並啟用自動更新：
+```bash
+claude plugin add https://github.com/Benknightdark/neo-skills
+```
+
+### 2. Gemini CLI 安裝方式
 
 ```bash
 gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
 
-或在 `gemini-extension.json` 中手動進行本地配置：
+或在配置檔案中手動進行本地路徑配置：
 
 ```json
 {
   "name": "neo-skills",
-  "description": "Neo Tools MCP Server",
   "mcpServers": {
     "neo-skills": {
       "command": "node",
@@ -91,9 +94,9 @@ gemini extension install https://github.com/Benknightdark/neo-skills --auto-upda
 }
 ```
 
-### 常用指令範例
+## 💡 常用指令範例
 
-在 Gemini CLI 中，您可以直接呼叫以下指令：
+您可以直接對 AI 代理下達以下指令：
 
 *   **生成 Commit Message**：
     > "幫我 commit 這些變更" 或 `/neo:git-commit`

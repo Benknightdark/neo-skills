@@ -75,11 +75,6 @@
 claude plugin add https://github.com/Benknightdark/neo-skills
 ```
 
-#### B. 透過 npx 安裝技能 (免安裝 Bun)
-這會將所有技能同步至 `~/.claude/skills` 目錄中：
-```bash
-npx -y github:Benknightdark/neo-skills install-claude-skills
-```
 
 ### 2. Gemini CLI 安裝方式 (需安裝 Bun)
 此方式會執行 MCP Server，因此需要先建置專案：

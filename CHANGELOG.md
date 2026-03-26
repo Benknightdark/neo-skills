@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.42.0...neo-skills-v0.42.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* package lock ([eeb43b0](https://github.com/Benknightdark/neo-skills/commit/eeb43b037d6171adc8b6b6ab300d273abcef712e))
+
 ## [0.42.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.3...neo-skills-v0.42.0) (2026-03-26)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.41.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.0...neo-skills-v0.41.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* 調整claude code skill安裝腳本 ([661ace0](https://github.com/Benknightdark/neo-skills/commit/661ace0329eb932a191ce043aa854e36d035cf70))
+* 調整claude code skill安裝腳本 ([a5dcebd](https://github.com/Benknightdark/neo-skills/commit/a5dcebd4f00c618e71f2b72d80c44642df97cf03))
+
 ## [0.41.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.40.0...neo-skills-v0.41.0) (2026-03-26)
 
 

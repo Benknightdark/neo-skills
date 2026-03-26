@@ -12,9 +12,6 @@ name: release-please
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -50,6 +47,8 @@ jobs:
       - name: Publish to NPM
         if: ${{ steps.release.outputs.release_created }}
         run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release Archive
         if: ${{ steps.release.outputs.release_created }}

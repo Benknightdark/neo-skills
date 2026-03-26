@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.41.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.1...neo-skills-v0.41.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* **ci:** 修正 GitHub Actions 中 Node.js 版本設定 ([e93ef31](https://github.com/Benknightdark/neo-skills/commit/e93ef311da21da98622f972b3e166d640ec92bd6))
+* **ci:** 修正 GitHub Actions 中 Node.js 版本設定 ([27f5177](https://github.com/Benknightdark/neo-skills/commit/27f5177e71d1c513edde3d55d5ab73d011eb65ea))
+
 ## [0.41.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.0...neo-skills-v0.41.1) (2026-03-26)
 
 

@@ -1,8 +1,19 @@
 {
-  "name": "neo-skills",
-  "version": "1.0.0",
+  "name": "@moon791017/neo-skills",
+  "version": "1.0.3",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
+  "bin": {
+    "neo-install-claude-skills": "./bin/install-claude-skills.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "skills",
+    "commands",
+    "gemini-extension.json",
+    "GEMINI.md"
+  ],
   "scripts": {
     "build": "bun run clean && bun run build:server && bun run build:hooks",
     "build:server": "bun build src/server.ts --outdir dist --target node --minify",

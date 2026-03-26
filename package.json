@@ -5,7 +5,7 @@
   "description": "Neo Skills: A Universal Expert Agent Extension for Gemini CLI",
   "main": "dist/server.js",
   "bin": {
-    "neo-skills": "dist/server.js",
+    "neo-skills": "bin/neo-skills.js",
     "install-claude-skills": "install/install-claude-skills.js"
   },
   "scripts": {
@@ -16,7 +16,7 @@
     "clean": "rm -rf dist",
     "start": "node dist/server.js",
     "dev": "bun src/server.ts",
-    "prepare": "bun run build",
+    "prepare": "node -e \"try { require('child_process').execSync('bun --version', { stdio: 'ignore' }) } catch (e) { console.warn('Bun not found, skipping server build step.'); process.exit(0) }\" && bun run build",
     "typecheck": "tsc --noEmit",
     "test": "echo \"No tests specified\" && exit 0"
   },

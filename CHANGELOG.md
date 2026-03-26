@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.41.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.2...neo-skills-v0.41.3) (2026-03-26)
+
+
+### Bug Fixes
+
+* **ci:** npm push package error ([1118ca3](https://github.com/Benknightdark/neo-skills/commit/1118ca395dda019cf3740c99917741aad2d14987))
+* **ci:** npm push package error ([e7ab3c1](https://github.com/Benknightdark/neo-skills/commit/e7ab3c1c039500f692fb07dda65b5a76bbd2c559))
+* **ci:** npm push package error ([010672d](https://github.com/Benknightdark/neo-skills/commit/010672da38906f43bc676c752a30b5c26865787b))
+* **ci:** 補上package repository ([4264b7a](https://github.com/Benknightdark/neo-skills/commit/4264b7a83f113a735654ad8a66e795c13d891fca))
+
 ## [0.41.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.41.1...neo-skills-v0.41.2) (2026-03-26)
 
 

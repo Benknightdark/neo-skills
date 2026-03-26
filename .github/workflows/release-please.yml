@@ -38,7 +38,9 @@ jobs:
 
       - name: Install Dependencies
         if: ${{ steps.release.outputs.release_created }}
-        run: bun install
+        run: |
+          bun install
+          npm install
 
       - name: Build
         if: ${{ steps.release.outputs.release_created }}

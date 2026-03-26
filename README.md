@@ -68,13 +68,20 @@
 
 本套件目前支援多種 AI Agent CLI 環境。
 
-### 1. Claude Code 安裝方式
+### 1. Claude Code (或其餘 Agent)
 
-#### A. 透過 Claude Code CLI 安裝
+#### 方案 A：透過 Claude Code CLI 安裝
+這是最簡單的方式，直接讓 Claude Code 管理擴充：
 ```bash
 claude plugin add https://github.com/Benknightdark/neo-skills
 ```
 
+#### 方案 B：透過 NPM (npx) 手動安裝技能
+如果您希望手動將技能檔案同步至本地的技能目錄（例如 `~/.claude/skills`）：
+```bash
+# 使用 npx 直接執行安裝指令
+npx @benknight/neo-skills install-neo-skills
+```
 
 ### 2. Gemini CLI 安裝方式 (需安裝 Bun)
 此方式會執行 MCP Server，因此需要先建置專案：

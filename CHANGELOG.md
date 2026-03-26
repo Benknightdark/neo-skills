@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.37.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.36.0...neo-skills-v0.37.0) (2026-03-26)
+
+
+### Features
+
+* **dx:** 優化安裝流程與執行環境檢查 ([2fac789](https://github.com/Benknightdark/neo-skills/commit/2fac789aac834e8256b0fe0a0cba21bd17a6e1ae))
+* **dx:** 優化安裝流程與執行環境檢查 ([fdd666a](https://github.com/Benknightdark/neo-skills/commit/fdd666a0243c814140ed7e89d963f740f0ef7cc3))
+
 ## [0.36.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.35.0...neo-skills-v0.36.0) (2026-03-26)
 
 

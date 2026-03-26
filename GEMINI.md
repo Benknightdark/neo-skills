@@ -4,7 +4,6 @@
 
 ## Constraints
 - All MCP commands must be manually executed by the user and cannot be automated!
-- The `run_git_commit` MCP tool is STRICTLY PROHIBITED from being called automatically by the agent after code modifications. It can ONLY be called when the user explicitly executes the `neo:git-commit` command or explicitly asks to commit.
 
 ## Response Style
 All responses must strictly adhere to the following guidelines and in 「Traditional Taiwanese Chinese」:
@@ -23,7 +22,7 @@ The project is organized into three main layers:
 
 ### 1. The MCP Server (`src/server.ts`)
 The entry point of the extension. It runs an MCP server that:
-*   Registers **Tools** (e.g., `run_git_commit` for executing git commands).
+*   Registers **Tools** (e.g., `fetch_web_content` for web scraping).
 *   Registers **Prompts** (e.g., `neo:git_commit`) which are dynamic templates that inject context and instructions into the chat session.
 
 ### 2. The Knowledge Base (`skills/`)
@@ -87,7 +86,9 @@ When interacting with this codebase or using the extension, the agent follows th
 
 ### Available Capabilities (Current Built-in Skills)
 
-*   **Git Automation:** 根據變更自動產生正體中文的 Conventional Commits 訊息並執行 commit (`neo:git_commit`)。
+*   **Web Scraper:** 從指定的 URL 獲取網頁 HTML 內容，支援 CSS 選擇器 (`fetch_web_content`)。
+
+*   **Git Automation:** Automatically generate Conventional Commit messages in English and ask for confirmation before committing (`neo:git_commit`).
 
 *   **CI Protocols:** 自動配置 .NET 專案的 Azure Pipelines CI 建置流程 (`neo:ci-dotnet`)。
 

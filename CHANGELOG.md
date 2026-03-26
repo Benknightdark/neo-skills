@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.43.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.42.1...neo-skills-v0.43.0) (2026-03-26)
+
+
+### Features
+
+* update version ([4a19161](https://github.com/Benknightdark/neo-skills/commit/4a19161adebdd545ccbb0dd466580364ba7f1f7b))
+* 更新Gemini.md ([1e355be](https://github.com/Benknightdark/neo-skills/commit/1e355be5a3a290e73e66bb6d2f6bedfde7815ca3))
+* 調整GIT MCP ([c652f57](https://github.com/Benknightdark/neo-skills/commit/c652f57915a00f8883db8d96dee45fc33734bc6a))
+* 調整hook ([cedba32](https://github.com/Benknightdark/neo-skills/commit/cedba32b3bbe22a2205aee315bccda2972fbb6f3))
+* 調整腳本 ([c1e6a56](https://github.com/Benknightdark/neo-skills/commit/c1e6a566de49032e8d1b534b62584355e855b28e))
+
+
+### Bug Fixes
+
+* **cli:** 新增 neo-skills bin 入口以修正 npx 無法執行的問題 ([22af399](https://github.com/Benknightdark/neo-skills/commit/22af399f12e3296f695f70d28c5585d2487acb6b))
+* **hook:** 移除 hooks/hooks.json 中的 BeforeAgent Hook 配置 ([433a01e](https://github.com/Benknightdark/neo-skills/commit/433a01e4cf4d696d59914bf4d06c2bc822b3230a))
+* **plan:** 調整skill ([27f75d7](https://github.com/Benknightdark/neo-skills/commit/27f75d7815da4afac2cda85a6770aba94a5683b2))
+* 調整Context ([6872917](https://github.com/Benknightdark/neo-skills/commit/68729177f316e2bc441db90c41f52e928fde8903))
+
 ## [0.42.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.42.0...neo-skills-v0.42.1) (2026-03-26)
 
 

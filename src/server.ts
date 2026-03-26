@@ -2,7 +2,13 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { spawnSync } from "child_process";
+import axios from "axios";
+import * as cheerio from "cheerio";
+
+/**
+ * Neo Tools MCP Server
+ * 提供網頁內容擷取等實用工具。
+ */
 
 // 初始化 MCP Server
 const server = new McpServer({
@@ -10,35 +16,54 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
-// 定義 Tool
+// 定義 Tool: fetch_web_content
+// 用於獲取網頁 HTML 內容，支援 CSS 選擇器篩選。
 server.registerTool(
-  "run_git_commit",
+  "fetch_web_content",
   {
-    description: "執行 Git Commit 指令。FATAL: Do NOT call this tool unless the user has explicitly typed 'yes' or 'confirm' in the immediately preceding turn. 禁止自動呼叫。",
+    description: "從指定的 URL 獲取網頁 HTML 內容。支援使用 CSS 選擇器篩選特定區塊（若無指定則回傳完整內容）。",
     inputSchema: {
-      message: z.string().describe("符合 Conventional Commits 規範的 Commit Message"),
+      url: z.string().url().describe("目標網頁的完整 URL"),
+      selector: z.string().optional().describe("選填：用於篩選內容的 CSS 選擇器（如 'div.main-content' 或 'article'）"),
     },
   },
-  async ({ message }) => {
-    const { status, stdout, stderr } = spawnSync("git", ["commit", "-m", message], {
-      cwd: process.cwd(),
-      encoding: "utf-8",
-    });
+  async ({ url, selector }) => {
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        },
+        timeout: 10000,
+      });
 
-    if (status !== 0) {
+      const $ = cheerio.load(response.data);
+      let content = "";
+
+      if (selector) {
+        const selectedElements = $(selector);
+        if (selectedElements.length > 0) {
+          content = selectedElements.html() || "";
+        } else {
+          return {
+            content: [{ type: "text", text: `未找到符合選擇器 '${selector}' 的元素。` }],
+            isError: false,
+          };
+        }
+      } else {
+        content = response.data;
+      }
+
       return {
-        content: [{ type: "text", text: `Commit 失敗:\n${stderr}` }],
+        content: [{ type: "text", text: content }],
+      };
+    } catch (error: any) {
+      return {
+        content: [{ type: "text", text: `擷取網頁失敗: ${error.message}` }],
         isError: true,
       };
     }
-
-    return {
-      content: [{ type: "text", text: `Commit 成功:\n${stdout}` }],
-    };
   }
 );
-
-
 
 // 啟動 Server
 async function main() {
@@ -47,4 +72,7 @@ async function main() {
   console.error("Neo Tools MCP Server running on stdio");
 }
 
-main();
+main().catch((error) => {
+  console.error("Fatal error in main():", error);
+  process.exit(1);
+});

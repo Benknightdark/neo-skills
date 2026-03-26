@@ -1,4 +1,4 @@
-# Neo Skills (Gemini CLI Extension)
+# Neo Skills (Gemini CLI Extension)111
 
 **Neo Skills** 是專為 Gemini CLI 設計的**全方位能力擴充套件**。本專案透過 Model Context Protocol (MCP) 架構，為 AI 代理安裝可插拔的「技能模組 (Skills)」，使其不僅僅是一個聊天機器人，而是能轉化為具備「感知-推理-行動」能力的**多領域專家**。
 

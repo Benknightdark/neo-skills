@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.38.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.37.0...neo-skills-v0.38.0) (2026-03-26)
+
+
+### Features
+
+* new claude install ([775547a](https://github.com/Benknightdark/neo-skills/commit/775547a8590625ff35f5d320abbc34e340ef108c))
+
 ## [0.37.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.36.0...neo-skills-v0.37.0) (2026-03-26)
 
 

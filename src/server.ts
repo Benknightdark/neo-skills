@@ -23,7 +23,7 @@ server.registerTool(
   {
     description: "從指定的 URL 獲取網頁 HTML 內容。支援使用 CSS 選擇器篩選特定區塊（若無指定則回傳完整內容）。",
     inputSchema: {
-      url: z.string().url().describe("目標網頁的完整 URL"),
+      url: z.url().describe("目標網頁的完整 URL"),
       selector: z.string().optional().describe("選填：用於篩選內容的 CSS 選擇器（如 'div.main-content' 或 'article'）"),
     },
   },

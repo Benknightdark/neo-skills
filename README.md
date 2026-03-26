@@ -80,7 +80,7 @@ claude plugin add https://github.com/Benknightdark/neo-skills
 如果您希望手動將技能檔案同步至本地的技能目錄（例如 `~/.claude/skills`）：
 ```bash
 # 使用 npx 直接執行安裝指令
-npx @benknight/neo-skills install-neo-skills
+npx @benknight/neo-skills install-claude-skills
 ```
 
 ### 2. Gemini CLI 安裝方式 (需安裝 Bun)

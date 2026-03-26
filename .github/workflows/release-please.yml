@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-node@v4
         if: ${{ steps.release.outputs.release_created }}
         with:
-          node-version: lts
+          node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Setup Bun

@@ -84,7 +84,7 @@ npx @moon791017/neo-skills install-claude-skills
 #### 方案 C：透過 npm 安裝
 ```bash
 npm i @moon791017/neo-skills -g
-neo-install-claude-skills
+install-claude-skills
 ```
 
 ### 2. Gemini CLI 安裝方式

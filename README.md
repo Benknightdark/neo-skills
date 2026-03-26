@@ -70,19 +70,19 @@
 
 ### 1. Claude Code 安裝方式
 
-#### A. 透過claude code cli 安裝
+#### A. 透過 Claude Code CLI 安裝
 ```bash
 claude plugin add https://github.com/Benknightdark/neo-skills
 ```
 
-#### B. 透過npx安裝
-
+#### B. 透過 npx 安裝技能 (免安裝 Bun)
+這會將所有技能同步至 `~/.claude/skills` 目錄中：
 ```bash
-npx github:Benknightdark/neo-skills install-claude-skills
+npx -y github:Benknightdark/neo-skills install-claude-skills
 ```
 
-### 2. Gemini CLI 安裝方式
-
+### 2. Gemini CLI 安裝方式 (需安裝 Bun)
+此方式會執行 MCP Server，因此需要先建置專案：
 ```bash
 gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
@@ -123,8 +123,8 @@ gemini extension install https://github.com/Benknightdark/neo-skills --auto-upda
 本專案使用 **Bun** 進行開發與建置。
 
 ### 前置需求
-*   [Node.js](https://nodejs.org/) (v18+)
-*   [Bun](https://bun.sh/)
+*   **[Node.js](https://nodejs.org/) (v18+)**：基本執行環境。
+*   **[Bun](https://bun.sh/)**：僅在**開發**、**建置**或執行 **Gemini MCP Server** 時需要。
 
 ### 快速開始
 

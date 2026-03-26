@@ -9,8 +9,20 @@ import { pathToFileURL } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const serverPath = join(__dirname, '..', 'dist', 'server.js');
+const installScriptPath = join(__dirname, '..', 'install', 'install-claude-skills.js');
 
 async function start() {
+  // 支援安裝子命令
+  if (process.argv.includes('--install')) {
+    try {
+      await import(pathToFileURL(installScriptPath).href);
+      return;
+    } catch (err) {
+      console.error('❌ 執行安裝腳本時發生錯誤:', err);
+      process.exit(1);
+    }
+  }
+
   if (!existsSync(serverPath)) {
     console.error('❌ 錯誤: 找不到 dist/server.js。');
     console.error('這通常是因為您是透過 Git 直接下載此專案，但尚未執行建置流程 (build)。');

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.35.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.34.0...neo-skills-v0.35.0) (2026-03-26)
+
+
+### Features
+
+* 新增claude plugin 設定 ([62c56d0](https://github.com/Benknightdark/neo-skills/commit/62c56d05859fac1ca58ac651ad4a9717d420f263))
+
 ## [0.34.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.33.0...neo-skills-v0.34.0) (2026-03-26)
 
 

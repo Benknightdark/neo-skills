@@ -50,17 +50,29 @@ async function installClaudeSkills() {
     await mkdir(targetSkillsDir, { recursive: true });
 
     // 4. 執行複製
+    let copyCount = 0;
     await cp(sourceDir, targetSkillsDir, { 
       recursive: true, 
       force: true,
       // 過濾掉不必要的開發檔案
       filter: (src) => {
-        const isIgnored = src.includes('node_modules') || src.includes('.git');
-        return !isIgnored;
+        // 取得相對於來源目錄的路徑
+        const relativePath = src.replace(sourceDir, '');
+        const isIgnored = relativePath.includes('node_modules') || relativePath.includes('.git');
+        
+        if (!isIgnored) {
+          copyCount++;
+          return true;
+        }
+        return false;
       }
     });
 
-    console.log('✅ [Claude] 安裝成功！技能已同步至 .claude/skills');
+    if (copyCount === 0) {
+      console.warn('⚠️ 警告: 沒有任何檔案被複製。請檢查來源目錄是否正確。');
+    } else {
+      console.log(`✅ [Claude] 安裝成功！已同步 ${copyCount} 個檔案/資料夾至 .claude/skills`);
+    }
     console.log('💡 提示: 請確保您的 Claude Desktop 或相關插件已指向此目錄。');
 
   } catch (error) {

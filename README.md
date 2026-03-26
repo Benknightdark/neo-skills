@@ -68,10 +68,17 @@
 
 本套件目前支援多種 AI Agent CLI 環境。
 
-### 1. Claude Code 安裝方式 (推薦)
+### 1. Claude Code 安裝方式
 
+#### A. 透過claude code cli 安裝
 ```bash
 claude plugin add https://github.com/Benknightdark/neo-skills
+```
+
+#### B. 透過npx安裝
+
+```bash
+npx github:Benknightdark/neo-skills install-claude-skills
 ```
 
 ### 2. Gemini CLI 安裝方式

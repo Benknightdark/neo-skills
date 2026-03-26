@@ -4,6 +4,10 @@
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension for Gemini CLI",
   "main": "dist/server.js",
+  "bin": {
+    "neo-skills": "dist/server.js",
+    "install-claude-skills": "install/install-claude-skills.js"
+  },
   "scripts": {
     "build": "bun run clean && bun run build:server && bun run build:hooks",
     "build:server": "bun build src/server.ts --outdir dist --target node --minify",

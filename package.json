@@ -13,6 +13,7 @@
     "build:server": "bun build src/server.ts --outdir dist --target node --minify",
     "build:hooks": "bun build src/hooks/*.ts --outdir dist/hooks --target node --minify",
     "install-deps": "npm install",
+    "install-claude-skills": "node install/install-claude-skills.js",
     "clean": "rm -rf dist",
     "start": "node dist/server.js",
     "dev": "bun src/server.ts",

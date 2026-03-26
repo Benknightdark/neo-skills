@@ -1,0 +1,44 @@
+# Dependency libraries (no need to pass to AI, it usually already knows the content of these libraries)
+node_modules/
+vendor/
+packages/
+bower_components/
+
+# Compile products and temporary files
+dist/
+build/
+out/
+*.log
+*.tmp
+*.temp
+.cache/
+.sass-cache/
+
+# Sensitive information (never pass to AI)
+.env
+.env.*
+*.pem
+*.key
+secrets.json
+credentials.json
+.vscode/
+.idea/
+
+# Binary files and pictures (AI CLI usually cannot handle directly, and takes up a large number of tokens)
+*.exe
+*.dll
+*.so
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.pdf
+*.zip
+*.tar.gz
+
+# Git and version control related
+.git/
+.svn/
+.hg/
+.gitignore

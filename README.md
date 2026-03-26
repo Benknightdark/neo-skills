@@ -66,50 +66,36 @@
 
 ## 📦 安裝與使用
 
-本套件目前支援多種 AI Agent CLI 環境。
+本套件支援多種 AI Agent 環境。請依據您的 CLI 工具執行對應指令：
 
-### 1. Claude Code (或其餘 Agent)
-
-#### 方案 A：透過 Claude Code CLI 安裝
-這是最簡單的方式，直接讓 Claude Code 管理擴充：
-```bash
-claude plugin add https://github.com/Benknightdark/neo-skills
-```
-
-#### 方案 B：透過 npx 安裝
-```bash
-npx @moon791017/neo-skills install-claude-skills
-```
-
-#### 方案 C：透過 npm 安裝
-```bash
-npm i @moon791017/neo-skills -g
-install-claude-skills
-```
-
-### 2. Gemini CLI 安裝方式
+### 🛠️ Gemini CLI
 
 ```bash
 gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
 
+### 🤖 Claude Code
+
+| 說明 | 執行指令 |
+| :--- | :--- |
+| Claude 內建外掛安裝  | `claude plugin add https://github.com/Benknightdark/neo-skills` |
+| 透過 `npx` 執行安裝腳本 | `npx @moon791017/neo-skills install-claude-skills` |
+| `npm` 全域安裝後執行 | `npm i @moon791017/neo-skills -g` <br> `install-claude-skills` |
 
 ## 💡 常用指令範例
 
-您可以直接對 AI 代理下達以下指令：
+您可以直接對 AI 代理下達以下指令或在對話中描述需求：
 
-*   **生成 Commit Message**：
-    > "幫我 commit 這些變更" 或 `/neo:git-commit`
-*   **設定 .NET CI Pipeline**：
-    > "幫這個專案設定 CI 流程" 或 `/neo:ci-dotnet`
-*   **部署至 IIS**：
-    > "我要部署到 IIS，站台名稱是 MySite" 或 `/neo:cd-iis`
-*   **釐清模糊需求**：
-    > "我想做一個電商網站" 或 `/neo:clarification`
-*   **程式碼審查**：
-    > "幫我 code review 剛才的修改" 或 `/neo:code-review`
-*   **生成 C# Interface**：
-    > "幫我針對這個 class 產生介面" 或 `/neo:dotnet-gen-interface`
+| 需求場景 | 推薦指令 / 咒語範例 |
+| :--- | :--- |
+| **生成 Commit Message** | `幫我 commit 變更` 或 `/neo:git-commit` |
+| **設定 .NET CI Pipeline** | `幫這個專案設定 CI 流程` 或 `/neo:ci-dotnet` |
+| **部署至 IIS** | `部署到 IIS，站台名稱為 MySite` 或 `/neo:cd-iis` |
+| **需求釐清與規格化** | `我想做一個電商網站` 或 `/neo:clarification` |
+| **全方位程式碼審查** | `幫我 code review 剛才的修改` 或 `/neo:code-review` |
+| **生成 C# Interface** | `幫我針對這個 class 產生介面` 或 `/neo:dotnet-gen-interface` |
+| **技術解析與架構洞察** | `分析這個專案的架構` 或 `/neo:explain` |
+
 
 ## 🛠 開發指南
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.43.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.43.1...neo-skills-v0.43.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* **ci:** 在 CI 中加入 npm install 以產生 package-lock.json ([0e80eb4](https://github.com/Benknightdark/neo-skills/commit/0e80eb4e9f969f96e37a1277f5ada5298b5828df))
+* 升級版本至 1.0.7 ([3523652](https://github.com/Benknightdark/neo-skills/commit/3523652d8a4f2ce079be9aababa58924e81a25ec))
+
 ## [0.43.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.43.0...neo-skills-v0.43.1) (2026-03-26)
 
 

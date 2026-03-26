@@ -4,6 +4,20 @@ import { join, resolve, dirname } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
+// 立即輸出日誌以確認腳本已啟動
+console.log('🏁 [Debug] 腳本已啟動...');
+
+// 捕捉全域錯誤
+process.on('uncaughtException', (err) => {
+  console.error('💥 [Fatal Error]:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('💥 [Unhandled Rejection]:', reason);
+  process.exit(1);
+});
+
 // 取得當前檔案路徑
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

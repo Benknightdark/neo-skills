@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.34.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.33.0...neo-skills-v0.34.0) (2026-03-26)
+
+
+### Features
+
+* **mcp:** 新增網頁擷取工具並移除 Git Commit 工具 ([b43a90d](https://github.com/Benknightdark/neo-skills/commit/b43a90d53ced62ae30114839236a449a5ae8d3c4))
+
 ## [0.33.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.32.0...neo-skills-v0.33.0) (2026-03-24)
 
 

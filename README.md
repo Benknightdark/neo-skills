@@ -76,34 +76,23 @@
 claude plugin add https://github.com/Benknightdark/neo-skills
 ```
 
-#### 方案 B：透過 git clone 後手動安裝
+#### 方案 B：透過 npx 安裝
 ```bash
-# 使用 npx 直接執行安裝指令
-git clone https://github.com/Benknightdark/neo-skills.git
-cd neo-skills
-npm install
-node ./bin/install-claude-skills.js
+npx @moon791017/neo-skills install-claude-skills
 ```
 
-### 2. Gemini CLI 安裝方式 (需安裝 Bun)
-此方式會執行 MCP Server，因此需要先建置專案：
+#### 方案 C：透過 npm 安裝
+```bash
+npm i @moon791017/neo-skills -g
+neo-install-claude-skills
+```
+
+### 2. Gemini CLI 安裝方式
+
 ```bash
 gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
 
-或在配置檔案中手動進行本地路徑配置：
-
-```json
-{
-  "name": "neo-skills",
-  "mcpServers": {
-    "neo-skills": {
-      "command": "node",
-      "args": ["${extensionPath}/dist/server.js"]
-    }
-  }
-}
-```
 
 ## 💡 常用指令範例
 

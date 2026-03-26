@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.36.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.35.0...neo-skills-v0.36.0) (2026-03-26)
+
+
+### Features
+
+* add claude install ([562f1ba](https://github.com/Benknightdark/neo-skills/commit/562f1badced6464dd3ffe008a34713b258ea646e))
+* 調整git-commit.toml檔 ([b429974](https://github.com/Benknightdark/neo-skills/commit/b429974f7730836810db45a68d62269f8b16616b))
+* 調整git-commit.toml檔 ([7099c69](https://github.com/Benknightdark/neo-skills/commit/7099c69e435d6d78a3013f9a54bf38a49d2283ba))
+
 ## [0.35.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.34.0...neo-skills-v0.35.0) (2026-03-26)
 
 

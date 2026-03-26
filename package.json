@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
   "bin": {
-    "install-claude-skills": "bin/install-claude-skills.js"
+    "install-claude-skills": "./bin/install-claude-skills.js"
   },
   "scripts": {
     "build": "bun run clean && bun run build:server && bun run build:hooks",

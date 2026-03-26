@@ -3,14 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
-  "bin": {
-    "install-claude-skills": "bin/install-claude-skills.js"
-  },
-  "files": [
-    "bin/",
-    "skills/",
-    "dist/"
-  ],
   "scripts": {
     "build": "bun run clean && bun run build:server && bun run build:hooks",
     "build:server": "bun build src/server.ts --outdir dist --target node --minify",

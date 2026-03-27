@@ -77,19 +77,19 @@ gemini extension install https://github.com/Benknightdark/neo-skills --auto-upda
 ### Claude Code
 
 ```bash
-npx @moon791017/neo-skills install-claude-skills
+npx -p @moon791017/neo-skills install-claude-skills
 ```
 
 ### Copilot CLI
 
 ```bash
-npx @moon791017/neo-skills install-copilot-cli-skills
+npx -p @moon791017/neo-skills install-copilot-skills
 ```
 
 ### 安裝全部AI Agent技能
 
 ```bash
-npx @moon791017/neo-skills install-all-skills
+npx -p @moon791017/neo-skills install-skills
 ```
 
 

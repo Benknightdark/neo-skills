@@ -1,11 +1,13 @@
 {
   "name": "@moon791017/neo-skills",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
   "bin": {
-    "neo-skills": "./bin/install-claude-skills.js",
-    "install-claude-skills": "./bin/install-claude-skills.js"
+    "neo-skills": "./bin/install-skills.js",
+    "install-skills": "./bin/install-skills.js",
+    "install-claude-skills": "./bin/install-claude-skills.js",
+    "install-copilot-skills": "./bin/install-copilot-skills.js"
   },
   "files": [
     "dist",

@@ -1,6 +1,6 @@
 {
   "name": "@moon791017/neo-skills",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
   "bin": {

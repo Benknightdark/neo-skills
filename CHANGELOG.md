@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.44.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.43.3...neo-skills-v0.44.0) (2026-03-27)
+
+
+### Features
+
+* 新增copilot cli skill ([ca156a5](https://github.com/Benknightdark/neo-skills/commit/ca156a5bc98114209b1d2dfa33a88c9a1d669f42))
+
 ## [0.43.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.43.2...neo-skills-v0.43.3) (2026-03-26)
 
 

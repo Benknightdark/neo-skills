@@ -5,6 +5,7 @@
  * 1. 在 AGENTS 加入設定
  * 2. 建立 bin/install-{key}-skills.js（複製任一現有檔案，改 named export 即可）
  */
+import { realpathSync } from 'node:fs';
 import { cp, mkdir, access } from 'node:fs/promises';
 import { join, resolve, dirname, basename } from 'node:path';
 import { homedir } from 'node:os';
@@ -112,7 +113,11 @@ export function createInstallerFromFile(importMetaUrl) {
  */
 export function runAsMain(installFn, callerUrl) {
   const callerPath = fileURLToPath(callerUrl);
-  const isMain = process.argv[1] && resolve(process.argv[1]) === resolve(callerPath);
+  const argvPath = process.argv[1];
+  const isMain = Boolean(argvPath) && (
+    resolve(argvPath) === resolve(callerPath) ||
+    realpathSync.native(resolve(argvPath)) === realpathSync.native(resolve(callerPath))
+  );
   if (!isMain) return;
 
   const key = extractAgentKey(callerUrl);

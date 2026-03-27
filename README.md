@@ -68,19 +68,27 @@
 
 本套件支援多種 AI Agent 環境。請依據您的 CLI 工具執行對應指令：
 
-### 🛠️ Gemini CLI
+###  Gemini CLI
 
 ```bash
 gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
 
-### 🤖 Claude Code
+###  Claude Code
 
 | 說明 | 執行指令 |
 | :--- | :--- |
 | Claude 內建外掛安裝  | `claude plugin add https://github.com/Benknightdark/neo-skills` |
 | 透過 `npx` 執行安裝腳本 | `npx @moon791017/neo-skills install-claude-skills` |
 | `npm` 全域安裝後執行 | `npm i @moon791017/neo-skills -g` <br> `install-claude-skills` |
+
+###  Copilot CLI
+
+| 說明 | 執行指令 |
+| :--- | :--- |
+| 透過 npx 執行安裝腳本	 | `npx @moon791017/neo-skills install-copilot-skills` |
+
+如需一次安裝所有 agent，可改用 `install-skills` 入口。
 
 ## 💡 常用指令範例
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.45.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.44.0...neo-skills-v0.45.0) (2026-03-27)
+
+
+### Features
+
+* 新增 Copilot 指導文件，包含回應風格與開發流程 ([8b9e1bb](https://github.com/Benknightdark/neo-skills/commit/8b9e1bb2a6dc6be4f18b13a76437ad456cfbdb58))
+
+
+### Bug Fixes
+
+* **readme:** 修正 npx 安裝指令，使用 -p 旗標並修正 bin 名稱 ([fcfec0d](https://github.com/Benknightdark/neo-skills/commit/fcfec0d12b5a154f6adc50f5569e0c016097e3c9))
+* 增加檔案路徑解析以支援符號連結的主程式檢查 ([6bbd1fe](https://github.com/Benknightdark/neo-skills/commit/6bbd1fe9dfeda0b3ba2042b8cb11486a98daffb2))
+* 更新版本號至 1.0.10 ([b395195](https://github.com/Benknightdark/neo-skills/commit/b395195893065130be99f741ee13fbc457b093c3))
+* 更新版本號至 1.0.10 ([f41c5cb](https://github.com/Benknightdark/neo-skills/commit/f41c5cbe591859ed73f87a2f7215994ba5302c3f))
+
 ## [0.44.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.43.3...neo-skills-v0.44.0) (2026-03-27)
 
 

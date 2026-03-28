@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.46.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.45.1...neo-skills-v0.46.0) (2026-03-28)
+
+
+### Features
+
+* 新增 Codex CLI 技能安裝程式並更新 README 文件 ([f5e439f](https://github.com/Benknightdark/neo-skills/commit/f5e439f3510aa6f0a644e8f33125804eb15cd654))
+
+
+### Bug Fixes
+
+* 更新版本號至 1.0.13 ([9383eea](https://github.com/Benknightdark/neo-skills/commit/9383eea1a736f71900b8f312e2097f6578b87988))
+
 ## [0.45.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.45.0...neo-skills-v0.45.1) (2026-03-28)
 
 

@@ -43,6 +43,7 @@
     "@types/bun": "latest",
     "@types/node": "^25.5.0"
   },
+  "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.28.0",
     "axios": "^1.13.6",

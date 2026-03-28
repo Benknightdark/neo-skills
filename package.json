@@ -1,6 +1,6 @@
 {
   "name": "@moon791017/neo-skills",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
   "homepage": "https://neo-blog-iota.vercel.app/",
@@ -14,7 +14,8 @@
     "neo-skills": "./bin/install-skills.js",
     "install-skills": "./bin/install-skills.js",
     "install-claude-skills": "./bin/install-claude-skills.js",
-    "install-copilot-skills": "./bin/install-copilot-skills.js"
+    "install-copilot-skills": "./bin/install-copilot-skills.js",
+    "install-codex-skills": "./bin/install-codex-skills.js"
   },
   "files": [
     "dist",

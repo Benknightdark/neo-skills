@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.46.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.1...neo-skills-v0.46.2) (2026-03-28)
+
+
+### Bug Fixes
+
+* **hooks:** 精準化 secret-guard 的 .env pattern 並改善 stdin 讀取與日誌 ([88063b8](https://github.com/Benknightdark/neo-skills/commit/88063b812abe4d64fc4f45f05097dbcb7ce4fe05))
+* **hooks:** 精準化 secret-guard 的 .env pattern 並改善 stdin 讀取與日誌 ([640ae86](https://github.com/Benknightdark/neo-skills/commit/640ae86710bbd7c309f4c9fcb6e0294d4d87461a))
+
 ## [0.46.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.0...neo-skills-v0.46.1) (2026-03-28)
 
 

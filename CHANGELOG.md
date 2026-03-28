@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.46.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.0...neo-skills-v0.46.1) (2026-03-28)
+
+
+### Bug Fixes
+
+* **bin:** 補上 install-codex-skills 的 bin 進入點 ([89c726f](https://github.com/Benknightdark/neo-skills/commit/89c726f9cec76ef709790a3ade7628c02ea3aea0))
+* **bin:** 補上 install-codex-skills 的 bin 進入點 ([d7f6c1a](https://github.com/Benknightdark/neo-skills/commit/d7f6c1a0ac23506568ac3bd8139829f7701c3522))
+
 ## [0.46.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.45.1...neo-skills-v0.46.0) (2026-03-28)
 
 

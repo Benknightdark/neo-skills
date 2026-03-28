@@ -86,6 +86,12 @@ npx -p @moon791017/neo-skills install-claude-skills
 npx -p @moon791017/neo-skills install-copilot-skills
 ```
 
+### Codex CLI
+
+```bash
+npx -p @moon791017/neo-skills install-codex-skills
+```
+
 ### 安裝全部AI Agent技能
 
 ```bash

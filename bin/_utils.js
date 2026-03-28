@@ -31,6 +31,11 @@ export const AGENTS = {
     targetSubDir: '.copilot/skills',
     hint: '請確保您的 GitHub Copilot CLI 已指向此目錄。',
   },
+  codex: {
+    name: 'Codex',
+    targetSubDir: '.codex/skills',
+    hint: '請確保您的 Codex CLI 已指向此目錄。',
+  },
   // gemini: {
   //   name: 'Gemini',
   //   targetSubDir: '.gemini/skills',

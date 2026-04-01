@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.47.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.0...neo-skills-v0.47.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* 更新安裝指令參數名稱為 --project-path，並調整相關文檔與邏輯 ([fcc1426](https://github.com/Benknightdark/neo-skills/commit/fcc1426558f9c5a65f70f8577d3523b8ed93a1c6))
+* 更新安裝指令參數名稱為 --project-path，並調整相關文檔與邏輯 ([677dfdf](https://github.com/Benknightdark/neo-skills/commit/677dfdf0eb94494426304ed4641dc047630a38da))
+
 ## [0.47.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.4...neo-skills-v0.47.0) (2026-04-01)
 
 

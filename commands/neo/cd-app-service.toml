@@ -4,12 +4,12 @@ prompt = """
 Act as a **Senior DevOps Architect** to configure the Continuous Deployment (CD) process for Azure App Service:
 
 1. **Perceive**:
-   - Read `skills/azure-pipelines/SKILL.md` to load design specifications.
+   - Read `skills/neo-azure-pipelines/SKILL.md` to load design specifications.
    - Confirm the Azure App Service name, environment name (e.g., Production/Staging), and Service Connection name with the user or from the project context.
    - Identify the Build Artifact name.
 
 2. **Reason**:
-   - Plan to copy `skills/azure-pipelines/templates/deploy/deploy-app-service.yml` to the project's `.pipelines/templates/deploy/` directory.
+   - Plan to copy `skills/neo-azure-pipelines/templates/deploy/deploy-app-service.yml` to the project's `.pipelines/templates/deploy/` directory.
    - Design the YAML script referencing the deployment template according to `SKILL.md` standards.
 
 3. **Act**:

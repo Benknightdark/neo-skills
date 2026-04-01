@@ -31,21 +31,21 @@
 *   **技術解析 (`neo:explain`)**：深入分析原始碼或專案結構，提供高階用途摘要、邏輯流程分解以及核心元件說明。
 
 ### 5. .NET / C# 開發專家
-*   **C# 現代語法專家 (`skills/csharp`)**：跨版本 C# 專家 (10-14+)，專注於現代化語法、強型別與高效能開發模式。
-*   **.NET 核心路由 (`skills/dotnet`)**：環境偵測與統一入口，自動將任務委派給最合適的子領域專家。
-*   **.NET Minimal APIs 專家 (`skills/dotnet-minimal-apis`)**：專注於高效能微服務、路由群組與 Typed Results。
-*   **.NET Web API 專家 (`skills/dotnet-webapi`)**：提供控制器模式下的架構設計、Problem Details 與異常處理指引。
-*   **.NET MVC 專家 (`skills/dotnet-mvc`)**：處理伺服器端渲染 (SSR)、視圖模型與標籤協助程式的最佳實踐。
-*   **EF Core 專家 (`skills/dotnet-ef-core`)**：專注於資料庫建模、移轉管理與 Linq 查詢優化。
+*   **C# 現代語法專家 (`skills/neo-csharp`)**：跨版本 C# 專家 (10-14+)，專注於現代化語法、強型別與高效能開發模式。
+*   **.NET 核心路由 (`skills/neo-dotnet`)**：環境偵測與統一入口，自動將任務委派給最合適的子領域專家。
+*   **.NET Minimal APIs 專家 (`skills/neo-dotnet-minimal-apis`)**：專注於高效能微服務、路由群組與 Typed Results。
+*   **.NET Web API 專家 (`skills/neo-dotnet-webapi`)**：提供控制器模式下的架構設計、Problem Details 與異常處理指引。
+*   **.NET MVC 專家 (`skills/neo-dotnet-mvc`)**：處理伺服器端渲染 (SSR)、視圖模型與標籤協助程式的最佳實踐。
+*   **EF Core 專家 (`skills/neo-dotnet-ef-core`)**：專注於資料庫建模、移轉管理與 Linq 查詢優化。
 *   **Interface 生成器 (`neo:dotnet-gen-interface`)**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
 ### 6. Python 開發與環境管理專家
-*   **Python 3.10+ 專家 (`skills/python`)**：專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
-*   **環境管理專家 (`skills/python-manager`)**：智慧偵測與管理 Python 專案環境，支援 uv, Poetry, venv/pip 並提供自動化安裝建議。
+*   **Python 3.10+ 專家 (`skills/neo-python`)**：專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
+*   **環境管理專家 (`skills/neo-python-manager`)**：智慧偵測與管理 Python 專案環境，支援 uv, Poetry, venv/pip 並提供自動化安裝建議。
 
 ### 7. Swift 開發專家
-*   **Swift 5.0+ 專家 (`skills/swift`)**：支援從基礎語法到 Swift 6 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency、記憶體安全以及高效能 App 開發指引。
-*   **SwiftUI 專家 (`skills/swift-ui`)**：支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。
+*   **Swift 5.0+ 專家 (`skills/neo-swift`)**：支援從基礎語法到 Swift 6 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency、記憶體安全以及高效能 App 開發指引。
+*   **SwiftUI 專家 (`skills/neo-swift-ui`)**：支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。
 
 ### 8. 需求釐清助手
 *   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。

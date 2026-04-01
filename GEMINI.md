@@ -30,7 +30,7 @@ Each subdirectory represents a "Skill Module" containing expert knowledge.
 *   **Structure:**
     *   `SKILL.md`: The "Brain". Defines the **Perceive-Reason-Act** loop for the domain. It instructs the agent on how to analyze the environment and make decisions.
     *   `templates/`: The "Hands". A library of reusable assets that the agent should use instead of writing code from scratch.
-*   **Example:** `skills/azure-pipelines/` contains logic for designing CI/CD pipelines and templates for .NET builds, IIS deployments, etc.
+*   **Example:** `skills/neo-azure-pipelines/` contains logic for designing CI/CD pipelines and templates for .NET builds, IIS deployments, etc.
 
 ### 3. The Action Registry (`commands/`)
 Defines rigid, executable workflows triggered by the user.

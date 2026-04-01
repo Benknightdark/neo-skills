@@ -46,8 +46,8 @@ There are no tests (`test` script exits 0). Build output goes to `dist/`.
 
 ### Adding a new skill
 
-1. Create `skills/<name>/SKILL.md` with YAML front-matter (`name`, `description`, `category`) and Perceive-Reason-Act sections.
-2. Optionally add `skills/<name>/templates/` for reusable assets.
+1. Create `skills/neo-<name>/SKILL.md` with YAML front-matter (`name`, `description`, `category`) and Perceive-Reason-Act sections.
+2. Optionally add `skills/neo-<name>/templates/` for reusable assets.
 3. If the skill needs a user-invocable command, create `commands/neo/<name>.toml` with `description` and `prompt`.
 4. Register the prompt (and any tools) in `src/server.ts`, then rebuild.
 

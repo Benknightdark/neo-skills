@@ -11,7 +11,7 @@ The user has requested an explanation for:
 
 ## Process
 1. **Perceive**:
-   - Read and internalize the guidelines in `skills/explain/SKILL.md`.
+   - Read and internalize the guidelines in `skills/neo-explain/SKILL.md`.
    - Identify the target files, directories, or code segments from `{{args}}`.
    - If `{{args}}` is empty, analyze the current active file or project structure as context.
 
@@ -22,7 +22,7 @@ The user has requested an explanation for:
    - **Design Alignment**: Explain the implementation motivation from the perspective of design patterns.
 
 3. **Act**:
-   - Provide a structured explanation according to the guidelines in `skills/explain/SKILL.md`.
+   - Provide a structured explanation according to the guidelines in `skills/neo-explain/SKILL.md`.
    - **The output MUST be in Traditional Chinese (Taiwan).**
 
 ## Output Format

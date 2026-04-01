@@ -14,7 +14,7 @@ You must analyze this input and decide whether to ask clarifying questions or ge
 ## Operational Protocol (Perceive-Reason-Act)
 
 1. **Perceive (Context Awareness)**:
-   - **Read and internalize the guidelines in `skills/clarification/SKILL.md`.**
+   - **Read and internalize the guidelines in `skills/neo-clarification/SKILL.md`.**
    - Identify the professional domain context.
    - Extract confirmed objectives, constraints, and stakeholder information.
 
@@ -26,7 +26,7 @@ You must analyze this input and decide whether to ask clarifying questions or ge
      - **Phase 2 (Convergence)**: If information is sufficient for a specification.
 
 3. **Act (Execution Phase)**:
-   - Follow the execution phase rules and formatting defined in `skills/clarification/SKILL.md`.
+   - Follow the execution phase rules and formatting defined in `skills/neo-clarification/SKILL.md`.
    - **If Phase 1**: Output a maximum of 3 structured questions. Provide example options for each to reduce the user's cognitive load.
    - **If Phase 2**: Consolidate information and output a standardized requirement specification document.
 

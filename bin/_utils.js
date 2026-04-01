@@ -23,22 +23,22 @@ const sourceDir = join(packageRoot, 'skills');
 export const AGENTS = {
   claude: {
     name: 'Claude',
-    targetSubDir: '.claude/skills',
+    targetSubDir: '.claude/skills/neo-skills',
     hint: '請確保您的 Claude Desktop 或相關插件已指向此目錄。',
   },
   copilot: {
     name: 'Copilot',
-    targetSubDir: '.copilot/skills',
+    targetSubDir: '.copilot/skills/neo-skills',
     hint: '請確保您的 GitHub Copilot CLI 已指向此目錄。',
   },
   codex: {
     name: 'Codex',
-    targetSubDir: '.codex/skills',
+    targetSubDir: '.codex/skills/neo-skills',
     hint: '請確保您的 Codex CLI 已指向此目錄。',
   },
   // gemini: {
   //   name: 'Gemini',
-  //   targetSubDir: '.gemini/skills',
+  //   targetSubDir: '.gemini/skills/neo-skills',
   //   hint: '請確保您的 Gemini CLI 已指向此目錄。',
   // },
 };

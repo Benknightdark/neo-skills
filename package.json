@@ -35,7 +35,7 @@
     "start": "node dist/server.js",
     "dev": "bun src/server.ts",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "node --test"
   },
   "devDependencies": {
     "@types/bun": "latest",

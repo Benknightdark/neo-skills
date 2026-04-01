@@ -74,42 +74,36 @@
 gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
 
-### Claude Code
+### 安裝指定 AI Agent 技能
+
+使用 `--ai-agent` 指定要安裝的 agent（可用值：`claude`、`copilot`、`codex`）：
 
 ```bash
-npx -p @moon791017/neo-skills install-claude-skills
-```
-
-### Copilot CLI
-
-```bash
-npx -p @moon791017/neo-skills install-copilot-skills
-```
-
-### Codex CLI
-
-```bash
-npx -p @moon791017/neo-skills install-codex-skills
+npx -p @moon791017/neo-skills install-skills --ai-agent claude
+npx -p @moon791017/neo-skills install-skills --ai-agent copilot
+npx -p @moon791017/neo-skills install-skills --ai-agent codex
 ```
 
 ### 安裝至指定專案
 
-Claude Code、Copilot CLI、Codex CLI 三種安裝指令皆支援 `--project-path` 參數，可將技能安裝至指定專案目錄。技能子目錄會自動附加：
+搭配 `--project-path` 可將技能安裝至指定專案目錄（技能子目錄會自動附加）：
 
 ```bash
 # 安裝至 /my/project/.claude/skills
-npx -p @moon791017/neo-skills install-claude-skills --project-path /my/project
+npx -p @moon791017/neo-skills install-skills --ai-agent claude --project-path /my/project
 
 # 安裝至 /my/project/.github/skills
-npx -p @moon791017/neo-skills install-copilot-skills --project-path /my/project
+npx -p @moon791017/neo-skills install-skills --ai-agent copilot --project-path /my/project
 
 # 安裝至 /my/project/.codex/skills
-npx -p @moon791017/neo-skills install-codex-skills --project-path /my/project
+npx -p @moon791017/neo-skills install-skills --ai-agent codex --project-path /my/project
 ```
 
 若未指定 `--project-path`，則安裝至全域路徑（`~/.claude/skills`、`~/.copilot/skills`、`~/.codex/skills`）。
 
-### 安裝全部AI Agent技能
+### 安裝全部 AI Agent 技能
+
+不帶 `--ai-agent` 即可一次安裝全部：
 
 ```bash
 npx -p @moon791017/neo-skills install-skills

@@ -12,10 +12,7 @@
   ],
   "bin": {
     "neo-skills": "./bin/install-skills.js",
-    "install-skills": "./bin/install-skills.js",
-    "install-claude-skills": "./bin/install-claude-skills.js",
-    "install-copilot-skills": "./bin/install-copilot-skills.js",
-    "install-codex-skills": "./bin/install-codex-skills.js"
+    "install-skills": "./bin/install-skills.js"
   },
   "files": [
     "dist",

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.46.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.2...neo-skills-v0.46.3) (2026-04-01)
+
+
+### Bug Fixes
+
+* 更新 agent 目錄路徑至 .neo-skills 並升級版本號至 1.0.16 ([e79e6c6](https://github.com/Benknightdark/neo-skills/commit/e79e6c601923792f243e03ce337f7e4c0ee2823c))
+* 更新 agent 目錄路徑至 .neo-skills 並升級版本號至 1.0.16 ([6e925dc](https://github.com/Benknightdark/neo-skills/commit/6e925dc75cfa7c1312445427c5196ce23a0a6593))
+
 ## [0.46.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.1...neo-skills-v0.46.2) (2026-03-28)
 
 

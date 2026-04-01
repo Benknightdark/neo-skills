@@ -1,24 +1,17 @@
 /**
  * Shared utilities for agent skill installers.
- *
- * 新增 AI agent 只需兩步：
- * 1. 在 AGENTS 加入設定
- * 2. 建立 bin/install-{key}-skills.js（複製任一現有檔案，改 named export 即可）
  */
-import { realpathSync } from 'node:fs';
 import { cp, mkdir, access } from 'node:fs/promises';
-import { join, resolve, dirname, basename } from 'node:path';
+import { join, resolve, dirname } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolve(__dirname, '..');
 const sourceDir = join(packageRoot, 'skills');
 
 /**
  * Agent 設定中心 — 所有 agent 的安裝參數集中管理於此。
- * key 須與檔名 install-{key}-skills.js 一致。
  *
  * 各欄位說明：
  *   name        — 顯示用名稱，用於 CLI 輸出的 log 標籤。
@@ -45,32 +38,7 @@ export const AGENTS = {
     homePath: '.codex/skills',
     hint: '請確保您的 Codex CLI 已指向此目錄。',
   },
-  // gemini: {
-  //   name: 'Gemini',
-  //   homePath: '.gemini/skills/neo-skills',
-  //   hint: '請確保您的 Gemini CLI 已指向此目錄。',
-  // },
 };
-
-/**
- * 從 CLI 參數解析 --project-path 值
- * @returns {string | undefined}
- */
-function parseProjectPath() {
-  const idx = process.argv.indexOf('--project-path');
-  if (idx === -1 || idx + 1 >= process.argv.length) return undefined;
-  return process.argv[idx + 1];
-}
-
-/**
- * 從檔名解析 agent key: install-{key}-skills.js → key
- */
-function extractAgentKey(importMetaUrl) {
-  const filename = basename(fileURLToPath(importMetaUrl), '.js');
-  const match = filename.match(/^install-(.+)-skills$/);
-  if (!match) throw new Error(`無法從檔名 "${filename}" 解析 agent key`);
-  return match[1];
-}
 
 /**
  * 根據 agent config 建立 installer 函式。
@@ -85,8 +53,8 @@ function extractAgentKey(importMetaUrl) {
  *   3. 最終安裝路徑 = baseDir + subDir
  *
  * 範例（以 Copilot 為例）：
- *   預設:         ~/.copilot/skills     （homedir + homePath）
- *   --project-path /my/project:  /my/project/.github/skills （targetPath + projectPath）
+ *   預設:                          ~/.copilot/skills              （homedir + homePath）
+ *   --project-path /my/project:   /my/project/.github/skills     （projectPath + projectPath）
  *
  * @param {object} config - AGENTS 中的 agent 設定物件
  * @param {string} [targetPath] - 使用者透過 --project-path 指定的自訂根目錄
@@ -137,56 +105,4 @@ export function createInstaller({ name: agentName, homePath, projectPath, hint }
     if (hint) console.log(`💡 提示: ${hint}`);
     return { success: true, message: msg };
   };
-}
-
-/**
- * 從呼叫端的檔名自動解析 agent，建立對應的 installer。
- * @param {string} importMetaUrl - 呼叫端的 import.meta.url
- * @param {string} [targetPath] - 使用者透過 --project-path 指定的自訂路徑
- */
-export function createInstallerFromFile(importMetaUrl, targetPath) {
-  const key = extractAgentKey(importMetaUrl);
-  const config = AGENTS[key];
-  if (!config) throw new Error(`未知的 agent: "${key}"。請在 _utils.js 的 AGENTS 中註冊。`);
-  return createInstaller(config, targetPath);
-}
-
-/**
- * 當腳本被直接執行時（非 import），自動呼叫 installer。
- * Agent 名稱從檔名自動推導。
- * @param {() => Promise<{ success: boolean, message: string }>} installFn
- * @param {string} callerUrl - 呼叫端的 import.meta.url
- */
-export function runAsMain(installFn, callerUrl) {
-  const callerPath = fileURLToPath(callerUrl);
-  const argvPath = process.argv[1];
-  const isMain = Boolean(argvPath) && (
-    resolve(argvPath) === resolve(callerPath) ||
-    realpathSync.native(resolve(argvPath)) === realpathSync.native(resolve(callerPath))
-  );
-  if (!isMain) return;
-
-  const key = extractAgentKey(callerUrl);
-  const agentName = AGENTS[key]?.name || key;
-
-  process.on('uncaughtException', (err) => {
-    console.error('💥 [Fatal Error]:', err);
-    process.exit(1);
-  });
-  process.on('unhandledRejection', (reason) => {
-    console.error('💥 [Unhandled Rejection]:', reason);
-    process.exit(1);
-  });
-
-  const targetPath = parseProjectPath();
-  const actualInstallFn = targetPath
-    ? createInstallerFromFile(callerUrl, targetPath)
-    : installFn;
-
-  actualInstallFn().then((result) => {
-    if (!result.success) process.exit(1);
-  }).catch((error) => {
-    console.error(`❌ [${agentName}] 安裝失敗:`, error.message || error);
-    process.exit(1);
-  });
 }

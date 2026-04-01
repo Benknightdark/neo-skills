@@ -12,10 +12,7 @@
   ],
   "bin": {
     "neo-skills": "./bin/install-skills.js",
-    "install-skills": "./bin/install-skills.js",
-    "install-claude-skills": "./bin/install-claude-skills.js",
-    "install-copilot-skills": "./bin/install-copilot-skills.js",
-    "install-codex-skills": "./bin/install-codex-skills.js"
+    "install-skills": "./bin/install-skills.js"
   },
   "files": [
     "dist",
@@ -38,7 +35,7 @@
     "start": "node dist/server.js",
     "dev": "bun src/server.ts",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "node --test"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.47.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.4...neo-skills-v0.47.0) (2026-04-01)
+
+
+### Features
+
+* 支援自訂安裝根目錄，新增 --target-path 參數解析功能並更新版本號至 1.0.18 ([86892d3](https://github.com/Benknightdark/neo-skills/commit/86892d3eecaf6c4019212cb4edd97662f877fe08))
+
 ## [0.46.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.3...neo-skills-v0.46.4) (2026-04-01)
 
 

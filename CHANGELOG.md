@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.47.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.1...neo-skills-v0.47.2) (2026-04-01)
+
+
+### Bug Fixes
+
+* add test ([104e571](https://github.com/Benknightdark/neo-skills/commit/104e571b44c7bf26766cc0b56e681dd205f25eba))
+
 ## [0.47.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.0...neo-skills-v0.47.1) (2026-04-01)
 
 

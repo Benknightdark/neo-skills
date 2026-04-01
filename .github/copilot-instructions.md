@@ -59,8 +59,8 @@ The build has three steps defined in `package.json`:
 
 ### Adding a new skill
 
-1. Create `skills/<name>/SKILL.md` with YAML front-matter and Perceive-Reason-Act sections.
-2. Optionally add `skills/<name>/templates/` and/or `skills/<name>/reference/`.
+1. Create `skills/neo-<name>/SKILL.md` with YAML front-matter and Perceive-Reason-Act sections.
+2. Optionally add `skills/neo-<name>/templates/` and/or `skills/neo-<name>/reference/`.
 3. If the skill needs a slash command, create `commands/neo/<name>.toml` with `description` and `prompt` (use `{{args}}` for user input).
 4. If the skill needs an MCP Tool or Prompt, register it in `src/server.ts`, then rebuild.
 
@@ -68,7 +68,7 @@ The build has three steps defined in `package.json`:
 
 ```markdown
 ---
-name: skill-name
+name: neo-skill-name
 description: One-line description
 category: devops | development | analysis | ...
 ---

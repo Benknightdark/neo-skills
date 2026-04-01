@@ -10,7 +10,7 @@ The user has provided a C# Class, and you need to generate an Interface for it.
 Target Content: {{args}}
 
 ## Step 1: Perceive & Reason (Generation Phase)
-1. Refer to the specifications in `skills/csharp-interface-generator/SKILL.md`.
+1. Refer to the specifications in `skills/neo-csharp-interface-generator/SKILL.md`.
 2. **Strict Filtering**:
    - Extract only `public` properties.
    - **Absolutely no** `virtual` properties.

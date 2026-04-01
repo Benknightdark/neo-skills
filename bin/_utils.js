@@ -44,6 +44,16 @@ export const AGENTS = {
 };
 
 /**
+ * 從 CLI 參數解析 --target-path 值
+ * @returns {string | undefined}
+ */
+function parseTargetPath() {
+  const idx = process.argv.indexOf('--target-path');
+  if (idx === -1 || idx + 1 >= process.argv.length) return undefined;
+  return process.argv[idx + 1];
+}
+
+/**
  * 從檔名解析 agent key: install-{key}-skills.js → key
  */
 function extractAgentKey(importMetaUrl) {
@@ -55,8 +65,10 @@ function extractAgentKey(importMetaUrl) {
 
 /**
  * 根據 agent config 建立 installer 函式
+ * @param {object} config - agent 設定
+ * @param {string} [targetPath] - 使用者透過 --target-path 指定的自訂路徑
  */
-export function createInstaller({ name: agentName, targetSubDir, hint }) {
+export function createInstaller({ name: agentName, targetSubDir, hint }, targetPath) {
   return async function install() {
     console.log(`🚀 [${agentName}] 開始同步 Neo Skills...`);
 
@@ -68,7 +80,8 @@ export function createInstaller({ name: agentName, targetSubDir, hint }) {
       return { success: false, message: msg };
     }
 
-    const targetSkillsDir = join(homedir(), targetSubDir);
+    const baseDir = targetPath ? resolve(targetPath) : homedir();
+    const targetSkillsDir = join(baseDir, targetSubDir);
 
     console.log(`📁 來源路徑: ${sourceDir}`);
     console.log(`🎯 目標路徑: ${targetSkillsDir}`);
@@ -92,7 +105,8 @@ export function createInstaller({ name: agentName, targetSubDir, hint }) {
       return { success: true, message: '沒有任何檔案被複製' };
     }
 
-    const msg = `已同步 ${copyCount} 個檔案/資料夾至 ${targetSubDir}`;
+    const displayPath = targetPath || targetSubDir;
+    const msg = `已同步 ${copyCount} 個檔案/資料夾至 ${displayPath}`;
     console.log(`✅ [${agentName}] 安裝成功！${msg}`);
     if (hint) console.log(`💡 提示: ${hint}`);
     return { success: true, message: msg };
@@ -102,12 +116,13 @@ export function createInstaller({ name: agentName, targetSubDir, hint }) {
 /**
  * 從呼叫端的檔名自動解析 agent，建立對應的 installer。
  * @param {string} importMetaUrl - 呼叫端的 import.meta.url
+ * @param {string} [targetPath] - 使用者透過 --target-path 指定的自訂路徑
  */
-export function createInstallerFromFile(importMetaUrl) {
+export function createInstallerFromFile(importMetaUrl, targetPath) {
   const key = extractAgentKey(importMetaUrl);
   const config = AGENTS[key];
   if (!config) throw new Error(`未知的 agent: "${key}"。請在 _utils.js 的 AGENTS 中註冊。`);
-  return createInstaller(config);
+  return createInstaller(config, targetPath);
 }
 
 /**
@@ -137,7 +152,12 @@ export function runAsMain(installFn, callerUrl) {
     process.exit(1);
   });
 
-  installFn().then((result) => {
+  const targetPath = parseTargetPath();
+  const actualInstallFn = targetPath
+    ? createInstallerFromFile(callerUrl, targetPath)
+    : installFn;
+
+  actualInstallFn().then((result) => {
     if (!result.success) process.exit(1);
   }).catch((error) => {
     console.error(`❌ [${agentName}] 安裝失敗:`, error.message || error);

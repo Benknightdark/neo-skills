@@ -92,12 +92,28 @@ npx -p @moon791017/neo-skills install-copilot-skills
 npx -p @moon791017/neo-skills install-codex-skills
 ```
 
+### 自訂安裝根目錄
+
+Claude Code、Copilot CLI、Codex CLI 三種安裝指令皆支援 `--target-path` 參數，可指定安裝的根目錄（取代預設的 `$HOME`）。技能子目錄（如 `.claude/skills`）會自動附加：
+
+```bash
+# 安裝至 /my/project/.claude/skills
+npx -p @moon791017/neo-skills install-claude-skills --target-path /my/project
+
+# 安裝至 /my/project/.copilot/skills
+npx -p @moon791017/neo-skills install-copilot-skills --target-path /my/project
+
+# 安裝至 /my/project/.codex/skills
+npx -p @moon791017/neo-skills install-codex-skills --target-path /my/project
+```
+
+若未指定 `--target-path`，則使用預設根目錄 `$HOME`（即 `~/.claude/skills`、`~/.copilot/skills`、`~/.codex/skills`）。
+
 ### 安裝全部AI Agent技能
 
 ```bash
 npx -p @moon791017/neo-skills install-skills
 ```
-
 
 ## 💡 常用指令範例
 
@@ -112,7 +128,6 @@ npx -p @moon791017/neo-skills install-skills
 | **全方位程式碼審查** | `幫我 code review 剛才的修改` 或 `/neo:code-review` |
 | **生成 C# Interface** | `幫我針對這個 class 產生介面` 或 `/neo:dotnet-gen-interface` |
 | **技術解析與架構洞察** | `分析這個專案的架構` 或 `/neo:explain` |
-
 
 ## 🛠 開發指南
 

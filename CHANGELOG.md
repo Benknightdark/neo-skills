@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.47.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.2...neo-skills-v0.47.3) (2026-04-01)
+
+
+### Bug Fixes
+
+* 更新版本號至 1.0.20 ([827d233](https://github.com/Benknightdark/neo-skills/commit/827d233a62c49e842245b587b3a1781c2554147a))
+* 更新版本號至 1.0.20 ([a95793f](https://github.com/Benknightdark/neo-skills/commit/a95793f41a95cff46408889917dbc502d70e6eb7))
+
 ## [0.47.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.1...neo-skills-v0.47.2) (2026-04-01)
 
 

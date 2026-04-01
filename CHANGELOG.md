@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.46.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.3...neo-skills-v0.46.4) (2026-04-01)
+
+
+### Bug Fixes
+
+* 調整skill名稱 ([6b64181](https://github.com/Benknightdark/neo-skills/commit/6b641815f61366bbb5584683a8427abd4bd83e30))
+
 ## [0.46.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.46.2...neo-skills-v0.46.3) (2026-04-01)
 
 

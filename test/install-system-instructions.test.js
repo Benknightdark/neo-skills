@@ -27,10 +27,11 @@ function runInstall(args) {
 
 // ── 參數驗證 ──
 
-test('缺少 --ai-agent 回傳錯誤', () => {
-  const result = runInstall(['--instructions', 'technical-co-founder']);
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /缺少必填參數 --ai-agent/);
+test('省略 --ai-agent 時安裝至全部 agent', async (t) => {
+  const dir = await withTempDir(t);
+  const result = runInstall(['--instructions', 'technical-co-founder', '--project-path', dir]);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /全部安裝完成/);
 });
 
 test('未知 agent 回傳錯誤', () => {

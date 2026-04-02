@@ -144,15 +144,15 @@ npx -p @moon791017/neo-skills install-skills -y
 **語法：**
 
 ```
-install-system-instructions --ai-agent <name> --instructions <key> [--project-path <path>]
+install-system-instructions --instructions <key> [--ai-agent <name>] [--project-path <path>]
 ```
 
 **參數：**
 
 | 參數 | 必填 | 說明 |
 | :--- | :---: | :--- |
-| `--ai-agent <name>` | ✅ | 指定目標 Agent（`claude` / `copilot` / `codex`）。 |
 | `--instructions <key>` | ✅ | 指定要安裝的系統提示詞（見下方種類表）。 |
+| `--ai-agent <name>` | 否 | 指定目標 Agent（`claude` / `copilot` / `codex`）。省略時安裝至全部。 |
 | `--project-path <path>` | 否 | 指定專案根目錄。省略時安裝至 `$HOME` 全域路徑。 |
 
 **指導檔路徑對照：**
@@ -172,6 +172,14 @@ install-system-instructions --ai-agent <name> --instructions <key> [--project-pa
 **範例：**
 
 ```bash
+# 一次安裝至全部 Agent 的全域指導檔
+npx -p @moon791017/neo-skills install-system-instructions \
+  --instructions technical-co-founder -y
+
+# 安裝至指定 Agent 的全域指導檔 (~/.claude/CLAUDE.md)
+npx -p @moon791017/neo-skills install-system-instructions \
+  --ai-agent claude --instructions technical-co-founder -y
+
 # 安裝至專案的 CLAUDE.md
 npx -p @moon791017/neo-skills install-system-instructions \
   --ai-agent claude --instructions technical-co-founder --project-path /my/project -y
@@ -179,10 +187,6 @@ npx -p @moon791017/neo-skills install-system-instructions \
 # 安裝至專案的 .github/copilot-instructions.md
 npx -p @moon791017/neo-skills install-system-instructions \
   --ai-agent copilot --instructions technical-co-founder --project-path /my/project -y
-
-# 安裝至全域 (~/.claude/CLAUDE.md)
-npx -p @moon791017/neo-skills install-system-instructions \
-  --ai-agent claude --instructions technical-co-founder -y
 ```
 
 > **💡** 重複執行相同指令不會重複寫入，系統會自動偵測並跳過已安裝的提示詞。

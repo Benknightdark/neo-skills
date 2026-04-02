@@ -3,11 +3,13 @@
  * Neo Skills — 系統提示詞安裝程式
  *
  * 用法：
+ *   install-system-instructions --instructions technical-co-founder
  *   install-system-instructions --ai-agent claude --instructions technical-co-founder
  *   install-system-instructions --ai-agent copilot --instructions technical-co-founder --project-path .
  *
  * 參數：
- *   --ai-agent <name>         指定目標 AI Agent（可用值見 _utils.js 的 AGENTS）。必填。
+ *   --ai-agent <name>         指定目標 AI Agent（可用值見 _utils.js 的 AGENTS）。
+ *                              省略時安裝至全部已註冊 agent。
  *   --instructions <key>      指定要安裝的系統提示詞（可用值見 _system-instructions.js 的 INSTRUCTIONS）。必填。
  *   --project-path <path>     指定專案根目錄作為安裝基底（取代 $HOME）。省略時安裝至全域路徑。
  */
@@ -64,31 +66,72 @@ process.on('unhandledRejection', (reason) => {
   process.exit(1);
 });
 
+/**
+ * 對單一 agent 執行系統提示詞安裝。
+ *
+ * @param {string} agentKey - AGENTS 中的 key
+ * @param {object} agentConfig - AGENTS[agentKey]
+ * @param {string} instructionsKey - INSTRUCTIONS 中的 key
+ * @param {object} instruction - INSTRUCTIONS[instructionsKey]
+ * @param {string | undefined} projectPath - 使用者指定的專案路徑
+ * @returns {Promise<{success: boolean, message: string}>}
+ */
+async function installForAgent(agentKey, agentConfig, instructionsKey, instruction, projectPath) {
+  if (!agentConfig.instructionFile) {
+    const msg = `agent "${agentKey}" 未設定 instructionFile，跳過。`;
+    console.warn(`⚠️ ${msg}`);
+    return { success: true, message: msg };
+  }
+
+  const { instructionFile } = agentConfig;
+  const baseDir = projectPath ? resolve(projectPath) : homedir();
+  const subPath = projectPath && instructionFile.projectPath
+    ? instructionFile.projectPath
+    : instructionFile.homePath;
+  const targetFile = join(baseDir, subPath);
+
+  console.log(`🚀 [${agentConfig.name}] 開始安裝系統提示詞: ${instruction.name}`);
+  console.log(`🎯 目標檔案: ${targetFile}`);
+
+  const wrappedContent = wrapContent(instructionsKey, instruction.content);
+
+  let fileExists = false;
+  try {
+    await access(targetFile);
+    fileExists = true;
+  } catch {
+    // 檔案不存在，稍後建立
+  }
+
+  if (fileExists) {
+    const existing = await readFile(targetFile, 'utf8');
+
+    if (existing.includes(startMarker(instructionsKey))) {
+      const msg = `指導檔中已包含 "${instruction.name}" 提示詞，跳過安裝。`;
+      console.log(`⏭️  ${msg}`);
+      return { success: true, message: msg };
+    }
+
+    const newContent = existing.trimEnd() + '\n\n' + wrappedContent + '\n';
+    await writeFile(targetFile, newContent, 'utf8');
+    const msg = `已將 "${instruction.name}" 附加至既有指導檔。`;
+    console.log(`✅ [${agentConfig.name}] ${msg}`);
+    return { success: true, message: msg };
+  }
+
+  await mkdir(dirname(targetFile), { recursive: true });
+  await writeFile(targetFile, wrappedContent + '\n', 'utf8');
+  const msg = `已建立指導檔並寫入 "${instruction.name}" 提示詞。`;
+  console.log(`✅ [${agentConfig.name}] ${msg}`);
+  return { success: true, message: msg };
+}
+
 async function main() {
   const agentKey = parseArg('--ai-agent');
   const projectPath = parseArg('--project-path');
   const instructionsKey = parseArg('--instructions');
 
-  // ── 驗證 --ai-agent ──
-  if (!agentKey) {
-    const valid = Object.keys(AGENTS).join(', ');
-    console.error(`❌ 缺少必填參數 --ai-agent。可用選項: ${valid}`);
-    process.exit(1);
-  }
-
-  const agentConfig = AGENTS[agentKey];
-  if (!agentConfig) {
-    const valid = Object.keys(AGENTS).join(', ');
-    console.error(`❌ 未知的 agent: "${agentKey}"。可用選項: ${valid}`);
-    process.exit(1);
-  }
-
-  if (!agentConfig.instructionFile) {
-    console.error(`❌ agent "${agentKey}" 未設定 instructionFile。`);
-    process.exit(1);
-  }
-
-  // ── 驗證 --instructions ──
+  // ── 驗證 --instructions（兩種模式皆需要）──
   if (!instructionsKey) {
     const valid = Object.keys(INSTRUCTIONS).join(', ');
     console.error(`❌ 缺少必填參數 --instructions。可用選項: ${valid}`);
@@ -102,51 +145,63 @@ async function main() {
     process.exit(1);
   }
 
-  // ── 決定指導檔路徑 ──
-  const { instructionFile } = agentConfig;
-  const baseDir = projectPath ? resolve(projectPath) : homedir();
-  const subPath = projectPath && instructionFile.projectPath
-    ? instructionFile.projectPath
-    : instructionFile.homePath;
-  const targetFile = join(baseDir, subPath);
-
-  console.log(`🚀 [${agentConfig.name}] 開始安裝系統提示詞: ${instruction.name}`);
-  console.log(`🎯 目標檔案: ${targetFile}`);
-
-  // ── 組裝標記包裹的提示詞內容 ──
-  const wrappedContent = wrapContent(instructionsKey, instruction.content);
-
-  // ── 檢查指導檔是否已存在 ──
-  let fileExists = false;
-  try {
-    await access(targetFile);
-    fileExists = true;
-  } catch {
-    // 檔案不存在，稍後建立
-  }
-
-  if (fileExists) {
-    // 讀取現有內容
-    const existing = await readFile(targetFile, 'utf8');
-
-    // 冪等性檢查：如果已包含相同提示詞的標記，則跳過
-    if (existing.includes(startMarker(instructionsKey))) {
-      console.log(`⏭️  指導檔中已包含 "${instruction.name}" 提示詞，跳過安裝。`);
-      return;
+  // ── 模式一：指定單一 agent ──
+  if (agentKey) {
+    const agentConfig = AGENTS[agentKey];
+    if (!agentConfig) {
+      const valid = Object.keys(AGENTS).join(', ');
+      console.error(`❌ 未知的 agent: "${agentKey}"。可用選項: ${valid}`);
+      process.exit(1);
     }
 
-    // 附加至最下方
-    const newContent = existing.trimEnd() + '\n\n' + wrappedContent + '\n';
-    await writeFile(targetFile, newContent, 'utf8');
-    console.log(`✅ [${agentConfig.name}] 已將 "${instruction.name}" 附加至既有指導檔。`);
-  } else {
-    // 建立目錄結構
-    await mkdir(dirname(targetFile), { recursive: true });
+    if (!agentConfig.instructionFile) {
+      console.error(`❌ agent "${agentKey}" 未設定 instructionFile。`);
+      process.exit(1);
+    }
 
-    // 建立新檔案並寫入
-    await writeFile(targetFile, wrappedContent + '\n', 'utf8');
-    console.log(`✅ [${agentConfig.name}] 已建立指導檔並寫入 "${instruction.name}" 提示詞。`);
+    const result = await installForAgent(agentKey, agentConfig, instructionsKey, instruction, projectPath);
+    if (!result.success) process.exit(1);
+    return;
   }
+
+  // ── 模式二：安裝至全部 agent ──
+  console.log('╔══════════════════════════════════════════╗');
+  console.log('║   🧠 Neo Skills — 系統提示詞安裝程式    ║');
+  console.log('╚══════════════════════════════════════════╝');
+  console.log('');
+
+  const results = [];
+
+  for (const [key, config] of Object.entries(AGENTS)) {
+    console.log(`━━━ 正在安裝: ${config.name} ━━━`);
+    try {
+      const result = await installForAgent(key, config, instructionsKey, instruction, projectPath);
+      results.push({ name: config.name, ...result });
+    } catch (error) {
+      console.error(`❌ [${config.name}] 安裝失敗:`, error.message || error);
+      results.push({ name: config.name, success: false, message: error.message || String(error) });
+    }
+    console.log('');
+  }
+
+  // 彙總報告
+  console.log('══════════════════════════════════════════');
+  console.log('📊 安裝結果彙總:');
+  const failed = results.filter(r => !r.success);
+
+  for (const r of results) {
+    console.log(`  ${r.success ? '✅' : '❌'} ${r.name}: ${r.message}`);
+  }
+
+  console.log('');
+  console.log(`成功: ${results.length - failed.length} / ${results.length}`);
+
+  if (failed.length > 0) {
+    console.log(`失敗: ${failed.length} — ${failed.map(r => r.name).join(', ')}`);
+    process.exit(1);
+  }
+
+  console.log('🎉 全部安裝完成！');
 }
 
 main();

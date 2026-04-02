@@ -92,12 +92,3 @@ The regex patterns in `src/hooks/secret-guard.ts` are string-concatenated at run
 
 All user-facing commit messages, SKILL.md Act outputs, and prompt responses are written in **Traditional Chinese (Taiwan)**. Internal code comments may be in Chinese or English.
 
-### Commit messages
-
-Follow Conventional Commits format with a Traditional Chinese subject and body:
-```
-<type>(<scope>): <subject>
-
-<body>
-```
-Subject: max 50 characters, imperative mood (e.g., `新增...`, `修復...`).

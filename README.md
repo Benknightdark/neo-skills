@@ -2,7 +2,7 @@
 
 [![test-on-develop](https://github.com/Benknightdark/neo-skills/actions/workflows/test-on-develop.yml/badge.svg)](https://github.com/Benknightdark/neo-skills/actions/workflows/test-on-develop.yml)
 
-![Neo Skills banner](https://raw.githubusercontent.com/Benknightdark/NeoFileMagic/refs/heads/develop/images/banner.png)
+![Neo Skills banner](https://raw.githubusercontent.com/Benknightdark/neo-skills/refs/heads/develop/images/banner.png)
 
 
 **Neo Skills** 是專為現代 **AI Agent** 設計的**全方位能力擴充套件**。本專案透過標準化的通訊架構，為 AI 代理安裝可插拔的「技能模組 (Skills)」，使其不僅僅是一個聊天機器人，而是能轉化為具備「感知-推理-行動」能力的**多領域專家**。

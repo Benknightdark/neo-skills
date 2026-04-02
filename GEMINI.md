@@ -1,6 +1,6 @@
 # Neo Skills Extension
 
-**Neo Skills** is a Gemini CLI extension that transforms the agent into a **Universal Expert Agent**. It utilizes the Model Context Protocol (MCP) to provide domain-specific expertise ("Skills") and automated execution protocols ("Commands"). While currently equipped with specialized **DevOps** modules (Azure Pipelines, Git), its architecture is designed to host skills from any domain.
+**Neo Skills** is a Gemini CLI extension that transforms the agent into a **Universal Expert Agent**. It utilizes the Model Context Protocol (MCP) to provide domain-specific expertise ("Skills"). While currently equipped with specialized **DevOps** modules (Azure Pipelines, Git), its architecture is designed to host skills from any domain.
 
 ## Constraints
 - All MCP commands must be manually executed by the user and cannot be automated!
@@ -13,7 +13,7 @@ You must engage in "fact-check thinking" before answering. Unless explicitly pro
 
 This project serves as a "Cortex" for the Gemini agent, enabling it to:
 1.  **Understand** complex contexts across various domains via structured knowledge bases (`SKILL.md`).
-2.  **Execute** precise workflows using pre-validated templates (`templates/`) and command definitions (`.toml`).
+2.  **Execute** precise workflows using pre-validated templates (`templates/`) and skill definitions (`SKILL.md`).
 3.  **Standardize** outputs to ensure consistency and reliability.
 
 ## 📂 System Architecture
@@ -23,7 +23,6 @@ The project is organized into three main layers:
 ### 1. The MCP Server (`src/server.ts`)
 The entry point of the extension. It runs an MCP server that:
 *   Registers **Tools** (e.g., `fetch_web_content` for web scraping).
-*   Registers **Prompts** (e.g., `neo:git_commit`) which are dynamic templates that inject context and instructions into the chat session.
 
 ### 2. The Knowledge Base (`skills/`)
 Each subdirectory represents a "Skill Module" containing expert knowledge.
@@ -32,12 +31,7 @@ Each subdirectory represents a "Skill Module" containing expert knowledge.
     *   `templates/`: The "Hands". A library of reusable assets that the agent should use instead of writing code from scratch.
 *   **Example:** `skills/neo-azure-pipelines/` contains logic for designing CI/CD pipelines and templates for .NET builds, IIS deployments, etc.
 
-### 3. The Action Registry (`commands/`)
-Defines rigid, executable workflows triggered by the user.
-*   **Format:** TOML files (e.g., `ci-dotnet.toml`, `git-commit.toml`).
-*   **Purpose:** These files contain the "System Prompt" or "Instructions" that are fed to the agent when a specific task is requested. They explicitly link a user request to a specific Skill.
-
-### 4. Security Layer (`src/hooks/`)
+### 3. Security Layer (`src/hooks/`)
 Mechanisms to ensure operational safety and data privacy.
 *   **Secret Guard (`secret-guard.ts`)**: An interception hook that analyzes tool execution arguments in real-time. It blocks operations involving sensitive files (e.g., `.env`, private keys, credentials) to prevent accidental leakage.
 
@@ -88,23 +82,23 @@ When interacting with this codebase or using the extension, the agent follows th
 
 *   **Web Scraper:** 從指定的 URL 獲取網頁 HTML 內容，支援 CSS 選擇器 (`fetch_web_content`)。
 
-*   **Git Automation:** Automatically generate Conventional Commit messages in English and ask for confirmation before committing (`neo:git_commit`).
+*   **Git Automation:** 根據暫存區變更自動生成 Conventional Commits 訊息，經使用者確認後執行 commit。
 
-*   **CI Protocols:** 自動配置 .NET 專案的 Azure Pipelines CI 建置流程 (`neo:ci-dotnet`)。
+*   **CI Protocols:** 自動配置 .NET 專案的 Azure Pipelines CI 建置流程。
 
-*   **CD Protocols:** 為專案自動配置 Azure App Service (`neo:cd-app-service`) 與地端 IIS (`neo:cd-iis`) 的部署流程 (CD)。
+*   **CD Protocols:** 為專案自動配置 Azure App Service 與地端 IIS 的部署流程 (CD)。
 
-*   **Requirement Clarification:** 系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件 (`neo:clarification`)。
+*   **Requirement Clarification:** 系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件。
 
-*   **Code Explanation:** 分析原始碼或專案結構，提供技術解析與架構洞察 (`neo:explain`)。
+*   **Code Explanation:** 分析原始碼或專案結構，提供技術解析與架構洞察。
 
-*   **Code Review:** 對當前變更或指定檔案進行全方位的程式碼審查 (`neo:code-review`)。
+*   **Code Review:** 對當前變更或指定檔案進行全方位的程式碼審查。
 
 *   **C# 現代語法專家:** 跨版本 C# 專家 (10-14+)，專注於現代化語法、強型別與高效能開發模式。
 
 *   **.NET 開發專家群:** 包含核心環境路由，以及針對 Minimal APIs、Web API、MVC 與 EF Core 的深度技術指引與開發規範。
 
-*   **C# Interface Generation:** 針對指定的 C# 類別生成對應的 Interface，並提供智慧覆蓋功能 (`neo:dotnet-gen-interface`)。
+*   **C# Interface Generation:** 針對指定的 C# 類別生成對應的 Interface，並提供智慧覆蓋功能。
 
 *   **Python 3.10+ 現代開發專家:** 專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
 

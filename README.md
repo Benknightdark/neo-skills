@@ -11,26 +11,26 @@
 本專案作為 AI Agent 的「大腦皮層 (Cortex)」，旨在打造一個**全能型 Agent 框架**，透過以下機制提升 AI 的專業度：
 
 1.  **領域專精 (Skills)**：可擴充的專家知識庫 (`SKILL.md`)。目前已內建 DevOps 模組，未來將持續擴增更多領域。
-2.  **標準化執行 (Commands)**：提供預先驗證的自動化腳本與模板，確保產出的一致性與可靠性。
+2.  **標準化範本 (Templates)**：提供預先驗證的自動化腳本與模板，確保產出的一致性與可靠性。
 3.  **架構思維**：強制執行「感知 (Perceive) -> 推理 (Reason) -> 行動 (Act)」的決策迴圈，避免 AI 產生幻覺，確保解決方案的精準度。
 
 ## ✨ 目前內建技能 (Built-in Skills)
 
 ### 1. Azure Pipelines 架構師
 自動化設計與生成符合微軟最佳實踐的 CI/CD 流程。
-*   **CI 自動化 (`neo:ci-dotnet`)**：針對 .NET 專案生成建置管線，整合單元測試與構件發佈。
+*   **CI 自動化**：針對 .NET 專案生成建置管線，整合單元測試與構件發佈。
 *   **CD 自動化**：
-    *   **Azure App Service (`neo:cd-app-service`)**：部署至Azure App Service。
-    *   **IIS On-Premises (`neo:cd-iis`)**：部署至地端 IIS 伺服器，包含備份與復原機制。
+    *   **Azure App Service**：部署至Azure App Service。
+    *   **IIS On-Premises**：部署至地端 IIS 伺服器，包含備份與復原機制。
 
 ### 2. 智慧 Git 助手
-*   **Smart Commit (`neo:git_commit`)**：根據 `git diff` 暫存區內容，自動生成符合 Conventional Commits 規範的提交訊息。
+*   **Smart Commit**：根據 `git diff` 暫存區內容，自動生成符合 Conventional Commits 規範的提交訊息。
 
 ### 3. Code Review 專家
-*   **智能審查 (`neo:code-review`)**：針對程式碼變更進行多面向 (正確性、安全性、效能、可讀性) 的深度審查。
+*   **智能審查**：針對程式碼變更進行多面向 (正確性、安全性、效能、可讀性) 的深度審查。
 
 ### 4. 程式碼解釋助手
-*   **技術解析 (`neo:explain`)**：深入分析原始碼或專案結構，提供高階用途摘要、邏輯流程分解以及核心元件說明。
+*   **技術解析**：深入分析原始碼或專案結構，提供高階用途摘要、邏輯流程分解以及核心元件說明。
 
 ### 5. .NET / C# 開發專家
 *   **C# 現代語法專家 (`skills/neo-csharp`)**：跨版本 C# 專家 (10-14+)，專注於現代化語法、強型別與高效能開發模式。
@@ -39,7 +39,7 @@
 *   **.NET Web API 專家 (`skills/neo-dotnet-webapi`)**：提供控制器模式下的架構設計、Problem Details 與異常處理指引。
 *   **.NET MVC 專家 (`skills/neo-dotnet-mvc`)**：處理伺服器端渲染 (SSR)、視圖模型與標籤協助程式的最佳實踐。
 *   **EF Core 專家 (`skills/neo-dotnet-ef-core`)**：專注於資料庫建模、移轉管理與 Linq 查詢優化。
-*   **Interface 生成器 (`neo:dotnet-gen-interface`)**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
+*   **Interface 生成器**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
 ### 6. Python 開發與環境管理專家
 *   **Python 3.10+ 專家 (`skills/neo-python`)**：專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
@@ -50,7 +50,7 @@
 *   **SwiftUI 專家 (`skills/neo-swift-ui`)**：支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。
 
 ### 8. 需求釐清助手
-*   **需求釐清 (`neo:clarification`)**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
+*   **需求釐清**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
 ### 9. 安全守衛 (Security Guard)
 *   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如環境設定檔、私鑰、雲端憑證等）將強制阻擋執行，防止機密外洩。
@@ -61,9 +61,8 @@
 
 | 層次 | 目錄 | 描述 |
 | :--- | :--- | :--- |
-| **Server** | `src/server.ts` | 擴充套件的進入點，負責註冊 Tool 與 Prompt，處理與 AI Agent CLI 的通訊。 |
+| **Server** | `src/server.ts` | 擴充套件的進入點，負責註冊 Tool，處理與 AI Agent CLI 的通訊。 |
 | **Knowledge Base** | `skills/` | **"大腦"**。包含各領域知識 (`SKILL.md`) 與可重用的模板 (`templates/`)。 |
-| **Action Registry** | `commands/` | **"指令集"**。定義了使用者可呼叫的具體指令 (TOML 格式)，將請求映射至特定的 Skill。 |
 | **Security Layer** | `src/hooks/` | **"安全守衛"**。攔截並掃描工具執行參數，防止敏感資訊外洩。 |
 
 ## 📦 安裝與使用
@@ -115,15 +114,15 @@ npx -p @moon791017/neo-skills install-skills
 
 您可以直接對 AI 代理下達以下指令或在對話中描述需求：
 
-| 需求場景 | 推薦指令 / 咒語範例 |
+| 需求場景 | 推薦咒語範例 |
 | :--- | :--- |
-| **生成 Commit Message** | `幫我 commit 變更` 或 `/neo:git-commit` |
-| **設定 .NET CI Pipeline** | `幫這個專案設定 CI 流程` 或 `/neo:ci-dotnet` |
-| **部署至 IIS** | `部署到 IIS，站台名稱為 MySite` 或 `/neo:cd-iis` |
-| **需求釐清與規格化** | `我想做一個電商網站` 或 `/neo:clarification` |
-| **全方位程式碼審查** | `幫我 code review 剛才的修改` 或 `/neo:code-review` |
-| **生成 C# Interface** | `幫我針對這個 class 產生介面` 或 `/neo:dotnet-gen-interface` |
-| **技術解析與架構洞察** | `分析這個專案的架構` 或 `/neo:explain` |
+| **生成 Commit Message** | `幫我 commit 變更` |
+| **設定 .NET CI Pipeline** | `幫這個專案設定 CI 流程` |
+| **部署至 IIS** | `部署到 IIS，站台名稱為 MySite` |
+| **需求釐清與規格化** | `我想做一個電商網站` |
+| **全方位程式碼審查** | `幫我 code review 剛才的修改` |
+| **生成 C# Interface** | `幫我針對這個 class 產生介面` |
+| **技術解析與架構洞察** | `分析這個專案的架構` |
 
 ## 🛠 開發指南
 

@@ -38,3 +38,4 @@ compatibility: "Supports C# 12/13 and .NET 10.0."
 3. **Execution Write**:
    - Based on the user's response, perform `read_file` (if the file exists) -> logical replacement -> `write_file`.
    - Inform the user of the result (created, appended, or overwritten).
+4. **Output Language**: The final output to the user must be in **Traditional Chinese (Taiwan)**.

@@ -28,7 +28,6 @@
     "noPropertyAccessFromIndexSignature": false
   },
   "include": [
-    "src/**/*",
-    "commands/**/*"
+    "src/**/*"
   ]
 }

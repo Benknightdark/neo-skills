@@ -31,7 +31,7 @@ The build has three steps defined in `package.json`:
 
 **Neo Skills** is a Gemini CLI extension that exposes domain expertise over the Model Context Protocol (MCP). It is also an npm package with CLI installers that copy `skills/` into other AI agents' skill directories.
 
-### Four layers
+### Three layers
 
 1. **MCP Server** (`src/server.ts`) — Single file that registers MCP `Tools` and `Prompts` using `@modelcontextprotocol/sdk`. Communicates over stdio (spawned by Gemini CLI). Currently provides the `fetch_web_content` tool (axios + cheerio).
 
@@ -40,9 +40,7 @@ The build has three steps defined in `package.json`:
    - `reference/` — Optional reference docs (`patterns.md`, `anti-patterns.md`, `coding-style.md`).
    - `templates/` — Reusable code/config assets (e.g., Azure Pipelines YAML templates).
 
-3. **Action Registry** (`commands/neo/*.toml`) — TOML files mapping user-invoked slash commands to system-prompt instructions. Each has `description` and `prompt` fields, with `{{args}}` as a placeholder for user input.
-
-4. **Security Hook** (`src/hooks/secret-guard.ts`) — A `BeforeTool` hook registered in `hooks/hooks.json`. Intercepts **every** MCP tool call via stdin, scans raw input against sensitive file patterns (`.env`, `.pem`, `.key`, `id_rsa`, `credentials.json`, `launchSettings.json`, `secrets/`), returns `{decision: 'deny'}` if matched. Exit code 2 = fail-safe block (internal error).
+3. **Security Hook** (`src/hooks/secret-guard.ts`) — A `BeforeTool` hook registered in `hooks/hooks.json`. Intercepts **every** MCP tool call via stdin, scans raw input against sensitive file patterns (`.env`, `.pem`, `.key`, `id_rsa`, `credentials.json`, `launchSettings.json`, `secrets/`), returns `{decision: 'deny'}` if matched. Exit code 2 = fail-safe block (internal error).
 
 ### Extension wiring
 
@@ -61,8 +59,7 @@ The build has three steps defined in `package.json`:
 
 1. Create `skills/neo-<name>/SKILL.md` with YAML front-matter and Perceive-Reason-Act sections.
 2. Optionally add `skills/neo-<name>/templates/` and/or `skills/neo-<name>/reference/`.
-3. If the skill needs a slash command, create `commands/neo/<name>.toml` with `description` and `prompt` (use `{{args}}` for user input).
-4. If the skill needs an MCP Tool or Prompt, register it in `src/server.ts`, then rebuild.
+3. If the skill needs an MCP Tool or Prompt, register it in `src/server.ts`, then rebuild.
 
 ### SKILL.md structure
 

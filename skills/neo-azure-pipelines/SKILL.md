@@ -32,6 +32,8 @@ compatibility: "Supports .NET 6.0 up to .NET 10.0."
     *   If artifact manipulation is required, prioritize using `util/extract-artifact.yml`.
 
 ## Act
+
+### General Output Standards
 1. Output global YAML configuration scripts that comply with the latest Azure DevOps Schema standards.
 2. Provide comprehensive parameter definitions to increase the flexibility and reusability of Pipeline execution.
 3. Generate configuration recommendations for Environments and Approvals and Checks.
@@ -43,3 +45,29 @@ compatibility: "Supports .NET 6.0 up to .NET 10.0."
      parameters:
        buildConfiguration: 'Release'
    ```
+
+### CI Workflow: .NET Build Pipeline
+When configuring a CI process for a .NET project:
+1. Scan the project directory to identify the .NET version (e.g., .NET 6/8), project name, and solution file (`.sln`).
+2. Check for any existing pipeline configurations.
+3. Create the `.pipelines/templates/build/` and `.pipelines/templates/util/` directories.
+4. Copy `build/build-dotnet.yml` and `util/clean-artifact.yml` templates to their respective locations.
+5. Generate `azure-pipelines-ci.yml` in the project root, ensuring the structure uses proper `template` syntax with correct parameters.
+
+### CD Workflow: Azure App Service Deployment
+When configuring a CD process for Azure App Service:
+1. Confirm the Azure App Service name, environment name (e.g., Production/Staging), and Service Connection name with the user or from the project context.
+2. Identify the Build Artifact name.
+3. Copy `deploy/deploy-app-service.yml` to the project's `.pipelines/templates/deploy/` directory.
+4. Generate the deployment pipeline file (e.g., `azure-pipelines-cd-appservice.yml`) in the project root.
+5. Ensure the YAML correctly configures `environment`, `strategy: runOnce`, and template calls.
+6. Advise the user on setting up corresponding Environments and Approvals in Azure DevOps.
+
+### CD Workflow: On-Premises IIS Deployment
+When configuring a CD process for on-premises IIS:
+1. Confirm IIS parameters: Website Name, Physical Path, Deployment Group name, and target environment.
+2. Verify if the project requires specific ASP.NET Core environment settings.
+3. Copy the entire `util/iis/` directory and the `deploy/deploy-iis.yml` template to the project's `.pipelines/templates/` directory.
+4. Generate the deployment script (e.g., `azure-pipelines-cd-iis.yml`) in the project root, referencing `deploy-iis.yml` with parameters like `websiteName` and `physicalPath`.
+5. Ensure the script integrates `iis-backup.yml` and `iis-rollback.yml` logic.
+6. Explain the requirements for Service Connection permissions and Deployment Group configuration.

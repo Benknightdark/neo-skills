@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.48.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.4...neo-skills-v0.48.0) (2026-04-02)
+
+
+### Features
+
+* **bin:** 新增系統提示詞安裝工具 ([618c0c2](https://github.com/Benknightdark/neo-skills/commit/618c0c212a0b1d0d9f6800fa103addd678768905))
+* **bin:** 新增系統提示詞安裝工具 ([f9a301b](https://github.com/Benknightdark/neo-skills/commit/f9a301b476be3302ca2664b67c806789a097517d))
+
 ## [0.47.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.3...neo-skills-v0.47.4) (2026-04-02)
 
 

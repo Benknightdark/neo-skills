@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.47.4](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.3...neo-skills-v0.47.4) (2026-04-02)
+
+
+### Bug Fixes
+
+* 更新 SKILL.md，明確禁止生成提交尾部元數據 ([737142c](https://github.com/Benknightdark/neo-skills/commit/737142c104c9f8609907bd7c0e5f349289e9d644))
+
 ## [0.47.3](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.2...neo-skills-v0.47.3) (2026-04-01)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.49.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.48.0...neo-skills-v0.49.0) (2026-04-02)
+
+
+### Features
+
+* **cli:** 支援批次安裝系統提示詞 ([9221576](https://github.com/Benknightdark/neo-skills/commit/92215769c1e65db2f37351d9b71c860d15e0201f))
+
 ## [0.48.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.47.4...neo-skills-v0.48.0) (2026-04-02)
 
 

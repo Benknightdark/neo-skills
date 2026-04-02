@@ -11,6 +11,7 @@ disable-model-invocation: true
 - **Absolute prohibition**: Never execute `git commit` in the same turn you generate the commit message.
 - **Wait for confirmation**: Output the proposed message, then stop immediately and ask the user to confirm.
 - **User-triggered only**: Only execute the commit in the next turn if the user explicitly replies with "yes", "ok", "是", or "commit".
+- **No commit trailers**: Do **not** generate or append any commit trailer lines such as `Co-authored-by:`, `Signed-off-by:`, `Reviewed-by:`, or similar metadata unless the user explicitly requests them.
 
 ---
 
@@ -66,6 +67,7 @@ Output strictly in the following format:
   - For new files, describe their purpose.
 - **Language**: Both Subject and Body must be written in **Traditional Chinese (Taiwan)**.
 - **Tone**: Professional and concise — avoid filler phrases like "This change is for...".
+- **Forbidden content**: Do **not** include `Co-authored-by`, `Signed-off-by`, or any other trailer/footer metadata in the generated commit message.
 
 ### Step 2: Ask for confirmation
 
@@ -80,5 +82,7 @@ Run:
 ```bash
 git commit -m "<subject>" -m "<body>"
 ```
+
+Do not append any extra trailer/footer metadata unless the user explicitly requests it.
 
 After execution, run `git log --oneline -1` and display the result to confirm the commit was created successfully.

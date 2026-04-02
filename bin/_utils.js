@@ -25,17 +25,29 @@ export const AGENTS = {
   claude: {
     name: 'Claude',
     homePath: '.claude/skills',
+    instructionFile: {
+      homePath: '.claude/CLAUDE.md',
+      projectPath: 'CLAUDE.md',
+    },
     hint: '請確保您的 Claude Desktop 或相關插件已指向此目錄。',
   },
   copilot: {
     name: 'Copilot',
     homePath: '.copilot/skills',
     projectPath: '.github/skills',
+    instructionFile: {
+      homePath: '.copilot/copilot-instructions.md',
+      projectPath: '.github/copilot-instructions.md',
+    },
     hint: '請確保您的 GitHub Copilot CLI 已指向此目錄。',
   },
   codex: {
     name: 'Codex',
     homePath: '.codex/skills',
+    instructionFile: {
+      homePath: '.codex/AGENTS.md',
+      projectPath: 'AGENTS.md',
+    },
     hint: '請確保您的 Codex CLI 已指向此目錄。',
   },
 };

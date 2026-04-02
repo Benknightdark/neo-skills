@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.50.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.49.0...neo-skills-v0.50.0) (2026-04-02)
+
+
+### Features
+
+* **readme:** 新增 Neo Skills 橫幅圖片 ([e485876](https://github.com/Benknightdark/neo-skills/commit/e485876a26fd5f489cb5e63d30408bd6bd07f00c))
+* **readme:** 更新 Neo Skills 橫幅圖片的連結並新增圖片檔案 ([a9fd3a7](https://github.com/Benknightdark/neo-skills/commit/a9fd3a7377e29d92500e775818e49616f0f97f97))
+
+
+### Bug Fixes
+
+* **package:** 更新版本號至 1.0.24 ([1f78fc0](https://github.com/Benknightdark/neo-skills/commit/1f78fc0f0d6f5ec25989047e8ce1243fa2b4f2e3))
+* **package:** 更新版本號至 1.0.24 ([73569fb](https://github.com/Benknightdark/neo-skills/commit/73569fbddd04f5b806478540c7d0f1175d5b472b))
+* **readme:** 修正 Neo Skills 橫幅圖片的連結 ([4d1f038](https://github.com/Benknightdark/neo-skills/commit/4d1f038b4c154b657deea2388b1b43e5aa866c9e))
+
 ## [0.49.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.48.0...neo-skills-v0.49.0) (2026-04-02)
 
 

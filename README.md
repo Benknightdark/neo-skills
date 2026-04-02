@@ -67,48 +67,125 @@
 
 ## 📦 安裝與使用
 
-本套件支援多種 AI Agent 環境。請依據您的 CLI 工具執行對應指令：
+### 支援的 AI Agent
 
-### Gemini CLI
+| Agent | CLI 工具 | 技能目錄 | 指導檔 |
+| :--- | :--- | :--- | :--- |
+| **Gemini** | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | 透過擴充套件自動載入 | `GEMINI.md` |
+| **Claude** | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `.claude/skills/` | `CLAUDE.md` |
+| **Copilot** | [GitHub Copilot CLI](https://docs.github.com/en/copilot) | `.copilot/skills/`（全域）<br>`.github/skills/`（專案） | `.copilot/copilot-instructions.md`（全域）<br>`.github/copilot-instructions.md`（專案） |
+| **Codex** | [OpenAI Codex CLI](https://github.com/openai/codex) | `.codex/skills/` | `AGENTS.md` |
+
+Neo Skills 提供兩個 CLI 工具，分別用於安裝**技能模組**與**系統提示詞**：
+
+| 工具 | 用途 | 安裝目標 |
+| :--- | :--- | :--- |
+| `install-skills` | 將技能模組（`skills/`）複製到 Agent 的技能目錄 | 資料夾（如 `.claude/skills`） |
+| `install-system-instructions` | 將系統提示詞寫入 Agent 的指導檔 | 單一檔案（如 `CLAUDE.md`） |
+
+> 兩個工具皆支援 `--ai-agent` 與 `--project-path` 參數，邏輯一致。
+
+---
+
+### 一、Gemini CLI（擴充套件模式）
+
+Gemini CLI 透過擴充套件機制直接安裝，**不需要**以下的 npx 指令：
 
 ```bash
 gemini extension install https://github.com/Benknightdark/neo-skills --auto-update
 ```
 
-### 安裝指定 AI Agent 技能
+---
 
-使用 `--ai-agent` 指定要安裝的 agent（可用值：`claude`、`copilot`、`codex`）：
+### 二、安裝技能模組 (`install-skills`)
 
-```bash
-npx -p @moon791017/neo-skills install-skills --ai-agent claude
-npx -p @moon791017/neo-skills install-skills --ai-agent copilot
-npx -p @moon791017/neo-skills install-skills --ai-agent codex
+將 `skills/` 目錄下的所有技能模組複製到目標 AI Agent 的技能資料夾。
+
+**語法：**
+
+```
+install-skills [--ai-agent <name>] [--project-path <path>]
 ```
 
-### 安裝至指定專案
+**參數：**
 
-搭配 `--project-path` 可將技能安裝至指定專案目錄（技能子目錄會自動附加）：
+| 參數 | 必填 | 說明 |
+| :--- | :---: | :--- |
+| `--ai-agent <name>` | 否 | 指定目標 Agent（`claude` / `copilot` / `codex`）。省略時安裝全部。 |
+| `--project-path <path>` | 否 | 指定專案根目錄。省略時安裝至 `$HOME` 全域路徑。 |
 
-```bash
-# 安裝至 /my/project/.claude/skills
-npx -p @moon791017/neo-skills install-skills --ai-agent claude --project-path /my/project
+**安裝路徑對照：**
 
-# 安裝至 /my/project/.github/skills
-npx -p @moon791017/neo-skills install-skills --ai-agent copilot --project-path /my/project
+| Agent | 全域路徑 | 專案路徑 |
+| :--- | :--- | :--- |
+| Claude | `~/.claude/skills/` | `<project>/.claude/skills/` |
+| Copilot | `~/.copilot/skills/` | `<project>/.github/skills/` |
+| Codex | `~/.codex/skills/` | `<project>/.codex/skills/` |
 
-# 安裝至 /my/project/.codex/skills
-npx -p @moon791017/neo-skills install-skills --ai-agent codex --project-path /my/project
-```
-
-若未指定 `--project-path`，則安裝至全域路徑（`~/.claude/skills`、`~/.copilot/skills`、`~/.codex/skills`）。
-
-### 安裝全部 AI Agent 技能
-
-不帶 `--ai-agent` 即可一次安裝全部：
+**範例：**
 
 ```bash
-npx -p @moon791017/neo-skills install-skills
+# 安裝指定 Agent 至全域
+npx -p @moon791017/neo-skills install-skills --ai-agent claude -y
+
+# 安裝指定 Agent 至專案
+npx -p @moon791017/neo-skills install-skills --ai-agent copilot --project-path /my/project -y
+
+# 一次安裝全部 Agent
+npx -p @moon791017/neo-skills install-skills -y
 ```
+
+---
+
+### 三、安裝系統提示詞 (`install-system-instructions`)
+
+將預定義的系統提示詞寫入 AI Agent 的指導檔。若指導檔已存在，會附加至最下方；若不存在，則自動建立。
+
+**語法：**
+
+```
+install-system-instructions --ai-agent <name> --instructions <key> [--project-path <path>]
+```
+
+**參數：**
+
+| 參數 | 必填 | 說明 |
+| :--- | :---: | :--- |
+| `--ai-agent <name>` | ✅ | 指定目標 Agent（`claude` / `copilot` / `codex`）。 |
+| `--instructions <key>` | ✅ | 指定要安裝的系統提示詞（見下方種類表）。 |
+| `--project-path <path>` | 否 | 指定專案根目錄。省略時安裝至 `$HOME` 全域路徑。 |
+
+**指導檔路徑對照：**
+
+| Agent | 全域路徑 | 專案路徑 |
+| :--- | :--- | :--- |
+| Claude | `~/.claude/CLAUDE.md` | `<project>/CLAUDE.md` |
+| Copilot | `~/.copilot/copilot-instructions.md` | `<project>/.github/copilot-instructions.md` |
+| Codex | `~/.codex/AGENTS.md` | `<project>/AGENTS.md` |
+
+**可用的系統提示詞種類：**
+
+| Key | 名稱 | 說明 |
+| :--- | :--- | :--- |
+| `technical-co-founder` | Technical Co-Founder | 讓 AI 扮演技術共同創辦人，以 Discovery → Planning → Building → Polish → Handoff 五階段框架，協助您從零打造可上線的真實產品。 |
+
+**範例：**
+
+```bash
+# 安裝至專案的 CLAUDE.md
+npx -p @moon791017/neo-skills install-system-instructions \
+  --ai-agent claude --instructions technical-co-founder --project-path /my/project -y
+
+# 安裝至專案的 .github/copilot-instructions.md
+npx -p @moon791017/neo-skills install-system-instructions \
+  --ai-agent copilot --instructions technical-co-founder --project-path /my/project -y
+
+# 安裝至全域 (~/.claude/CLAUDE.md)
+npx -p @moon791017/neo-skills install-system-instructions \
+  --ai-agent claude --instructions technical-co-founder -y
+```
+
+> **💡** 重複執行相同指令不會重複寫入，系統會自動偵測並跳過已安裝的提示詞。
 
 ## 💡 常用指令範例
 

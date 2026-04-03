@@ -29,7 +29,8 @@
         "git",
         "swift",
         "swiftui",
-        "python"
+        "python",
+        "javascript"
       ]
     }
   ]

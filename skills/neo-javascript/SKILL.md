@@ -2,36 +2,35 @@
 name: neo-javascript
 version: "1.0.0"
 category: "Core"
-description: "跨版本 JavaScript 專家技能 (ES6 - ES2025+)。支援從瀏覽器到 Node.js 的現代開發模式，涵蓋 Arrow Functions 到 Iterator Helpers 的全方位演進。"
-compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Adaptive to browser and Node.js environments."
+description: "跨版本 JavaScript 專家技能 (ES6 - ES2025+)。支援現代前端與純 JavaScript 開發模式，涵蓋 Arrow Functions 到 Iterator Helpers 的全方位演進。"
+compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Adaptive to modern browser environments and pure JS runtimes."
 ---
 
 # Modern JavaScript (ES6+) Expert Skill
 
 ## Trigger On
 - The user asks to write, debug, refactor, or review JavaScript code.
-- The project directory contains `*.js`, `*.mjs`, `*.cjs`, `package.json`, or JavaScript configuration files (e.g., `eslint.config.js`).
+- The project directory contains `*.js`, `*.mjs`, or JavaScript configuration files (e.g., `eslint.config.js`, `vite.config.js`).
 - HTML files (`*.html`) or Razor views (`*.cshtml`) contain inline `<script>` blocks or reference external `.js` files via `<script src="...">`.
-- The target runtime is a modern browser (Chrome 80+, Firefox 78+, Safari 14+) or Node.js 14+.
-- Code modernization is needed (e.g., converting `var` to `const`/`let`, callbacks to `async`/`await`, CommonJS to ESM).
+- The target runtime is a modern browser (Chrome 80+, Firefox 78+, Safari 14+) or a pure JS environment.
+- Code modernization is needed (e.g., converting `var` to `const`/`let`, callbacks to `async`/`await`, legacy scripts to ESM).
 
 ## Workflow
 1. **Perceive (Environment Awareness):**
-   - Check `package.json` for `"type": "module"` (ESM vs CJS) and `engines` field for Node.js version constraints.
    - Inspect ESLint / Biome configuration to identify the project's `ecmaVersion` and coding conventions.
-   - Determine runtime target: browser (check for DOM APIs, bundler config like `vite.config.js`, `webpack.config.js`) vs Node.js (check for `node:` imports, `process`, `fs`).
+   - Determine runtime target: browser (check for DOM APIs, bundler config like `vite.config.js`, `webpack.config.js`).
    - Detect JavaScript embedded in HTML (`*.html`) or Razor views (`*.cshtml`): identify inline `<script>` blocks and external `<script src="...">` references. For `.cshtml` files, note the interplay with Razor syntax (`@` directives, `@section Scripts`).
    - Identify the effective ES version upper limit based on the runtime/transpiler configuration (e.g., Babel targets, TypeScript `target`, browserslist). For inline scripts without a build pipeline, default to the browser's native ES support.
 2. **Reason (Planning Phase):**
    - Evaluate the modernization level of the current code to determine the refactoring strategy.
    - In environments targeting older runtimes (e.g., IE11 via Babel), avoid using features without polyfill support, but prioritize using `const`/`let`, arrow functions, and template literals.
-   - In modern environments (Node.js 20+, modern browsers), actively adopt new features to reduce boilerplate code.
-   - Distinguish between browser-specific concerns (DOM, Web APIs) and Node.js-specific concerns (file system, streams, worker threads).
+   - In modern environments (modern browsers), actively adopt new features to reduce boilerplate code.
+   - Be aware of browser-specific concerns (DOM manipulation, Web APIs, rendering performance).
 3. **Act (Execution Phase):**
    - Write high-quality code using modern syntax to improve readability and maintainability.
    - Implement immutable data patterns (spread operators, `Object.freeze`, `structuredClone`, immutable array methods).
    - Utilize `async`/`await` and `Promise` composition for asynchronous operations.
-   - Prefer ESM (`import`/`export`) over CommonJS (`require`/`module.exports`).
+   - Prefer ESM (`import`/`export`) as the standard module system.
 4. **Validate (Standard Validation):**
    - Validate strict equality (`===`) usage and absence of `var` declarations.
    - Check if asynchronous operations correctly handle errors (`try`/`catch` around `await`, `.catch()` on Promises).
@@ -81,12 +80,10 @@ compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Ada
 - **RegExp Match Indices (`/d` flag):** Get start/end positions of captured groups.
 - **Immutable Array Methods:** `toSorted()`, `toReversed()`, `toSpliced()`, `with()` — return new arrays without mutation.
 - **`Array.findLast()` / `findLastIndex()`:** Search arrays from the end.
-- **Hashbang Grammar:** `#!/usr/bin/env node` support in JavaScript files.
 
 ### ES2024 & ES2025+ (Cutting Edge)
 - **`Promise.withResolvers()`:** Destructure `{ promise, resolve, reject }` for cleaner deferred patterns.
 - **`Object.groupBy()` / `Map.groupBy()`:** Group array elements by a classifier function.
-- **`Atomics.waitAsync()`:** Non-blocking wait for shared memory operations.
 - **Set Methods:** `union()`, `intersection()`, `difference()`, `symmetricDifference()`, `isSubsetOf()`, `isSupersetOf()`, `isDisjointFrom()`.
 - **Iterator Helpers:** `.map()`, `.filter()`, `.take()`, `.drop()`, `.flatMap()`, `.toArray()` on iterators.
 - **`RegExp.escape()`:** Safely escape special characters for use in RegExp construction.
@@ -115,7 +112,6 @@ compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Ada
 - [ECMAScript 2025 Language Specification](https://tc39.es/ecma262/)
 - [TC39 Proposals (Stage 3+)](https://github.com/tc39/proposals/blob/main/README.md)
 - [MDN Web Docs - JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- [Node.js ES Modules Documentation](https://nodejs.org/api/esm.html)
 
 ### Internal References
 - [JavaScript Coding Style and Naming Conventions Guide](reference/coding-style.md)

@@ -78,7 +78,7 @@ This document lists common mistakes (Anti-Patterns) in JavaScript development an
 
 ### 2.2 Avoid Unhandled Promise Rejections
 
-**Problem**: A Promise without `.catch()` or `try`/`catch` around `await` causes unhandled rejection warnings and potential process crashes in Node.js.
+**Problem**: A Promise without `.catch()` or `try`/`catch` around `await` causes unhandled rejection warnings and unpredictable application states.
 
 - **Bad**:
 
@@ -127,22 +127,36 @@ This document lists common mistakes (Anti-Patterns) in JavaScript development an
   // Cleanup: controller.abort();
   ```
 
-### 3.2 Avoid Blocking the Event Loop
+### 3.2 Avoid Blocking the Main Thread
 
-**Problem**: CPU-intensive synchronous operations (large loops, `JSON.parse` on huge payloads, synchronous file I/O) block the event loop, freezing the UI or starving other requests in Node.js.
+**Problem**: CPU-intensive synchronous operations (huge loops, massive DOM updates, or heavy JSON parsing) block the main thread, freezing the UI and making the browser unresponsive.
 
 - **Bad**:
 
   ```javascript
-  import { readFileSync } from 'node:fs';
-  const data = readFileSync('large-file.json', 'utf8'); // Blocks
+  function processLargeData(items) {
+    // Blocks the UI thread completely for a long time
+    return items.map(item => expensiveComputation(item)); 
+  }
   ```
 
 - **Good**:
 
   ```javascript
-  import { readFile } from 'node:fs/promises';
-  const data = await readFile('large-file.json', 'utf8');
+  // Use Web Workers for heavy computation, or chunking via setTimeout/requestAnimationFrame
+  function processDataInChunks(items) {
+    let index = 0;
+    function chunk() {
+      const end = Math.min(index + 100, items.length);
+      for (; index < end; index++) {
+        expensiveComputation(items[index]);
+      }
+      if (index < items.length) {
+        requestAnimationFrame(chunk); // Yield back to the browser
+      }
+    }
+    chunk();
+  }
   ```
 
 ---
@@ -263,5 +277,5 @@ This document lists common mistakes (Anti-Patterns) in JavaScript development an
 
 ### 5.6 Module System (ES6+)
 
-- **Legacy**: `const fs = require('fs');` (CommonJS)
-- **Modern**: `import { readFile } from 'node:fs/promises';` (ESM with `node:` protocol prefix)
+- **Legacy**: `var cloneDeep = require('lodash/cloneDeep');` (CommonJS / Script tags)
+- **Modern**: `import { cloneDeep } from 'lodash-es';` (ESM)

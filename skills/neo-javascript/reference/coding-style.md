@@ -32,18 +32,17 @@ Use the `#` prefix for **private class fields** (ES2022+).
 ## 2. File Organization
 
 - **File naming**: Use `kebab-case` for file names (e.g., `user-service.js`, `auth-utils.mjs`).
-- **Module type**: Use `.mjs` extension or `"type": "module"` in `package.json` for ESM. Use `.cjs` for CommonJS when needed.
+- **Module type**: Use `.mjs` extension or `"type": "module"` in `package.json` for ESM.
 - **Single responsibility**: One primary export per module file to facilitate tree-shaking and code navigation.
-- **Import order**: Built-in modules first (`node:fs`), then external packages, then internal modules. Separate groups with blank lines.
+- **Import order**: External packages first, then internal modules. Separate groups with blank lines.
 ```javascript
-// 1. Built-in modules
-import { readFile } from 'node:fs/promises';
+// 1. External packages
+import React, { useState } from 'react';
+import { debounce } from 'lodash-es';
 
-// 2. External packages
-import express from 'express';
-
-// 3. Internal modules
+// 2. Internal modules
 import { validateInput } from './utils/validation.js';
+import { UserCard } from './components/user-card.js';
 ```
 
 ---

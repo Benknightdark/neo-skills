@@ -167,7 +167,7 @@ class Counter {
 **Recommendation**: Preserve error context with the `cause` option.
 ```javascript
 try {
-  await connectDatabase();
+  await initializeService();
 } catch (err) {
   throw new Error('Service initialization failed', { cause: err });
 }

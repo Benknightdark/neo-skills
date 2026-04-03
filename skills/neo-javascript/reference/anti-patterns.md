@@ -289,3 +289,8 @@ This document lists common mistakes (Anti-Patterns) in JavaScript development an
 
 - **Legacy**: `if (str.indexOf('text') !== -1)` (Returns index, requires `!== -1` check)
 - **Modern**: `if (str.includes('text'))` (Returns boolean directly, clearer intent)
+
+### 5.9 Object Grouping (ES2024+)
+
+- **Legacy**: `users.reduce((acc, user) => { (acc[user.role] ||= []).push(user); return acc; }, {});` (Verbose reduce logic)
+- **Modern**: `Object.groupBy(users, user => user.role);` (Clear intent, native support)

@@ -209,6 +209,22 @@ try {
 }
 ```
 
+### 4.4 Explicit Resource Management (ES2025+)
+**Recommendation**: Use the `using` keyword for automatic and deterministic cleanup of resources (like file handles, database connections, or subscriptions).
+```javascript
+function processFile() {
+  using file = openFile('data.txt'); // Automatically closed when function exits
+  const data = file.read();
+  return data;
+}
+
+// Async disposal
+async function fetchAndProcess() {
+  await using connection = await db.connect();
+  return connection.query('SELECT * FROM users');
+}
+```
+
 ---
 
 ## 5. Set and Iterator Patterns (ES2025+)

@@ -92,6 +92,9 @@ compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Ada
 - **`RegExp.escape()`:** Safely escape special characters for use in RegExp construction.
 - **Import Attributes:** `import data from './data.json' with { type: 'json' }`.
 - **Decorators (Stage 3):** Class and method decorators for cross-cutting concerns.
+- **`Promise.try()`:** Safely start a promise chain from a synchronous or asynchronous function.
+- **Well-formed Unicode Strings:** `String.prototype.isWellFormed()` and `toWellFormed()`.
+- **Temporal API (Stage 3):** A modern replacement for the `Date` object, providing robust date/time arithmetic.
 - **Explicit Resource Management (Stage 3):** `using` keyword with `Symbol.dispose` for deterministic cleanup.
 
 ## Coding Standards

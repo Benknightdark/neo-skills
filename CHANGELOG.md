@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.51.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.50.0...neo-skills-v0.51.0) (2026-04-03)
+
+
+### Features
+
+* **skills:** 新增 JavaScript 現代語法專家技能 ([20511a0](https://github.com/Benknightdark/neo-skills/commit/20511a0f2c482e12b382e59bacdad57b23337cac))
+* **skills:** 新增 neo-javascript 跨版本專家技能 ([1fd32c2](https://github.com/Benknightdark/neo-skills/commit/1fd32c25cc6cd781fce49a2a4a95312bcdbcb4ef))
+* 新增 JavaScript 開發專家技能說明 ([8f11633](https://github.com/Benknightdark/neo-skills/commit/8f116332c8417ac897ec5ae313a66db0c857358a))
+
 ## [0.50.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.49.0...neo-skills-v0.50.0) (2026-04-02)
 
 

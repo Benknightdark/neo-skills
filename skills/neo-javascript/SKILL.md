@@ -49,6 +49,9 @@ compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Ada
 - **Promises:** `new Promise((resolve, reject) => ...)` for asynchronous flow control.
 - **Modules:** `import` / `export` for modular code organization (ES Modules).
 - **Symbol / Map / Set:** New primitive type and collection data structures.
+- **String Methods (ES6):** `includes()`, `startsWith()`, `endsWith()` for easier string searching.
+- **Array Methods (ES6):** `Array.from()`, `Array.of()`, `find()`, `findIndex()` for enhanced array manipulation.
+- **Number/Math Methods (ES6):** `Number.isInteger()`, `Number.isNaN()`, `Math.trunc()`, `Math.sign()`.
 - **Generators & Iterators:** `function*` and `for...of` for lazy iteration.
 - **`async` / `await` (ES2017):** Syntactic sugar for Promise-based asynchronous code.
 - **Object.values / Object.entries (ES2017):** Iterate over object values and key-value pairs.

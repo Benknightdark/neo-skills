@@ -279,3 +279,13 @@ This document lists common mistakes (Anti-Patterns) in JavaScript development an
 
 - **Legacy**: `var cloneDeep = require('lodash/cloneDeep');` (CommonJS / Script tags)
 - **Modern**: `import { cloneDeep } from 'lodash-es';` (ESM)
+
+### 5.7 Logical Assignment (ES2021+)
+
+- **Legacy**: `if (!obj.prop) { obj.prop = value; }` (Verbose and repetitive)
+- **Modern**: `obj.prop ??= value;` (Concise nullish assignment)
+
+### 5.8 String & Array Searching (ES6+)
+
+- **Legacy**: `if (str.indexOf('text') !== -1)` (Returns index, requires `!== -1` check)
+- **Modern**: `if (str.includes('text'))` (Returns boolean directly, clearer intent)

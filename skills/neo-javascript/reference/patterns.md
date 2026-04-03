@@ -33,6 +33,19 @@ function processOrder(order) {
 }
 ```
 
+### 1.4 Logical Assignment (ES2021+)
+**Recommendation**: Use logical assignment operators (`??=`, `||=`, `&&=`) to concisely update variables only when specific conditions are met.
+```javascript
+// ??= (Nullish coalescing assignment)
+user.role ??= 'viewer'; // Assigns 'viewer' only if user.role is null or undefined
+
+// ||= (Logical OR assignment)
+config.timeout ||= 5000; // Assigns 5000 if config.timeout is falsy (e.g., 0, '', null)
+
+// &&= (Logical AND assignment)
+state.isReady &&= verifyStatus(); // Updates state.isReady only if it is already truthy
+```
+
 ---
 
 ## 2. Data Structures and Immutability
@@ -69,6 +82,29 @@ const grouped = Object.groupBy(users, user => user.role);
 **Recommendation**: Use `structuredClone()` for deep copies instead of `JSON.parse(JSON.stringify())`.
 ```javascript
 const deepCopy = structuredClone(originalObject);
+```
+
+### 2.5 Modern Iterables & Array Creation (ES6+)
+**Recommendation**: Use `Array.from()` to convert iterable objects (like NodeList or arguments) into true arrays, and utilize its built-in mapping capability.
+```javascript
+// Convert NodeList to Array and extract text content
+const elements = document.querySelectorAll('.item');
+const texts = Array.from(elements, el => el.textContent);
+
+// Create an array of a specific length filled with values
+const range = Array.from({ length: 5 }, (_, i) => i + 1); // [1, 2, 3, 4, 5]
+```
+
+### 2.6 String & Array Searching (ES6+)
+**Recommendation**: Replace verbose `indexOf()` checks with `includes()`, `startsWith()`, `endsWith()`, and replace `filter()[0]` with `find()`.
+```javascript
+// String checking
+const url = 'https://example.com';
+const isHttps = url.startsWith('https'); // Preferred over url.indexOf('https') === 0
+
+// Array searching
+const targetUser = users.find(u => u.id === 123); // Preferred over users.filter(...)[0]
+const hasAdmin = users.some(u => u.role === 'admin'); // Checking existence
 ```
 
 ---

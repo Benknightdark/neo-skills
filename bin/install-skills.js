@@ -14,34 +14,15 @@
  *                           省略時安裝至全域路徑。
  */
 import { AGENTS, createInstaller } from './_utils.js';
+import { setupGlobalErrorHandlers, parseCliArgs } from './_cli-utils.js';
 
-/**
- * 從 process.argv 解析指定 flag 的值。
- * 例如 parseArg('--ai-agent') 在 argv 含 ['--ai-agent', 'claude'] 時回傳 'claude'。
- * @param {string} flag
- * @returns {string | undefined}
- */
-function parseArg(flag) {
-  const idx = process.argv.indexOf(flag);
-  if (idx === -1 || idx + 1 >= process.argv.length) return undefined;
-  return process.argv[idx + 1];
-}
-
-// 全域錯誤攔截，確保非預期錯誤不會靜默失敗
-process.on('uncaughtException', (err) => {
-  console.error('💥 [Fatal Error]:', err);
-  process.exit(1);
-});
-process.on('unhandledRejection', (reason) => {
-  console.error('💥 [Unhandled Rejection]:', reason);
-  process.exit(1);
-});
+setupGlobalErrorHandlers();
 
 async function main() {
-  // 先統一解析 CLI 參數，後續分支都使用同一份輸入來源，
-  // 避免在不同模式中重複讀取 process.argv。
-  const agentKey = parseArg('--ai-agent');
-  const projectPath = parseArg('--project-path');
+  // 統一解析 CLI 參數
+  const args = parseCliArgs();
+  const agentKey = args['ai-agent'];
+  const projectPath = args['project-path'];
 
   // ── 模式一：指定單一 agent ──
   if (agentKey) {

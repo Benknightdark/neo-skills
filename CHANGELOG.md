@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.52.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.51.0...neo-skills-v0.52.0) (2026-04-10)
+
+
+### Features
+
+* **clarification:** 重構技能定義為需求轉譯專家 ([a498a2b](https://github.com/Benknightdark/neo-skills/commit/a498a2be4f71300e8b780b78a37735133341d229))
+* **clarification:** 重構技能定義為需求轉譯專家 ([9405759](https://github.com/Benknightdark/neo-skills/commit/940575985b30febade0715ba4c6026771115aeac))
+
 ## [0.51.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.50.0...neo-skills-v0.51.0) (2026-04-03)
 
 

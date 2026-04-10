@@ -71,7 +71,7 @@ export const AGENTS = {
  * @param {object} config - AGENTS 中的 agent 設定物件
  * @param {string} [targetPath] - 使用者透過 --project-path 指定的自訂根目錄
  */
-export function createInstaller({ name: agentName, homePath, projectPath, hint }, targetPath) {
+export function createInstaller({ name: agentName, homePath, projectPath, hint }, cliBasePath) {
   return async function install() {
     console.log(`🚀 [${agentName}] 開始同步 Neo Skills...`);
 
@@ -84,9 +84,9 @@ export function createInstaller({ name: agentName, homePath, projectPath, hint }
     }
 
     // 根目錄：--project-path 優先，否則 $HOME
-    const baseDir = targetPath ? resolve(targetPath) : homedir();
+    const baseDir = cliBasePath ? resolve(cliBasePath) : homedir();
     // 子目錄：專案層級有獨立路徑時採用 projectPath，否則用預設的 homePath
-    const subDir = targetPath && projectPath ? projectPath : homePath;
+    const subDir = cliBasePath && projectPath ? projectPath : homePath;
     const targetSkillsDir = join(baseDir, subDir);
 
     console.log(`📁 來源路徑: ${sourceDir}`);
@@ -111,7 +111,7 @@ export function createInstaller({ name: agentName, homePath, projectPath, hint }
       return { success: true, message: '沒有任何檔案被複製' };
     }
 
-    const displayPath = targetPath || homePath;
+    const displayPath = cliBasePath || homePath;
     const msg = `已同步 ${copyCount} 個檔案/資料夾至 ${displayPath}`;
     console.log(`✅ [${agentName}] 安裝成功！${msg}`);
     if (hint) console.log(`💡 提示: ${hint}`);

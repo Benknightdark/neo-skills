@@ -19,17 +19,9 @@ import { homedir } from 'node:os';
 
 import { AGENTS } from './_utils.js';
 import { INSTRUCTIONS } from './_system-instructions.js';
+import { setupGlobalErrorHandlers, parseCliArgs } from './_cli-utils.js';
 
-/**
- * 從 process.argv 解析指定 flag 的值。
- * @param {string} flag
- * @returns {string | undefined}
- */
-function parseArg(flag) {
-  const idx = process.argv.indexOf(flag);
-  if (idx === -1 || idx + 1 >= process.argv.length) return undefined;
-  return process.argv[idx + 1];
-}
+setupGlobalErrorHandlers();
 
 /**
  * 產生提示詞的起始標記。
@@ -55,16 +47,6 @@ function endMarker(key) {
 function wrapContent(key, content) {
   return `${startMarker(key)}\n${content}\n${endMarker(key)}`;
 }
-
-// 全域錯誤攔截
-process.on('uncaughtException', (err) => {
-  console.error('💥 [Fatal Error]:', err);
-  process.exit(1);
-});
-process.on('unhandledRejection', (reason) => {
-  console.error('💥 [Unhandled Rejection]:', reason);
-  process.exit(1);
-});
 
 /**
  * 對單一 agent 執行系統提示詞安裝。
@@ -127,9 +109,10 @@ async function installForAgent(agentKey, agentConfig, instructionsKey, instructi
 }
 
 async function main() {
-  const agentKey = parseArg('--ai-agent');
-  const projectPath = parseArg('--project-path');
-  const instructionsKey = parseArg('--instructions');
+  const args = parseCliArgs();
+  const agentKey = args['ai-agent'];
+  const projectPath = args['project-path'];
+  const instructionsKey = args['instructions'];
 
   // ── 驗證 --instructions（兩種模式皆需要）──
   if (!instructionsKey) {

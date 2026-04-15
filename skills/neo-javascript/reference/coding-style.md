@@ -110,3 +110,91 @@ export async function getUserById(id, signal) { ... }
 ```
 - **Logical Comments**: Comments should explain "Why" the processing is done this way, not repeat "What" the code does.
 - **TODO/FIXME**: Use `// TODO:` for planned improvements and `// FIXME:` for known issues.
+
+---
+
+## 7. Architecture Patterns for Vanilla JS (HTML/CSHTML)
+
+This pattern should be applied when refactoring JavaScript files that are referenced by HTML or CSHTML files in non-SPA environments.
+
+### 7.1 Separation of Concerns
+To maintain clean and testable code, split the logic into three distinct classes:
+
+- **API Class**: Handles all network requests (e.g., `fetch`, AJAX) communicating with the backend.
+- **UI Class**: Strictly responsible for DOM element selection, rendering, and UI updates. It should not contain business logic.
+- **Controller Class**: Manages core business logic, registers event listeners, and orchestrates the flow by calling both the API and UI classes.
+
+### 7.2 Example Implementation
+
+```javascript
+((window, document) => {
+  // API Class - Handles data fetching
+  class UserAPI {
+    #baseUrl = '/api/users';
+
+    async getUser(id) {
+      const response = await fetch(`${this.#baseUrl}/${id}`);
+      if (!response.ok) throw new Error('Failed to fetch user');
+      return response.json();
+    }
+  }
+
+  // UI Class - Handles DOM manipulation
+  class UserUI {
+    #elements = {
+      nameDisplay: document.getElementById('userName'),
+      loadingSpinner: document.getElementById('spinner')
+    };
+
+    updateUserName(name) {
+      this.#elements.nameDisplay.textContent = name;
+    }
+
+    toggleLoading(show) {
+      this.#elements.loadingSpinner.style.display = show ? 'block' : 'none';
+    }
+  }
+
+  // Controller Class - Orchestrates business logic and events
+  class UserController {
+    #api;
+    #ui;
+
+    constructor(api, ui) {
+      this.#api = api;
+      this.#ui = ui;
+    }
+
+    init() {
+      this.#registerEvents();
+    }
+
+    #registerEvents() {
+      document.getElementById('fetchBtn')?.addEventListener('click', () => this.handleFetchUser());
+    }
+
+    async handleFetchUser() {
+      try {
+        const userId = document.getElementById('userIdInput').value;
+        this.#ui.toggleLoading(true);
+        const user = await this.#api.getUser(userId);
+        this.#ui.updateUserName(user.name);
+      } catch (error) {
+        console.error(error);
+        alert('Error fetching user data');
+      } finally {
+        this.#ui.toggleLoading(false);
+      }
+    }
+  }
+
+  // Initialization on Page Load
+  document.addEventListener('DOMContentLoaded', () => {
+    const api = new UserAPI();
+    const ui = new UserUI();
+    const controller = new UserController(api, ui);
+    controller.init();
+  });
+})(window, document);
+```
+

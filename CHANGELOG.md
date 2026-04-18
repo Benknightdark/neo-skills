@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.55.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.54.0...neo-skills-v0.55.0) (2026-04-18)
+
+
+### Features
+
+* **skills:** 新增 neo-vue 專家技能與參考指南 ([0eb0f0a](https://github.com/Benknightdark/neo-skills/commit/0eb0f0a182171b96d95b34caec1bba299bb0416f))
+
+
+### Bug Fixes
+
+* **package:** 更新版本號至 1.0.29 ([e7dac9f](https://github.com/Benknightdark/neo-skills/commit/e7dac9f1a6c321e2126539f546b902536623745e))
+* **package:** 更新版本號至 1.0.29 ([61f8068](https://github.com/Benknightdark/neo-skills/commit/61f806853c4a38924ca3e073a451acce027c9aca))
+
 ## [0.54.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.53.0...neo-skills-v0.54.0) (2026-04-15)
 
 

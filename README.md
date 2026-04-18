@@ -56,10 +56,13 @@
 ### 8. JavaScript 開發專家
 *   **JavaScript 現代語法專家 (`skills/neo-javascript`)**：跨版本 JavaScript 專家 (ES6 - ES2025+)，專注於現代化語法、模組系統與高效能開發模式。
 
-### 9. 需求釐清助手
+### 9. Vue 開發專家
+*   **Vue 3 現代開發專家 (`skills/neo-vue`)**：專注於 Vue 3 Composition API (`<script setup>`)、Pinia 狀態管理與 Vue Router 4。嚴格遵循官方 Style Guide 與最佳實踐，並提供反模式 (Anti-Patterns) 的避坑指引。
+
+### 10. 需求釐清助手
 *   **需求釐清**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
-### 10. 安全守衛 (Security Guard)
+### 11. 安全守衛 (Security Guard)
 *   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如環境設定檔、私鑰、雲端憑證等）將強制阻擋執行，防止機密外洩。
 
 ## 📂 系統架構

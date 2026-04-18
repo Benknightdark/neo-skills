@@ -109,3 +109,5 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **SwiftUI 專家:** 支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。
 
 *   **JavaScript 現代語法專家:** 跨版本 JavaScript 專家 (ES6-ES2025+)，專注於現代化語法、模組系統與高效能開發模式。
+
+*   **Vue 現代開發專家:** 專注於 Vue 3 Composition API (`<script setup>`)、Pinia 狀態管理與 Vue Router 4，嚴格遵循官方 Style Guide 與最佳實踐。

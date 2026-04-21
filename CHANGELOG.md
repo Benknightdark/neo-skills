@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.56.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.55.0...neo-skills-v0.56.0) (2026-04-21)
+
+
+### Features
+
+* **tag-helper:** 新增 ASP.NET Core Tag Helper 開發專家指引與強制屬性管理規範 ([12cfa6e](https://github.com/Benknightdark/neo-skills/commit/12cfa6eccc2f55efaa379153e6eeb20e6c51d371))
+* **tag-helper:** 新增 neo-dotnet-tag-helper 的專家指引與最佳實踐文件 ([7791694](https://github.com/Benknightdark/neo-skills/commit/77916946d7824f3255521186db90068e0a0a6748))
+
+
+### Bug Fixes
+
+* **package:** 更新版本號至 1.0.30 - 新增razor tag helper skill ([e6fc4f8](https://github.com/Benknightdark/neo-skills/commit/e6fc4f83145d05441327f38d112bac326c9038e5))
+* **package:** 更新版本號至 1.0.30 - 新增razor tag helper skill ([8ae6601](https://github.com/Benknightdark/neo-skills/commit/8ae6601f45e11ce5b3e1a9f0c2c50e1a94906d0b))
+
 ## [0.55.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.54.0...neo-skills-v0.55.0) (2026-04-18)
 
 

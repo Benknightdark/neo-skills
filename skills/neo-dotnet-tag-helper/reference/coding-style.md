@@ -489,4 +489,86 @@ public static partial class HtmlExtension
         }));
     }
 }
+
+---
+
+## 4. Mandatory Custom Tag Helper Properties & Asset Management
+
+To ensure consistency, performance, and maintainability across all custom UI components, every custom Tag Helper MUST implement the following properties and logic.
+
+### 4.1 Mandatory Properties
+
+1.  **`asp-for` (Model Binding)**: 
+    Support strong typing by including a `ModelExpression` property. This is crucial for retrieving model metadata (Name, Id, Value, Validation) and generating safe HTML identifiers.
+    ```csharp
+    [HtmlAttributeName("asp-for")]
+    public ModelExpression For { get; set; } = null!;
+    ```
+
+2.  **CSS Class Handling (UI Class)**: 
+    Tag Helpers must provide a default CSS class. If the user provides a custom class in the HTML tag:
+    - If the user class is identical to the default, maintain the default.
+    - If the user class is different, **append** it to the default class (ensure a space separator).
+    
+    ```csharp
+    [HtmlAttributeName("class")]
+    public string? CssClass { get; set; }
+
+    protected void ProcessCssClass(TagHelperOutput output, string defaultClass)
+    {
+        if (string.IsNullOrEmpty(CssClass))
+        {
+            output.Attributes.SetAttribute("class", defaultClass);
+        }
+        else if (CssClass.Trim() == defaultClass)
+        {
+            output.Attributes.SetAttribute("class", defaultClass);
+        }
+        else
+        {
+            output.Attributes.SetAttribute("class", $"{defaultClass} {CssClass.Trim()}");
+        }
+    }
+    ```
+
+3.  **`AutoLoadAssets` (Asset Management)**: 
+    Include a boolean property to control automatic resource loading, defaulting to `true`.
+    ```csharp
+    /// <summary>
+    /// Whether to automatically load corresponding JS and CSS. Default is true.
+    /// </summary>
+    [HtmlAttributeName("auto-load-assets")]
+    public bool AutoLoadAssets { get; set; } = true;
+    ```
+
+### 4.2 Mandatory Asset Loading Pattern
+
+When `AutoLoadAssets` is `true`, the Tag Helper must register its resources using the following standard pattern:
+
+- **Version Management**: Always use `IFileVersionProvider.AddFileVersionToPath` to ensure browser cache busting.
+- **De-duplication & Injection**: Use `HttpContext.AddStyle` and `HttpContext.AddScript` (see Section 3 for implementation) to ensure assets are only rendered once per page.
+
+```csharp
+public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+{
+    // ... UI Generation Logic ...
+
+    if (AutoLoadAssets)
+    {
+        var httpContext = ViewContext.HttpContext;
+        var requestPathBase = httpContext.Request.PathBase;
+
+        // 1. Resolve Path with Version
+        string cssPath = "/css/components/my-component.css";
+        string versionedCss = _fileVersionProvider.AddFileVersionToPath(requestPathBase, cssPath);
+        
+        string jsPath = "/js/components/my-component.js";
+        string versionedJs = _fileVersionProvider.AddFileVersionToPath(requestPathBase, jsPath);
+
+        // 2. Register via Context Extensions (renders in designated Layout blocks)
+        httpContext.AddStyle($"<link rel=\"stylesheet\" href=\"{versionedCss}\" />", "MyComponentKey");
+        httpContext.AddScript($"<script src=\"{versionedJs}\"></script>", "MyComponentKey");
+    }
+}
+```
 ```

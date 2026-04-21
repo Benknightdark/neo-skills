@@ -30,6 +30,7 @@ This skill serves as the unified entry point for the .NET development environmen
      - **`neo-dotnet-minimal-apis`**: When the requirement is for lightweight routing development, high-performance microservices, and Controllers are not used.
      - **`neo-dotnet-webapi`**: When the requirement is for traditional RESTful API development following the controller pattern.
      - **`neo-dotnet-mvc`**: When the requirement involves Server-Side Rendering (SSR), Razor views, and ViewModels.
+     - **`neo-dotnet-tag-helper`**: When the requirement is for developing custom Razor Tag Helpers using pure C# (without CSHTML), focusing on reusable UI components and logic.
      - **`neo-dotnet-ef-core`**: When the requirement involves database migrations, Linq query optimization, or model mapping.
 
 ## Usage Guidelines

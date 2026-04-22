@@ -1,4 +1,3 @@
-# skills/neo-dotnet-tag-helper/SKILL.md
 ---
 name: neo-dotnet-tag-helper
 version: "1.0.0"

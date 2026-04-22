@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.56.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.56.0...neo-skills-v0.56.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* **dependencies:** 更新 @modelcontextprotocol/sdk 和 axios 版本至 1.29.0 和 1.15.1，調整 @types/node 和 @types/bun 版本 ([2943ab8](https://github.com/Benknightdark/neo-skills/commit/2943ab8d9d3411595a5049bbccfff3e7d7fe1f7c))
+* **SKILL.md:** 移除不必要的檔案路徑註解 ([651fb4b](https://github.com/Benknightdark/neo-skills/commit/651fb4b1b8353018993987af89996de96e7314f1))
+* **SKILL.md:** 移除不必要的檔案路徑註解 ([d3ebae0](https://github.com/Benknightdark/neo-skills/commit/d3ebae0db4117625fa4058c38ea0d9e3af3fb630))
+
 ## [0.56.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.55.0...neo-skills-v0.56.0) (2026-04-21)
 
 

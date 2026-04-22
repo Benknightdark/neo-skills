@@ -1,6 +1,6 @@
 # .NET Tag Helper Coding Style & Advanced Patterns
 
-This guide defines advanced coding styles and implementation patterns for ASP.NET Core Tag Helpers, specifically targeting complex UI components, extending built-in behaviors, and frontend asset management mechanisms.
+This guide defines advanced coding styles and implementation patterns for ASP.NET Core Tag Helpers, specifically targeting complex UI components, extending built-in behaviors, and frontend asset management mechanisms. **When developing Tag Helpers, developers MUST refer to the implementation patterns in the Example section (Section 3) to ensure adherence to these standards.**
 
 ## 1. Inheriting and Extending Built-in Tag Helpers
 
@@ -11,7 +11,101 @@ When you need to customize standard form elements (e.g., `<select>`), you should
 - You must explicitly set `output.TagName`; otherwise, the browser will output tags with custom names (e.g., `<select-ai-agent>`).
 - Call `await base.ProcessAsync(context, output)` to allow the base class to handle native attribute binding.
 
-### Example: Extending a Dropdown
+## 2. Mandatory Custom Tag Helper Properties & Asset Management
+
+To ensure consistency, performance, and maintainability across all custom UI components, every custom Tag Helper MUST implement the following properties and logic.
+
+### 2.1 Mandatory Properties
+
+1.  **`asp-for` (Model Binding)**: 
+    Support strong typing by including a `ModelExpression` property. This is crucial for retrieving model metadata (Name, Id, Value, Validation) and generating safe HTML identifiers.
+    ```csharp
+    [HtmlAttributeName("asp-for")]
+    public ModelExpression For { get; set; } = null!;
+    ```
+
+2.  **CSS Class Handling (UI Class)**: 
+    Tag Helpers must provide a default CSS class. If the user provides a custom class in the HTML tag:
+    - If the user class is identical to the default, maintain the default.
+    - If the user class is different, **append** it to the default class (ensure a space separator).
+    
+    ```csharp
+    [HtmlAttributeName("class")]
+    public string? CssClass { get; set; }
+
+    protected void ProcessCssClass(TagHelperOutput output, string defaultClass)
+    {
+        if (string.IsNullOrEmpty(CssClass))
+        {
+            output.Attributes.SetAttribute("class", defaultClass);
+        }
+        else if (CssClass.Trim() == defaultClass)
+        {
+            output.Attributes.SetAttribute("class", defaultClass);
+        }
+        else
+        {
+            output.Attributes.SetAttribute("class", $"{defaultClass} {CssClass.Trim()}");
+        }
+    }
+    ```
+
+3.  **`AutoLoadAssets` (Asset Management)**: 
+    Include a boolean property to control automatic resource loading, defaulting to `true`.
+    ```csharp
+    /// <summary>
+    /// Whether to automatically load corresponding JS and CSS. Default is true.
+    /// </summary>
+    [HtmlAttributeName("auto-load-assets")]
+    public bool AutoLoadAssets { get; set; } = true;
+    ```
+
+### 2.2 Inheritance and Composition Standards
+
+1.  **Independent Tag Helpers**: Any standalone custom Tag Helper representing a single UI control (e.g., a specialized dropdown) MUST inherit from the corresponding built-in ASP.NET Core Tag Helper (e.g., `SelectTagHelper`, `InputTagHelper`, `RadioTagHelper`). This leverages framework-standard model binding and validation logic.
+
+2.  **Composite Tag Helpers**: For components aggregating multiple elements (e.g., a search form):
+    - **Internal Elements**: MUST be implemented using built-in C# UI Tag Helpers to ensure they benefit from standard ASP.NET Core features.
+    - **Outer Container (`div-class`)**: MUST allow users to pass a custom CSS class via a `div-class` attribute.
+    - **CSS Consistency**: The handling of `div-class` MUST strictly follow the rules defined in **Section 2.1.2 (CSS Class Handling)**, ensuring the default container class is preserved or appended to, rather than simply overwritten.
+
+### 2.3 Mandatory Asset Loading Pattern
+
+When `AutoLoadAssets` is `true`, the Tag Helper must register its resources using the following standard pattern:
+
+- **Version Management**: Always use `IFileVersionProvider.AddFileVersionToPath` to ensure browser cache busting.
+- **De-duplication & Injection**: Use `HttpContext.AddStyle` and `HttpContext.AddScript` (see Section 3 for implementation) to ensure assets are only rendered once per page.
+
+```csharp
+public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+{
+    // ... UI Generation Logic ...
+
+    if (AutoLoadAssets)
+    {
+        var httpContext = ViewContext.HttpContext;
+        var requestPathBase = httpContext.Request.PathBase;
+
+        // 1. Resolve Path with Version
+        string cssPath = "/css/components/my-component.css";
+        string versionedCss = _fileVersionProvider.AddFileVersionToPath(requestPathBase, cssPath);
+        
+        string jsPath = "/js/components/my-component.js";
+        string versionedJs = _fileVersionProvider.AddFileVersionToPath(requestPathBase, jsPath);
+
+        // 2. Register via Context Extensions (renders in designated Layout blocks)
+        httpContext.AddStyle($"<link rel=\"stylesheet\" href=\"{versionedCss}\" />", "MyComponentKey");
+        httpContext.AddScript($"<script src=\"{versionedJs}\"></script>", "MyComponentKey");
+    }
+}
+```
+
+
+
+## 3 Example
+
+### Extending a Dropdown
+
 ```csharp
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -176,18 +270,21 @@ namespace [YourNamespace].TagHelpers
         }
     }
 }
+```
 
----
-
-## 2. Composite Complex UI Components and Model Binding
+### Composite Complex UI Components and Model Binding
 
 For complex UIs containing multiple elements (like a complete search form), you should use `TagBuilder` to compose the DOM structure. Using `ModelExpression` allows you to accurately bind Tag Helper attributes to ViewModel properties, retrieve the exact field name (`.Name`) for the frontend, and integrate backend permission validation logic.
 
-### Example: Composite Search Bar
-```csharp
+``` csharp
+
     /// <summary>
     /// Composite AI Report Search TagHelper.
     /// A UI component integrating date range, business unit, submission unit, inspection report menu, and search button.
+    /// </summary>
+    /// <summary>
+    /// 組合式 AI 報告搜尋 TagHelper
+    /// 整合了日期範圍、檢驗單位、送檢單位、檢驗報告選單與查詢按鈕的 UI 組件
     /// </summary>
     [HtmlTargetElement("combo-ai-report-search")]
     public class ComboAIReportSearchTagHelper : TagHelper
@@ -210,66 +307,72 @@ For complex UIs containing multiple elements (like a complete search form), you 
         }
 
         /// <summary>
-        /// Whether to automatically load corresponding JS and CSS, default is true.
-        /// If set to true, TagHelper automatically inserts related resource tags after the component, ensuring they load only once per request.
+        /// 是否自動載入對應的 JS 與 CSS，預設為 true
+        /// 若設定為 true，TagHelper 會自動在組件後方插入相關資源標籤，並確保單次請求僅載入一次
         /// </summary>
         [HtmlAttributeName("auto-load-assets")]
         public bool AutoLoadAssets { get; set; } = true;
 
-        #region Model Binding Attributes (Supports custom ID and Name)
+        #region Model Binding Attributes (支援自定義 ID 與 Name)
         /// <summary>
-        /// Model expression bound to start date
+        /// 繫結開始日期的模型表達式
         /// </summary>
         [HtmlAttributeName("asp-for-sdate")]
         public ModelExpression ForSDate { get; set; }
 
         /// <summary>
-        /// Model expression bound to end date
+        /// 繫結結束日期的模型表達式
         /// </summary>
         [HtmlAttributeName("asp-for-edate")]
         public ModelExpression ForEDate { get; set; }
 
         /// <summary>
-        /// Model expression bound to business unit
+        /// 繫結檢驗單位的模型表達式
         /// </summary>
         [HtmlAttributeName("asp-for-bu")]
         public ModelExpression ForBusinessUnit { get; set; }
 
         /// <summary>
-        /// Model expression bound to submission unit (HISNo)
+        /// 繫結送檢單位的模型表達式
         /// </summary>
         [HtmlAttributeName("asp-for-hisno")]
         public ModelExpression ForHISNo { get; set; }
 
         /// <summary>
-        /// Model expression bound to inspection report
+        /// 繫結檢驗報告的模型表達式
         /// </summary>
         [HtmlAttributeName("asp-for-report")]
         public ModelExpression ForAIReport { get; set; }
         #endregion
 
-        #region Class Attributes (Supports CSS customization)
+        #region Class Attributes (支援 CSS 客製化)
         [HtmlAttributeName("sdate-class")]
-        public string SDateClass { get; set; } = "form-control";
+        public string SDateClass { get; set; } = "sdate-li77"; // form-control 要預設有
 
         [HtmlAttributeName("edate-class")]
-        public string EDateClass { get; set; } = "form-control";
+        public string EDateClass { get; set; } = "edate-li77"; // form-control 要預設有
 
         [HtmlAttributeName("bu-class")]
-        public string BusinessUnitClass { get; set; } = "form-control";
+        public string BusinessUnitClass { get; set; } = "bu-li77"; // form-control 要預設有
 
         [HtmlAttributeName("hisno-class")]
-        public string HISNoClass { get; set; } = "form-control";
+        public string HISNoClass { get; set; } = "hisno-li77"; // form-control 要預設有
 
         [HtmlAttributeName("report-class")]
-        public string AIReportClass { get; set; } = "form-control";
+        public string AIReportClass { get; set; } = "ai-report-li77"; // form-control 要預設有
 
         [HtmlAttributeName("btn-class")]
-        public string BtnClass { get; set; } = "btn btn-primary";
+        public string BtnClass { get; set; } = "ai-btn-search-li77"; // btn btn-primary 要預設有
+
+        /// <summary>
+        /// 外層容器的 CSS Class。預設為 ai-report-search-container-li77
+        /// </summary>
+        [HtmlAttributeName("div-class")]
+        public string ContainerClass { get; set; } = "ai-report-search-container-li77";
         #endregion
 
         /// <summary>
-        /// Gets the current ViewContext to access HttpContext and other information
+        /// 取得目前的 ViewContext 以存取 HttpContext 等資訊
         /// </summary>
         [HtmlAttributeNotBound]
         [ViewContext]
@@ -281,89 +384,94 @@ For complex UIs containing multiple elements (like a complete search form), you 
             var currentDT = _commonService.GetCurrentDateTime();
             var isSuperAdmin = currentUser.IsSuperAdminRole;
 
-            // Set outer container
+            // 設定外層容器
             output.TagName = "div";
             output.TagMode = TagMode.StartTagAndEndTag;
-            output.Attributes.SetAttribute("class", "ai-report-search-container");
 
-            // Generate IDs for menus and buttons (using CreateSanitizedId ensures IDs are safe for frontend selectors)
-            string sDateId = TagBuilder.CreateSanitizedId(ForSDate.Name, "_");
-            string eDateId = TagBuilder.CreateSanitizedId(ForEDate.Name, "_");
-            string buId = ForBusinessUnit != null ? TagBuilder.CreateSanitizedId(ForBusinessUnit.Name, "_") : "Search_BusinessUnit";
-            string hisNoId = TagBuilder.CreateSanitizedId(ForHISNo.Name, "_");
-            string reportId = TagBuilder.CreateSanitizedId(ForAIReport.Name, "_");
-            string btnId = "btnSearchAIReport";
+            // 處理自訂容器 Class，如果使用者自訂了，則把自訂的加在前面，並且保留預設的以便 JS 定位
+            string finalContainerClass = ContainerClass == "ai-report-search-container-li77"
+                ? "ai-report-search-container-li77"
+                : $"{ContainerClass} ai-report-search-container-li77";
+
+            output.Attributes.SetAttribute("class", finalContainerClass);
+
+            // 產生日選單與按鈕的 ID (一律使用 TagBuilder.CreateSanitizedId 產生)
+            string sDateId = TagBuilder.CreateSanitizedId(ForSDate?.Name ?? "Search_SDate", "_");
+            string eDateId = TagBuilder.CreateSanitizedId(ForEDate?.Name ?? "Search_EDate", "_");
+            string buId = TagBuilder.CreateSanitizedId(ForBusinessUnit?.Name ?? "Search_BusinessUnit", "_");
+            string hisNoId = TagBuilder.CreateSanitizedId(ForHISNo?.Name ?? "Search_HISNo", "_");
+            string reportId = TagBuilder.CreateSanitizedId(ForAIReport?.Name ?? "Search_AIReport", "_");
+
+            // 處理內層元素的 CSS Class，確保基底 class (form-control / btn btn-primary) 加上自定義或預設的 class
+            string finalSDateClass = SDateClass == "sdate-li77" ? "form-control sdate-li77" : $"form-control {SDateClass} sdate-li77";
+            string finalEDateClass = EDateClass == "edate-li77" ? "form-control edate-li77" : $"form-control {EDateClass} edate-li77";
+            string finalBUClass = BusinessUnitClass == "bu-li77" ? "form-control bu-li77" : $"form-control {BusinessUnitClass} bu-li77";
+            string finalHISNoClass = HISNoClass == "hisno-li77" ? "form-control hisno-li77" : $"form-control {HISNoClass} hisno-li77";
+            string finalReportClass = AIReportClass == "ai-report-li77" ? "form-control ai-report-li77" : $"form-control {AIReportClass} ai-report-li77";
+            string finalBtnClass = BtnClass == "ai-btn-search-li77" ? "btn btn-primary ai-btn-search-li77" : $"btn btn-primary {BtnClass} ai-btn-search-li77";
 
             var inputGroup = new TagBuilder("div");
             inputGroup.AddCssClass("input-group");
 
-            // 1. Start date (generate label and input)
-            inputGroup.InnerHtml.AppendHtml(CreateSpan("Date"));
-            inputGroup.InnerHtml.AppendHtml(CreateInput(sDateId, "date", SDateClass, DateTime.Now.ToString("yyyy-MM-dd"), "Start Date"));
+            // 1. 開始日期
+            inputGroup.InnerHtml.AppendHtml(CreateSpan("日期"));
+            inputGroup.InnerHtml.AppendHtml(await CreateUIAsync(ForSDate, "date", finalSDateClass, DateTime.Now.ToString("yyyy-MM-dd"), "開始日期", sDateId));
 
-            // 2. End date
-            inputGroup.InnerHtml.AppendHtml(CreateSpan("To"));
-            inputGroup.InnerHtml.AppendHtml(CreateInput(eDateId, "date", EDateClass, DateTime.Now.ToString("yyyy-MM-dd"), "End Date"));
+            // 2. 結束日期
+            inputGroup.InnerHtml.AppendHtml(CreateSpan("至"));
+            inputGroup.InnerHtml.AppendHtml(await CreateUIAsync(ForEDate, "date", finalEDateClass, DateTime.Now.ToString("yyyy-MM-dd"), "結束日期", eDateId));
 
-            // 3. Business Unit (Visible to Super Admin only)
+            // 3. 檢驗單位 (僅超級管理員可見)
             if (isSuperAdmin)
             {
-                inputGroup.InnerHtml.AppendHtml(CreateSpan("Business Unit"));
-                inputGroup.InnerHtml.AppendHtml(CreateSelect(buId, BusinessUnitClass));
+                inputGroup.InnerHtml.AppendHtml(CreateSpan("檢驗單位"));
+                inputGroup.InnerHtml.AppendHtml(await CreateUIAsync(ForBusinessUnit, null, finalBUClass, null, null, buId));
             }
 
-            // 4. Submission Unit (Automatically filtered or initialized based on permissions)
-            inputGroup.InnerHtml.AppendHtml(CreateSpan("Submission Unit"));
-            var hisNoSelect = CreateSelect(hisNoId, HISNoClass);
+            // 4. 送檢單位 (依權限自動過濾或初始化)
+            inputGroup.InnerHtml.AppendHtml(CreateSpan("送檢單位"));
+            
+            List<SelectListItem> hisNoOptions = new List<SelectListItem>();
             if (!isSuperAdmin)
             {
-                // Non-Super Admin: Pre-fetch authorized organization list and populate dropdown
+                // 非超級管理員：預先從資料庫抓取授權的組織清單
+                hisNoOptions.Add(new SelectListItem { Text = "", Value = "" });
                 var options = await GetAllowListOptionsAsync(currentUser.UserID, currentDT);
-                hisNoSelect.InnerHtml.AppendHtml("<option></option>");
-                foreach (var opt in options)
-                {
-                    var optionTag = new TagBuilder("option");
-                    optionTag.Attributes.Add("value", opt.Value);
-                    optionTag.InnerHtml.Append(opt.Text);
-                    hisNoSelect.InnerHtml.AppendHtml(optionTag);
-                }
+                hisNoOptions.AddRange(options);
             }
-            inputGroup.InnerHtml.AppendHtml(hisNoSelect);
+            inputGroup.InnerHtml.AppendHtml(await CreateUIAsync(ForHISNo, null, finalHISNoClass, null, null, hisNoId, hisNoOptions));
 
-            // 5. Inspection Report (Default empty, populated asynchronously by JS via API)
-            inputGroup.InnerHtml.AppendHtml(CreateSpan("Inspection Report"));
-            var reportSelect = CreateSelect(reportId, AIReportClass);
-            reportSelect.InnerHtml.AppendHtml("<option></option>");
-            inputGroup.InnerHtml.AppendHtml(reportSelect);
+            // 5. 檢驗報告 (預設為空，由 JS 透過 API 非同步填充)
+            inputGroup.InnerHtml.AppendHtml(CreateSpan("檢驗報告"));
+            var reportOptions = new List<SelectListItem> { new SelectListItem { Text = "", Value = "" } };
+            inputGroup.InnerHtml.AppendHtml(await CreateUIAsync(ForAIReport, null, finalReportClass, null, null, reportId, reportOptions));
 
-            // 6. Search Button
+            // 6. 查詢按鈕
             var btn = new TagBuilder("button");
             btn.Attributes.Add("type", "button");
-            btn.Attributes.Add("id", btnId);
-            btn.AddCssClass(BtnClass);
-            btn.InnerHtml.AppendHtml("<i class='fa fa-search'></i> Search");
+            btn.AddCssClass(finalBtnClass);
+            btn.InnerHtml.AppendHtml("<i class='fa fa-search'></i> 查詢");
             inputGroup.InnerHtml.AppendHtml(btn);
 
             output.Content.SetHtmlContent(inputGroup);
 
-            // Auto-load assets (integrates with project's existing asset collector pattern)
+            // 自動載入資產
             if (AutoLoadAssets)
             {
                 var httpContext = ViewContext.HttpContext;
                 
-                // 1. Load CSS (Pushed to Layout's RenderStyles for processing)
-                string cssPath = "[your-css-path]";
+                string cssPath = "/css/AIAnalysis/ComboAIReportSearch.css";
                 string vCssPath = _fileVersionProvider.AddFileVersionToPath(httpContext.Request.PathBase, cssPath);
                 httpContext.AddStyle($"<link rel=\"stylesheet\" href=\"{vCssPath}\" />", "ComboAIReportSearch");
 
-                // 2. Load JS (Pushed to Layout's RenderScripts for processing)
-                string jsPath = "[your-js-path]";
+                string jsPath = "/js/AIAnalysis/ComboAIReportSearch.js";
                 string vJsPath = _fileVersionProvider.AddFileVersionToPath(httpContext.Request.PathBase, jsPath);
                 httpContext.AddScript($"<script src=\"{vJsPath}\"></script>", "ComboAIReportSearch");
             }
         }
 
-        #region Helper Methods (Used to generate TagBuilder elements)
+        #region Helper Methods
+
         private TagBuilder CreateSpan(string text)
         {
             var span = new TagBuilder("span");
@@ -372,30 +480,105 @@ For complex UIs containing multiple elements (like a complete search form), you 
             return span;
         }
 
-        private TagBuilder CreateInput(string id, string type, string className, string value, string title)
+        /// <summary>
+        /// 通用 UI 產生方法，根據是否有 ModelExpression 選擇產生方式
+        /// </summary>
+        private async Task<IHtmlContent> CreateUIAsync(ModelExpression @for, string type, string className, string value, string title, string sanitizedId, IEnumerable<SelectListItem> items = null)
         {
-            var input = new TagBuilder("input");
-            input.Attributes.Add("type", type);
-            input.Attributes.Add("id", id);
-            input.Attributes.Add("name", id);
-            input.Attributes.Add("value", value);
-            input.Attributes.Add("title", title);
-            input.AddCssClass(className);
-            return input;
+            // 如果有 ModelExpression，使用原生 TagHelper 物件
+            if (@for != null)
+            {
+                if (string.IsNullOrEmpty(type)) // Select
+                {
+                    return await CreateSelectTagHelperAsync(@for, className, sanitizedId, items);
+                }
+                else // Input
+                {
+                    return await CreateInputTagHelperAsync(@for, type, className, value, title, sanitizedId);
+                }
+            }
+
+            // 如果沒有 ModelExpression，使用 IHtmlGenerator 直接產生 (模擬 TagHelper 行為)
+            if (string.IsNullOrEmpty(type)) // Select
+            {
+                var select = _generator.GenerateSelect(
+                    ViewContext,
+                    null,
+                    sanitizedId,
+                    sanitizedId,
+                    items ?? new List<SelectListItem>(),
+                    false,
+                    new { @class = className, id = sanitizedId });
+                return select;
+            }
+            else // Input
+            {
+                var input = _generator.GenerateTextBox(
+                    ViewContext,
+                    null,
+                    sanitizedId,
+                    value,
+                    null,
+                    new { @class = className, id = sanitizedId, type = type, title = title });
+                return input;
+            }
         }
 
-        private TagBuilder CreateSelect(string id, string className)
+        /// <summary>
+        /// 使用 InputTagHelper 產生輸入框
+        /// </summary>
+        private async Task<IHtmlContent> CreateInputTagHelperAsync(ModelExpression @for, string type, string className, string value, string title, string sanitizedId)
         {
-            var select = new TagBuilder("select");
-            select.Attributes.Add("id", id);
-            select.Attributes.Add("name", id);
-            select.AddCssClass(className);
-            return select;
+            var inputTagHelper = new InputTagHelper(_generator)
+            {
+                For = @for,
+                InputTypeName = type,
+                ViewContext = this.ViewContext
+            };
+
+            var output = new TagHelperOutput(
+                "input",
+                new TagHelperAttributeList(),
+                (useCachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent())
+            );
+
+            output.Attributes.SetAttribute("id", sanitizedId);
+            if (!string.IsNullOrEmpty(className)) output.Attributes.SetAttribute("class", className);
+            if (!string.IsNullOrEmpty(value)) output.Attributes.SetAttribute("value", value);
+            if (!string.IsNullOrEmpty(title)) output.Attributes.SetAttribute("title", title);
+
+            await inputTagHelper.ProcessAsync(new TagHelperContext(new TagHelperAttributeList(), new Dictionary<object, object>(), Guid.NewGuid().ToString()), output);
+            return output;
+        }
+
+        /// <summary>
+        /// 使用 SelectTagHelper 產生下拉選單
+        /// </summary>
+        private async Task<IHtmlContent> CreateSelectTagHelperAsync(ModelExpression @for, string className, string sanitizedId, IEnumerable<SelectListItem> items = null)
+        {
+            var selectTagHelper = new SelectTagHelper(_generator)
+            {
+                For = @for,
+                Items = items ?? new List<SelectListItem>(),
+                ViewContext = this.ViewContext
+            };
+
+            var output = new TagHelperOutput(
+                "select",
+                new TagHelperAttributeList(),
+                (useCachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent())
+            );
+
+            output.Attributes.SetAttribute("id", sanitizedId);
+            if (!string.IsNullOrEmpty(className)) output.Attributes.SetAttribute("class", className);
+
+            await selectTagHelper.ProcessAsync(new TagHelperContext(new TagHelperAttributeList(), new Dictionary<object, object>(), Guid.NewGuid().ToString()), output);
+            return output;
         }
         #endregion
 
         /// <summary>
-        /// Gets the list of all authorized submission organizations for the current user
+        /// 獲取當前使用者被授權的所有送檢機構列表
         /// </summary>
         private async Task<List<SelectListItem>> GetAllowListOptionsAsync(string userId, DateTime currentDT)
         {
@@ -403,18 +586,18 @@ For complex UIs containing multiple elements (like a complete search form), you 
             return authOrgs.Select(x => new SelectListItem
             {
                 Value = x.HisNo,
-                Text = $"[{x.HisNo}] {x.OrgName}"
+                Text = $"【{x.HisNo}】 {x.OrgName}"
             }).ToList();
         }
     }
 
----
+```
 
-## 3. Automatic Frontend Asset Loading and Deduplication (Asset Management)
+
+### Automatic Frontend Asset Loading and Deduplication (Asset Management)
 
 When a Tag Helper depends on specific JavaScript or CSS, developers must ensure that these resources are not loaded multiple times if the tag is used repeatedly on the same page. It is recommended to implement an asset collector pattern by extending `HttpContext.Items`.
 
-### Example: Asset Deduplication Extension Methods
 
 ```csharp
 public static partial class HtmlExtension
@@ -492,83 +675,4 @@ public static partial class HtmlExtension
 
 ---
 
-## 4. Mandatory Custom Tag Helper Properties & Asset Management
 
-To ensure consistency, performance, and maintainability across all custom UI components, every custom Tag Helper MUST implement the following properties and logic.
-
-### 4.1 Mandatory Properties
-
-1.  **`asp-for` (Model Binding)**: 
-    Support strong typing by including a `ModelExpression` property. This is crucial for retrieving model metadata (Name, Id, Value, Validation) and generating safe HTML identifiers.
-    ```csharp
-    [HtmlAttributeName("asp-for")]
-    public ModelExpression For { get; set; } = null!;
-    ```
-
-2.  **CSS Class Handling (UI Class)**: 
-    Tag Helpers must provide a default CSS class. If the user provides a custom class in the HTML tag:
-    - If the user class is identical to the default, maintain the default.
-    - If the user class is different, **append** it to the default class (ensure a space separator).
-    
-    ```csharp
-    [HtmlAttributeName("class")]
-    public string? CssClass { get; set; }
-
-    protected void ProcessCssClass(TagHelperOutput output, string defaultClass)
-    {
-        if (string.IsNullOrEmpty(CssClass))
-        {
-            output.Attributes.SetAttribute("class", defaultClass);
-        }
-        else if (CssClass.Trim() == defaultClass)
-        {
-            output.Attributes.SetAttribute("class", defaultClass);
-        }
-        else
-        {
-            output.Attributes.SetAttribute("class", $"{defaultClass} {CssClass.Trim()}");
-        }
-    }
-    ```
-
-3.  **`AutoLoadAssets` (Asset Management)**: 
-    Include a boolean property to control automatic resource loading, defaulting to `true`.
-    ```csharp
-    /// <summary>
-    /// Whether to automatically load corresponding JS and CSS. Default is true.
-    /// </summary>
-    [HtmlAttributeName("auto-load-assets")]
-    public bool AutoLoadAssets { get; set; } = true;
-    ```
-
-### 4.2 Mandatory Asset Loading Pattern
-
-When `AutoLoadAssets` is `true`, the Tag Helper must register its resources using the following standard pattern:
-
-- **Version Management**: Always use `IFileVersionProvider.AddFileVersionToPath` to ensure browser cache busting.
-- **De-duplication & Injection**: Use `HttpContext.AddStyle` and `HttpContext.AddScript` (see Section 3 for implementation) to ensure assets are only rendered once per page.
-
-```csharp
-public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
-{
-    // ... UI Generation Logic ...
-
-    if (AutoLoadAssets)
-    {
-        var httpContext = ViewContext.HttpContext;
-        var requestPathBase = httpContext.Request.PathBase;
-
-        // 1. Resolve Path with Version
-        string cssPath = "/css/components/my-component.css";
-        string versionedCss = _fileVersionProvider.AddFileVersionToPath(requestPathBase, cssPath);
-        
-        string jsPath = "/js/components/my-component.js";
-        string versionedJs = _fileVersionProvider.AddFileVersionToPath(requestPathBase, jsPath);
-
-        // 2. Register via Context Extensions (renders in designated Layout blocks)
-        httpContext.AddStyle($"<link rel=\"stylesheet\" href=\"{versionedCss}\" />", "MyComponentKey");
-        httpContext.AddScript($"<script src=\"{versionedJs}\"></script>", "MyComponentKey");
-    }
-}
-```
-```

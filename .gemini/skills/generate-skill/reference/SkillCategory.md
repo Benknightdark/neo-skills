@@ -1,3 +1,5 @@
+> 注意：以下程式碼區塊是 `SKILL.md` 內容範例。正式 `SKILL.md` 的第一行必須是 YAML frontmatter 的 `---`，不要把檔案路徑、標題或註解放在 frontmatter 前面。
+
 ## 1. Tool Wrapper（工具包裝模式）
 
 * 讓 Agent 成為特定函式庫或框架的專家。與其把所有的 API 規範或團隊 coding style 硬塞進系統提示詞裡，不如將它們打包成一個技能。Agent 只有在真正需要處理該技術時，才會動態載入外部的參考文件（例如 `references/conventions.md`）。這非常適合用來確保 Agent 寫出來的程式碼符合團隊內部的最佳實踐。
@@ -5,7 +7,6 @@
 
 **`SKILL.md` 原始碼範例（FastAPI 開發專家）：**
 ```markdown
-# skills/api-expert/SKILL.md
 ---
 name: api-expert
 description: FastAPI development best practices and conventions. Use when building, reviewing, or debugging FastAPI applications, REST APIs, or Pydantic models.
@@ -41,7 +42,6 @@ Load 'references/conventions.md' for the complete list of FastAPI best practices
 
 **`SKILL.md` 原始碼範例（技術報告生成器）：**
 ```markdown
-# skills/report-generator/SKILL.md
 ---
 name: report-generator
 description: Generates structured technical reports in Markdown. Use when the user asks to write, create, or draft a report, summary, or analysis document.
@@ -75,7 +75,6 @@ Step 5: Return the completed report as a single Markdown document.
 
 **`SKILL.md` 原始碼範例（Python 程式碼審查）：**
 ```markdown
-# skills/code-reviewer/SKILL.md
 ---
 name: code-reviewer
 description: Reviews Python code for quality, style, and common bugs. Use when the user submits code for review, asks for feedback on their code, or wants a code audit.
@@ -112,7 +111,6 @@ Step 4: Produce a structured review with these sections:
 
 **`SKILL.md` 原始碼範例（專案規劃採訪者）：**
 ```markdown
-# skills/project-planner/SKILL.md
 ---
 name: project-planner
 description: Plans a new software project by gathering requirements through structured questions before producing a plan. Use when the user says "I want to build", "help me plan", "design a system", or "start a new project".
@@ -155,7 +153,6 @@ Ask these questions in order. Do not skip any.
 
 **`SKILL.md` 原始碼範例（API 文件生成管線）：**
 ```markdown
-# skills/doc-pipeline/SKILL.md
 ---
 name: doc-pipeline
 description: Generates API documentation from Python source code through a multi-step pipeline. Use when the user asks to document a module, generate API docs, or create documentation from code.

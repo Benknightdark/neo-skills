@@ -20,7 +20,6 @@
     "dist",
     "bin",
     "skills",
-    "commands",
     "gemini-extension.json",
     "GEMINI.md"
   ],

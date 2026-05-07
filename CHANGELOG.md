@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.57.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.56.2...neo-skills-v0.57.0) (2026-05-07)
+
+
+### Features
+
+* **agent-harness:** 新增 Agent Harness 架構師技能與相關參考文件 ([8c21169](https://github.com/Benknightdark/neo-skills/commit/8c21169fef0654007da2dc329a11c89c976e8d3f))
+
+
+### Bug Fixes
+
+* **README.md:** 更新 AI 開發流程健檢描述，強調穩定性與安全性 ([34fdfc6](https://github.com/Benknightdark/neo-skills/commit/34fdfc6a077a82fdca06e230096737744ca7cfe3))
+
 ## [0.56.2](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.56.1...neo-skills-v0.56.2) (2026-04-22)
 
 

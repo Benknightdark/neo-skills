@@ -63,8 +63,8 @@
 ### 10. 需求釐清助手
 *   **需求釐清**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
-### 11. Agent Harness 架構師
-*   **開發流程治理 (`skills/neo-agent-harness`)**：分析專案的 agent harnessability，設計 feedforward guides、feedback sensors、驗證流程與人類決策點，提升 AI 輔助開發的穩定性與可控性。
+### 11. AI 開發流程健檢
+*   **AI 助手開發治理 (`skills/neo-agent-harness`)**：檢查專案規則、測試、CI、審查流程與安全防護是否足夠清楚，協助 AI 助手更穩定、更安全地參與開發。
 
 ### 12. 安全守衛 (Security Guard)
 *   **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如環境設定檔、私鑰、雲端憑證等）將強制阻擋執行，防止機密外洩。
@@ -218,7 +218,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | **全方位程式碼審查** | `幫我 code review 剛才的修改` |
 | **生成 C# Interface** | `幫我針對這個 class 產生介面` |
 | **技術解析與架構洞察** | `分析這個專案的架構` |
-| **Agent Harness 規劃** | `幫我設計這個專案的 agent harness，提升 AI 開發可靠性` |
+| **AI 開發流程健檢** | `幫我檢查這個專案怎麼讓 AI 助手開發得更穩、更安全` |
 
 ## 🛠 開發指南
 

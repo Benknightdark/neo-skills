@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.57.1](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.57.0...neo-skills-v0.57.1) (2026-05-07)
+
+
+### Bug Fixes
+
+* add dist folder to version control for direct GitHub installation ([0dde904](https://github.com/Benknightdark/neo-skills/commit/0dde904f06685defd14d3c03740a72a9adde62bd))
+* add dist folder to version control for direct GitHub installation ([9d82362](https://github.com/Benknightdark/neo-skills/commit/9d82362f7bbd8c3a001c9b609f9218ab925299a5))
+* mcp not found ([46dae9b](https://github.com/Benknightdark/neo-skills/commit/46dae9b698eaf7c78c53621ceb928a1d4d5ecdcf))
+* mcp not found ([167d42c](https://github.com/Benknightdark/neo-skills/commit/167d42cea1c6e3f804271972486a77ffc2e004fc))
+
 ## [0.57.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.56.2...neo-skills-v0.57.0) (2026-05-07)
 
 

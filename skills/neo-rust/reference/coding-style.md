@@ -2,9 +2,9 @@
 
 ---
 
-## 命名規則
+## Naming Conventions
 
-| 類型 | 好作法 |
+| Type | Best Practice |
 |---|---|
 | struct | `UserProfile` |
 | enum | `PaymentStatus` |
@@ -19,11 +19,11 @@
 
 ---
 
-## Getter 命名
+## Getter Naming
 
-Rust 慣例通常不加 `get_`。
+Rust convention typically does not include the `get_` prefix.
 
-### 不好
+### Bad
 
 ```rust
 impl User {
@@ -33,7 +33,7 @@ impl User {
 }
 ```
 
-### 好
+### Good
 
 ```rust
 impl User {
@@ -49,15 +49,15 @@ impl User {
 
 ---
 
-## Conversion 命名：`as_`、`to_`、`into_`
+## Conversion Naming: `as_`, `to_`, `into_`
 
-| 命名 | 意義 | 範例 |
+| Naming | Meaning | Example |
 |---|---|---|
-| `as_` | 便宜借用轉換 | `as_str()` |
-| `to_` | 產生新值，可能配置記憶體 | `to_string()` |
-| `into_` | 消耗自己，轉成別的 owned value | `into_bytes()` |
+| `as_` | Cheap borrowing conversion | `as_str()` |
+| `to_` | Produces a new value, may allocate memory | `to_string()` |
+| `into_` | Consumes self, converts to another owned value | `into_bytes()` |
 
-### 範例
+### Example
 
 ```rust
 struct UserName(String);
@@ -75,9 +75,9 @@ impl UserName {
 
 ---
 
-## Iterator 命名
+## Iterator Naming
 
-Collection 類型建議提供：
+For Collection types, it is recommended to provide:
 
 ```rust
 fn iter(&self) -> Iter
@@ -89,7 +89,7 @@ fn into_iter(self) -> IntoIter
 
 ## Module Style
 
-建議結構：
+Recommended structure:
 
 ```text
 src/
@@ -110,22 +110,22 @@ src/
     user_service.rs
 ```
 
-### 原則
+### Principles
 
-| 原則 | 說明 |
+| Principle | Description |
 |---|---|
-| `main.rs` 薄一點 | 只負責組裝與啟動 |
-| business logic 放 `lib.rs` | 方便測試 |
-| domain type 不依賴 infra | 避免耦合 |
-| `pub` 越少越好 | 預設私有 |
-| error 集中管理 | 不要到處 `String` error |
-| tests 靠近程式 | 小單元測試可放同檔 `mod tests` |
+| Thin `main.rs` | Only responsible for assembly and startup |
+| Business logic in `lib.rs` | Facilitates testing |
+| Domain types don't depend on infra | Avoids coupling |
+| Minimize `pub` | Private by default |
+| Centralized error management | Don't use `String` for errors everywhere |
+| Tests near code | Small unit tests can be placed in the same file under `mod tests` |
 
 ---
 
 ## Import Style
 
-### 不好
+### Bad
 
 ```rust
 use crate::domain::user::User;
@@ -133,19 +133,19 @@ use crate::domain::user::UserId;
 use crate::domain::user::UserStatus;
 ```
 
-### 好
+### Good
 
 ```rust
 use crate::domain::user::{User, UserId, UserStatus};
 ```
 
-### 不建議濫用
+### Not Recommended
 
 ```rust
 use crate::domain::user::*;
 ```
 
-`*` 在 test 或 prelude 可接受，正式模組少用。
+The glob operator `*` is acceptable in tests or preludes, but should be avoided in formal modules.
 
 ---
 
@@ -153,7 +153,7 @@ use crate::domain::user::*;
 
 ### Application / CLI
 
-可以用較彈性的 error：
+Flexible errors can be used:
 
 ```rust
 fn run() -> Result<(), Box<dyn std::error::Error>> {
@@ -161,9 +161,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### Library / domain
+### Library / Domain
 
-建議明確 enum：
+Explicit enums are recommended:
 
 ```rust
 #[derive(Debug)]
@@ -175,7 +175,7 @@ pub enum CreateUserError {
 
 ### Service
 
-建議保留錯誤上下文：
+Preserve error context:
 
 ```rust
 fn create_user(email: &str) -> Result<(), CreateUserError> {
@@ -189,9 +189,9 @@ fn create_user(email: &str) -> Result<(), CreateUserError> {
 
 ---
 
-# 5. Rust 工具鏈 Coding Standard
+# 5. Rust Toolchain Coding Standard
 
-## 建議指令
+## Recommended Commands
 
 ```bash
 cargo fmt -- --check
@@ -201,7 +201,7 @@ cargo test
 cargo build --release
 ```
 
-## 建議 CI
+## Recommended CI
 
 ```yaml
 name: Rust CI
@@ -232,35 +232,35 @@ jobs:
 
 ---
 
-# 6. 總表：好作法 VS 不好作法
+# 6. Summary Table: Good vs. Bad Practices
 
-| 主題 | 好作法 | 不好作法 |
+| Topic | Good Practice | Bad Practice |
 |---|---|---|
-| 讀取文字 | `&str` | `String` |
-| 讀取陣列 | `&[T]` | `&Vec<T>` |
-| 可能沒值 | `Option<T>` | 空字串、`-1`、假資料 |
-| 可能失敗 | `Result<T, E>` | `panic!`、`unwrap()` |
-| 有限狀態 | `enum` | `String`、多個 bool |
-| ID / 金額 / 單位 | Newtype | 全部用 `u64` / `String` |
-| 參數很多 | Builder | 超長 constructor |
-| 狀態流程 | Typestate | runtime flag |
-| 抽象行為 | trait | 硬寫 concrete dependency |
-| 資料轉換 | iterator chain | 大量暫存 mutable vec |
-| 資源管理 | RAII / `Drop` | 手動 close，容易忘 |
-| 共享資料 | 明確 ownership / channel | 到處 `Arc<Mutex<T>>` |
-| async concurrency | 有界並行 | 無限制 `spawn` |
-| 格式 | `cargo fmt` | 手排格式 |
-| 靜態檢查 | `cargo clippy` | 靠人工 review |
+| Reading text | `&str` | `String` |
+| Reading arrays | `&[T]` | `&Vec<T>` |
+| Optional values | `Option<T>` | Empty string, `-1`, dummy data |
+| Possible failure | `Result<T, E>` | `panic!`, `unwrap()` |
+| Finite states | `enum` | `String`, multiple booleans |
+| ID / Amount / Units | Newtype | Always using `u64` / `String` |
+| Many parameters | Builder | Extremely long constructor |
+| State transitions | Typestate | Runtime flags |
+| Abstract behavior | trait | Hard-coding concrete dependencies |
+| Data conversion | iterator chain | Large temporary mutable vectors |
+| Resource management | RAII / `Drop` | Manual close (easy to forget) |
+| Shared data | Clear ownership / channel | `Arc<Mutex<T>>` everywhere |
+| Async concurrency | Bounded concurrency | Unrestricted `spawn` |
+| Formatting | `cargo fmt` | Manual formatting |
+| Static analysis | `cargo clippy` | Relying on manual review |
 
 ---
 
-# 7. 實務上的 Rust 寫法準則
+# 7. Practical Rust Coding Guidelines
 
 ---
 
-## 寫 function 時
+## When Writing Functions
 
-優先順序：
+Priority order:
 
 ```rust
 fn read_only(value: &T)
@@ -273,7 +273,7 @@ fn flexible_owned(value: impl Into<T>)
 
 ---
 
-## 寫 struct 時
+## When Writing Structs
 
 ```rust
 pub struct User {
@@ -298,7 +298,7 @@ impl User {
 
 ---
 
-## 寫 enum 時
+## When Writing Enums
 
 ```rust
 enum Command {
@@ -308,7 +308,7 @@ enum Command {
 }
 ```
 
-比這種好：
+Better than:
 
 ```rust
 struct Command {
@@ -319,7 +319,7 @@ struct Command {
 
 ---
 
-## 寫錯誤時
+## When Writing Errors
 
 ```rust
 #[derive(Debug)]
@@ -330,7 +330,7 @@ enum AppError {
 }
 ```
 
-比這種好：
+Better than:
 
 ```rust
 Err("something went wrong".to_string())
@@ -338,11 +338,11 @@ Err("something went wrong".to_string())
 
 ---
 
-# 8. 專案起手式建議
+# 8. Project Starter Recommendations
 
 ---
 
-## CLI / 小工具
+## CLI / Small Tools
 
 ```text
 src/
@@ -352,7 +352,7 @@ src/
   error.rs
 ```
 
-重點：
+Key points:
 
 ```rust
 fn main() {
@@ -384,21 +384,21 @@ src/
     repository.rs
 ```
 
-重點：
+Key points:
 
-| 層 | 責任 |
+| Layer | Responsibility |
 |---|---|
-| `domain` | 型別、規則、狀態 |
-| `service` | use case |
-| `infra` | DB、HTTP、Redis、檔案 |
-| `app` | DI / router / runtime 組裝 |
-| `main` | 啟動 |
+| `domain` | Types, rules, states |
+| `service` | Use cases |
+| `infra` | DB, HTTP, Redis, Files |
+| `app` | DI / Router / Runtime assembly |
+| `main` | Startup |
 
 ---
 
-# 9. 最重要的結論
+# 9. Key Conclusion
 
-Rust 的好程式碼通常長這樣：
+Good Rust code typically looks like this:
 
 ```rust
 pub fn create_user(repo: &impl UserRepository, email: &str) -> Result<UserId, CreateUserError> {
@@ -412,56 +412,56 @@ pub fn create_user(repo: &impl UserRepository, email: &str) -> Result<UserId, Cr
 }
 ```
 
-它具備幾個特徵：
+It possesses several characteristics:
 
-1. 輸入用 borrow：`&str`
-2. 不合法資料用 smart constructor 擋住：`Email::new`
-3. 錯誤用 `Result`
-4. 業務錯誤可分類：`CreateUserError`
-5. dependency 用 trait 抽象：`UserRepository`
-6. 沒有亂 `unwrap`
-7. 沒有 stringly-typed 狀態
-8. 沒有多餘 clone
-9. 測試容易
-10. 編譯器幫你擋掉大量錯誤
+1. Inputs use borrows: `&str`
+2. Invalid data is blocked by smart constructors: `Email::new`
+3. Errors use `Result`
+4. Business errors are categorizable: `CreateUserError`
+5. Dependencies are abstracted via traits: `UserRepository`
+6. No reckless `unwrap`
+7. No stringly-typed states
+8. No redundant clones
+9. Easy to test
+10. The compiler prevents a large class of errors
 
-真正的 Rust design pattern 不是「把 class 設計得漂亮」，而是：
+True Rust design patterns aren't about "making classes look pretty," but rather:
 
-> 讓不合法狀態無法表示，讓錯誤路徑被型別強迫處理，讓 ownership 清楚到不用猜。
+> Making illegal states unrepresentable, forcing error paths to be handled by the type system, and making ownership so clear it doesn't need to be guessed.
 
 ---
 
-# 10. 參考來源
+# 10. References
 
-- Rust Book - Understanding Ownership  
+- Rust Book - Understanding Ownership
   https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
 
-- Rust Book - Recoverable Errors with Result  
+- Rust Book - Recoverable Errors with Result
   https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html
 
-- Rust Book - Match Control Flow Construct  
+- Rust Book - Match Control Flow Construct
   https://doc.rust-lang.org/book/ch06-02-match.html
 
-- Rust Book - Smart Pointers  
+- Rust Book - Smart Pointers
   https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
 
-- Rust Book - Message Passing  
+- Rust Book - Message Passing
   https://doc.rust-lang.org/book/ch16-02-message-passing.html
 
-- Rust Book - Async and Await  
+- Rust Book - Async and Await
   https://doc.rust-lang.org/book/ch17-01-futures-and-syntax.html
 
-- Rust API Guidelines - Naming  
+- Rust API Guidelines - Naming
   https://rust-lang.github.io/api-guidelines/naming.html
 
-- Clippy Lints  
+- Clippy Lints
   https://doc.rust-lang.org/stable/clippy/lints.html
 
-- Cargo Check  
+- Cargo Check
   https://doc.rust-lang.org/cargo/commands/cargo-check.html
 
-- Tokio Tutorial - Channels  
+- Tokio Tutorial - Channels
   https://tokio.rs/tokio/tutorial/channels
 
-- Tokio Mutex Documentation  
+- Tokio Mutex Documentation
   https://docs.rs/tokio/latest/tokio/sync/struct.Mutex.html

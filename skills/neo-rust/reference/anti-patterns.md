@@ -1,10 +1,10 @@
-# 3. Anti-pattern：不好作法
+# 3. Anti-patterns
 
 ---
 
-## Anti-pattern 1：到處 `.clone()` 逃避 borrow checker
+## Anti-pattern 1: Using `.clone()` everywhere to avoid the borrow checker
 
-### 不好
+### Bad
 
 ```rust
 fn process(name: String) {
@@ -20,7 +20,7 @@ fn main() {
 }
 ```
 
-### 好
+### Good
 
 ```rust
 fn process(name: &str) {
@@ -36,16 +36,16 @@ fn main() {
 }
 ```
 
-### 原則
+### Principle
 
-clone 不是不能用，但要知道為什麼 clone。  
-如果只是讀取，先改成 borrow。
+`.clone()` is not forbidden, but you should know why you are cloning.
+If you only need to read the data, use a borrow instead.
 
 ---
 
-## Anti-pattern 2：過度使用 `String`
+## Anti-pattern 2: Excessive use of `String`
 
-### 不好
+### Bad
 
 ```rust
 fn is_admin(role: String) -> bool {
@@ -53,7 +53,7 @@ fn is_admin(role: String) -> bool {
 }
 ```
 
-### 好
+### Good
 
 ```rust
 fn is_admin(role: &str) -> bool {
@@ -61,15 +61,15 @@ fn is_admin(role: &str) -> bool {
 }
 ```
 
-### 原則
+### Principle
 
-建立 ownership 才用 `String`，讀取文字優先 `&str`。
+Use `String` when you need ownership; prefer `&str` for reading text.
 
 ---
 
-## Anti-pattern 3：用 `bool` 表達複雜狀態
+## Anti-pattern 3: Using `bool` to represent complex states
 
-### 不好
+### Bad
 
 ```rust
 struct User {
@@ -79,9 +79,9 @@ struct User {
 }
 ```
 
-問題：可能出現矛盾狀態，例如 active 又 deleted。
+Problem: Contradictory states can occur, such as being both `active` and `deleted`.
 
-### 好
+### Good
 
 ```rust
 enum UserStatus {
@@ -97,9 +97,9 @@ struct User {
 
 ---
 
-## Anti-pattern 4：用 `String` 表達錯誤
+## Anti-pattern 4: Using `String` for errors
 
-### 不好
+### Bad
 
 ```rust
 fn parse_age(input: &str) -> Result<u8, String> {
@@ -107,9 +107,9 @@ fn parse_age(input: &str) -> Result<u8, String> {
 }
 ```
 
-短程式可以，但 library 或大型系統不建議只丟字串。
+Acceptable for short scripts, but not recommended for libraries or large systems.
 
-### 好
+### Good
 
 ```rust
 #[derive(Debug)]
@@ -129,15 +129,15 @@ fn parse_age(input: &str) -> Result<u8, ParseAgeError> {
 }
 ```
 
-### 原則
+### Principle
 
-錯誤要可分類、可測試、可處理。
+Errors should be categorizable, testable, and handleable.
 
 ---
 
-## Anti-pattern 5：library 內部亂 `panic!`
+## Anti-pattern 5: Random `panic!` inside a library
 
-### 不好
+### Bad
 
 ```rust
 pub fn divide(a: i32, b: i32) -> i32 {
@@ -149,7 +149,7 @@ pub fn divide(a: i32, b: i32) -> i32 {
 }
 ```
 
-### 好
+### Good
 
 ```rust
 #[derive(Debug)]
@@ -166,15 +166,15 @@ pub fn divide(a: i32, b: i32) -> Result<i32, DivideError> {
 }
 ```
 
-### 原則
+### Principle
 
-除非是不可恢復的程式錯誤，否則回傳 `Result`。
+Return `Result` unless it is an unrecoverable programming error.
 
 ---
 
-## Anti-pattern 6：過度 Trait 化
+## Anti-pattern 6: Over-abstraction with Traits
 
-### 不好
+### Bad
 
 ```rust
 trait UserNameProvider {
@@ -192,9 +192,9 @@ impl UserNameProvider for User {
 }
 ```
 
-問題：只有一個 struct、一個方法、沒有替換需求時，trait 只是噪音。
+Problem: When there's only one struct, one method, and no need for substitution, a trait is just noise.
 
-### 好
+### Good
 
 ```rust
 struct User {
@@ -208,15 +208,15 @@ impl User {
 }
 ```
 
-### 原則
+### Principle
 
-先用 concrete type。真的需要抽象再抽 trait。
+Use concrete types first. Abstract into traits only when actually needed.
 
 ---
 
-## Anti-pattern 7：公開欄位破壞 invariant
+## Anti-pattern 7: Public fields breaking invariants
 
-### 不好
+### Bad
 
 ```rust
 pub struct Account {
@@ -229,7 +229,7 @@ fn main() {
 }
 ```
 
-### 好
+### Good
 
 ```rust
 pub struct Account {
@@ -262,9 +262,9 @@ impl Account {
 
 ---
 
-## Anti-pattern 8：`Arc<Mutex<T>>` 到處傳
+## Anti-pattern 8: Passing `Arc<Mutex<T>>` everywhere
 
-### 不好
+### Bad
 
 ```rust
 use std::sync::{Arc, Mutex};
@@ -276,9 +276,9 @@ struct AppState {
 }
 ```
 
-問題：鎖太多、責任不清楚、容易死鎖、測試困難。
+Problem: Too many locks, unclear responsibilities, prone to deadlocks, and difficult to test.
 
-### 好
+### Good
 
 ```rust
 struct UserService {
@@ -292,27 +292,26 @@ impl UserService {
 }
 ```
 
-### 原則
+### Principle
 
-能單一 ownership 就不要共享。  
-需要跨 thread 再考慮 `Arc<Mutex<T>>`。
+Prefer single ownership over shared state. Consider `Arc<Mutex<T>>` only when cross-thread access is required.
 
 ---
 
-## Anti-pattern 9：在 async 中持有 lock 跨 `.await`
+## Anti-pattern 9: Holding a lock across `.await` in async code
 
-### 不好
+### Bad
 
 ```rust
-// 概念示意
+// Conceptual illustration
 let mut guard = state.lock().await;
 do_async_work().await;
 guard.push(1);
 ```
 
-問題：lock 持有時間太長，容易造成效能問題或 deadlock-like 行為。
+Problem: Holding a lock for too long can cause performance issues or deadlock-like behavior.
 
-### 好
+### Good
 
 ```rust
 let data = {
@@ -324,35 +323,32 @@ let data = {
 do_async_work(data).await;
 ```
 
-### 原則
+### Principle
 
-鎖內只做最短、同步、必要的事情。
+Keep the code inside a lock as short, synchronous, and necessary as possible.
 
 ---
 
-## Anti-pattern 10：濫用 `unsafe`
+## Anti-pattern 10: Abuse of `unsafe`
 
-### 不好
+### Bad
 
 ```rust
 unsafe {
-    // 為了繞過 borrow checker 亂用 raw pointer
+    // Using raw pointers haphazardly to bypass the borrow checker
 }
 ```
 
-### 好
+### Good
 
-先問：
+Ask yourself first:
 
-1. 能不能用 ownership 改設計？
-2. 能不能用 `Rc` / `Arc`？
-3. 能不能用 `RefCell` / `Mutex`？
-4. 能不能拆資料結構？
-5. 真的需要 FFI、SIMD、底層記憶體操作嗎？
+1. Can the design be changed using ownership?
+2. Can `Rc` / `Arc` be used?
+3. Can `RefCell` / `Mutex` be used?
+4. Can the data structure be split?
+5. Do you really need FFI, SIMD, or low-level memory operations?
 
-### 原則
+### Principle
 
-`unsafe` 不是效能開關，是你接手編譯器無法保證的安全責任。
-
----
-
+`unsafe` is not a performance switch; it is taking over the safety responsibilities that the compiler can no longer guarantee.

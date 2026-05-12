@@ -1,6 +1,6 @@
-# 1. Rust 設計總原則
+# 1. Core Principles of Rust Design
 
-Rust 的核心不是把 OOP / GoF Design Patterns 照搬過來，而是用：
+Rust's core is not about simply porting OOP / GoF Design Patterns, but rather utilizing:
 
 - ownership
 - borrowing
@@ -13,32 +13,32 @@ Rust 的核心不是把 OOP / GoF Design Patterns 照搬過來，而是用：
 - RAII / `Drop`
 - type system
 
-把錯誤盡量移到編譯期處理。
+to shift as many errors as possible to compile-time.
 
-## 核心判斷表
+## Decision Matrix
 
-| 問題 | Rust 好作法 |
+| Question | Rust Best Practice |
 |---|---|
-| 這個值誰擁有？ | 用 ownership 表達生命週期 |
-| 只是讀取？ | 傳 `&T`、`&str`、`&[T]` |
-| 需要修改？ | 傳 `&mut T` |
-| 可能失敗？ | 回傳 `Result<T, E>` |
-| 可能沒有值？ | 回傳 `Option<T>` |
-| 狀態有限？ | 用 `enum` |
-| 行為抽象？ | 用 `trait` |
-| 不合法狀態？ | 用 type system 阻止它 |
-| 資源需要釋放？ | 用 RAII / `Drop` |
-| 共享狀態？ | 優先清楚劃分 ownership，再考慮 `Arc<Mutex<T>>` |
+| Who owns this value? | Use ownership to express lifetime |
+| Only reading? | Pass `&T`, `&str`, `&[T]` |
+| Need to modify? | Pass `&mut T` |
+| Might fail? | Return `Result<T, E>` |
+| Might be empty? | Return `Option<T>` |
+| Finite states? | Use `enum` |
+| Abstract behavior? | Use `trait` |
+| Illegal state? | Use the type system to prevent it |
+| Need resource cleanup? | Use RAII / `Drop` |
+| Shared state? | Prioritize clear ownership boundaries, then consider `Arc<Mutex<T>>` |
 
 ---
 
-# 2. Design Pattern：好作法
+# 2. Design Patterns: Best Practices
 
 ---
 
-## Pattern 1：Borrowing-first API
+## Pattern 1: Borrowing-first API
 
-### 不好作法
+### Bad Practice
 
 ```rust
 fn print_name(name: String) {
@@ -49,14 +49,14 @@ fn main() {
     let name = String::from("Alice");
     print_name(name);
 
-    // name 已經被 move，不能再用
+    // name has been moved and can no longer be used
     // println!("{name}");
 }
 ```
 
-問題：只是讀取，卻把 ownership 吃掉。
+Problem: Consumes ownership when only reading is required.
 
-### 好作法
+### Best Practice
 
 ```rust
 fn print_name(name: &str) {
@@ -73,15 +73,15 @@ fn main() {
 }
 ```
 
-### 原則
+### Principle
 
-`String` 是擁有資料，`&str` 是借用文字切片。只讀文字時，優先收 `&str`。
+`String` owns the data; `&str` is a borrowed string slice. Prefer `&str` when only reading text.
 
 ---
 
-## Pattern 2：Slice API
+## Pattern 2: Slice API
 
-### 不好作法
+### Bad Practice
 
 ```rust
 fn sum(numbers: &Vec<i32>) -> i32 {
@@ -89,9 +89,9 @@ fn sum(numbers: &Vec<i32>) -> i32 {
 }
 ```
 
-問題：限制呼叫者一定要傳 `Vec<i32>`。
+Problem: Restricts the caller to pass a `Vec<i32>`.
 
-### 好作法
+### Best Practice
 
 ```rust
 fn sum(numbers: &[i32]) -> i32 {
@@ -107,15 +107,15 @@ fn main() {
 }
 ```
 
-### 原則
+### Principle
 
-只需要連續資料時，用 `&[T]`，不要綁死 `Vec<T>`。
+When only contiguous data is needed, use `&[T]` instead of binding to `Vec<T>`.
 
 ---
 
-## Pattern 3：`Option<T>` 表示「可能沒有」
+## Pattern 3: `Option<T>` for "Possible Absence"
 
-### 不好作法
+### Bad Practice
 
 ```rust
 fn find_user_name(id: u64) -> String {
@@ -127,9 +127,9 @@ fn find_user_name(id: u64) -> String {
 }
 ```
 
-問題：空字串到底是「沒有資料」還是「名字就是空」？
+Problem: Is an empty string "missing data" or "the name is actually empty"?
 
-### 好作法
+### Best Practice
 
 ```rust
 fn find_user_name(id: u64) -> Option<String> {
@@ -148,15 +148,15 @@ fn main() {
 }
 ```
 
-### 原則
+### Principle
 
-「沒有值」就用 `Option<T>`，不要用 `null`、空字串、`-1` 當暗號。
+Use `Option<T>` for "no value." Avoid using `null`, empty strings, or `-1` as magic values.
 
 ---
 
-## Pattern 4：`Result<T, E>` 表示「可能失敗」
+## Pattern 4: `Result<T, E>` for "Possible Failure"
 
-### 不好作法
+### Bad Practice
 
 ```rust
 use std::fs;
@@ -166,9 +166,9 @@ fn read_config() -> String {
 }
 ```
 
-問題：正式程式中 `unwrap()` 會讓程式直接 panic。
+Problem: `unwrap()` will cause the program to panic in production.
 
-### 好作法
+### Best Practice
 
 ```rust
 use std::fs;
@@ -187,15 +187,15 @@ fn main() {
 }
 ```
 
-### 原則
+### Principle
 
-library、service、CLI 的核心邏輯不要亂 `unwrap()`。能回傳錯誤就回傳 `Result`。
+Avoid reckless `unwrap()` in core logic (libraries, services, CLIs). Return `Result` when errors can occur.
 
 ---
 
-## Pattern 5：Enum + Exhaustive Match
+## Pattern 5: Enum + Exhaustive Match
 
-### 不好作法
+### Bad Practice
 
 ```rust
 struct Payment {
@@ -207,9 +207,9 @@ fn can_refund(payment: &Payment) -> bool {
 }
 ```
 
-問題：`"paied"`、`"PAID"`、`"unknown"` 都可能混進來。
+Problem: Values like `"paied"`, `"PAID"`, or `"unknown"` could creep in.
 
-### 好作法
+### Best Practice
 
 ```rust
 enum PaymentStatus {
@@ -233,17 +233,17 @@ fn can_refund(payment: &Payment) -> bool {
 }
 ```
 
-### 原則
+### Principle
 
-有限狀態不要用 `String`，用 `enum`。
+Use `enum` instead of `String` for finite states.
 
 ---
 
-## Pattern 6：Newtype Pattern
+## Pattern 6: Newtype Pattern
 
-用途：避免把同樣底層型別混用。
+Purpose: Prevent mixing up different domain values with the same underlying type.
 
-### 不好作法
+### Bad Practice
 
 ```rust
 fn load_user(user_id: u64) {}
@@ -251,11 +251,11 @@ fn load_order(order_id: u64) {}
 
 fn main() {
     let user_id = 100;
-    load_order(user_id); // 編譯會過，但語意錯
+    load_order(user_id); // Compiles, but semantically incorrect
 }
 ```
 
-### 好作法
+### Best Practice
 
 ```rust
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -271,21 +271,21 @@ fn main() {
     let user_id = UserId(100);
 
     load_user(user_id);
-    // load_order(user_id); // 編譯錯，避免語意錯誤
+    // load_order(user_id); // Compile error, prevents semantic mistakes
 }
 ```
 
-### 原則
+### Principle
 
-ID、金額、單位、權限、狀態，常用 Newtype 包起來。
+Wrap IDs, amounts, units, permissions, and states in Newtypes.
 
 ---
 
-## Pattern 7：Smart Constructor
+## Pattern 7: Smart Constructor
 
-用途：建立物件時保證 invariant。
+Purpose: Ensure invariants when creating objects.
 
-### 不好作法
+### Bad Practice
 
 ```rust
 struct Email(String);
@@ -295,7 +295,7 @@ fn main() {
 }
 ```
 
-### 好作法
+### Best Practice
 
 ```rust
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -325,17 +325,17 @@ fn main() -> Result<(), String> {
 }
 ```
 
-### 原則
+### Principle
 
-不要讓外部隨便組出不合法物件。欄位私有，提供 constructor。
+Do not allow illegal objects to be constructed haphazardly. Keep fields private and provide a constructor.
 
 ---
 
-## Pattern 8：Builder Pattern
+## Pattern 8: Builder Pattern
 
-適合參數很多、可選設定多的物件。
+Suitable for objects with many parameters or optional settings.
 
-### 不好作法
+### Bad Practice
 
 ```rust
 struct ServerConfig {
@@ -363,9 +363,9 @@ fn new_config(
 }
 ```
 
-問題：參數順序容易錯，擴充困難。
+Problem: Parameter order is error-prone, and extension is difficult.
 
-### 好作法
+### Best Practice
 
 ```rust
 #[derive(Debug)]
@@ -435,11 +435,11 @@ fn main() {
 
 ---
 
-## Pattern 9：Typestate Pattern
+## Pattern 9: Typestate Pattern
 
-用途：把狀態流程放進型別系統，讓錯誤流程無法編譯。
+Purpose: Incorporate state flows into the type system, making invalid state transitions uncompilable.
 
-### 不好作法
+### Bad Practice
 
 ```rust
 struct Connection {
@@ -457,7 +457,7 @@ impl Connection {
 }
 ```
 
-### 好作法
+### Best Practice
 
 ```rust
 struct Disconnected;
@@ -500,22 +500,22 @@ fn main() {
 }
 ```
 
-### 原則
+### Principle
 
-狀態流程固定時，Typestate 可以讓錯誤使用方式直接編譯失敗。
+When state flows are fixed, Typestate can cause incorrect usage to fail at compile time.
 
 ---
 
-## Pattern 10：Trait 抽象
+## Pattern 10: Trait Abstraction
 
-Rust 的 polymorphism 主要靠 trait。
+Polymorphism in Rust primarily relies on traits.
 
-| 形式 | 寫法 | 適合 |
+| Form | Syntax | Best For |
 |---|---|---|
-| Static dispatch | `T: Trait` | 編譯期決定型別，效能好 |
-| Dynamic dispatch | `dyn Trait` | runtime 才決定實作型別 |
+| Static dispatch | `T: Trait` | Type decided at compile-time; better performance |
+| Dynamic dispatch | `dyn Trait` | Implementation type decided at runtime |
 
-### Static dispatch
+### Static Dispatch
 
 ```rust
 trait Repository {
@@ -535,7 +535,7 @@ fn create_user<R: Repository>(repo: &R, name: &str) {
 }
 ```
 
-### Dynamic dispatch
+### Dynamic Dispatch
 
 ```rust
 trait Repository {
@@ -555,15 +555,15 @@ fn create_user(repo: &dyn Repository, name: &str) {
 }
 ```
 
-### 建議
+### Recommendation
 
-預設用 generic `T: Trait`。需要把不同實作放進同一個 collection，或 runtime 注入時，再用 `Box<dyn Trait>` / `&dyn Trait`。
+Default to generic `T: Trait`. Use `Box<dyn Trait>` / `&dyn Trait` only when you need to put different implementations into the same collection or when runtime injection is required.
 
 ---
 
-## Pattern 11：Iterator Pattern
+## Pattern 11: Iterator Pattern
 
-### 不好作法
+### Bad Practice
 
 ```rust
 fn active_names(users: Vec<User>) -> Vec<String> {
@@ -579,7 +579,7 @@ fn active_names(users: Vec<User>) -> Vec<String> {
 }
 ```
 
-### 好作法
+### Best Practice
 
 ```rust
 struct User {
@@ -596,16 +596,15 @@ fn active_names(users: Vec<User>) -> Vec<String> {
 }
 ```
 
-### 原則
+### Principle
 
-資料轉換流程適合用 iterator chain。  
-但不要為了炫技把簡單邏輯寫到難懂。
+Data transformation flows are well-suited for iterator chains. However, do not over-engineer simple logic to the point of being unreadable.
 
 ---
 
-## Pattern 12：RAII / Drop Guard
+## Pattern 12: RAII / Drop Guard
 
-用途：DB transaction、file lock、mutex guard、temp file、resource cleanup。
+Purpose: DB transactions, file locks, mutex guards, temp files, resource cleanup.
 
 ```rust
 struct Transaction {
@@ -635,31 +634,30 @@ impl Drop for Transaction {
 fn main() {
     let tx = Transaction::new();
 
-    // 如果中途 return 或 panic，Drop 會觸發 rollback
+    // If a return or panic occurs midway, Drop will trigger a rollback
     tx.commit();
 }
 ```
 
-### 原則
+### Principle
 
-資源取得與釋放綁在 object lifetime。  
-值離開 scope 時，由 `Drop` 負責清理。
+Resource acquisition and release are bound to object lifetime. Cleanup is handled by `Drop` when a value leaves scope.
 
 ---
 
-## Pattern 13：Smart Pointer 選擇
+## Pattern 13: Choosing Smart Pointers
 
-| 型別 | 用途 |
+| Type | Purpose |
 |---|---|
-| `Box<T>` | heap allocation、recursive type、trait object ownership |
-| `Rc<T>` | 單執行緒 shared ownership |
-| `Arc<T>` | 多執行緒 shared ownership |
-| `RefCell<T>` | 單執行緒 interior mutability，runtime borrow check |
-| `Mutex<T>` | 多執行緒可變共享資料 |
-| `RwLock<T>` | 多讀少寫 |
-| `Cow<'a, T>` | 可能借用，也可能需要 clone-on-write |
+| `Box<T>` | Heap allocation, recursive types, trait object ownership |
+| `Rc<T>` | Single-threaded shared ownership |
+| `Arc<T>` | Multi-threaded shared ownership |
+| `RefCell<T>` | Single-threaded interior mutability, runtime borrow check |
+| `Mutex<T>` | Multi-threaded mutable shared data |
+| `RwLock<T>` | Multiple readers, single writer |
+| `Cow<'a, T>` | Clone-on-write; can be either borrowed or owned |
 
-### 典型範例
+### Typical Example
 
 ```rust
 use std::sync::{Arc, Mutex};
@@ -687,21 +685,21 @@ fn main() {
 }
 ```
 
-### 注意
+### Note
 
-`Arc<Mutex<T>>` 很常見，但不是預設答案。可以用 channel / actor 拆 ownership 時，通常更清楚。
+`Arc<Mutex<T>>` is common but not the default answer. Using channels or an actor pattern to split ownership is often clearer.
 
 ---
 
-## Pattern 14：Message Passing / Actor-like Pattern
+## Pattern 14: Message Passing / Actor-like Pattern
 
-適合：
+Suitable for:
 
-- queue worker
-- background task
-- pipeline
-- command processor
-- proxy server
+- Queue workers
+- Background tasks
+- Pipelines
+- Command processors
+- Proxy servers
 
 ```rust
 use std::sync::mpsc;
@@ -735,12 +733,12 @@ fn main() {
 
 ---
 
-## Pattern 15：Async Bounded Concurrency
+## Pattern 15: Async Bounded Concurrency
 
-### 不好作法
+### Bad Practice
 
 ```rust
-// 概念示意：大量任務無限制 spawn
+// Conceptual illustration: Spawning tasks without limits
 for item in items {
     tokio::spawn(async move {
         process(item).await;
@@ -748,9 +746,9 @@ for item in items {
 }
 ```
 
-問題：可能打爆 CPU、記憶體、DB connection、API rate limit。
+Problem: Can overwhelm CPU, memory, DB connections, or API rate limits.
 
-### 好作法
+### Best Practice
 
 ```rust
 use std::sync::Arc;
@@ -781,9 +779,6 @@ async fn main() {
 }
 ```
 
-### 原則
+### Principle
 
-Async 任務要有上限。不要無限制 `spawn`。
-
----
-
+Async tasks should have a cap. Do not `spawn` without limits.

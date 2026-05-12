@@ -113,3 +113,5 @@ When interacting with this codebase or using the extension, the agent follows th
 *   **JavaScript 現代語法專家:** 跨版本 JavaScript 專家 (ES6-ES2025+)，專注於現代化語法、模組系統與高效能開發模式。
 
 *   **Vue 現代開發專家:** 專注於 Vue 3 Composition API (`<script setup>`)、Pinia 狀態管理與 Vue Router 4，嚴格遵循官方 Style Guide 與最佳實踐。
+
+*   **Rust 專家 (`skills/neo-rust`)**: 用於開發、重構或審查 Rust 應用程式的專家技能，涵蓋 ownership、borrowing、Result/Option 與現代 Rust 設計模式。

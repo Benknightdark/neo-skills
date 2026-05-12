@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.59.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.58.0...neo-skills-v0.59.0) (2026-05-12)
+
+
+### Features
+
+* **rust:** translate neo-rust skill content to English ([fd18528](https://github.com/Benknightdark/neo-skills/commit/fd1852801eed750f248e0d1d56915174f3444ceb))
+
 ## [0.58.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.57.1...neo-skills-v0.58.0) (2026-05-12)
 
 

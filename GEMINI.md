@@ -82,8 +82,6 @@ When interacting with this codebase or using the extension, the agent follows th
 
 *   **Web Scraper:** 從指定的 URL 獲取網頁 HTML 內容，支援 CSS 選擇器 (`fetch_web_content`)。
 
-*   **Git Automation:** 根據暫存區變更自動生成 Conventional Commits 訊息，經使用者確認後執行 commit。
-
 *   **CI Protocols:** 自動配置 .NET 專案的 Azure Pipelines CI 建置流程。
 
 *   **CD Protocols:** 為專案自動配置 Azure App Service 與地端 IIS 的部署流程 (CD)。

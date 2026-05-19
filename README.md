@@ -27,10 +27,7 @@
     *   **Azure App Service**：部署至Azure App Service。
     *   **IIS On-Premises**：部署至地端 IIS 伺服器，包含備份與復原機制。
 
-### 2. 智慧 Git 助手
-*   **Smart Commit**：根據 `git diff` 暫存區內容，自動生成符合 Conventional Commits 規範的提交訊息。
-
-### 3. Code Review 專家
+### 2. Code Review 專家
 *   **智能審查**：針對程式碼變更進行多面向 (正確性、安全性、效能、可讀性) 的深度審查。
 
 ### 4. 程式碼解釋助手
@@ -185,6 +182,7 @@ install-system-instructions --instructions <key> [--ai-agent <name>] [--project-
 | Key | 名稱 | 說明 |
 | :--- | :--- | :--- |
 | `technical-co-founder` | Technical Co-Founder | 讓 AI 扮演技術共同創辦人，以 Discovery → Planning → Building → Polish → Handoff 五階段框架，協助您從零打造可上線的真實產品。 |
+| `git-commit` | Git Commit Message Generator | 分析暫存區變更，自動生成符合 Conventional Commits 規範的提交訊息，經確認後執行。 |
 
 **範例：**
 

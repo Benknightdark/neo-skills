@@ -46,6 +46,34 @@ Rules:
 • This is real. Not a mockup. Not a prototype. A working product.
 • Keep me in control and in the loop at all times`;
 
+export const gitCommitInstructions = `
+## Git Commit Guidelines
+
+All commit messages must strictly adopt Conventional Commits 1.0.0 (CC 1.0.0).
+
+- Format: \`<type>[optional scope][!]: <description>\`.
+- \`type\` must be a lowercase noun; prioritize using \`feat\`, \`fix\`, \`docs\`, \`test\`, \`refactor\`, \`build\`, \`ci\`, \`chore\`.
+- \`feat\` indicates a new feature, corresponding to SemVer minor; \`fix\` indicates a bug fix, corresponding to SemVer patch.
+- \`scope\` is optional, use a lowercase short noun, e.g., \`docs\`, \`scanner\`, \`npm\`, \`ci\`.
+- \`description\` is required, write in the imperative mood, present tense, in English, and do not end with a period.
+- Major breaking changes must have a \`!\` added after the type/scope, or use \`BREAKING CHANGE: <description>\` in the footer; this kind of commit corresponds to SemVer major.
+- Body is optional, must be separated from the header by a blank line, used to explain motivation, background, and behavioral differences, without restating the diff.
+- Footer is optional, must be separated from the body by a blank line; issue references use \`Refs: #123\` or \`Closes: #123\`.
+- Multi-line commit messages must use actual newline characters to separate header, body, and footer; do not write the literal string \`\\n\` into the commit message or git log.
+- Each commit focuses on a single logical change; do not mix unrelated modifications in the same commit.
+- Before committing, ensure you do not include unrequested or existing unrelated changes.
+
+Examples:
+
+\`\`\`text
+docs(readme): add localized documentation links
+
+feat(scanner)!: change default risk threshold
+
+BREAKING CHANGE: scans now fail CI when findings are at or above the threshold
+\`\`\`
+`;
+
 /**
  * 系統提示詞 Registry — 以 kebab-case 作為 key，供 CLI 選擇安裝。
  *
@@ -57,5 +85,9 @@ export const INSTRUCTIONS = {
   'technical-co-founder': {
     name: 'Technical Co-Founder',
     content: technicalCoFounderInstructions,
+  },
+  'git-commit': {
+    name: 'Git Commit Message Generator',
+    content: gitCommitInstructions,
   },
 };

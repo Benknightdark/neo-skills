@@ -186,6 +186,7 @@ install-system-instructions --instructions <key> [--ai-agent <name>] [--project-
 | `--instructions <key>` | ✅ | 指定要安裝的系統提示詞（見下方種類表）。 |
 | `--ai-agent <name>` | 否 | 指定目標 Agent（`claude` / `copilot` / `codex`）。省略時安裝至全部。 |
 | `--project-path <path>` | 否 | 指定專案根目錄。省略時安裝至 `$HOME` 全域路徑。 |
+| `--replace-all` | 否 | 若先前已安裝過該提示詞，則先將其移除後重裝。 |
 
 **指導檔路徑對照：**
 
@@ -222,7 +223,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
   --ai-agent copilot --instructions technical-co-founder --project-path /my/project -y
 ```
 
-> **💡** 重複執行相同指令不會重複寫入，系統會自動偵測並跳過已安裝的提示詞。
+> **💡** 重複執行相同指令不會重複寫入，系統會自動偵測並跳過已安裝的提示詞。若您希望覆蓋或更新之前安裝的提示詞，可以加上 `--replace-all` 參數進行重裝。
 
 ## 💡 常用指令範例
 

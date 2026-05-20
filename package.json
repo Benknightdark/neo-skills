@@ -1,11 +1,12 @@
 {
   "name": "@moon791017/neo-skills",
-  "version": "1.0.36",
+  "version": "1.0.37",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
   "homepage": "https://neo-blog-iota.vercel.app/",
   "keywords": [
-    "gemini cli",
+    "antigravity cli",
+    "agy cli",
     "claude code",
     "copilot cli",
     "openai codex cli",
@@ -20,8 +21,8 @@
     "dist",
     "bin",
     "skills",
-    "gemini-extension.json",
-    "GEMINI.md"
+    "AGENTS.md",
+    ".antigravityignore"
   ],
   "repository": {
     "type": "git",

@@ -38,7 +38,7 @@ test('install-skills 可安裝單一 agent 至指定專案路徑', async (t) => 
 
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /\[Copilot\] 安裝成功/);
-  await access(join(projectRoot, '.github', 'skills', 'neo-git-commit', 'SKILL.md'));
+  await access(join(projectRoot, '.github', 'skills', 'neo-python', 'SKILL.md'));
 });
 
 test('install-skills 未指定 agent 時可批次安裝全部 agent', async (t) => {
@@ -46,10 +46,11 @@ test('install-skills 未指定 agent 時可批次安裝全部 agent', async (t) 
   const result = runInstall(['--project-path', projectRoot]);
 
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /成功: 3 \/ 3/);
+  assert.match(result.stdout, /成功: 4 \/ 4/);
   await Promise.all([
     access(join(projectRoot, '.claude', 'skills', 'neo-clarification', 'SKILL.md')),
-    access(join(projectRoot, '.github', 'skills', 'neo-git-commit', 'SKILL.md')),
+    access(join(projectRoot, '.github', 'skills', 'neo-python', 'SKILL.md')),
     access(join(projectRoot, '.codex', 'skills', 'neo-python', 'SKILL.md')),
+    access(join(projectRoot, '.agents', 'skills', 'neo-python', 'SKILL.md')),
   ]);
 });

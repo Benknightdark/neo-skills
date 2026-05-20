@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-import{readFileSync as v}from"node:fs";var h=(b)=>new RegExp(b,"i"),z=[h("\\.env\\b"),h("\\.pem\\b"),h("\\.key\\b"),h("\\.git[/\\\\]"),h("\\bid_rsa"),h("credentials\\.json"),h("launchSettings\\.json"),h("\\bsecrets?[/\\\\]")];async function B(){try{let b="";try{b=v(0,"utf-8").trim()}catch(j){throw Error("Failed to read input from stdin.")}if(!b)throw Error("No input received from Gemini CLI.");let q="unknown";try{q=JSON.parse(b).tool_name||"unknown"}catch(j){}process.stderr.write(`[Secret Guard] Scanning activity for tool: ${q}
-`);for(let j of z)if(j.test(b))process.stderr.write(`[Security Alert] Sensitive pattern blocked: ${j.source}
-`),process.stdout.write(JSON.stringify({decision:"deny",reason:`Security Alert: Operation blocked by Secret Guard. Input matches sensitive pattern: ${j.source}`,systemMessage:"\uD83D\uDD12 Security Alert: Sensitive data access blocked."})),process.exit(0);process.stdout.write(JSON.stringify({decision:"allow"})),process.exit(0)}catch(b){process.stderr.write(`[Fail-safe Error] Secret Guard Internal Failure: ${b?.message||b}
-`),process.exit(2)}}B();

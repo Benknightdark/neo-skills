@@ -41,7 +41,7 @@ test('createInstaller 於有 projectPath 的 agent 使用專案目錄', async (t
 
   assert.equal(result.success, true);
   assert.match(result.message, new RegExp(projectRoot.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  await access(join(projectRoot, '.github', 'skills', 'neo-git-commit', 'SKILL.md'));
+  await access(join(projectRoot, '.github', 'skills', 'neo-python', 'SKILL.md'));
 });
 
 test('createInstaller 於無 projectPath 的 agent 回退至 homePath 子目錄', async (t) => {
@@ -53,4 +53,15 @@ test('createInstaller 於無 projectPath 的 agent 回退至 homePath 子目錄'
 
   assert.equal(result.success, true);
   await access(join(projectRoot, '.claude', 'skills', 'neo-clarification', 'SKILL.md'));
+});
+
+test('createInstaller 於 agy agent 使用 .agents/skills 專案目錄', async (t) => {
+  silenceConsole(t);
+  const projectRoot = await withTempDir(t);
+  const install = createInstaller(AGENTS.agy, projectRoot);
+
+  const result = await install();
+
+  assert.equal(result.success, true);
+  await access(join(projectRoot, '.agents', 'skills', 'neo-python', 'SKILL.md'));
 });

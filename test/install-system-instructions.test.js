@@ -99,6 +99,20 @@ test('指導檔不存在時正確建立 — Codex', async (t) => {
   assert.ok(content.includes('<!-- neo-skills:system-instructions:technical-co-founder -->'));
 });
 
+test('指導檔不存在時正確建立 — Antigravity (AGY)', async (t) => {
+  const projectRoot = await withTempDir(t);
+  const result = runInstall([
+    '--ai-agent', 'agy',
+    '--instructions', 'technical-co-founder',
+    '--project-path', projectRoot,
+  ]);
+
+  assert.equal(result.status, 0, result.stderr);
+
+  const content = await readFile(join(projectRoot, 'agents.md'), 'utf8');
+  assert.ok(content.includes('<!-- neo-skills:system-instructions:technical-co-founder -->'));
+});
+
 // ── 附加至既有檔案 ──
 
 test('指導檔已存在時附加至最下方', async (t) => {

@@ -50,6 +50,16 @@ export const AGENTS = {
     },
     hint: '請確保您的 Codex CLI 已指向此目錄。',
   },
+  agy: {
+    name: 'Antigravity (AGY)',
+    homePath: '.gemini/skills',
+    projectPath: '.agents/skills',
+    instructionFile: {
+      homePath: '.gemini/antigravity-cli/instructions.md',
+      projectPath: 'agents.md',
+    },
+    hint: 'Neo Skills 已安裝。請確保 AGY 已載入 instructions.md 或 agents.md 作為上下文檔案。',
+  },
 };
 
 /**
@@ -71,14 +81,16 @@ export const AGENTS = {
  * @param {object} config - AGENTS 中的 agent 設定物件
  * @param {string} [targetPath] - 使用者透過 --project-path 指定的自訂根目錄
  */
-export function createInstaller({ name: agentName, homePath, projectPath, hint }, cliBasePath) {
+export function createInstaller({ name: agentName, homePath, projectPath, sourceDir: customSourceDir, hint }, cliBasePath) {
   return async function install() {
     console.log(`🚀 [${agentName}] 開始同步 Neo Skills...`);
 
+    const effectiveSourceDir = customSourceDir ? resolve(packageRoot, customSourceDir) : sourceDir;
+
     try {
-      await access(sourceDir);
+      await access(effectiveSourceDir);
     } catch {
-      const msg = `在 ${sourceDir} 找不到來源技能目錄。`;
+      const msg = `在 ${effectiveSourceDir} 找不到來源目錄。`;
       console.error(`❌ 錯誤: ${msg}`);
       return { success: false, message: msg };
     }
@@ -89,19 +101,29 @@ export function createInstaller({ name: agentName, homePath, projectPath, hint }
     const subDir = cliBasePath && projectPath ? projectPath : homePath;
     const targetSkillsDir = join(baseDir, subDir);
 
-    console.log(`📁 來源路徑: ${sourceDir}`);
+    console.log(`📁 來源路徑: ${effectiveSourceDir}`);
     console.log(`🎯 目標路徑: ${targetSkillsDir}`);
 
     await mkdir(targetSkillsDir, { recursive: true });
 
     let copyCount = 0;
-    await cp(sourceDir, targetSkillsDir, {
+    await cp(effectiveSourceDir, targetSkillsDir, {
       recursive: true,
       force: true,
       filter: (src) => {
-        const relativePath = src.replace(sourceDir, '');
-        const isIgnored = relativePath.includes('node_modules') || relativePath.includes('.git');
-        if (!isIgnored) { copyCount++; return true; }
+        const relativePath = src.replace(effectiveSourceDir, '');
+        const isIgnored = 
+          relativePath.includes('node_modules') || 
+          relativePath.includes('.git') ||
+          relativePath.includes('dist') ||
+          relativePath.includes('.antigravitycli') ||
+          relativePath.includes('.agents');
+        
+        if (!isIgnored) { 
+          // 只有當 src 不是目錄時才增加計數，或者簡化計數邏輯
+          copyCount++; 
+          return true; 
+        }
         return false;
       }
     });

@@ -25,6 +25,7 @@ export function parseCliArgs() {
       'ai-agent': { type: 'string' },
       'project-path': { type: 'string' },
       'instructions': { type: 'string' },
+      'replace-all': { type: 'boolean' },
     },
     strict: false // 允許未定義的參數，避免因為傳入未知的 flag 導致 crash
   });

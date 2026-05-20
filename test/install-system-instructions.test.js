@@ -161,3 +161,39 @@ test('重複安裝同一提示詞不會重複附加', async (t) => {
   const markerCount = content.split('<!-- neo-skills:system-instructions:technical-co-founder -->').length - 1;
   assert.equal(markerCount, 1, '標記應只出現一次');
 });
+
+test('指定 --replace-all 時會先移除既有的提示詞再重裝', async (t) => {
+  const projectRoot = await withTempDir(t);
+
+  // 1. 第一次安裝
+  runInstall([
+    '--ai-agent', 'claude',
+    '--instructions', 'technical-co-founder',
+    '--project-path', projectRoot,
+  ]);
+
+  // 2. 故意修改該區域，模擬髒資料/舊的內容
+  const targetFile = join(projectRoot, 'CLAUDE.md');
+  const originalContent = await readFile(targetFile, 'utf8');
+  const modifiedContent = originalContent.replace('Technical Co-Founder', 'Old Outdated Content');
+  await writeFile(targetFile, modifiedContent, 'utf8');
+
+  // 3. 再次安裝，但加上 --replace-all
+  const result = runInstall([
+    '--ai-agent', 'claude',
+    '--instructions', 'technical-co-founder',
+    '--project-path', projectRoot,
+    '--replace-all',
+  ]);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /已重裝/);
+
+  // 4. 驗證檔案內容
+  const finalContent = await readFile(targetFile, 'utf8');
+  assert.ok(!finalContent.includes('Old Outdated Content'), '舊的內容應被清空');
+  assert.ok(finalContent.includes('Technical Co-Founder'), '應重裝為新的提示詞');
+  
+  const markerCount = finalContent.split('<!-- neo-skills:system-instructions:technical-co-founder -->').length - 1;
+  assert.equal(markerCount, 1, '標記應只出現一次');
+});

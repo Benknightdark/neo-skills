@@ -4,6 +4,7 @@
  *
  * 用法：
  *   install-system-instructions --instructions technical-co-founder
+ *   install-system-instructions --instructions technical-co-founder --replace-all
  *   install-system-instructions --ai-agent claude --instructions technical-co-founder
  *   install-system-instructions --ai-agent copilot --instructions technical-co-founder --project-path .
  *
@@ -12,6 +13,7 @@
  *                              省略時安裝至全部已註冊 agent。
  *   --instructions <key>      指定要安裝的系統提示詞（可用值見 _system-instructions.js 的 INSTRUCTIONS）。必填。
  *   --project-path <path>     指定專案根目錄作為安裝基底（取代 $HOME）。省略時安裝至全域路徑。
+ *   --replace-all             如果指定此參數，若先前已安裝過該提示詞，則會將其移除後重裝。
  */
 import { readFile, writeFile, mkdir, access } from 'node:fs/promises';
 import { join, resolve, dirname } from 'node:path';
@@ -58,7 +60,7 @@ function wrapContent(key, content) {
  * @param {string | undefined} projectPath - 使用者指定的專案路徑
  * @returns {Promise<{success: boolean, message: string}>}
  */
-async function installForAgent(agentKey, agentConfig, instructionsKey, instruction, projectPath) {
+async function installForAgent(agentKey, agentConfig, instructionsKey, instruction, projectPath, replaceAll) {
   if (!agentConfig.instructionFile) {
     const msg = `agent "${agentKey}" 未設定 instructionFile，跳過。`;
     console.warn(`⚠️ ${msg}`);
@@ -86,17 +88,26 @@ async function installForAgent(agentKey, agentConfig, instructionsKey, instructi
   }
 
   if (fileExists) {
-    const existing = await readFile(targetFile, 'utf8');
+    let existing = await readFile(targetFile, 'utf8');
+    const hadInstructions = existing.includes(startMarker(instructionsKey));
 
-    if (existing.includes(startMarker(instructionsKey))) {
+    if (replaceAll) {
+      const regex = new RegExp(`\\s*${startMarker(instructionsKey)}[\\s\\S]*?${endMarker(instructionsKey)}\\s*`, 'g');
+      if (hadInstructions) {
+        existing = existing.replace(regex, '').trimEnd();
+        console.log(`🧹 [${agentConfig.name}] 已移除舊的 "${instruction.name}" 提示詞。`);
+      }
+    } else if (hadInstructions) {
       const msg = `指導檔中已包含 "${instruction.name}" 提示詞，跳過安裝。`;
       console.log(`⏭️  ${msg}`);
       return { success: true, message: msg };
     }
 
-    const newContent = existing.trimEnd() + '\n\n' + wrappedContent + '\n';
+    const newContent = existing.trimEnd() ? existing.trimEnd() + '\n\n' + wrappedContent + '\n' : wrappedContent + '\n';
     await writeFile(targetFile, newContent, 'utf8');
-    const msg = `已將 "${instruction.name}" 附加至既有指導檔。`;
+    const msg = replaceAll && hadInstructions
+      ? `已重裝 "${instruction.name}" 系統提示詞。`
+      : `已將 "${instruction.name}" 附加至既有指導檔。`;
     console.log(`✅ [${agentConfig.name}] ${msg}`);
     return { success: true, message: msg };
   }
@@ -113,6 +124,7 @@ async function main() {
   const agentKey = args['ai-agent'];
   const projectPath = args['project-path'];
   const instructionsKey = args['instructions'];
+  const replaceAll = args['replace-all'];
 
   // ── 驗證 --instructions（兩種模式皆需要）──
   if (!instructionsKey) {
@@ -142,7 +154,7 @@ async function main() {
       process.exit(1);
     }
 
-    const result = await installForAgent(agentKey, agentConfig, instructionsKey, instruction, projectPath);
+    const result = await installForAgent(agentKey, agentConfig, instructionsKey, instruction, projectPath, replaceAll);
     if (!result.success) process.exit(1);
     return;
   }
@@ -158,7 +170,7 @@ async function main() {
   for (const [key, config] of Object.entries(AGENTS)) {
     console.log(`━━━ 正在安裝: ${config.name} ━━━`);
     try {
-      const result = await installForAgent(key, config, instructionsKey, instruction, projectPath);
+      const result = await installForAgent(key, config, instructionsKey, instruction, projectPath, replaceAll);
       results.push({ name: config.name, ...result });
     } catch (error) {
       console.error(`❌ [${config.name}] 安裝失敗:`, error.message || error);

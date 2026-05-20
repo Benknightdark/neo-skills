@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.63.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.62.0...neo-skills-v0.63.0) (2026-05-20)
+
+
+### Features
+
+* **instructions:** 新增 --replace-all 參數以支援系統提示詞重裝 ([2c2a9cb](https://github.com/Benknightdark/neo-skills/commit/2c2a9cb33124ca4a255f39f0e1ccf5527516b219))
+* 更新版本號至 1.0.39 ([fa76461](https://github.com/Benknightdark/neo-skills/commit/fa7646171c3ed35d63d11a20e5cf4aeb7d891a94))
+* 更新版本號至 1.0.39 ([c5cbf32](https://github.com/Benknightdark/neo-skills/commit/c5cbf325c41468391325896ec765c588cf4820bf))
+
 ## [0.62.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.61.0...neo-skills-v0.62.0) (2026-05-20)
 
 

@@ -34,3 +34,4 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Claude local settings
 .claude/settings.local.json
+.antigravitycli/a8727d7b-4d2e-42e4-bfea-71a131322cdd.json

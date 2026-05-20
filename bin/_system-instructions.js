@@ -55,7 +55,7 @@ All commit messages must strictly adopt Conventional Commits 1.0.0 (CC 1.0.0).
 - \`type\` must be a lowercase noun; prioritize using \`feat\`, \`fix\`, \`docs\`, \`test\`, \`refactor\`, \`build\`, \`ci\`, \`chore\`.
 - \`feat\` indicates a new feature, corresponding to SemVer minor; \`fix\` indicates a bug fix, corresponding to SemVer patch.
 - \`scope\` is optional, use a lowercase short noun, e.g., \`docs\`, \`scanner\`, \`npm\`, \`ci\`.
-- \`description\` is required, write in the imperative mood, present tense, in English, and do not end with a period.
+- \`description\` is required, should be written in the user's preferred language (e.g., Traditional Chinese, English, etc.). If in English, write in the imperative mood, present tense. If in other languages (such as Traditional Chinese), use clear and direct action verbs. Do not end with a period.
 - Major breaking changes must have a \`!\` added after the type/scope, or use \`BREAKING CHANGE: <description>\` in the footer; this kind of commit corresponds to SemVer major.
 - Body is optional, must be separated from the header by a blank line, used to explain motivation, background, and behavioral differences, without restating the diff.
 - Footer is optional, must be separated from the body by a blank line; issue references use \`Refs: #123\` or \`Closes: #123\`.
@@ -63,7 +63,7 @@ All commit messages must strictly adopt Conventional Commits 1.0.0 (CC 1.0.0).
 - Each commit focuses on a single logical change; do not mix unrelated modifications in the same commit.
 - Before committing, ensure you do not include unrequested or existing unrelated changes.
 
-Examples:
+Examples (English):
 
 \`\`\`text
 docs(readme): add localized documentation links
@@ -71,6 +71,16 @@ docs(readme): add localized documentation links
 feat(scanner)!: change default risk threshold
 
 BREAKING CHANGE: scans now fail CI when findings are at or above the threshold
+\`\`\`
+
+Examples (Traditional Chinese):
+
+\`\`\`text
+docs(readme): 新增本地化文件連結
+
+feat(scanner)!: 變更預設風險閾值
+
+BREAKING CHANGE: 當發現項目等於或高於閾值時，掃描現在會使 CI 失敗
 \`\`\`
 `;
 

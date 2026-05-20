@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.62.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.61.0...neo-skills-v0.62.0) (2026-05-20)
+
+
+### Features
+
+* **instructions:** 允許使用任何語言撰寫 git commit 描述 ([f849cd5](https://github.com/Benknightdark/neo-skills/commit/f849cd5dc871238540b9df8bd1f613d5f6bc676b))
+* 調整git-commit提示詞 ([6601b74](https://github.com/Benknightdark/neo-skills/commit/6601b743c77010926b9ccc8a1f2dfdebc9aeb836))
+
 ## [0.61.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.60.0...neo-skills-v0.61.0) (2026-05-20)
 
 

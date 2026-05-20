@@ -21,8 +21,8 @@
     "dist",
     "bin",
     "skills",
-    "plugin.json",
-    "AGY.md"
+    "AGENTS.md",
+    ".antigravityignore"
   ],
   "repository": {
     "type": "git",

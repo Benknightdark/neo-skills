@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.61.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.60.0...neo-skills-v0.61.0) (2026-05-20)
+
+
+### Features
+
+* 將專案結構與規則遷移至 Antigravity (AGY) CLI 標準 ([7c02c75](https://github.com/Benknightdark/neo-skills/commit/7c02c7595784b4dfd21e806fe10048170b0103dc))
+* 將專案結構與規則遷移至 Antigravity (AGY) CLI 標準 ([d4092d1](https://github.com/Benknightdark/neo-skills/commit/d4092d1d7ab947e8a7a6f1c89815e2b052ac90e3))
+* 移除Gemini CLI相關設定，改成支援agy cli ([7404a3f](https://github.com/Benknightdark/neo-skills/commit/7404a3f8207753f1e6c71f66b315a6cd4bd687f4))
+* 移除Gemini CLI相關設定，改成支援agy cli ([06096c8](https://github.com/Benknightdark/neo-skills/commit/06096c8f60370033c124f137523ceb62a6ea357a))
+
 ## [0.60.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.59.0...neo-skills-v0.60.0) (2026-05-19)
 
 

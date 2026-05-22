@@ -202,6 +202,7 @@ install-system-instructions --instructions <key> [--ai-agent <name>] [--project-
 | :--- | :--- | :--- |
 | `technical-co-founder` | Technical Co-Founder | 讓 AI 扮演技術共同創辦人，以 Discovery → Planning → Building → Polish → Handoff 五階段框架，協助您從零打造可上線的真實產品。 |
 | `git-commit` | Git Commit Message Generator | 分析暫存區變更，自動生成符合 Conventional Commits 規範的提交訊息，經確認後執行。 |
+| `fact-check` | Fact-Check Thinking | 強制 AI 在回答前先進行「事實檢查思考」，嚴格依據來源與事實回答，避免臆測與捏造內容。 |
 
 **範例：**
 

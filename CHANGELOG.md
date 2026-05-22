@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.64.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.63.0...neo-skills-v0.64.0) (2026-05-22)
+
+
+### Features
+
+* **instructions:** 新增 fact-check 系統提示詞並調整指導檔與 README.md ([1e563d3](https://github.com/Benknightdark/neo-skills/commit/1e563d3b0e11a10ac38b57f2ee3d657072451a5a))
+
 ## [0.63.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.62.0...neo-skills-v0.63.0) (2026-05-20)
 
 

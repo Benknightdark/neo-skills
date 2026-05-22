@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.65.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.64.0...neo-skills-v0.65.0) (2026-05-22)
+
+
+### Features
+
+* new version ([78d35b0](https://github.com/Benknightdark/neo-skills/commit/78d35b097aec76e1f1f27385d930ec9bf4f3f64c))
+* new version ([c2c232a](https://github.com/Benknightdark/neo-skills/commit/c2c232a1a1671dc233c787cfa39755890051e0e4))
+
 ## [0.64.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.63.0...neo-skills-v0.64.0) (2026-05-22)
 
 

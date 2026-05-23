@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.66.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.65.0...neo-skills-v0.66.0) (2026-05-23)
+
+
+### Features
+
+* add neo-typescript skill to README and AGENTS ([363a8a9](https://github.com/Benknightdark/neo-skills/commit/363a8a9d1b98b0e6cf1f0fc07d9e2950d386bbac))
+* add neo-typescript skill to README and AGENTS ([61a8e20](https://github.com/Benknightdark/neo-skills/commit/61a8e207ce2621709957876485783a2821b7f8d2))
+
 ## [0.65.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.64.0...neo-skills-v0.65.0) (2026-05-22)
 
 

@@ -3,7 +3,8 @@
 **Neo Skills** 是一個專為 **Antigravity CLI (AGY)** 設計的擴充外掛，旨在將 Agent 轉化為**全方位專家代理 (Universal Expert Agent)**。它利用 Model Context Protocol (MCP) 提供特定領域的專業知識 (Skills)。目前配備了專業的 **DevOps**（Azure Pipelines）與 **Frontend/Backend** 多語系（.NET, Python, Swift, TypeScript/JavaScript, Rust, Vue）等領域的模組，其架構設計可託管任何領域的技能。
 
 ## 回應風格
-使用「繁體中文 (台灣)」
+- 使用「繁體中文 (台灣)」
+- commit訊息必須是「繁體中文 (台灣)」
 
 ---
 

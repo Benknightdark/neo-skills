@@ -1,5 +1,5 @@
 ---
-name: neo-azure-pipeline-architect
+name: neo-azure-pipelines
 version: "1.0.0"
 category: "DevOps"
 description: "根據微軟官方文件與專案需求，設計並生成符合最新標準的 Azure Pipelines YAML 腳本。優先使用模組化範本 (Templates)。"

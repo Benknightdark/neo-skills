@@ -1,0 +1,29 @@
+{
+  "skill_name": "skill-name-kebab-case",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Realistic user prompt representing a core should-trigger use case with specific parameters.",
+      "expected_output": "Detailed description of the expected, successful final output structure, format, and behavior.",
+      "files": [
+        "evals/files/input_test_file.csv"
+      ],
+      "assertions": [
+        "The output file is valid [JSON / CSV / specific format]",
+        "The output contains at least [count] specific items / elements",
+        "The formatting adheres strictly to [template / style guide]",
+        "A diagnostic summary is printed explaining the results"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Another realistic prompt testing an edge case, a boundary condition, or a malformed input.",
+      "expected_output": "Clear error message or fallback action that is safe and helpful without breaking.",
+      "assertions": [
+        "The execution returns a non-zero exit code on corrupt inputs",
+        "A clear usage message is logged to stderr",
+        "No destructive state changes are performed"
+      ]
+    }
+  ]
+}

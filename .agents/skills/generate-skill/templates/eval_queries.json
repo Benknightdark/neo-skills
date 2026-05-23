@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Explicit should-trigger request naming the core domain directly.",
+    "should_trigger": true
+  },
+  {
+    "query": "Implicit should-trigger request describing the pain point or task without naming the domain.",
+    "should_trigger": true
+  },
+  {
+    "query": "Detailed should-trigger request containing realistic user context like file paths, columns, and backstories.",
+    "should_trigger": true
+  },
+  {
+    "query": "Casual, low-detail should-trigger request containing minor typos or abbreviations.",
+    "should_trigger": true
+  },
+  {
+    "query": "A completely unrelated query (e.g. asking for Fibonacci or weather) to serve as a basic negative baseline.",
+    "should_trigger": false
+  },
+  {
+    "query": "A near-miss negative case that shares concept keywords but belongs to a different domain / tool.",
+    "should_trigger": false
+  },
+  {
+    "query": "A near-miss negative case where the user asks to write code to automate the task, rather than execute the workflow itself.",
+    "should_trigger": false
+  }
+]

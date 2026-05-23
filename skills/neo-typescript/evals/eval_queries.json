@@ -1,0 +1,66 @@
+[
+  {
+    "query": "How do distributive conditional types work in TypeScript?",
+    "should_trigger": true
+  },
+  {
+    "query": "My Node project crashes with TypeError: default is not a function when loading a CJS library in ESM. How do I fix esModuleInterop?",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you review my TypeScript code for type compatibility and bivariance issues?",
+    "should_trigger": true
+  },
+  {
+    "query": "Explain how to remove readonly modifiers from all keys in a mapped type.",
+    "should_trigger": true
+  },
+  {
+    "query": "I am configuring my tsconfig.json compilerOptions, what moduleResolution should I choose for Webpack/Vite?",
+    "should_trigger": true
+  },
+  {
+    "query": "How to design a type-safe event listener using template literal types for a watched object?",
+    "should_trigger": true
+  },
+  {
+    "query": "Why does my readonly property get mutated through an aliased writable reference?",
+    "should_trigger": true
+  },
+  {
+    "query": "How do I implement a nominal type simulation using private properties in TypeScript classes?",
+    "should_trigger": true
+  },
+  {
+    "query": "How to write a fibonacci function in JavaScript?",
+    "should_trigger": false
+  },
+  {
+    "query": "What is the weather today in Taipei?",
+    "should_trigger": false
+  },
+  {
+    "query": "Can you design a simple React component that renders a button with styled-components?",
+    "should_trigger": false
+  },
+  {
+    "query": "What is the difference between let and const in plain JS?",
+    "should_trigger": false
+  },
+  {
+    "query": "How to center a div horizontally and vertically using CSS flexbox?",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a python script that parses a CSV and sends it to database.",
+    "should_trigger": false
+  },
+  {
+    "query": "What is the difference between null and undefined in JavaScript?",
+    "should_trigger": false
+  },
+  {
+    "query": "Can you explain how ECMAScript decorators Stage 3 standard works in plain JS?",
+    "should_trigger": false
+  }
+]

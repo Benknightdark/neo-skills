@@ -34,11 +34,11 @@
 
 * **智能審查**：針對程式碼變更進行多面向 (正確性、安全性、效能、可讀性) 的深度審查。
 
-### 4. 程式碼解釋助手
+### 3. 程式碼解釋助手
 
 * **技術解析**：深入分析原始碼或專案結構，提供高階用途摘要、邏輯流程分解以及核心元件說明。
 
-### 5. .NET / C# 開發專家
+### 4. .NET / C# 開發專家
 
 * **C# 現代語法專家 (`skills/neo-csharp`)**：跨版本 C# 專家 (10-14+)，專注於現代化語法、強型別與高效能開發模式。
 * **.NET 核心路由 (`skills/neo-dotnet`)**：環境偵測與統一入口，自動將任務委派給最合適的子領域專家。
@@ -49,19 +49,26 @@
 * **.NET Tag Helper 專家 (`skills/neo-dotnet-tag-helper`)**：開發 ASP.NET Core 自定義 Tag Helper 的專家指引，專注於純 C# 實作與異步渲染最佳實踐。
 * **Interface 生成器**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
-### 6. Python 開發與環境管理專家
+### 5. Python 開發與環境管理專家
 
 * **Python 3.10+ 專家 (`skills/neo-python`)**：專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
 * **環境管理專家 (`skills/neo-python-manager`)**：智慧偵測與管理 Python 專案環境，支援 uv, Poetry, venv/pip 並提供自動化安裝建議。
 
-### 7. Swift 開發專家
+### 6. Swift 開發專家
 
 * **Swift 5.0+ 專家 (`skills/neo-swift`)**：支援從基礎語法到 Swift 6 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency、記憶體安全以及高效能 App 開發指引。
 * **SwiftUI 專家 (`skills/neo-swift-ui`)**：支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。
 
-### 8. JavaScript 開發專家
+### 7. JavaScript 開發專家
 
 * **JavaScript 現代語法專家 (`skills/neo-javascript`)**：跨版本 JavaScript 專家 (ES6 - ES2025+)，專注於現代化語法、模組系統與高效能開發模式。
+
+### 8. TypeScript 開發專家
+
+* **TypeScript 現代語法與型別安全 (`skills/neo-typescript`)**：專注於極致的型別安全、高可維護性與進階元程式設計（Meta-programming）。
+  * **型別系統防線**：涵蓋進階條件型別 (Conditional Types)、映射型別 (Mapped Types) 與樣板字面值型別。
+  * **互通性與配置最佳化**：深入調校 `tsconfig.json` 編譯選項，並徹底解決複雜的 ESM/CJS 互通性陷阱與執行期崩潰問題。
+  * **泛型約束設計**：引導設計高靈活度的泛型與變量 (Variance) 處理。
 
 ### 9. Vue 開發專家
 
@@ -237,6 +244,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | **需求釐清與規格化** | `我想做一個電商網站` |
 | **全方位程式碼審查** | `幫我 code review 剛才的修改` |
 | **生成 C# Interface** | `幫我針對這個 class 產生介面` |
+| **TypeScript 型別設計與互通性** | `解決 tsconfig 還有 ESM/CJS 互通性的問題`、`幫我寫一個強型別的泛型工具` |
 | **技術解析與架構洞察** | `分析這個專案的架構` |
 | **AI 開發流程健檢** | `幫我檢查這個專案怎麼讓 AI 助手開發得更穩、更安全` |
 

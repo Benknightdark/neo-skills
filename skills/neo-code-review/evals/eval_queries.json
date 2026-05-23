@@ -1,0 +1,26 @@
+{
+  "should_trigger": [
+    "請幫我對這個拉取請求 (PR) 進行代碼審查",
+    "這段程式碼有沒有潛在的 Bug 或記憶體洩漏？",
+    "幫我看一下這個 JavaScript 檔案的安全性寫得怎麼樣",
+    "audit this python script for potential SQL injection or security flaws",
+    "我們今天的 git 變更寫得如何？執行 code review",
+    "review my latest git commit changes",
+    "幫我重構並審查這段 C# 程式碼，看有沒有違反 SOLID 原則",
+    "這段 TypeScript 程式碼寫得好嗎？有沒有改進空間？",
+    "檢查一下這段 SQL 查詢的效能，會不會有慢查詢或缺少索引的問題",
+    "進行靜態代碼分析，指出這個 Go 專案中的問題"
+  ],
+  "should_not_trigger": [
+    "如何安裝 git？",
+    "請幫我寫一個能夠上傳檔案的 FastAPI 後端介面",
+    "解釋一下什麼是 N+1 查詢問題與如何解決",
+    "幫我建立一個全新的 React 專案",
+    "請推薦好用的 Python Linter 工具",
+    "如何配置 tsconfig.json 來支援 ESM？",
+    "在 MacOS 上如何部署 Docker 容器？",
+    "幫我把這段 Python 代碼翻譯成 Rust",
+    "什麼是 SQL Injection 的原理？",
+    "幫我產生一份今天的開發進度週報"
+  ]
+}

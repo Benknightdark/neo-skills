@@ -1,9 +1,6 @@
 # Neo Skills Extension (agents.md)
 
-**Neo Skills** 是一個專為 **Antigravity CLI (AGY)** 設計的擴充外掛，旨在將 Agent 轉化為**全方位專家代理 (Universal Expert Agent)**。它利用 Model Context Protocol (MCP) 提供特定領域的專業知識 (Skills)。目前配備了專業的 **DevOps** 模組（Azure Pipelines），其架構設計可託管任何領域的技能。
-
-## 核心約束
-- 所有 MCP 指令必須由使用者手動執行，不可自動化！
+**Neo Skills** 是一個專為 **Antigravity CLI (AGY)** 設計的擴充外掛，旨在將 Agent 轉化為**全方位專家代理 (Universal Expert Agent)**。它利用 Model Context Protocol (MCP) 提供特定領域的專業知識 (Skills)。目前配備了專業的 **DevOps**（Azure Pipelines）與 **Frontend/Backend** 多語系（.NET, Python, Swift, TypeScript/JavaScript, Rust, Vue）等領域的模組，其架構設計可託管任何領域的技能。
 
 ## 回應風格
 使用「繁體中文 (台灣)」
@@ -49,7 +46,7 @@ Do not commit secrets, sample credentials, or unsafe prompts. If you change secr
 *   **載入邏輯：**
     *   **全域技能**: 載入自 `~/.gemini/antigravity-cli/plugins/`。
     *   **專案專屬技能**: 載入自專案根目錄下的 `.agents/skills/`（遷移自舊有的 `.gemini/skills/`）。
-*   **範例：** `skills/neo-azure-pipelines/` 包含設計 CI/CD 管線的邏輯。
+*   **範例：** `skills/neo-azure-pipelines/` 包含設計 CI/CD 管線的邏輯，`skills/neo-typescript/` 包含 TypeScript 強型別與互通性最佳實踐。
 
 ### 3. 安全層 (`src/hooks/`)
 確保操作安全與數據隱私的機制。

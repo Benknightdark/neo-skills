@@ -1,0 +1,27 @@
+{
+  "skill_name": "neo-typescript",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I write a Mapped Type that iterates over T, converts all its properties to readonly, and capitalizes key names prefixed with 'get'? For example, converting { name: string } to { readonly getName: () => string }.",
+      "expected_output": "Provide an advanced meta-programming solution using Mapped Types combined with Key Remapping `as` and `Capitalize`, including complete type code and validation examples.",
+      "assertions": [
+        "Output contains Mapped Type code using 'as' to rename property keys",
+        "Type expressions correctly use both 'readonly' and 'Capitalize' modifiers",
+        "Provide a concrete Example structure to validate the mapped type",
+        "The solution explicitly points out the gotcha of needing '& string' during key remapping"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My project is an npm library that needs to support both CommonJS and ESM consumers. How do I safely export my main entry point to prevent users from encountering Double Default or default is not a function runtime crashes?",
+      "expected_output": "Explain the underlying cause of CommonJS and ESM dual-module loading conflicts, strongly recommend completely abandoning `export default`, and provide the golden solution of using `export =` and Named Exports.",
+      "assertions": [
+        "The solution explicitly mentions the magic emit helpers injected by esModuleInterop",
+        "Explicitly warn about the fatal runtime crash risk of enabling allowSyntheticDefaultImports alone",
+        "Provide clear code examples of TypeScript-specific 'export =' or Named Exports",
+        "Explain that library creators must avoid export default to prevent Double Default traps"
+      ]
+    }
+  ]
+}

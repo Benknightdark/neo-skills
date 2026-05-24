@@ -1,0 +1,27 @@
+{
+  "skill_name": "neo-rust",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Please help me refactor this code to avoid excessive cloning:\n```rust\nfn process(name: String) {\n    println!(\"{}\", name);\n}\nfn main() {\n    let name = String::from(\"Alice\");\n    process(name.clone());\n    process(name.clone());\n}\n```",
+      "expected_output": "Refactored code with the `process` function parameter changed to a borrowed reference `&str` (or `&String`) and passing `&name` at call sites, completely removing `.clone()`.",
+      "assertions": [
+        "The output code completely removes the `.clone()` calls",
+        "The signature of the `process` function is modified to accept a reference (e.g., `&str`)",
+        "The call sites `process(&name)` use borrowed reference syntax",
+        "Accompanied by a brief explanation of Borrow Checker and ownership best practices"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Please perform a Code Review on this code:\n```rust\nfn get_user_role(id: i32) -> String {\n    let users = vec![\"admin\", \"user\"];\n    users[id as usize].to_string()\n}\n```",
+      "expected_output": "Points out array out-of-bounds access risks (no boundary checks) and suggests returning `Option` or adding safety checks; formatting follows the Code Review report template.",
+      "assertions": [
+        "The review report clearly identifies array out-of-bounds access and panic risks",
+        "Suggests refactoring the return type to `Option<String>` or `Result<String, E>`",
+        "Provides a corrected, idiomatic Rust example",
+        "The Markdown output format strictly follows the structure of Template A: Code Review Report"
+      ]
+    }
+  ]
+}

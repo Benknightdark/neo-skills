@@ -1,0 +1,42 @@
+[
+  {
+    "query": "Please review this Rust code for any unnecessary clones or security issues.",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to implement a safe state machine in Rust using the Typestate Pattern, can you give me an example?",
+    "should_trigger": true
+  },
+  {
+    "query": "How do I resolve a compile error in Rust where a `MutexGuard` crossing an `await` causes an issue?",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a highly efficient serialization module for my .rs project.",
+    "should_trigger": true
+  },
+  {
+    "query": "I am getting compile errors in my Cargo build, here is the log. Please help me debug it.",
+    "should_trigger": true
+  },
+  {
+    "query": "Please help me write a user database Repository with exception handling in C#.",
+    "should_trigger": false
+  },
+  {
+    "query": "What is the Borrow Checker? What role does it play in memory management?",
+    "should_trigger": false
+  },
+  {
+    "query": "Please help me write a Python script to automate deploying compiled Rust binaries to AWS S3.",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I install rustc and cargo?",
+    "should_trigger": false
+  },
+  {
+    "query": "Please write a technical research report comparing the performance between Rust and Go.",
+    "should_trigger": false
+  }
+]

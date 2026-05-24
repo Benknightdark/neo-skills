@@ -1,0 +1,30 @@
+{
+  "skill_name": "neo-code-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "請幫我審查這段 Python 程式碼：\n```python\nimport sqlite3\n\ndef get_user_data(user_id):\n    conn = sqlite3.connect('users.db')\n    cursor = conn.cursor()\n    # 存在 SQL 注入風險與資源未關閉\n    query = f\"SELECT * FROM users WHERE id = '{user_id}'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n```",
+      "expected_output": "結構化的代碼審查報告。必須明確指出 `user_id` 的 SQL 注入漏洞 (🔴 嚴重問題)，指出資料庫連接未釋放的效能/資源問題 (🟡 改進建議)，並提供參數化查詢與 `with` 語法糖的修正程式碼範例。報告應全為繁體中文，且包含標準的審查摘要與結構標題。",
+      "assertions": [
+        "輸出包含 '🔍 審查摘要'",
+        "輸出包含 '🔴 嚴重問題'",
+        "輸出包含 '🟡 改進建議'",
+        "報告使用繁體中文 (台灣)",
+        "報告中指出 SQL 注入 (SQL Injection) 漏洞",
+        "報告中指出資料庫連接或 cursor 未正確釋放/關閉的問題",
+        "提供使用參數化查詢 (parameterized query) 或 with 語法的修復代碼範例"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "審查這段沒有明顯問題的 TypeScript 程式碼，並給出建議：\n```typescript\nexport interface User {\n  id: string;\n  name: string;\n  email: string;\n}\n\nexport function formatUserGreeting(user: User): string {\n  return `Hello, ${user.name}! Welcome back.`;\n}\n```",
+      "expected_output": "給予正面評價的繁體中文審查報告，包含摘要、優秀之處 (🟢 優秀之處)，且無嚴重的 Must-fix 問題。可能包含一些關於型別定義或未來擴充性的輕微建議。",
+      "assertions": [
+        "輸出包含 '🔍 審查摘要'",
+        "報告中沒有將此代碼列為 '🔴 嚴重問題' (Must-fix)",
+        "輸出包含 '🟢 優秀之處'",
+        "報告中讚賞其簡單明瞭、型別定義清晰與具備良好的可讀性"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.68.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.67.0...neo-skills-v0.68.0) (2026-05-24)
+
+
+### Features
+
+* 調整rust skill ([da61a96](https://github.com/Benknightdark/neo-skills/commit/da61a96198ea94d891aac2b961fd676abbf17ccb))
+* 調整rust skill ([b8f13e8](https://github.com/Benknightdark/neo-skills/commit/b8f13e8df42123a5b4f28382e95499dc364d77fd))
+
 ## [0.67.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.66.0...neo-skills-v0.67.0) (2026-05-23)
 
 

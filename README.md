@@ -96,26 +96,51 @@
 
 ## 📦 安裝與使用
 
-Neo Skills 已全面升級並採用 [agentskills.io](https://agentskills.io) 官方推薦的 **Agent Skills 開源標準規範**。
+Neo Skills 已全面升級並支援專屬的極簡安裝器，同時相容於 [agentskills.io](https://agentskills.io) 官方推薦的 **Agent Skills 開源標準規範**。
 
-透過標準的 **Skills CLI**，您不需要手動下載、複製或在 `CLAUDE.md` 等檔案中手動附加長篇大論的系統提示詞。現代的 AI Coding Agents（如 Claude Code, Cursor, Copilot 等）已原生支持從 `.agents/skills/` 自動發現與加載這些高度專業的技能。
-
-> [!NOTE]
-> 技能下載管理工具底層使用由 Vercel Labs 開源的全球 package manager `skills` (即 `@vercel/skills`)。這使得技能的安裝與管理如同 npm 安裝套件般優雅、快速。
+根據您的使用場景，可以選擇以下兩種最適合您的安裝方式：
 
 ---
 
-### 一、一鍵安裝所有技能
+### 一、一鍵同步全域技能（Antigravity CLI 專用，推薦）
 
-如果您希望將 Neo Skills 專案內建的所有專家技能一次性安裝至您的當前專案中，只需在專案根目錄下執行：
+如果您使用的是 **Antigravity CLI**，建議使用專門設計的 `neo-skills` 安裝工具（舊稱 `install-skills`）。這是一個極簡化的工具，會一鍵將本專案所有的專家技能，複製到您的全域路徑 `~/.gemini/antigravity-cli/skills` 中，同時自動過濾無關檔案（如 `.git`、`node_modules`、`.DS_Store` 等）。
 
+#### 透過 npx 直接執行：
 ```bash
-npx skills add Benknightdark/neo-skills
+npx -y @moon791017/neo-skills@latest
+```
+
+#### 本地開發手動安裝：
+如果您已複製本專案至本地，也可以直接在專案根目錄下執行：
+```bash
+node bin/install-skills.js
 ```
 
 ---
 
-### 二、按需安裝特定技能
+### 二、使用標準 Skills CLI 安裝（通用於專案或其他 AI Agent）
+
+針對其他支援 [agentskills.io](https://agentskills.io) 標準規範的 AI 代理（如 Claude Code, Cursor, Copilot 等），您可以使用標準的 `skills` 包管理器。預設會安裝至當前專案，**若您希望將技能安裝至全域路徑，只需在指令後方加上 `-g` 參數**。
+
+#### 1. 專案一鍵安裝所有技能（免互動勾選）：
+```bash
+npx skills add Benknightdark/neo-skills --all
+```
+
+> [!TIP]
+> * **全域一鍵安裝**：若要將所有技能安裝至標準全域路徑下，只需加上 `-g`：`npx skills add Benknightdark/neo-skills --all -g`。
+> * **命令行指定**：若只需安裝特定 Skill，可以使用 `--skill <名稱>`（例如 `npx skills add Benknightdark/neo-skills --skill neo-typescript,neo-vue`）。
+
+#### 💡 終端機互動選單操作小秘訣：
+如果您執行了不帶 `--all` 的預設互動選單命令 `npx skills add Benknightdark/neo-skills`：
+1. **一鍵全選 (Select All)**：在選單畫面中直接按下鍵盤上的 **`a`** 鍵，即可立刻自動勾選所有的技能！
+2. **反向選取 (Invert Selection)**：按下鍵盤上的 **`i`** 鍵，反向切換目前的所有勾選狀態。
+3. **確認送出**：全選後按下 `Enter` 鍵即可一次完成安裝。
+
+---
+
+### 三、按需安裝特定技能
 
 如果您只需要其中某幾項特定領域的專家技能，您可以使用 `--skill` 參數指定安裝：
 
@@ -142,21 +167,6 @@ npx skills add Benknightdark/neo-skills
 | **19. 程式碼解釋助手** | `npx skills add Benknightdark/neo-skills --skill neo-explain` |
 | **20. 需求分析與釐清助手** | `npx skills add Benknightdark/neo-skills --skill neo-clarification` |
 | **21. AI 開發流程治理專家** | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` |
-
----
-
-### 三、主流 AI Agent 對齊說明
-
-在安裝技能後，主流的 AI 代理會遵循以下載入機制，無須任何額外手動配置：
-
-> [!TIP]
-> **全域安裝選項**：若您希望將技能安裝至全域路徑以供所有專案使用，可以在上述指令後面加上 `-g` 參數（例如 `npx skills add -g Benknightdark/neo-skills`）。
-
-| AI Agent | 專案載入目錄 (Project-level) | 全域載入目錄 (Global-level) | 系統提示載入方式 |
-| :--- | :--- | :--- | :--- |
-| **Antigravity (AGY)** | `<project>/.agents/skills/` | `~/.gemini/skills/` | 自動掃描並動態感知載入（Perceive 階段） |
-| **Claude Code** | `<project>/.agents/skills/` | `~/.claude/skills/` | 原生載入並透過 trigger-phrases 自動觸發 |
-| **Copilot CLI / Cursor** | `<project>/.agents/skills/` | `~/.copilot/skills/` | 自動偵測專案下的 `.agents/` 設定檔案 |
 
 ---
 

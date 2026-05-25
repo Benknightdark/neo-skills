@@ -1,14 +1,6 @@
 /**
  * Shared utilities for agent skill installers.
  */
-import { cp, mkdir, access } from 'node:fs/promises';
-import { join, resolve, dirname } from 'node:path';
-import { homedir } from 'node:os';
-import { fileURLToPath } from 'node:url';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const packageRoot = resolve(__dirname, '..');
-const sourceDir = join(packageRoot, 'skills');
 
 /**
  * Agent 設定中心 — 所有 agent 的安裝參數集中管理於此。
@@ -61,82 +53,3 @@ export const AGENTS = {
     hint: 'Neo Skills 已安裝。請確保 AGY 已載入 instructions.md 或 agents.md 作為上下文檔案。',
   },
 };
-
-/**
- * 根據 agent config 建立 installer 函式。
- *
- * 路徑解析邏輯：
- *   1. 決定根目錄 (baseDir)：
- *      - 有 --project-path → 使用者指定的絕對路徑
- *      - 無 --project-path → $HOME
- *   2. 決定子目錄 (subDir)：
- *      - 有 --project-path 且 config 定義了 projectPath → 使用 projectPath
- *      - 其餘情況 → 使用 homePath
- *   3. 最終安裝路徑 = baseDir + subDir
- *
- * 範例（以 Copilot 為例）：
- *   預設:                          ~/.copilot/skills              （homedir + homePath）
- *   --project-path /my/project:   /my/project/.github/skills     （projectPath + projectPath）
- *
- * @param {object} config - AGENTS 中的 agent 設定物件
- * @param {string} [targetPath] - 使用者透過 --project-path 指定的自訂根目錄
- */
-export function createInstaller({ name: agentName, homePath, projectPath, sourceDir: customSourceDir, hint }, cliBasePath) {
-  return async function install() {
-    console.log(`🚀 [${agentName}] 開始同步 Neo Skills...`);
-
-    const effectiveSourceDir = customSourceDir ? resolve(packageRoot, customSourceDir) : sourceDir;
-
-    try {
-      await access(effectiveSourceDir);
-    } catch {
-      const msg = `在 ${effectiveSourceDir} 找不到來源目錄。`;
-      console.error(`❌ 錯誤: ${msg}`);
-      return { success: false, message: msg };
-    }
-
-    // 根目錄：--project-path 優先，否則 $HOME
-    const baseDir = cliBasePath ? resolve(cliBasePath) : homedir();
-    // 子目錄：專案層級有獨立路徑時採用 projectPath，否則用預設的 homePath
-    const subDir = cliBasePath && projectPath ? projectPath : homePath;
-    const targetSkillsDir = join(baseDir, subDir);
-
-    console.log(`📁 來源路徑: ${effectiveSourceDir}`);
-    console.log(`🎯 目標路徑: ${targetSkillsDir}`);
-
-    await mkdir(targetSkillsDir, { recursive: true });
-
-    let copyCount = 0;
-    await cp(effectiveSourceDir, targetSkillsDir, {
-      recursive: true,
-      force: true,
-      filter: (src) => {
-        const relativePath = src.replace(effectiveSourceDir, '');
-        const isIgnored = 
-          relativePath.includes('node_modules') || 
-          relativePath.includes('.git') ||
-          relativePath.includes('dist') ||
-          relativePath.includes('.antigravitycli') ||
-          relativePath.includes('.agents');
-        
-        if (!isIgnored) { 
-          // 只有當 src 不是目錄時才增加計數，或者簡化計數邏輯
-          copyCount++; 
-          return true; 
-        }
-        return false;
-      }
-    });
-
-    if (copyCount === 0) {
-      console.warn('⚠️ 警告: 沒有任何檔案被複製。請檢查來源目錄是否正確。');
-      return { success: true, message: '沒有任何檔案被複製' };
-    }
-
-    const displayPath = cliBasePath || homePath;
-    const msg = `已同步 ${copyCount} 個檔案/資料夾至 ${displayPath}`;
-    console.log(`✅ [${agentName}] 安裝成功！${msg}`);
-    if (hint) console.log(`💡 提示: ${hint}`);
-    return { success: true, message: msg };
-  };
-}

@@ -1,6 +1,6 @@
 {
   "name": "@moon791017/neo-skills",
-  "version": "1.0.43",
+  "version": "1.1.0",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
   "homepage": "https://neo-blog-iota.vercel.app/",
@@ -13,41 +13,25 @@
     "ai agent skills"
   ],
   "bin": {
-    "neo-skills": "./bin/install-skills.js",
-    "install-skills": "./bin/install-skills.js",
     "install-system-instructions": "./bin/install-system-instructions.js"
   },
   "files": [
-    "dist",
     "bin",
     "skills",
-    "AGENTS.md",
-    ".antigravityignore"
+    "AGENTS.md"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Benknightdark/neo-skills.git"
   },
   "scripts": {
-    "build": "bun run clean && bun run build:server && bun run build:hooks",
-    "build:server": "bun build src/server.ts --outdir dist --target node --minify",
-    "build:hooks": "bun build src/hooks/*.ts --outdir dist/hooks --target node --minify",
+    "build": "echo 'Pure JavaScript and Skills package, no build required.'",
     "install-deps": "npm install",
-    "clean": "rm -rf dist",
-    "start": "node dist/server.js",
-    "dev": "bun src/server.ts",
-    "typecheck": "tsc --noEmit",
     "test": "node --test"
   },
   "devDependencies": {
-    "@types/bun": "^1.3.11",
     "@types/node": "^25.6.0"
   },
   "license": "MIT",
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "axios": "^1.15.0",
-    "cheerio": "^1.2.0",
-    "zod": "^4.3.6"
-  }
+  "dependencies": {}
 }

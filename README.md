@@ -86,176 +86,156 @@
 
 * **AI 助手開發治理 (`skills/neo-agent-harness`)**：檢查專案規則、測試、CI、審查流程與安全防護是否足夠清楚，協助 AI 助手更穩定、更安全地參與開發。
 
-### 13. 安全守衛 (Security Guard)
-
-* **主動防護 (`secret-guard.ts`)**：作為 CLI 的中介軟體 (Hook)，自動攔截並掃描所有工具執行的參數。若偵測到敏感資訊（如環境設定檔、私鑰、雲端憑證等）將強制阻擋執行，防止機密外洩。
-
 ## 📂 系統架構
 
-本專案由三個核心層次組成，支援無限擴充：
+本專案主要由標準專家技能模組組成的知識庫所構成：
 
 | 層次 | 目錄 | 描述 |
 | :--- | :--- | :--- |
-| **Server** | `src/server.ts` | 擴充套件的進入點，負責註冊 Tool，處理與 AI Agent CLI 的通訊。 |
 | **Knowledge Base** | `skills/` | **"大腦"**。包含各領域知識 (`SKILL.md`) 與可重用的模板 (`templates/`)。 |
-| **Security Layer** | `src/hooks/` | **"安全守衛"**。攔截並掃描工具執行參數，防止敏感資訊外洩。 |
 
 ## 📦 安裝與使用
 
-### 支援的 AI Agent
+Neo Skills 已全面升級並採用 [agentskills.io](https://agentskills.io) 官方推薦的 **Agent Skills 開源標準規範**。
 
-| Agent | CLI 工具 | 技能目錄 | 指導檔 |
+透過標準的 **Skills CLI**，您不需要手動下載、複製或在 `CLAUDE.md` 等檔案中手動附加長篇大論的系統提示詞。現代的 AI Coding Agents（如 Claude Code, Cursor, Copilot 等）已原生支持從 `.agents/skills/` 自動發現與加載這些高度專業的技能。
+
+> [!NOTE]
+> 技能下載管理工具底層使用由 Vercel Labs 開源的全球 package manager `skills` (即 `@vercel/skills`)。這使得技能的安裝與管理如同 npm 安裝套件般優雅、快速。
+
+---
+
+### 一、一鍵安裝所有技能
+
+如果您希望將 Neo Skills 專案內建的所有專家技能一次性安裝至您的當前專案中，只需在專案根目錄下執行：
+
+```bash
+npx skills add Benknightdark/neo-skills
+```
+
+---
+
+### 二、按需安裝特定技能
+
+如果您只需要其中某幾項特定領域的專家技能，您可以使用 `--skill` 參數指定安裝：
+
+| 內建專家技能 | 一鍵安裝指令 |
+| :--- | :--- |
+| **1. C# 語法專家** | `npx skills add Benknightdark/neo-skills --skill neo-csharp` |
+| **2. .NET 核心路由** | `npx skills add Benknightdark/neo-skills --skill neo-dotnet` |
+| **3. .NET Minimal APIs 專家** | `npx skills add Benknightdark/neo-skills --skill neo-dotnet-minimal-apis` |
+| **4. .NET Web API 專家** | `npx skills add Benknightdark/neo-skills --skill neo-dotnet-webapi` |
+| **5. .NET MVC 專家** | `npx skills add Benknightdark/neo-skills --skill neo-dotnet-mvc` |
+| **6. EF Core 專家** | `npx skills add Benknightdark/neo-skills --skill neo-dotnet-ef-core` |
+| **7. .NET Tag Helper 專家** | `npx skills add Benknightdark/neo-skills --skill neo-dotnet-tag-helper` |
+| **8. C# Interface 生成器** | `npx skills add Benknightdark/neo-skills --skill neo-csharp-interface-generator` |
+| **9. Python 3.10+ 專家** | `npx skills add Benknightdark/neo-skills --skill neo-python` |
+| **10. Python 環境與依賴管理專家** | `npx skills add Benknightdark/neo-skills --skill neo-python-manager` |
+| **11. Swift 5.0+ 專家** | `npx skills add Benknightdark/neo-skills --skill neo-swift` |
+| **12. SwiftUI 專家** | `npx skills add Benknightdark/neo-skills --skill neo-swift-ui` |
+| **13. JavaScript 專家** | `npx skills add Benknightdark/neo-skills --skill neo-javascript` |
+| **14. TypeScript 專家** | `npx skills add Benknightdark/neo-skills --skill neo-typescript` |
+| **15. Vue 3 現代開發專家** | `npx skills add Benknightdark/neo-skills --skill neo-vue` |
+| **16. Rust 開發專家** | `npx skills add Benknightdark/neo-skills --skill neo-rust` |
+| **17. DevOps (Azure Pipelines) 架構師** | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` |
+| **18. Code Review 專家** | `npx skills add Benknightdark/neo-skills --skill neo-code-review` |
+| **19. 程式碼解釋助手** | `npx skills add Benknightdark/neo-skills --skill neo-explain` |
+| **20. 需求分析與釐清助手** | `npx skills add Benknightdark/neo-skills --skill neo-clarification` |
+| **21. AI 開發流程治理專家** | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` |
+
+---
+
+### 三、主流 AI Agent 對齊說明
+
+在安裝技能後，主流的 AI 代理會遵循以下載入機制，無須任何額外手動配置：
+
+> [!TIP]
+> **全域安裝選項**：若您希望將技能安裝至全域路徑以供所有專案使用，可以在上述指令後面加上 `-g` 參數（例如 `npx skills add -g Benknightdark/neo-skills`）。
+
+| AI Agent | 專案載入目錄 (Project-level) | 全域載入目錄 (Global-level) | 系統提示載入方式 |
 | :--- | :--- | :--- | :--- |
-| **Antigravity** | [Antigravity CLI](https://antigravity.google) | 透過外掛程式自動載入 | `agents.md` |
-| **Claude** | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `.claude/skills/` | `CLAUDE.md` |
-| **Copilot** | [GitHub Copilot CLI](https://docs.github.com/en/copilot) | `.copilot/skills/`（全域）<br>`.github/skills/`（專案） | `.copilot/copilot-instructions.md`（全域）<br>`.github/copilot-instructions.md`（專案） |
-| **Codex** | [OpenAI Codex CLI](https://github.com/openai/codex) | `.codex/skills/` | `AGENTS.md` |
-
-Neo Skills 提供兩個 CLI 工具，分別用於安裝**技能模組**與**系統提示詞**：
-
-| 工具 | 用途 | 安裝目標 |
-| :--- | :--- | :--- |
-| `install-skills` | 將技能模組（`skills/`）複製到 Agent 的技能目錄 | 資料夾（如 `.claude/skills`） |
-| `install-system-instructions` | 將系統提示詞寫入 Agent 的指導檔 | 單一檔案（如 `CLAUDE.md`） |
-
-> 兩個工具皆支援 `--ai-agent` 與 `--project-path` 參數，邏輯一致。
+| **Antigravity (AGY)** | `<project>/.agents/skills/` | `~/.gemini/skills/` | 自動掃描並動態感知載入（Perceive 階段） |
+| **Claude Code** | `<project>/.agents/skills/` | `~/.claude/skills/` | 原生載入並透過 trigger-phrases 自動觸發 |
+| **Copilot CLI / Cursor** | `<project>/.agents/skills/` | `~/.copilot/skills/` | 自動偵測專案下的 `.agents/` 設定檔案 |
 
 ---
 
-### 一、Antigravity CLI (AGY)
+### 四、安裝系統提示詞 (`install-system-instructions`)
 
-Antigravity CLI 現在支援透過標準的 `install-skills` 工具安裝技能模組。
-
-```bash
-# 安裝 Neo Skills 至 AGY 全域技能目錄
-npx -p @moon791017/neo-skills install-skills --ai-agent agy -y
-```
-
-或者手動將專案連結至 `~/.gemini/antigravity-cli/plugins/neo-skills`。
-
----
-
-### 二、安裝技能模組 (`install-skills`)
-
-將 `skills/` 目錄下的所有技能模組複製到目標 AI Agent 的技能資料夾。
+> [!IMPORTANT]
+> **獨家加值特色功能**：由於 [agentskills.io](https://agentskills.io) 標準僅處理 `.agents/skills` 專案技能的目錄同步，**並未提供將核心系統提示詞（System Instructions）附加至 AI 代理引導檔** 的功能。
+> 
+> 為了解決這個問題，Neo Skills 專門保留並提供強大的系統提示詞安裝器 `install-system-instructions`。此 CLI 工具會自動掃描、建立，並在不破壞您既有檔案內容的前提下，將專家提示詞完美附加或更新至各 AI 代理的專屬引導檔中。
 
 **語法：**
 
-```
-install-skills [--ai-agent <name>] [--project-path <path>]
+```bash
+npx -p @moon791017/neo-skills install-system-instructions --instructions <key> [--ai-agent <name>] [--project-path <path>] [--replace-all]
 ```
 
-**參數：**
+**參數與引數說明：**
 
 | 參數 | 必填 | 說明 |
 | :--- | :---: | :--- |
-| `--ai-agent <name>` | 否 | 指定目標 Agent（`claude` / `copilot` / `codex`）。省略時安裝全部。 |
-| `--project-path <path>` | 否 | 指定專案根目錄。省略時安裝至 `$HOME` 全域路徑。 |
+| `--instructions <key>` | ✅ | 指定要安裝的系統提示詞（可用選項見下方列表）。 |
+| `--ai-agent <name>` | 否 | 指定目標 Agent（`claude` / `copilot` / `codex` / `agy`）。省略時安裝至全部。 |
+| `--project-path <path>` | 否 | 指定專案根目錄。省略時安裝至使用者的全域路徑。 |
+| `--replace-all` | 否 | 若先前已安裝過該提示詞，則會將其移除後全新重裝，適合用於更新提示詞版本。 |
 
-**安裝路徑對照：**
+**系統引導檔路徑對照：**
 
-| Agent | 全域路徑 | 專案路徑 |
+| Agent | 全域引導檔路徑 | 專案引導檔路徑 |
 | :--- | :--- | :--- |
-| Antigravity | `~/.gemini/skills/` | `<project>/.agents/skills/` |
-| Claude | `~/.claude/skills/` | `<project>/.claude/skills/` |
-| Copilot | `~/.copilot/skills/` | `<project>/.github/skills/` |
-| Codex | `~/.codex/skills/` | `<project>/.codex/skills/` |
+| **Claude Code** | `~/.claude/CLAUDE.md` | `<project>/CLAUDE.md` |
+| **Copilot CLI** | `~/.copilot/copilot-instructions.md` | `<project>/.github/copilot-instructions.md` |
+| **Codex** | `~/.codex/AGENTS.md` | `<project>/AGENTS.md` |
+| **Antigravity (AGY)** | `~/.gemini/antigravity-cli/instructions.md` | `<project>/agents.md` |
 
-**範例：**
+**支援的系統提示詞種類：**
+
+| Key | 提示詞名稱 | 核心功能與扮演角色 |
+| :--- | :--- | :--- |
+| `technical-co-founder` | **Technical Co-Founder** | 讓 AI 扮演您的技術共同創辦人，以 Discovery → Planning → Building → Polish → Handoff 五階段框架，協助您從零打造可上線的真實產品。 |
+| `git-commit` | **Git Commit Message Generator** | 智能分析暫存區變更，自動生成符合 Conventional Commits 規範的精確提交訊息，經確認後一鍵提交。 |
+| `fact-check` | **Fact-Check Thinking** | 強制 AI 在回答前先進行「事實檢查思考」，嚴格依據來源與事實回答，避免臆測與捏造內容。 |
+
+**實用範例：**
 
 ```bash
-# 安裝指定 Agent 至全域
-npx -p @moon791017/neo-skills install-skills --ai-agent claude -y
+# 1. 一次安裝「技術共同創辦人」提示詞至全部支援的 AI Agent 全域引導檔
+npx -p @moon791017/neo-skills install-system-instructions --instructions technical-co-founder -y
 
-# 安裝指定 Agent 至專案
-npx -p @moon791017/neo-skills install-skills --ai-agent copilot --project-path /my/project -y
+# 2. 安裝「技術共同創辦人」提示詞至 Claude Code 的專案級 CLAUDE.md
+npx -p @moon791017/neo-skills install-system-instructions --ai-agent claude --instructions technical-co-founder --project-path . -y
 
-# 一次安裝全部 Agent
-npx -p @moon791017/neo-skills install-skills -y
+# 3. 如果需要更新/覆蓋已安裝的 git-commit 提示詞，加上 --replace-all 進行重裝
+npx -p @moon791017/neo-skills install-system-instructions --ai-agent claude --instructions git-commit --replace-all -y
 ```
 
 ---
-
-### 三、安裝系統提示詞 (`install-system-instructions`)
-
-將預定義的系統提示詞寫入 AI Agent 的指導檔。若指導檔已存在，會附加至最下方；若不存在，則自動建立。
-
-**語法：**
-
-```
-install-system-instructions --instructions <key> [--ai-agent <name>] [--project-path <path>]
-```
-
-**參數：**
-
-| 參數 | 必填 | 說明 |
-| :--- | :---: | :--- |
-| `--instructions <key>` | ✅ | 指定要安裝的系統提示詞（見下方種類表）。 |
-| `--ai-agent <name>` | 否 | 指定目標 Agent（`claude` / `copilot` / `codex`）。省略時安裝至全部。 |
-| `--project-path <path>` | 否 | 指定專案根目錄。省略時安裝至 `$HOME` 全域路徑。 |
-| `--replace-all` | 否 | 若先前已安裝過該提示詞，則先將其移除後重裝。 |
-
-**指導檔路徑對照：**
-
-| Agent | 全域路徑 | 專案路徑 |
-| :--- | :--- | :--- |
-| Claude | `~/.claude/CLAUDE.md` | `<project>/CLAUDE.md` |
-| Copilot | `~/.copilot/copilot-instructions.md` | `<project>/.github/copilot-instructions.md` |
-| Codex | `~/.codex/AGENTS.md` | `<project>/AGENTS.md` |
-
-**可用的系統提示詞種類：**
-
-| Key | 名稱 | 說明 |
-| :--- | :--- | :--- |
-| `technical-co-founder` | Technical Co-Founder | 讓 AI 扮演技術共同創辦人，以 Discovery → Planning → Building → Polish → Handoff 五階段框架，協助您從零打造可上線的真實產品。 |
-| `git-commit` | Git Commit Message Generator | 分析暫存區變更，自動生成符合 Conventional Commits 規範的提交訊息，經確認後執行。 |
-| `fact-check` | Fact-Check Thinking | 強制 AI 在回答前先進行「事實檢查思考」，嚴格依據來源與事實回答，避免臆測與捏造內容。 |
-
-**範例：**
-
-```bash
-# 一次安裝至全部 Agent 的全域指導檔
-npx -p @moon791017/neo-skills install-system-instructions \
-  --instructions technical-co-founder -y
-
-# 安裝至指定 Agent 的全域指導檔 (~/.claude/CLAUDE.md)
-npx -p @moon791017/neo-skills install-system-instructions \
-  --ai-agent claude --instructions technical-co-founder -y
-
-# 安裝至專案的 CLAUDE.md
-npx -p @moon791017/neo-skills install-system-instructions \
-  --ai-agent claude --instructions technical-co-founder --project-path /my/project -y
-
-# 安裝至專案的 .github/copilot-instructions.md
-npx -p @moon791017/neo-skills install-system-instructions \
-  --ai-agent copilot --instructions technical-co-founder --project-path /my/project -y
-```
-
-> **💡** 重複執行相同指令不會重複寫入，系統會自動偵測並跳過已安裝的提示詞。若您希望覆蓋或更新之前安裝的提示詞，可以加上 `--replace-all` 參數進行重裝。
 
 ## 💡 常用指令範例
 
-您可以直接對 AI 代理下達以下指令或在對話中描述需求：
+您可以根據不同的開發與維運需求場景，快速安裝對應的專家技能，並直接對 AI 代理下達相關指令：
 
-| 需求場景 | 推薦咒語範例 |
-| :--- | :--- |
-| **設定 .NET CI Pipeline** | `幫這個專案設定 CI 流程` |
-| **部署至 IIS** | `部署到 IIS，站台名稱為 MySite` |
-| **需求釐清與規格化** | `我想做一個電商網站` |
-| **全方位程式碼審查** | `幫我 code review 剛才的修改` |
-| **生成 C# Interface** | `幫我針對這個 class 產生介面` |
-| **TypeScript 型別設計與互通性** | `解決 tsconfig 還有 ESM/CJS 互通性的問題`、`幫我寫一個強型別的泛型工具` |
-| **技術解析與架構洞察** | `分析這個專案的架構` |
-| **AI 開發流程健檢** | `幫我檢查這個專案怎麼讓 AI 助手開發得更穩、更安全` |
+| 需求場景 | 所需專家技能 | 快速安裝指令 | 推薦咒語範例 |
+| :--- | :--- | :--- | :--- |
+| **設定 .NET CI Pipeline** | `neo-azure-pipelines` | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` | `幫這個專案設定 CI 流程` |
+| **部署至 IIS On-Premises** | `neo-azure-pipelines` | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` | `部署到 IIS，站台名稱為 MySite` |
+| **全方位程式碼深度審查** | `neo-code-review` | `npx skills add Benknightdark/neo-skills --skill neo-code-review` | `幫我 code review 剛才的修改` |
+| **技術解析與架構洞察** | `neo-explain` | `npx skills add Benknightdark/neo-skills --skill neo-explain` | `分析這個專案的架構` |
+| **生成 C# Interface 介面** | `neo-csharp-interface-generator` | `npx skills add Benknightdark/neo-skills --skill neo-csharp-interface-generator` | `幫我針對這個 class 產生介面` |
+| **TS 型別設計與 CJS/ESM 互通** | `neo-typescript` | `npx skills add Benknightdark/neo-skills --skill neo-typescript` | `解決 tsconfig 還有 ESM/CJS 互通性的問題` |
+| **複雜/模糊需求釐清與規格化** | `neo-clarification` | `npx skills add Benknightdark/neo-skills --skill neo-clarification` | `我想做一個電商網站` |
+| **AI 助手開發治理與流程健檢** | `neo-agent-harness` | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` | `幫我檢查這個專案怎麼讓 AI 助手開發得更穩、更安全` |
 
-## 🛠 開發指南
+## 🛠 開發與測試指南
 
-本專案使用 **Bun** 進行開發與建置。
+本專案支援本地測試與 NPM 打包。
 
 ### 前置需求
 
 * **[Node.js](https://nodejs.org/) (v18+)**：基本執行環境。
-* **[Bun](https://bun.sh/)**：僅在**開發**、**建置**或執行 **Gemini MCP Server** 時需要。
 
 ### 快速開始
 
@@ -265,22 +245,8 @@ npx -p @moon791017/neo-skills install-system-instructions \
     npm install
     ```
 
-2. **開發模式 (Watch Mode)**
-    直接執行原始碼進行測試：
+2. **執行單元測試**
 
     ```bash
-    bun src/server.ts
-    ```
-
-3. **建置專案**
-    將 TypeScript 編譯並打包至 `dist/` 目錄：
-
-    ```bash
-    bun run build
-    ```
-
-4. **類型檢查**
-
-    ```bash
-    bun run typecheck
+    npm test
     ```

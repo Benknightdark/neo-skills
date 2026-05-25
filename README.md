@@ -86,6 +86,10 @@
 
 * **AI 助手開發治理 (`skills/neo-agent-harness`)**：檢查專案規則、測試、CI、審查流程與安全防護是否足夠清楚，協助 AI 助手更穩定、更安全地參與開發。
 
+### 13. AI Tells / Slop 贅詞消除專家
+
+* **文字去 AI 腔調 (`skills/neo-stop-slop`)**：消除中英文 AI 腔、贅詞與公式化囉唆句式，還原為乾淨、生動且簡煉的自然語言，並包含工程師註解、Git Commit 及 PR 說明的特化優化。
+
 ## 📂 系統架構
 
 本專案主要由標準專家技能模組組成的知識庫所構成：
@@ -167,6 +171,7 @@ npx skills add Benknightdark/neo-skills --all
 | **19. 程式碼解釋助手** | `npx skills add Benknightdark/neo-skills --skill neo-explain` |
 | **20. 需求分析與釐清助手** | `npx skills add Benknightdark/neo-skills --skill neo-clarification` |
 | **21. AI 開發流程治理專家** | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` |
+| **22. AI Tells/Slop 消除專家** | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` |
 
 ---
 
@@ -238,6 +243,7 @@ npx -p @moon791017/neo-skills install-system-instructions --ai-agent claude --in
 | **TS 型別設計與 CJS/ESM 互通** | `neo-typescript` | `npx skills add Benknightdark/neo-skills --skill neo-typescript` | `解決 tsconfig 還有 ESM/CJS 互通性的問題` |
 | **複雜/模糊需求釐清與規格化** | `neo-clarification` | `npx skills add Benknightdark/neo-skills --skill neo-clarification` | `我想做一個電商網站` |
 | **AI 助手開發治理與流程健檢** | `neo-agent-harness` | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` | `幫我檢查這個專案怎麼讓 AI 助手開發得更穩、更安全` |
+| **清除文案/註解/Commit 中的 AI 腔** | `neo-stop-slop` | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` | `消除這段話裡的 AI 腔贅詞，使其極簡直接` |
 
 ## 🛠 開發與測試指南
 

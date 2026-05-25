@@ -1,6 +1,6 @@
 {
   "name": "@moon791017/neo-skills",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "Neo Skills: A Universal Expert Agent Extension",
   "homepage": "https://neo-blog-iota.vercel.app/",
@@ -13,6 +13,8 @@
     "ai agent skills"
   ],
   "bin": {
+    "neo-skills": "./bin/install-skills.js",
+    "install-skills": "./bin/install-skills.js",
     "install-system-instructions": "./bin/install-system-instructions.js"
   },
   "files": [

@@ -1,0 +1,30 @@
+[
+  {
+    "query": "幫我把這篇文案裡的 AI 腔調和贅詞消掉",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this English draft and remove any AI writing patterns or filler words",
+    "should_trigger": true
+  },
+  {
+    "query": "這段 C# 代碼註解看起來很像 ChatGPT 寫的，幫我精簡一下",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a Git commit message for this fix, but make it very concise and natural, no AI tells",
+    "should_trigger": true
+  },
+  {
+    "query": "如何用 Python 實作一個快速排序演算法？",
+    "should_trigger": false
+  },
+  {
+    "query": "幫我把這篇英文論文翻譯成繁體中文",
+    "should_trigger": false
+  },
+  {
+    "query": "這段程式碼有記憶體洩漏嗎？幫我做 Code Review",
+    "should_trigger": false
+  }
+]

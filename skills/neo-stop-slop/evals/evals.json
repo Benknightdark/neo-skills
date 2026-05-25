@@ -1,0 +1,28 @@
+{
+  "skill_name": "neo-stop-slop",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "請幫我重寫這段文字，消除所有的 AI 腔贅詞，使其顯得極簡且直白：\n『值得注意的是，這是一把雙刃劍，不容忽視。總結來說，為企業賦能構建生態圈是至關重要的，我們需要深入探討背後的邏輯。』",
+      "expected_output": "重寫後的繁體中文文字。沒有『值得注意的是』、『雙刃劍』、『不容忽視』、『總結來說』、『賦能』、『生態圈』、『至關重要』、『深入探討』與『背後的邏輯』。文字字數大幅縮減，且意思直接生動。",
+      "assertions": [
+        "輸出文字中不包含『值得注意的是』",
+        "輸出文字中不包含『不容忽視』",
+        "輸出文字中不包含『至關重要』",
+        "輸出文字中不包含『生態圈』或『生態系』",
+        "文字語氣直白、精煉"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Rewrite the following technical blog draft to eliminate AI slop:\n'Here's the thing: building scalable systems is hard. Not because the technology is complex. Because human coordination is messy. Delving into microservices is pivotal to foster synergy, but make no mistake, it elevates complexity.'",
+      "expected_output": "Clean, direct English prose. No 'Here's the thing', 'Not because... Because...', 'delving', 'pivotal', 'foster synergy', 'make no mistake', 'elevates'. Mixes sentence lengths and uses active voice.",
+      "assertions": [
+        "The output does not contain 'Here\\'s the thing'",
+        "The output does not contain the word 'delve' or 'delving'",
+        "The output does not contain 'make no mistake' or 'foster synergy'",
+        "The response is direct and shorter than the original text"
+      ]
+    }
+  ]
+}

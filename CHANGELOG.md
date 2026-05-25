@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.70.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.69.0...neo-skills-v0.70.0) (2026-05-25)
+
+
+### Features
+
+* 更新 README 以支援 neo-skills 極簡全域安裝工具 ([3db379d](https://github.com/Benknightdark/neo-skills/commit/3db379d392b235be3059a491f8c496e81cf42810))
+* 更新 README 以支援 neo-skills 極簡全域安裝工具 ([a57ff66](https://github.com/Benknightdark/neo-skills/commit/a57ff66c95af4243f57074621b477b77c8644fdc))
+
 ## [0.69.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.68.0...neo-skills-v0.69.0) (2026-05-25)
 
 

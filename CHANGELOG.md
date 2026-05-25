@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.69.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.68.0...neo-skills-v0.69.0) (2026-05-25)
+
+
+### Features
+
+* 調整skill的安裝方式 ([5067195](https://github.com/Benknightdark/neo-skills/commit/5067195dce0c645d8a177ae2b8bac8d8de1a0bb6))
+* 調整skill的安裝方式 ([701032e](https://github.com/Benknightdark/neo-skills/commit/701032edde20f237609cd571ffdff8de830d23f6))
+
 ## [0.68.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.67.0...neo-skills-v0.68.0) (2026-05-24)
 
 

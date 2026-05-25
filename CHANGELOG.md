@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.71.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.70.0...neo-skills-v0.71.0) (2026-05-25)
+
+
+### Features
+
+* **skills:** 新增 neo-stop-slop 消除 AI 腔與贅詞技能 ([8043eae](https://github.com/Benknightdark/neo-skills/commit/8043eae3840ed3644414929ad9d35e8eb08c289f))
+* 新增stop-slop skills ([1720c25](https://github.com/Benknightdark/neo-skills/commit/1720c253650041c7b376ffd44249d8b83fffb432))
+* 新增stop-slop skills ([046088e](https://github.com/Benknightdark/neo-skills/commit/046088e2b3fe66a6608585fab041f19302a0bc50))
+
 ## [0.70.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.69.0...neo-skills-v0.70.0) (2026-05-25)
 
 

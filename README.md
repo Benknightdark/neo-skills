@@ -107,11 +107,25 @@ Neo Skills 已全面升級並採用 [agentskills.io](https://agentskills.io) 官
 
 ### 一、一鍵安裝所有技能
 
-如果您希望將 Neo Skills 專案內建的所有專家技能一次性安裝至您的當前專案中，只需在專案根目錄下執行：
+如果您希望將 Neo Skills 專案內建的所有專家技能一次性安裝至您的當前專案中，只需在專案根目錄下執行（**完全免手動勾選**）：
 
 ```bash
-npx skills add Benknightdark/neo-skills
+npx skills add Benknightdark/neo-skills --all
 ```
+
+> [!TIP]
+> * **全域一鍵安裝**：如果您希望全域安裝所有技能，只需加上 `-g` 參數：`npx skills add Benknightdark/neo-skills --all -g`。
+> * **命令行指定**：如果您想精準指定安裝某些 Skill，也可以使用 `--skill <名稱>`（例如 `npx skills add Benknightdark/neo-skills --skill neo-typescript,neo-vue`）。
+
+---
+
+### 💡 終端機互動選單操作小秘訣
+
+如果您執行了不帶 `--all` 的預設互動選單命令 `npx skills add Benknightdark/neo-skills`：
+
+1. **一鍵全選 (Select All)**：在終端機選單畫面中，直接按下鍵盤上的 **`a`** 鍵，即可立刻自動勾選所有的技能！
+2. **反向選取 (Invert Selection)**：按下鍵盤上的 **`i`** 鍵，即可反向切換目前的所有勾選狀態。
+3. **確認送出**：全選後按下 `Enter` 鍵，即可一次完成安裝，不需要一個個按空白鍵（Space）勾選。
 
 ---
 

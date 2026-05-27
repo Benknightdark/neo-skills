@@ -7,17 +7,17 @@
   <img src="images/banner.png" alt="leak-hunter repository secret scanner banner" width="100%">
 </p>
 
-**Neo Skills** 是一個專為現代 **AI Agent** 設計的**企業級全方位能力擴充套件**。本專案基於 Model Context Protocol (MCP) 與標準化代理治理架構 (Agent Harness)，為 AI 代理安裝高可靠、可插拔的「專家技能模組 (Skills)」，使其不僅僅是個聊天機器人，而是能深度融入本地開發與運維環境，轉化為具備「感知-推理-行動 (Perceive-Reason-Act)」自主決策能力的**跨領域專家**。
+**Neo Skills** 是專為 **AI Agent** 設計的技能擴充套件。本專案基於 Model Context Protocol (MCP) 與 Agent Harness 治理架構，提供高可靠、可插拔的「專家技能模組 (Skills)」，使 AI 代理具備「感知-推理-行動 (Perceive-Reason-Act)」自主決策能力，能深度融入本地開發與運維環境。
 
-無論是複雜的 DevOps 自動化（Azure Pipelines）、代碼品質安全審查、需求還原與分析釐清，或是多語系的現代化開發，Neo Skills 都能透過模組化的外部知識庫、AI 專用非互動式腳本與品質評估集 (Evals)，讓 AI 代理在安全、受控的 Harness 治理下，成為您最強大的全能數位助手。
+支援 DevOps 自動化（Azure Pipelines）、程式碼審查、需求釐清及多語言開發。透過模組化外部知識庫、非互動式腳本與品質評估集 (Evals)，確保 AI 代理在受控的 Harness 架構下安全執行。
 
-## 🚀 核心願景
+## 🚀 核心機制
 
-本專案作為 AI Agent 的「大腦皮層 (Cortex)」，旨在打造一個**全能型 Agent 框架**，透過以下機制提升 AI 的專業度：
+透過以下機制提升 AI 代理的執行可靠度與專業度：
 
-1. **領域專精 (Skills)**：可擴充的專家知識庫 (`SKILL.md`)。目前已內建 DevOps 模組，未來將持續擴增更多領域。
-2. **標準化範本 (Templates)**：提供預先驗證的自動化腳本與模板，確保產出的一致性與可靠性。
-3. **架構思維**：強制執行「感知 (Perceive) -> 推理 (Reason) -> 行動 (Act)」的決策迴圈，避免 AI 產生幻覺，確保解決方案的精準度。
+1. **領域技能 (Skills)**：基於 `SKILL.md` 規範的專家知識庫。
+2. **標準範本 (Templates)**：提供預先驗證的自動化腳本與模版，確保產出一致性。
+3. **Perceive-Reason-Act 迴圈**：強制執行「感知-推理-行動」決策流程，減少幻覺並提高解決方案精準度。
 
 ## ✨ 目前內建技能 (Built-in Skills)
 
@@ -27,7 +27,7 @@
 
 * **CI 自動化**：針對 .NET 專案生成建置管線，整合單元測試與構件發佈。
 * **CD 自動化**：
-  * **Azure App Service**：部署至Azure App Service。
+  * **Azure App Service**：部署至 Azure App Service。
   * **IIS On-Premises**：部署至地端 IIS 伺服器，包含備份與復原機制。
 
 ### 2. Code Review 專家
@@ -63,12 +63,12 @@
 
 * **TypeScript 現代語法與型別安全 (`skills/neo-typescript`)**：專注於極致的型別安全、高可維護性與進階元程式設計（Meta-programming）。
   * **型別系統防線**：涵蓋進階條件型別 (Conditional Types)、映射型別 (Mapped Types) 與樣板字面值型別。
-  * **互通性與配置最佳化**：深入調校 `tsconfig.json` 編譯選項，並徹底解決複雜的 ESM/CJS 互通性陷阱與執行期崩潰問題。
+  * **互通性與配置最佳化**：深入調校 `tsconfig.json` 編譯選項，並解決複雜的 ESM/CJS 互通性與執行期問題。
   * **泛型約束設計**：引導設計高靈活度的泛型與變量 (Variance) 處理。
 
 ### 8. Vue 開發專家
 
-* **Vue 3 現代開發專家 (`skills/neo-vue`)**：專注於 Vue 3 Composition API (`<script setup>`)、Pinia 狀態管理與 Vue Router 4。嚴格遵循官方 Style Guide 與最佳實踐，並提供反模式 (Anti-Patterns) 的避坑指引。
+* **Vue 3 現代開發專家 (`skills/neo-vue`)**：專注於 Vue 3 Composition API (`<script setup>`)、Pinia 狀態管理與 Vue Router 4。遵循官方 Style Guide 與最佳實踐，並提供反模式 (Anti-Patterns) 避坑指引。
 
 ### 9. Rust 開發專家
 
@@ -80,7 +80,7 @@
 
 ### 11. AI 開發流程健檢
 
-* **AI 助手開發治理 (`skills/neo-agent-harness`)**：檢查專案規則、測試、CI、審查流程與安全防護是否足夠清楚，協助 AI 助手更穩定、更安全地參與開發。
+* **AI 助手開發治理 (`skills/neo-agent-harness`)**：檢查專案規則、測試、CI、審查流程與安全防護，協助 AI 助手更穩定地參與開發。
 
 ### 12. AI Tells / Slop 贅詞消除專家
 
@@ -96,15 +96,13 @@
 
 ## 📦 安裝與使用
 
-Neo Skills 已全面升級並支援專屬的極簡安裝器，同時相容於 [agentskills.io](https://agentskills.io) 官方推薦的 **Agent Skills 開源標準規範**。
-
-根據您的使用場景，可以選擇以下兩種最適合您的安裝方式：
+Neo Skills 相容於 [agentskills.io](https://agentskills.io) 標準規範。提供以下兩種安裝方式：
 
 ---
 
-### 一、一鍵同步全域技能（Antigravity CLI 專用，推薦）
+### 一、全域安裝（Antigravity CLI 專用，推薦）
 
-如果您使用的是 **Antigravity CLI**，建議使用專門設計的 `neo-skills` 安裝工具（舊稱 `install-skills`）。這是一個極簡化的工具，會一鍵將本專案所有的專家技能，複製到您的全域路徑 `~/.gemini/antigravity-cli/skills` 中，同時自動過濾無關檔案（如 `.git`、`node_modules`、`.DS_Store` 等）。
+將本專案所有技能同步至 Antigravity 全域路徑 `~/.gemini/antigravity-cli/skills`，並自動過濾無關檔案（如 `.git`、`node_modules` 等）。
 
 #### 透過 npx 直接執行：
 ```bash
@@ -112,31 +110,29 @@ npx -y @moon791017/neo-skills@latest
 ```
 
 #### 本地開發手動安裝：
-如果您已複製本專案至本地，也可以直接在專案根目錄下執行：
+在專案根目錄下執行：
 ```bash
 node bin/install-skills.js
 ```
 
 ---
 
-### 二、使用標準 Skills CLI 安裝（通用於專案或其他 AI Agent）
+### 二、使用標準 Skills CLI 安裝（適用於其他相容 Agent）
 
-針對其他支援 [agentskills.io](https://agentskills.io) 標準規範的 AI 代理（如 Claude Code, Cursor, Copilot 等），您可以使用標準的 `skills` 包管理器。預設會安裝至當前專案，**若您希望將技能安裝至全域路徑，只需在指令後方加上 `-g` 參數**。
+適用於 Claude Code、Cursor、Copilot 等相容 Agent。預設安裝至當前專案，加上 `-g` 參數可安裝至全域.
 
-#### 1. 專案一鍵安裝所有技能（免互動勾選）：
+#### 專案一鍵安裝所有技能：
 ```bash
 npx skills add Benknightdark/neo-skills --all
 ```
 
 > [!TIP]
-> * **全域一鍵安裝**：若要將所有技能安裝至標準全域路徑下，只需加上 `-g`：`npx skills add Benknightdark/neo-skills --all -g`。
-> * **命令行指定**：若只需安裝特定 Skill，可以使用 `--skill <名稱>`（例如 `npx skills add Benknightdark/neo-skills --skill neo-typescript,neo-vue`）。
-
-#### 💡 終端機互動選單操作小秘訣：
-如果您執行了不帶 `--all` 的預設互動選單命令 `npx skills add Benknightdark/neo-skills`：
-1. **一鍵全選 (Select All)**：在選單畫面中直接按下鍵盤上的 **`a`** 鍵，即可立刻自動勾選所有的技能！
-2. **反向選取 (Invert Selection)**：按下鍵盤上的 **`i`** 鍵，反向切換目前的所有勾選狀態。
-3. **確認送出**：全選後按下 `Enter` 鍵即可一次完成安裝。
+> * **全域一鍵安裝**：`npx skills add Benknightdark/neo-skills --all -g`
+> * **安裝特定技能**：`npx skills add Benknightdark/neo-skills --skill neo-typescript,neo-vue`
+> * **互動選單快捷鍵**（執行不帶 `--all` 的指令時）：
+>   * `a`：全選所有技能
+>   * `i`：反向選取
+>   * `Enter`：確認並安裝
 
 ---
 
@@ -173,9 +169,9 @@ npx skills add Benknightdark/neo-skills --all
 ### 四、安裝系統提示詞 (`install-system-instructions`)
 
 > [!IMPORTANT]
-> **獨家加值特色功能**：由於 [agentskills.io](https://agentskills.io) 標準僅處理 `.agents/skills` 專案技能的目錄同步，**並未提供將核心系統提示詞（System Instructions）附加至 AI 代理引導檔** 的功能。
+> **系統提示詞同步**：[agentskills.io](https://agentskills.io) 規格僅處理技能目錄同步，不包含引導檔（System Instructions）的配置。
 > 
-> 為了解決這個問題，Neo Skills 專門保留並提供強大的系統提示詞安裝器 `install-system-instructions`。此 CLI 工具會自動掃描、建立，並在不破壞您既有檔案內容的前提下，將專家提示詞完美附加或更新至各 AI 代理的專屬引導檔中。
+> 本專案提供 `install-system-instructions` 工具，可自動掃描並在保留既有內容的前提下，將系統提示詞附加或更新至各 AI 代理的引導檔中。
 
 **語法：**
 
@@ -228,16 +224,16 @@ npx -p @moon791017/neo-skills install-system-instructions --ai-agent claude --in
 
 您可以根據不同的開發與維運需求場景，快速安裝對應的專家技能，並直接對 AI 代理下達相關指令：
 
-| 需求場景 | 所需專家技能 | 快速安裝指令 | 推薦咒語範例 |
+| 需求場景 | 所需專家技能 | 快速安裝指令 | 推薦指令範例 |
 | :--- | :--- | :--- | :--- |
-| **設定 .NET CI Pipeline** | `neo-azure-pipelines` | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` | `幫這個專案設定 CI 流程` |
+| **設定 .NET CI Pipeline** | `neo-azure-pipelines` | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` | `設定 CI 流程` |
 | **部署至 IIS On-Premises** | `neo-azure-pipelines` | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` | `部署到 IIS，站台名稱為 MySite` |
-| **全方位程式碼深度審查** | `neo-code-review` | `npx skills add Benknightdark/neo-skills --skill neo-code-review` | `幫我 code review 剛才的修改` |
-| **生成 C# Interface 介面** | `neo-csharp-interface-generator` | `npx skills add Benknightdark/neo-skills --skill neo-csharp-interface-generator` | `幫我針對這個 class 產生介面` |
-| **TS 型別設計與 CJS/ESM 互通** | `neo-typescript` | `npx skills add Benknightdark/neo-skills --skill neo-typescript` | `解決 tsconfig 還有 ESM/CJS 互通性的問題` |
-| **複雜/模糊需求釐清與規格化** | `neo-clarification` | `npx skills add Benknightdark/neo-skills --skill neo-clarification` | `我想做一個電商網站` |
-| **AI 助手開發治理與流程健檢** | `neo-agent-harness` | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` | `幫我檢查這個專案怎麼讓 AI 助手開發得更穩、更安全` |
-| **清除文案/註解/Commit 中的 AI 腔** | `neo-stop-slop` | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` | `消除這段話裡的 AI 腔贅詞，使其極簡直接` |
+| **全方位程式碼深度審查** | `neo-code-review` | `npx skills add Benknightdark/neo-skills --skill neo-code-review` | `進行 Code Review` |
+| **生成 C# Interface 介面** | `neo-csharp-interface-generator` | `npx skills add Benknightdark/neo-skills --skill neo-csharp-interface-generator` | `為這個 class 生成介面` |
+| **TS 型別設計與 CJS/ESM 互通** | `neo-typescript` | `npx skills add Benknightdark/neo-skills --skill neo-typescript` | `解決 tsconfig 與 ESM/CJS 互通性問題` |
+| **複雜/模糊需求釐清與規格化** | `neo-clarification` | `npx skills add Benknightdark/neo-skills --skill neo-clarification` | `規劃一個電商網站` |
+| **AI 助手開發治理與流程健檢** | `neo-agent-harness` | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` | `評估 AI 開發治理流程` |
+| **清除文案/註解/Commit 中的 AI 腔** | `neo-stop-slop` | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` | `消除這段話的 AI 腔贅詞` |
 
 ## 🛠 開發與測試指南
 

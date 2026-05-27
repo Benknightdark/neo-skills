@@ -1,0 +1,42 @@
+[
+  {
+    "query": "請幫我寫一個 Vue 3 SFC 元件，要用 TypeScript 和 <script setup>",
+    "should_trigger": true
+  },
+  {
+    "query": "How to create a global state using Pinia Setup Store? Show me an example.",
+    "should_trigger": true
+  },
+  {
+    "query": "我的 Vue 元件 props 在子組件被修改時報錯，這該怎麼修正？",
+    "should_trigger": true
+  },
+  {
+    "query": "幫我看看這個 Vue 2 Options API 組件怎麼重構成 Vue 3 Composition API",
+    "should_trigger": true
+  },
+  {
+    "query": "請幫我配置 Vue Router 4 的動態路由與導航守衛 (Navigation Guards)",
+    "should_trigger": true
+  },
+  {
+    "query": "Why does destructuring my Pinia store break reactivity?",
+    "should_trigger": true
+  },
+  {
+    "query": "請用 React 撰寫一個購物車元件，並使用 useState 管理狀態",
+    "should_trigger": false
+  },
+  {
+    "query": "如何在 React 中利用 Context API 解構狀態並避免無意義重新渲染？",
+    "should_trigger": false
+  },
+  {
+    "query": "請幫我寫一個 SQL Query，查詢 orders 表中所有已完成的訂單",
+    "should_trigger": false
+  },
+  {
+    "query": "幫我配置一個 Dockerfile，用來部署 Nginx 靜態網站",
+    "should_trigger": false
+  }
+]

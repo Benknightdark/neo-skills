@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.73.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.72.0...neo-skills-v0.73.0) (2026-05-27)
+
+
+### Features
+
+* 調整說明 ([72fee5e](https://github.com/Benknightdark/neo-skills/commit/72fee5edcbee94bd21169060e860cdb20732f6e4))
+* 調整說明 ([25efb16](https://github.com/Benknightdark/neo-skills/commit/25efb1650d78bce30660dfa9bfb759c08ae8c3a0))
+
 ## [0.72.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.71.0...neo-skills-v0.72.0) (2026-05-27)
 
 

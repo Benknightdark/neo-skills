@@ -32,7 +32,7 @@ Add or update tests whenever you change installer behavior, filesystem layout, o
 Follow the Conventional Commits pattern already used in history: `feat:`, `fix:`, `docs:`, `test(ci):`, `refactor(skills):`. Keep subjects short and imperative; add a scope when it clarifies impact. PRs against `develop` trigger the validation workflow, while merges to `main` feed the `release-please` release flow. In each PR, summarize behavior changes, list the commands you ran, and link the related issue when applicable.
 
 ## Security & Content Notes
-Do not commit secrets, sample credentials, or unsafe prompts. When updating a skill, keep its `SKILL.md`, references, and any user-facing docs aligned.
+Do not commit secrets, sample credentials, or unsafe prompts. When updating a skill, keep its `SKILL.md`, references, and any user-facing docs aligned. When deprecating or removing a skill, ensure the skill directory is completely deleted and all references are systematically scrubbed from project documentation (such as `README.md`) to maintain the agent's knowledge database hygiene.
 
 ---
 

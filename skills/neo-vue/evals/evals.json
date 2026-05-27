@@ -1,0 +1,29 @@
+{
+  "skill_name": "neo-vue",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "請幫我把這個舊的 Vue 2 Options API 元件重構為 Vue 3 Composition API 與 TypeScript 強型別組件，並特別避開 props 雙向修改的反模式。",
+      "expected_output": "產出一個完美遵循 Vue 3.4+ 最佳實踐的 SFC 組件。使用 `<script setup lang="ts">`，以 `defineProps` 嚴格宣告屬性，並以 `defineEmits` 或 `defineModel` 來替代 props 直接修改。",
+      "files": [
+        "skills/neo-vue/evals/files/LegacyTodoItem.vue"
+      ],
+      "assertions": [
+        "The output component uses <script setup lang=\"ts\">",
+        "The output strictly avoids mutating props directly",
+        "The output uses defineModel or typed defineEmits for parent communication",
+        "The styling block uses scoped to prevent style leakage"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "請幫我設計一個 Pinia setup store 用於管理使用者購物車狀態，並寫一個購物車明細元件，示範如何安全地解構 store 的狀態而不遺失響應性。",
+      "expected_output": "提供一個 Pinia setup store 檔案，以及一個購物車組件。組件中使用 `storeToRefs` 解構 store 的 state，以保持響應性；直接解構 actions。",
+      "assertions": [
+        "The store is structured as a Pinia Setup Store (using ref and computed instead of state and getters)",
+        "The component uses storeToRefs to safely destructure states from store",
+        "The code uses TypeScript for shopping cart items validation"
+      ]
+    }
+  ]
+}

@@ -34,11 +34,7 @@
 
 * **智能審查**：針對程式碼變更進行多面向 (正確性、安全性、效能、可讀性) 的深度審查。
 
-### 3. 程式碼解釋助手
-
-* **技術解析**：深入分析原始碼或專案結構，提供高階用途摘要、邏輯流程分解以及核心元件說明。
-
-### 4. .NET / C# 開發專家
+### 3. .NET / C# 開發專家
 
 * **C# 現代語法專家 (`skills/neo-csharp`)**：跨版本 C# 專家 (10-14+)，專注於現代化語法、強型別與高效能開發模式。
 * **.NET 核心路由 (`skills/neo-dotnet`)**：環境偵測與統一入口，自動將任務委派給最合適的子領域專家。
@@ -49,44 +45,44 @@
 * **.NET Tag Helper 專家 (`skills/neo-dotnet-tag-helper`)**：開發 ASP.NET Core 自定義 Tag Helper 的專家指引，專注於純 C# 實作與異步渲染最佳實踐。
 * **Interface 生成器**：針對 C# Class 自動生成符合規範的 Interface，並支援智慧檔案覆蓋功能。
 
-### 5. Python 開發與環境管理專家
+### 4. Python 開發與環境管理專家
 
 * **Python 3.10+ 專家 (`skills/neo-python`)**：專注於 Python 3.10 至 3.14 的現代語法特性、型別安全與非同步開發。
 * **環境管理專家 (`skills/neo-python-manager`)**：智慧偵測與管理 Python 專案環境，支援 uv, Poetry, venv/pip 並提供自動化安裝建議。
 
-### 6. Swift 開發專家
+### 5. Swift 開發專家
 
 * **Swift 5.0+ 專家 (`skills/neo-swift`)**：支援從基礎語法到 Swift 6 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency、記憶體安全以及高效能 App 開發指引。
 * **SwiftUI 專家 (`skills/neo-swift-ui`)**：支援 iOS 16.0+ 與 Swift 5.0+ 的現代開發模式，專注於 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。
 
-### 7. JavaScript 開發專家
+### 6. JavaScript 開發專家
 
 * **JavaScript 現代語法專家 (`skills/neo-javascript`)**：跨版本 JavaScript 專家 (ES6 - ES2025+)，專注於現代化語法、模組系統與高效能開發模式。
 
-### 8. TypeScript 開發專家
+### 7. TypeScript 開發專家
 
 * **TypeScript 現代語法與型別安全 (`skills/neo-typescript`)**：專注於極致的型別安全、高可維護性與進階元程式設計（Meta-programming）。
   * **型別系統防線**：涵蓋進階條件型別 (Conditional Types)、映射型別 (Mapped Types) 與樣板字面值型別。
   * **互通性與配置最佳化**：深入調校 `tsconfig.json` 編譯選項，並徹底解決複雜的 ESM/CJS 互通性陷阱與執行期崩潰問題。
   * **泛型約束設計**：引導設計高靈活度的泛型與變量 (Variance) 處理。
 
-### 9. Vue 開發專家
+### 8. Vue 開發專家
 
 * **Vue 3 現代開發專家 (`skills/neo-vue`)**：專注於 Vue 3 Composition API (`<script setup>`)、Pinia 狀態管理與 Vue Router 4。嚴格遵循官方 Style Guide 與最佳實踐，並提供反模式 (Anti-Patterns) 的避坑指引。
 
-### 10. Rust 開發專家
+### 9. Rust 開發專家
 
 * **Rust 專家 (`skills/neo-rust`)**：用於開發、重構或審查 Rust 應用程式的專家技能，涵蓋 ownership、borrowing、Result/Option 與現代 Rust 設計模式。
 
-### 11. 需求釐清助手
+### 10. 需求釐清助手
 
 * **需求釐清**：系統化引導用戶釐清模糊需求，並將其轉化為結構化的規格文件（背景、功能、約束、驗收標準）。
 
-### 12. AI 開發流程健檢
+### 11. AI 開發流程健檢
 
 * **AI 助手開發治理 (`skills/neo-agent-harness`)**：檢查專案規則、測試、CI、審查流程與安全防護是否足夠清楚，協助 AI 助手更穩定、更安全地參與開發。
 
-### 13. AI Tells / Slop 贅詞消除專家
+### 12. AI Tells / Slop 贅詞消除專家
 
 * **文字去 AI 腔調 (`skills/neo-stop-slop`)**：消除中英文 AI 腔、贅詞與公式化囉唆句式，還原為乾淨、生動且簡煉的自然語言，並包含工程師註解、Git Commit 及 PR 說明的特化優化。
 
@@ -168,10 +164,9 @@ npx skills add Benknightdark/neo-skills --all
 | **16. Rust 開發專家** | `npx skills add Benknightdark/neo-skills --skill neo-rust` |
 | **17. DevOps (Azure Pipelines) 架構師** | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` |
 | **18. Code Review 專家** | `npx skills add Benknightdark/neo-skills --skill neo-code-review` |
-| **19. 程式碼解釋助手** | `npx skills add Benknightdark/neo-skills --skill neo-explain` |
-| **20. 需求分析與釐清助手** | `npx skills add Benknightdark/neo-skills --skill neo-clarification` |
-| **21. AI 開發流程治理專家** | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` |
-| **22. AI Tells/Slop 消除專家** | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` |
+| **19. 需求分析與釐清助手** | `npx skills add Benknightdark/neo-skills --skill neo-clarification` |
+| **20. AI 開發流程治理專家** | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` |
+| **21. AI Tells/Slop 消除專家** | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` |
 
 ---
 
@@ -238,7 +233,6 @@ npx -p @moon791017/neo-skills install-system-instructions --ai-agent claude --in
 | **設定 .NET CI Pipeline** | `neo-azure-pipelines` | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` | `幫這個專案設定 CI 流程` |
 | **部署至 IIS On-Premises** | `neo-azure-pipelines` | `npx skills add Benknightdark/neo-skills --skill neo-azure-pipelines` | `部署到 IIS，站台名稱為 MySite` |
 | **全方位程式碼深度審查** | `neo-code-review` | `npx skills add Benknightdark/neo-skills --skill neo-code-review` | `幫我 code review 剛才的修改` |
-| **技術解析與架構洞察** | `neo-explain` | `npx skills add Benknightdark/neo-skills --skill neo-explain` | `分析這個專案的架構` |
 | **生成 C# Interface 介面** | `neo-csharp-interface-generator` | `npx skills add Benknightdark/neo-skills --skill neo-csharp-interface-generator` | `幫我針對這個 class 產生介面` |
 | **TS 型別設計與 CJS/ESM 互通** | `neo-typescript` | `npx skills add Benknightdark/neo-skills --skill neo-typescript` | `解決 tsconfig 還有 ESM/CJS 互通性的問題` |
 | **複雜/模糊需求釐清與規格化** | `neo-clarification` | `npx skills add Benknightdark/neo-skills --skill neo-clarification` | `我想做一個電商網站` |

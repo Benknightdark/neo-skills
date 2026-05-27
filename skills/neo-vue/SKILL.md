@@ -1,74 +1,113 @@
 ---
 name: neo-vue
-version: "1.0.0"
-category: "Core"
-description: "Modern Vue 3 expert skill. Supports comprehensive applications from Composition API to Pinia and Vue Router, and strictly follows the official Vue Style Guide to ensure code quality and style consistency."
-compatibility: "Supports Vue 3.x (Composition API), Pinia, and Vue Router 4. Adaptive to modern frontend build tools like Vite."
+description: >
+  當建置、調試、重構或審查 Vue.js 應用程式、Vue 3 單一檔案元件 (SFC)、Pinia 狀態管理或 Vue Router 配置時使用此技能。
+  當專案包含 *.vue 檔案，或使用者提及「Vue」、「Pinia」、「Composition API」或「Vue Router」時觸發，
+  即使他們沒有明確要求 Vue 專家也適用。
+license: MIT
+compatibility: 支援 Vue 3.x (Composition API), Pinia 2.x, Vue Router 4.x, 以及 Vite 與 TypeScript。
+metadata:
+  author: Antigravity Team
+  version: "1.1.0"
+  pattern: tool-wrapper-reviewer
 ---
 
-# Modern Vue 3 Expert Skill
+# Modern Vue 3 & Pinia 開發專家 (neo-vue)
 
-## Trigger On
-- The user asks to write, debug, refactor, or review Vue.js code.
-- The project directory contains `*.vue`, `*.ts`/`*.js` files specifically importing Vue APIs, or Vue-related configuration files (e.g., `vite.config.ts`, `vue.config.js`).
-- The user wants to implement state management using Pinia.
-- The user wants to configure routing using Vue Router.
-- The user asks for a code review on existing Vue code or architecture.
+本技能旨在為 Agent 提供現代 Vue 3 (Composition API) 與 Pinia 狀態管理的開發與審查指南。它能確保產出的代碼完全符合官方 Vue Style Guide（優先級 A 與 B 級）的最佳實踐，避免常見的響應性陷阱（Reactivity Gotchas），並生成具備高質感與強型別的單一檔案元件（SFC）。
 
-## Workflow
-1. **Perceive (Environment Awareness):**
-   - Inspect project configuration (`package.json`, `vite.config.ts`) to identify Vue version (Vue 3 vs Vue 2) and tooling (Vite, TypeScript, ESLint, Prettier).
-   - Identify if the file is a Single-File Component (`.vue`), a composable (`useX.ts`), a store (`store.ts`), or router configuration.
-   - Detect the presence of Pinia or Vue Router in the project dependencies.
-2. **Reason (Planning Phase):**
-   - Evaluate the modernization level of the current code. If Vue 2 Options API is used, plan for refactoring to Vue 3 Composition API with `<script setup>`.
-   - Mentally load the rules from `references/coding-style.md` and `references/anti-patterns.md` to ensure component naming (PascalCase), structure, and reactivity are correct.
-   - Mentally load the best practices from `references/patterns.md` to plan architecture, utilizing `ref` over `reactive`, and extracting logic into composables.
-3. **Act (Execution Phase):**
-   - Write high-quality, idiomatic Vue 3 code using `<script setup>` syntax.
-   - Strictly follow component naming conventions (multi-word, `Base`/`The` prefixes) and structure (props validation, self-closing tags).
-   - Implement state using Pinia Setup Stores and handle routing with Named Routes.
-4. **Validate (Standard Validation):**
-   - Validate that directive shorthands (`:`, `@`, `#`) are used consistently.
-   - Check that `computed` properties are pure and free of side effects.
-   - Ensure that props are not mutated directly.
-   - Verify that arrays iterated with `v-for` have stable and unique `key`s, and `v-if` is not used on the same element as `v-for`.
+## Gotchas
+*   **解構 reactive 物件導致響應性丟失**：禁止直接解構 `props` 或由 `reactive()` 定義的物件（例如：`const { name } = props` 或 `const { x } = state`），這會徹底失去 Vue 響應式追蹤！
+    *   **防錯機制**：必須使用 `toRefs(props)` 或 `toRef(props, 'name')` 來保持其響應性。
+*   **解構 Pinia Store 導致狀態響應性丟失**：直接解構 Pinia store 的 state（如 `const { user } = useAuthStore()`）會使 state 失去雙向響應！
+    *   **防錯機制**：必須使用 `storeToRefs(store)` 來解構 state；而 action 則可以直接正常解構。
+*   **v-model 手動繁瑣綁定**：在 Vue 3.4 之前，自定義雙向綁定需要手動宣告 `modelValue` 屬性並觸發 `update:modelValue` 事件，這對 AI 而言極易寫錯。
+    *   **防錯機制**：在 Vue 3.4+ 專案中，**強烈推薦**使用 `defineModel()` 巨集進行聲明，這會自動為您處理好屬性與事件，極大簡化程式碼。
+*   **v-if 與 v-for 在同一節點混用**：在 Vue 3 中，`v-if` 的優先級高於 `v-for`，這意味著 `v-if` 的條件判斷**無法**存取到 `v-for` 迴圈中的變數，會直接導致編譯或執行期報錯！
+    *   **防錯機制**：永遠使用 `<template>` 標籤包裹 `v-for`，再於內部子節點使用 `v-if`，或者預先使用 `computed` 計算屬性對陣列進行過濾。
 
-## Feature Roadmap (Vue 3 Core Features)
-- **Composition API:** `<script setup>` for clean, boilerplate-free component authoring.
-- **Reactivity:** `ref`, `reactive`, `computed`, `watch`, and `watchEffect` for explicit state management.
-- **Macros:** `defineProps`, `defineEmits`, `defineExpose`, `defineOptions`, `defineModel` (Vue 3.4+) for compiler-aware declarations.
-- **Composables:** Extracting and reusing stateful logic across components (e.g., `useFetch`, `useAuth`).
-- **Teleport:** Render components outside the main DOM hierarchy (e.g., for modals or tooltips).
-- **Suspense:** Handle asynchronous dependencies in the component tree gracefully.
-- **Pinia:** State management using Setup Stores instead of Vuex.
-- **Vue Router 4:** Modern routing utilizing Composition API hooks (`useRouter`, `useRoute`).
+## Workflow Checklist
+Progress:
+- [ ] 步驟 1：感知專案環境與依賴 (Perceive Setup & Tooling)
+- [ ] 步驟 2：載入編碼規範與踩坑指南 (Load Guides & Best Practices)
+- [ ] 步驟 3：架構推理與響應式規劃 (Reasoning & Architecture)
+- [ ] 步驟 4：套用範本生成高品質代碼 (Generate SFC & Stores)
+- [ ] 步驟 5：程式碼健檢與自我校對 (Code Quality Review)
 
-## Coding Standards
-- **Component Naming:** Always use multi-word PascalCase for `.vue` files and component references in templates (e.g., `TodoItem.vue`, `<TodoItem />`).
-- **Setup Script:** ALWAYS use `<script setup>` for new Vue components. Use TypeScript (`lang="ts"`) where possible.
-- **Reactivity:** Prioritize `ref` over `reactive` for local state to maintain consistency in accessing values via `.value`.
-- **Props and Emits:** Define Props and Emits strictly with type annotations using `defineProps<{ ... }>()` and `defineEmits<{ ... }>()`.
-- **CSS Scoping:** Use `<style scoped>` or CSS Modules to prevent global style leakage.
+---
 
-## Deliver
-- **Modern Architecture:** Provide Vue 3 Composition API-based solutions utilizing modern features and TypeScript.
-- **Refactoring Insights:** Provide actionable suggestions to upgrade legacy Options API code to Composition API or Vuex to Pinia.
-- **Style Compliance:** Ensure all delivered code adheres to the official Vue Style Guide (Priority A & B).
+## Detailed Guidelines
 
-## Validate
-- Ensure the provided code complies with Vue 3 syntax and best practices.
-- Validate the avoidance of common anti-patterns (e.g., mutating props, side-effects in `computed`, missing `key` in `v-for`).
-- Confirm the code is robust, readable, and properly utilizes Vue's reactivity system.
+### 步驟 1 — 感知專案環境與依賴 (Perceive)
+1.  **檢查依賴配置**：讀取 `package.json`，確定 Vue 版本（確認為 Vue 3.x）以及是否安裝了 `pinia`、`vue-router`。
+2.  **識別建置工具與語言**：確認是否為 Vite 專案，以及是否啟用了 TypeScript（`lang="ts"`）與 Scoped CSS。
 
-## Documentation
-### Official References
-- [Vue 3 Documentation](https://vuejs.org/guide/introduction.html)
-- [Vue Style Guide](https://vuejs.org/style-guide/)
-- [Pinia Documentation](https://pinia.vuejs.org/)
-- [Vue Router Documentation](https://router.vuejs.org/)
+### 步驟 2 — 載入編碼規範與踩坑指南 (Reason)
+在進行 Vue 3 開發或審查前，**必須動態載入深度知識庫**：
+1.  讀取 `references/coding-style.md` 以確認組件命名（必須為多字詞 PascalCase）、屬性定義等官方優先級規範。
+2.  讀取 `references/anti-patterns.md` 以避開 props mutation、computed 副作用等反模式。
+3.  讀取 `references/patterns.md` 以獲得 Composables 的合理拆分與 Pinia Setup Stores 的架構設計。
 
-### Internal References
-- [Vue Coding Style and Naming Conventions Guide](reference/coding-style.md)
-- [Vue Anti-Patterns and Best Practices](reference/anti-patterns.md)
-- [Modern Vue Architecture Patterns Guide](reference/patterns.md)
+### 步驟 3 — 架構推理與響應式規劃 (Reason)
+在編寫程式碼前，先思考以下設計：
+1.  **Reactivity 選擇**：除非是多個屬性需要高度關聯的複雜物件，否則**優先使用 `ref()`** 而不是 `reactive()`，以確保存取 `.value` 的一致性並避免解構失活。
+2.  **狀態下沉**：評估狀態是屬於組件局部狀態（用 `ref`）還是全局狀態（用 `Pinia Setup Store`）。
+
+### 步驟 4 — 套用範本生成高品質代碼 (Act)
+1.  **SFC 結構**：新建立的元件必須使用 `<script setup>` 語法，並強烈推薦加入 `lang="ts"`。
+2.  **套用範本**：讀取並參考 `assets/Vue3SFCComponentTemplate.vue` 作為高質感、標準 Vue 3 元件的排版範例。
+3.  **強制語言與風格**：所有程式碼註解、說明必須使用 **Traditional Chinese (Taiwan)**。專用術語需對齊（例如：元件、屬性、狀態管理、響應式、雙向綁定、計算屬性）。
+
+### 步驟 5 — 程式碼健檢與自我校對 (Act)
+1.  確認沒有在 `computed` 中做任何 state 修改或 API 調用等 Side Effects。
+2.  確認沒有直接對 `props` 進行賦值與修改。
+3.  確認 `v-for` 的 `key` 綁定使用了穩定的唯一 ID，而不是陣列索引 `index`。
+
+---
+
+## Output Templates
+
+在生成新組件時，請嚴格按照以下高質感結構輸出（更多實作細節請參閱 `assets/Vue3SFCComponentTemplate.vue`）：
+
+```vue
+<template>
+  <div class="vue-expert-component">
+    <!-- 模板內容 -->
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+
+// 1. 定義屬性與事件 (Props, Emits, Models)
+const props = defineProps<{
+  title: string;
+}>();
+
+const emit = defineEmits<{
+  (e: 'change', value: string): void;
+}>();
+
+// Vue 3.4+ 雙向綁定巨集
+const modelValue = defineModel<string>();
+
+// 2. 狀態定義 (State)
+const count = ref(0);
+
+// 3. 計算屬性 (Computed)
+const doubleCount = computed(() => count.value * 2);
+
+// 4. 方法定義 (Methods)
+function handleAction() {
+  emit('change', 'action-triggered');
+}
+</script>
+
+<style scoped>
+/* 必須使用 scoped 以免全域樣式污染，並優先選用 class 選擇器 */
+.vue-expert-component {
+  display: flex;
+  flex-direction: column;
+}
+</style>
+```

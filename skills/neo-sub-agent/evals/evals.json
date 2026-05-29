@@ -1,0 +1,49 @@
+{
+  "skill_name": "neo-sub-agent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "新增一個 Claude Code code-reviewer subagent，只能讀檔與搜尋，專門審查 correctness/security/tests。",
+      "expected_output": "產出 `.claude/agents/code-reviewer.md`，包含 `name`、trigger-focused `description`、read-only tools，以及明確的 findings-first review prompt。",
+      "assertions": [
+        "輸出檔案使用 Markdown YAML frontmatter",
+        "frontmatter 包含 name 與 description",
+        "工具權限不包含 edit 或 shell",
+        "prompt 要求先列出具體 findings 與檔案證據"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create a Codex auth-flow-explorer custom agent. It should inspect auth code paths and never modify files.",
+      "expected_output": "產出 `.codex/agents/auth-flow-explorer.toml`，包含 required Codex fields and read-only sandbox guidance.",
+      "assertions": [
+        "TOML 包含 name、description、developer_instructions",
+        "sandbox_mode 設為 read-only 或 instructions 明確禁止修改",
+        "description 說明何時使用此 explorer",
+        "developer_instructions 要求回傳 concise mapped paths"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "做一個 Copilot CLI test-specialist custom agent，負責找測試缺口與補測試，不要碰 production code。",
+      "expected_output": "產出 `.github/agents/test-specialist.agent.md`，包含 Copilot custom agent frontmatter and a scoped testing prompt.",
+      "assertions": [
+        "輸出檔案副檔名為 `.agent.md`",
+        "frontmatter 至少包含 description",
+        "tools 權限限制合理",
+        "instructions 明確禁止修改 production code"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "幫 Antigravity CLI 建立 log-researcher 背景研究 agent，但不要假設有原生 manifest。",
+      "expected_output": "產出 `.agents/skills/log-researcher/SKILL.md` 作為 Antigravity delegation blueprint，並明確標示不是原生 custom sub-agent manifest。",
+      "assertions": [
+        "輸出是 Agent Skill 格式且第一行為 YAML frontmatter",
+        "description 說明背景研究與大量 log 整理用途",
+        "內容包含 delegation rules",
+        "明確指出 Antigravity 原生 custom sub-agent manifest 資料不足"
+      ]
+    }
+  ]
+}

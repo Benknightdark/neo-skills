@@ -82,7 +82,11 @@
 
 * **AI 助手開發治理 (`skills/neo-agent-harness`)**：檢查專案規則、測試、CI、審查流程與安全防護，協助 AI 助手更穩定地參與開發。
 
-### 12. AI Tells / Slop 贅詞消除專家
+### 12. Sub-Agent 建立器
+
+* **跨 CLI Sub-Agent 建立器 (`skills/neo-sub-agent`)**：設計並生成 Antigravity CLI、Codex、Claude Code 與 Copilot CLI 的 sub-agent/custom agent 設定，包含角色拆分、工具權限、檔案格式與驗證流程。
+
+### 13. AI Tells / Slop 贅詞消除專家
 
 * **文字去 AI 腔調 (`skills/neo-stop-slop`)**：消除中英文 AI 腔、贅詞與公式化囉唆句式，還原為乾淨、生動且簡煉的自然語言，並包含工程師註解、Git Commit 及 PR 說明的特化優化。
 
@@ -162,7 +166,8 @@ npx skills add Benknightdark/neo-skills --all
 | **18. Code Review 專家** | `npx skills add Benknightdark/neo-skills --skill neo-code-review` |
 | **19. 需求分析與釐清助手** | `npx skills add Benknightdark/neo-skills --skill neo-clarification` |
 | **20. AI 開發流程治理專家** | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` |
-| **21. AI Tells/Slop 消除專家** | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` |
+| **21. Sub-Agent 建立器** | `npx skills add Benknightdark/neo-skills --skill neo-sub-agent` |
+| **22. AI Tells/Slop 消除專家** | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` |
 
 ---
 
@@ -233,6 +238,7 @@ npx -p @moon791017/neo-skills install-system-instructions --ai-agent claude --in
 | **TS 型別設計與 CJS/ESM 互通** | `neo-typescript` | `npx skills add Benknightdark/neo-skills --skill neo-typescript` | `解決 tsconfig 與 ESM/CJS 互通性問題` |
 | **複雜/模糊需求釐清與規格化** | `neo-clarification` | `npx skills add Benknightdark/neo-skills --skill neo-clarification` | `規劃一個電商網站` |
 | **AI 助手開發治理與流程健檢** | `neo-agent-harness` | `npx skills add Benknightdark/neo-skills --skill neo-agent-harness` | `評估 AI 開發治理流程` |
+| **建立跨 CLI Sub-Agent / Custom Agent** | `neo-sub-agent` | `npx skills add Benknightdark/neo-skills --skill neo-sub-agent` | `新增一個 Codex code-reviewer sub agent` |
 | **清除文案/註解/Commit 中的 AI 腔** | `neo-stop-slop` | `npx skills add Benknightdark/neo-skills --skill neo-stop-slop` | `消除這段話的 AI 腔贅詞` |
 
 ## 🛠 開發與測試指南

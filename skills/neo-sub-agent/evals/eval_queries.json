@@ -1,0 +1,50 @@
+[
+  {
+    "query": "幫我新增一個 sub agent，專門在 Claude Code 裡做 code review",
+    "should_trigger": true
+  },
+  {
+    "query": "Create a Codex explorer agent that maps auth flows without editing files",
+    "should_trigger": true
+  },
+  {
+    "query": "我要一個 Copilot CLI testing specialist custom agent",
+    "should_trigger": true
+  },
+  {
+    "query": "幫 AGY 做一個背景研究 agent skill，可以整理大量 log",
+    "should_trigger": true
+  },
+  {
+    "query": "設計 planner、worker、reviewer 的 multi-agent workflow",
+    "should_trigger": true
+  },
+  {
+    "query": "幫我把現有 Claude subagent 轉成 Codex custom agent",
+    "should_trigger": true
+  },
+  {
+    "query": "請解釋 sub-agent 什麼時候不該用，並幫我判斷這個場景",
+    "should_trigger": true
+  },
+  {
+    "query": "幫我新增一個 Python skill，不需要 sub-agent",
+    "should_trigger": false
+  },
+  {
+    "query": "修復這個 Vue component 的 RWD 排版",
+    "should_trigger": false
+  },
+  {
+    "query": "請 review 目前 git diff",
+    "should_trigger": false
+  },
+  {
+    "query": "幫我寫 Conventional Commit 訊息",
+    "should_trigger": false
+  },
+  {
+    "query": "查詢今天台北天氣",
+    "should_trigger": false
+  }
+]

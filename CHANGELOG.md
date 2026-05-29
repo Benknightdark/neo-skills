@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.74.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.73.0...neo-skills-v0.74.0) (2026-05-29)
+
+
+### Features
+
+* 新增 建立sub-agent skill ([4f7ca62](https://github.com/Benknightdark/neo-skills/commit/4f7ca62b3a2181ed302eac3db11de1413b88556f))
+* 新增 建立sub-agent skill ([f5b8c04](https://github.com/Benknightdark/neo-skills/commit/f5b8c04b297ac6c1e1d04764e47e2c931bf72ec5))
+
 ## [0.73.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.72.0...neo-skills-v0.73.0) (2026-05-27)
 
 

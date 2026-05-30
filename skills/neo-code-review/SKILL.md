@@ -6,7 +6,7 @@ description: >
 
 # Code Review Specifications
 
-You are a senior code review expert (Reviewer Pattern). Follow this protocol strictly to systematically, objectively, and constructively review the user's code changes.
+Apply the Reviewer Pattern. Follow this protocol strictly to systematically, objectively, and constructively review the user's code changes.
 
 ---
 
@@ -37,9 +37,10 @@ You are a senior code review expert (Reviewer Pattern). Follow this protocol str
      [review-checklist.md](file:///Users/ben/Projects/neo-skills/skills/neo-code-review/references/review-checklist.md)
    
 2. **Systematically Evaluate Code**:
-   - Analyze the code logic deeply and compare it against the 5 dimensions in the checklist (Correctness, Security, Performance, Maintainability, Style).
-   - Filter out **🔴 Critical Issues (Must-fix)**, especially security vulnerabilities (e.g., SQL injections, hardcoded keys, unclosed resource connections).
-   - For architectural recommendations, code duplication, or high cyclomatic complexity, classify them under **🟡 Suggestions**.
+   - Analyze the code logic deeply and compare it against the checklist dimensions: Correctness, Regression Risk, Security, Performance, Data & Concurrency, Test Gaps, SOLID/Design Principles, Logging/Observability, Maintainability, and Style.
+   - Prioritize evidence-backed findings that create concrete behavioral, security, operational, compatibility, or maintainability risk.
+   - Filter out **🔴 Critical Issues (Must-fix)** for defects such as requirement breakage, security vulnerabilities, data corruption/loss, broken authorization, severe regressions, or production-impacting reliability failures.
+   - Classify lower-risk performance, design, logging, test coverage, readability, and maintainability issues under **🟡 Suggestions** when they have a clear reason and actionable remediation.
 
 ---
 

@@ -2,10 +2,10 @@
 
 ## 1. Tool Wrapper（工具包裝模式）
 
-* 讓 Agent 成為特定函式庫或框架的專家。與其把所有的 API 規範或團隊 coding style 硬塞進系統提示詞裡，不如將它們打包成一個技能。Agent 只有在真正需要處理該技術時，才會動態載入外部的參考文件（例如 `references/conventions.md`）。這非常適合用來確保 Agent 寫出來的程式碼符合團隊內部的最佳實踐。
+* 讓 Agent 套用特定函式庫或框架的規範。與其把所有的 API 規範或團隊 coding style 硬塞進系統提示詞裡，不如將它們打包成一個技能。Agent 只有在真正需要處理該技術時，才會動態載入外部的參考文件（例如 `references/conventions.md`）。這非常適合用來確保 Agent 寫出來的程式碼符合團隊內部的最佳實踐。
 * 將企業內部的資料庫查詢工具或特定框架的寫法封裝起來。Agent 在對話初期只知道這個技能的存在，只有在判斷確實需要撰寫或審查相關程式碼時，才會完整載入規範。
 
-**`SKILL.md` 原始碼範例（FastAPI 開發專家）：**
+**`SKILL.md` 原始碼範例（FastAPI 開發規範）：**
 ```markdown
 ---
 name: api-expert
@@ -15,7 +15,7 @@ metadata:
   domain: fastapi
 ---
 
-You are an expert in FastAPI development. Apply these conventions to the user's code or question.
+Apply these FastAPI conventions to the user's code or question.
 
 ## Core Conventions
 
@@ -35,9 +35,9 @@ Load 'references/conventions.md' for the complete list of FastAPI best practices
 
 ---
 
-## 2. Generator（生成器模式）
+## 2. Generator
 
-* 為了解決 Agent 每次生成文件結構都不一樣的問題。這個模式扮演「專案經理」的角色，它不把版面配置寫死在指令裡，而是協調 Agent 去讀取 `assets/` 裡的範本（Template）和 `references/` 裡的風格指南，接著詢問缺少的變數，最後精準地執行「填空」作業。
+* 為了解決 Agent 每次生成文件結構都不一樣的問題。這個模式負責協調文件生成流程，它不把版面配置寫死在指令裡，而是引導 Agent 去讀取 `assets/` 裡的範本（Template）和 `references/` 裡的風格指南，接著詢問缺少的變數，最後精準地執行「填空」作業。
 * 提供一個標準的 API 文件範本。當給予一段後端程式碼時，Agent 會嚴格按照該範本的格式，自動對應並產出結構化的 Markdown 說明文件或 Release Note。
 
 **`SKILL.md` 原始碼範例（技術報告生成器）：**
@@ -50,7 +50,7 @@ metadata:
   output-format: markdown
 ---
 
-You are a technical report generator. Follow these steps exactly:
+Follow this technical report generation workflow exactly:
 
 Step 1: Load 'references/style-guide.md' for tone and formatting rules.
 
@@ -68,7 +68,7 @@ Step 5: Return the completed report as a single Markdown document.
 
 ---
 
-## 3. Reviewer（審閱者模式）
+## 3. Reviewer
 
 * 將「要檢查什麼」與「如何檢查」徹底分開。透過讀取外部的模組化評分表（如 `references/review-checklist.md`），Agent 會系統性地掃描產出物，並將發現的問題依據嚴重程度進行分類。如果今天要把「風格審查」改成「資安審查」，只要替換那份 checklist 檔案即可，基礎架構完全不用動。
 * 在 Code Review 流程中，配置包含記憶體洩漏檢查、命名規範與漏洞防禦的清單。Agent 會逐項掃描原始碼，並產出分級的修改建議與品質報告。
@@ -83,7 +83,7 @@ metadata:
   severity-levels: error,warning,info
 ---
 
-You are a Python code reviewer. Follow this review protocol exactly:
+Follow this Python code review protocol exactly:
 
 Step 1: Load 'references/review-checklist.md' for the complete review criteria.
 
@@ -104,12 +104,12 @@ Step 4: Produce a structured review with these sections:
 
 ---
 
-## 4. Inversion（角色反轉模式）
+## 4. Inversion
 
-* 打破 Agent 總是「急著猜測並給出答案」的習慣。此模式賦予 Agent「面試官/採訪者」的身分，透過設定不可妥協的閘門指令（例如「在所有階段完成前，絕對不要開始建置」），強制 Agent 循序漸進地提問。直到收集完所有需求和限制條件後，才會開始產出最終規劃。
+* 打破 Agent 總是「急著猜測並給出答案」的習慣。此模式透過設定不可妥協的閘門指令（例如「在所有階段完成前，絕對不要開始建置」），強制 Agent 循序漸進地提問。直到收集完所有需求和限制條件後，才會開始產出最終規劃。
 * 當你需要撰寫一份新的系統架構規劃時，Agent 會先主動反問目標建置環境、技術堆疊限制與非功能性需求，待所有前置條件確認完畢後才進行生成。
 
-**`SKILL.md` 原始碼範例（專案規劃採訪者）：**
+**`SKILL.md` 原始碼範例（專案規劃提問流程）：**
 ```markdown
 ---
 name: project-planner
@@ -119,7 +119,7 @@ metadata:
   interaction: multi-turn
 ---
 
-You are conducting a structured requirements interview. DO NOT start building or designing until all phases are complete.
+Conduct a structured requirements interview. DO NOT start building or designing until all phases are complete.
 
 ## Phase 1 — Problem Discovery (ask one question at a time, wait for each answer)
 
@@ -146,7 +146,7 @@ Ask these questions in order. Do not skip any.
 
 ---
 
-## 5. Pipeline（流程管線模式）
+## 5. Pipeline
 
 * 專為不能跳過步驟或忽視指令的複雜任務而生。在指令中直接定義工作流程，並設置明確的「檢查點」（例如要求使用者確認後才能進入下一階段）。這能有效防止 Agent 偷懶繞過繁瑣的步驟，直接給你一個未經核實的半成品。
 * 設計自動化文件生成的 Pipeline。步驟一萃取程式碼結構；步驟二生成 Docstrings 並暫停等待人類開發者確認；確認無誤後，步驟三才組裝成最終的 API 文件。
@@ -161,7 +161,7 @@ metadata:
   steps: "4"
 ---
 
-You are running a documentation generation pipeline. Execute each step in order. Do NOT skip steps or proceed if a step fails.
+Run this documentation generation pipeline. Execute each step in order. Do NOT skip steps or proceed if a step fails.
 
 ## Step 1 — Parse & Inventory
 Analyze the user's Python code to extract all public classes, functions, and constants. Present the inventory as a checklist. Ask: "Is this the complete public API you want documented?"

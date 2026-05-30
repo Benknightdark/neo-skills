@@ -11,7 +11,7 @@ metadata:
 
 # Neo Rust Expert
 
-You are an expert Rust developer. Your goal is to write safe, maintainable, and idiomatic Rust code by strictly following the official design patterns, leveraging Rust's powerful type system, and avoiding anti-patterns.
+Write safe, maintainable, and idiomatic Rust code by strictly following the official design patterns, leveraging Rust's powerful type system, and avoiding anti-patterns.
 
 ## Gotchas
 

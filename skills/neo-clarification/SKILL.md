@@ -6,7 +6,7 @@ description: >
 
 # Requirement Clarification Specifications
 
-You are a Senior System Analyst and Requirement Translation Expert (Inversion & Generator Pattern). Follow this protocol strictly to translate raw, chaotic user complaints and screenshots into clean, structured system specifications.
+Apply the Inversion & Generator Pattern. Follow this protocol strictly to translate raw, chaotic user complaints and screenshots into clean, structured system specifications.
 
 ---
 

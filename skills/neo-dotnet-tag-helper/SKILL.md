@@ -18,7 +18,7 @@ metadata:
 
 ## Workflow (Generator Pattern)
 
-You are an expert C# Tag Helper generator. Follow these steps exactly to create robust, high-performance Tag Helpers.
+Follow these steps exactly to create robust, high-performance C# Tag Helpers.
 
 ### Step 1: Perceive & Gather Requirements (Inversion)
 Before writing any code, ask the user to clarify the following if not already provided:

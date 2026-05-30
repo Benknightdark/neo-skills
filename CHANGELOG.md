@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.75.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.74.0...neo-skills-v0.75.0) (2026-05-30)
+
+
+### Features
+
+* **skills:** 移除角色提示並補強審查清單 ([de76d05](https://github.com/Benknightdark/neo-skills/commit/de76d0582cc384131570a8e15468896ea89f8b26))
+* **skills:** 移除角色提示並補強審查清單 ([40d0b8f](https://github.com/Benknightdark/neo-skills/commit/40d0b8ff4c7604f20ec25d1e3ef79a1075790ace))
+
 ## [0.74.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.73.0...neo-skills-v0.74.0) (2026-05-29)
 
 

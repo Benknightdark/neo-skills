@@ -7,7 +7,7 @@
   <img src="images/banner.png" alt="leak-hunter repository secret scanner banner" width="100%">
 </p>
 
-**Neo Skills** 是專為 **AI Agent** 設計的技能擴充套件。本專案基於 Model Context Protocol (MCP) 與 Agent Harness 治理架構，提供高可靠、可插拔的「專家技能模組 (Skills)」，使 AI 代理具備「感知-推理-行動 (Perceive-Reason-Act)」自主決策能力，能深度融入本地開發與運維環境。
+**Neo Skills** 是專為 **AI Agent** 設計的技能擴充套件，提供高可靠、可插拔的「專家技能模組 (Skills)」，使 AI 代理具備「感知-推理-行動 (Perceive-Reason-Act)」自主決策能力，能深度融入本地開發與運維環境。
 
 支援 DevOps 自動化（Azure Pipelines）、程式碼審查、需求釐清及多語言開發。透過模組化外部知識庫、非互動式腳本與品質評估集 (Evals)，確保 AI 代理在受控的 Harness 架構下安全執行。
 

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.76.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.75.0...neo-skills-v0.76.0) (2026-05-31)
+
+
+### Features
+
+* 優化指令 ([afdf013](https://github.com/Benknightdark/neo-skills/commit/afdf01352f09ebabc764ef2ad63e35e59613d5c0))
+* 優化指令 ([de0cb05](https://github.com/Benknightdark/neo-skills/commit/de0cb055d2d41c89053b74392eaecee8403b36a8))
+
+
+### Bug Fixes
+
+* 移除 README 中的多餘描述，簡化專案介紹 ([d4a9bbc](https://github.com/Benknightdark/neo-skills/commit/d4a9bbc077ca0b4e198bbc040da2c1ba51ed6289))
+
 ## [0.75.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.74.0...neo-skills-v0.75.0) (2026-05-30)
 
 

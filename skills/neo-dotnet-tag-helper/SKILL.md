@@ -1,10 +1,13 @@
 ---
 name: neo-dotnet-tag-helper
-version: "1.0.0"
-category: "Framework"
-description: "開發 ASP.NET Core 6+ 自定義 Tag Helper 的專家指引。專注於純 C# 實作（無 CSHTML），支援強型別屬性、依賴注入與異步渲染（ProcessAsync）的最佳實踐。"
+description: >
+  Use this skill when the user asks to design, implement, refactor, or review custom
+  ASP.NET Core Tag Helpers in C#, including TagBuilder usage, strongly typed attributes,
+  dependency injection, ProcessAsync, and reusable Razor UI behavior.
 compatibility: "Supports .NET 6.0 through 10.0+ environments."
 metadata:
+  version: "1.0.0"
+  category: "Framework"
   pattern: generator
   output-format: csharp
 ---

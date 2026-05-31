@@ -1,9 +1,14 @@
 ---
 name: neo-csharp
-version: "1.4.0"
-category: "Core"
-description: "跨版本 C# 專家技能 (10, 11, 12, 13, 14+)。支援從 .NET 6 (LTS) 到 .NET 10 (LTS) 的現代開發模式，涵蓋 File-scoped namespaces 到 Extension Types 的全方位演進。"
+description: >
+  Use this skill when writing, reviewing, debugging, or modernizing C# code in .NET
+  projects. Trigger for .cs/.csproj files, C# language-version questions, nullable
+  reference types, records, pattern matching, async/cancellation, or version-appropriate
+  syntax from C# 10+.
 compatibility: "Supports C# 10 through 14. Adaptive to .NET 6.0, 7.0, 8.0, 9.0, and 10.0 environments."
+metadata:
+  version: "1.4.0"
+  category: "Core"
 ---
 
 # Modern C# (10+) Expert Skill
@@ -50,7 +55,7 @@ compatibility: "Supports C# 10 through 14. Adaptive to .NET 6.0, 7.0, 8.0, 9.0, 
 - **`params` Collections:** Method parameters support various collection types.
 - **Implicit Span Conversion:** Handle memory-safe code more naturally.
 
-### C# 14+ (Cutting Edge)
+### C# 14+ (Version-Specific Features)
 - **Extension Members:** Extension properties, operators, and static members.
 - **`field` Keyword:** Directly access backing fields in property logic.
 - **Null-conditional Assignment:** `target?.Property = value;`.

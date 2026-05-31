@@ -1,7 +1,9 @@
 ---
 name: neo-clarification
 description: >
-  Reconstructs chaotic, emotional, or unstructured user requests and screenshots into structured, professional requirement clarification reports. Use this skill when the user provides vague feedback, fragmented descriptions, error screenshots, or raw complaints, and wants to translate them into actionable specifications or a list of clarifying questions.
+  Use this skill when the user gives vague, emotional, fragmented, screenshot-based,
+  or complaint-style requirements and wants them converted into structured specs,
+  acceptance criteria, or clarifying questions.
 ---
 
 # Requirement Clarification Specifications

@@ -1,9 +1,13 @@
 ---
 name: neo-dotnet-mvc
-version: "1.0.0"
-category: "Framework"
-description: "開發 ASP.NET Core MVC 應用程式的專家指引。支援從 .NET 6 (LTS) 到 .NET 10 (LTS) 的現代開發模式，涵蓋視圖模型、標籤協助程式、視圖元件與伺服器端渲染的最佳實踐。"
+description: >
+  Use this skill when building, debugging, refactoring, or reviewing ASP.NET Core
+  MVC apps with Razor views, controllers, ViewModels, validation, Tag Helpers,
+  View Components, layouts, or server-rendered workflows.
 compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK installed locally."
+metadata:
+  version: "1.0.0"
+  category: "Framework"
 ---
 
 # .NET MVC Expert Skill
@@ -46,7 +50,7 @@ compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK i
 - **Keyed Services in Controllers**: Finer-grained dependency injection support.
 - **Native AOT for MVC**: Metadata compilation optimization tailored for AOT.
 
-### .NET 10+ (Cutting Edge)
+### .NET 10+ (Version-Specific Features)
 - **Extension Members for IHtmlHelper**: Extending view helper functions.
 - **Advanced Serialization in Views**: Performance optimization for large view models.
 

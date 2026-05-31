@@ -1,9 +1,13 @@
 ---
 name: neo-dotnet-ef-core
-version: "1.0.0"
-category: "Framework"
-description: "Entity Framework Core (EF Core) 專家指引。支援從 .NET 6 (LTS) 到 .NET 10 (LTS) 的現代開發模式，涵蓋 Code-First 移轉、查詢優化、陰影屬性與複雜資料建模。"
+description: >
+  Use this skill when the task involves Entity Framework Core models, DbContext,
+  migrations, LINQ queries, change tracking, database providers, performance tuning,
+  or data access review in .NET projects.
 compatibility: "Supports .NET 6.0 through 10.0 environments. Compatible with SQL Server, PostgreSQL, MySQL, and SQLite."
+metadata:
+  version: "1.0.0"
+  category: "Framework"
 ---
 
 # EF Core Expert Skill
@@ -46,7 +50,7 @@ compatibility: "Supports .NET 6.0 through 10.0 environments. Compatible with SQL
 - **Auto-compiled Queries**: Further optimize the query compilation process.
 - **Complex Types**: Better support for Value Objects.
 
-### .NET 10+ (Cutting Edge)
+### .NET 10+ (Version-Specific Features)
 - **Advanced Interceptors**: More query lifecycle hooks.
 - **Optimized AOT Support**: AOT pre-compilation optimization for cloud-native environments.
 

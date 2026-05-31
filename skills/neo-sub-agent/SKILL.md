@@ -1,7 +1,10 @@
 ---
 name: neo-sub-agent
 description: >
-  設計、建立、審查或轉換跨 CLI sub-agent、custom agent、worker agent、reviewer agent、planner agent、explorer agent、background agent 與 multi-agent workflow。Use this skill when the user asks to add a sub agent, create a custom agent, design agent delegation, or generate agent files for Antigravity CLI, Codex, Claude Code, or GitHub Copilot CLI.
+  Use this skill when the user asks to design, create, review, or convert sub-agents,
+  custom agents, worker/reviewer/planner agents, background agents, or multi-agent
+  workflows for Antigravity CLI, Codex, Claude Code, GitHub Copilot CLI, or neutral
+  agent blueprints.
 ---
 
 # Neo Sub-Agent

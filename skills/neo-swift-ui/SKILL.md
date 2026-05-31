@@ -1,9 +1,14 @@
 ---
 name: neo-swift-ui
-version: "1.0.0"
-category: "UI Framework"
-description: "SwiftUI 專家技能 (iOS 16.0+)。支援從宣告式 UI 基礎到 iOS 18+ 的現代開發模式，涵蓋 NavigationStack、Observation 框架、資料流架構及高效能視圖設計。"
+description: >
+  Use this skill when building, debugging, refactoring, or reviewing SwiftUI apps
+  or views for iOS 16+ and related Apple platforms. Trigger for NavigationStack,
+  Observation/state flow, view composition, previews, performance, accessibility,
+  and SwiftUI architecture.
 compatibility: "Requires iOS 16.0+, Swift 5.0+. Adaptive to modern iOS, iPadOS, and macOS SwiftUI development."
+metadata:
+  version: "1.0.0"
+  category: "UI Framework"
 ---
 
 # Modern SwiftUI (iOS 16+) Expert Skill

@@ -1,9 +1,10 @@
 ---
 name: neo-vue
 description: >
-  當建置、調試、重構或審查 Vue.js 應用程式、Vue 3 單一檔案元件 (SFC)、Pinia 狀態管理或 Vue Router 配置時使用此技能。
-  當專案包含 *.vue 檔案，或使用者提及「Vue」、「Pinia」、「Composition API」或「Vue Router」時觸發，
-  即使他們沒有明確要求 Vue 專家也適用。
+  Use this skill when building, debugging, refactoring, or reviewing Vue 3 applications,
+  SFCs, Composition API, Pinia stores, Vue Router, Vite, or Vue+TypeScript code.
+  Trigger when the project has *.vue files or the user mentions Vue, Pinia, Composition
+  API, Router, reactivity, or component architecture.
 license: MIT
 compatibility: 支援 Vue 3.x (Composition API), Pinia 2.x, Vue Router 4.x, 以及 Vite 與 TypeScript。
 metadata:
@@ -14,15 +15,15 @@ metadata:
 
 # Modern Vue 3 & Pinia 開發專家 (neo-vue)
 
-本技能旨在為 Agent 提供現代 Vue 3 (Composition API) 與 Pinia 狀態管理的開發與審查指南。它能確保產出的代碼完全符合官方 Vue Style Guide（優先級 A 與 B 級）的最佳實踐，避免常見的響應性陷阱（Reactivity Gotchas），並生成具備高質感與強型別的單一檔案元件（SFC）。
+本技能為 Agent 提供 Vue 3 (Composition API) 與 Pinia 狀態管理的開發與審查指南。它協助產出符合 Vue Style Guide 優先級 A/B 規則的程式碼，避開常見響應式陷阱，並生成一致、強型別的單一檔案元件（SFC）。
 
 ## Gotchas
 *   **解構 reactive 物件導致響應性丟失**：禁止直接解構 `props` 或由 `reactive()` 定義的物件（例如：`const { name } = props` 或 `const { x } = state`），這會徹底失去 Vue 響應式追蹤！
     *   **防錯機制**：必須使用 `toRefs(props)` 或 `toRef(props, 'name')` 來保持其響應性。
 *   **解構 Pinia Store 導致狀態響應性丟失**：直接解構 Pinia store 的 state（如 `const { user } = useAuthStore()`）會使 state 失去雙向響應！
     *   **防錯機制**：必須使用 `storeToRefs(store)` 來解構 state；而 action 則可以直接正常解構。
-*   **v-model 手動繁瑣綁定**：在 Vue 3.4 之前，自定義雙向綁定需要手動宣告 `modelValue` 屬性並觸發 `update:modelValue` 事件，這對 AI 而言極易寫錯。
-    *   **防錯機制**：在 Vue 3.4+ 專案中，**強烈推薦**使用 `defineModel()` 巨集進行聲明，這會自動為您處理好屬性與事件，極大簡化程式碼。
+*   **v-model 手動繁瑣綁定**：在 Vue 3.4 之前，自定義雙向綁定需要手動宣告 `modelValue` 屬性並觸發 `update:modelValue` 事件，容易寫錯。
+    *   **防錯機制**：在 Vue 3.4+ 專案中，優先使用 `defineModel()` 巨集宣告雙向綁定，降低屬性與事件不一致的風險。
 *   **v-if 與 v-for 在同一節點混用**：在 Vue 3 中，`v-if` 的優先級高於 `v-for`，這意味著 `v-if` 的條件判斷**無法**存取到 `v-for` 迴圈中的變數，會直接導致編譯或執行期報錯！
     *   **防錯機制**：永遠使用 `<template>` 標籤包裹 `v-for`，再於內部子節點使用 `v-if`，或者預先使用 `computed` 計算屬性對陣列進行過濾。
 
@@ -31,7 +32,7 @@ Progress:
 - [ ] 步驟 1：感知專案環境與依賴 (Perceive Setup & Tooling)
 - [ ] 步驟 2：載入編碼規範與踩坑指南 (Load Guides & Best Practices)
 - [ ] 步驟 3：架構推理與響應式規劃 (Reasoning & Architecture)
-- [ ] 步驟 4：套用範本生成高品質代碼 (Generate SFC & Stores)
+- [ ] 步驟 4：套用範本生成一致的程式碼 (Generate SFC & Stores)
 - [ ] 步驟 5：程式碼健檢與自我校對 (Code Quality Review)
 
 ---
@@ -53,9 +54,9 @@ Progress:
 1.  **Reactivity 選擇**：除非是多個屬性需要高度關聯的複雜物件，否則**優先使用 `ref()`** 而不是 `reactive()`，以確保存取 `.value` 的一致性並避免解構失活。
 2.  **狀態下沉**：評估狀態是屬於組件局部狀態（用 `ref`）還是全局狀態（用 `Pinia Setup Store`）。
 
-### 步驟 4 — 套用範本生成高品質代碼 (Act)
-1.  **SFC 結構**：新建立的元件必須使用 `<script setup>` 語法，並強烈推薦加入 `lang="ts"`。
-2.  **套用範本**：讀取並參考 `assets/Vue3SFCComponentTemplate.vue` 作為高質感、標準 Vue 3 元件的排版範例。
+### 步驟 4 — 套用範本生成一致的程式碼 (Act)
+1.  **SFC 結構**：新建立的元件必須使用 `<script setup>` 語法，並依專案設定優先加入 `lang="ts"`。
+2.  **套用範本**：讀取並參考 `assets/Vue3SFCComponentTemplate.vue` 作為標準 Vue 3 元件的排版範例。
 3.  **強制語言與風格**：所有程式碼註解、說明必須使用 **Traditional Chinese (Taiwan)**。專用術語需對齊（例如：元件、屬性、狀態管理、響應式、雙向綁定、計算屬性）。
 
 ### 步驟 5 — 程式碼健檢與自我校對 (Act)
@@ -67,7 +68,7 @@ Progress:
 
 ## Output Templates
 
-在生成新組件時，請嚴格按照以下高質感結構輸出（更多實作細節請參閱 `assets/Vue3SFCComponentTemplate.vue`）：
+生成新元件時，依照以下一致結構輸出；更多實作細節請參閱 `assets/Vue3SFCComponentTemplate.vue`：
 
 ```vue
 <template>

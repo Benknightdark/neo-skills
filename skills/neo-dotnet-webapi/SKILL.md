@@ -1,9 +1,13 @@
 ---
 name: neo-dotnet-webapi
-version: "1.0.0"
-category: "Framework"
-description: "開發 ASP.NET Core Web API (Controller-based) 的專家指引。支援從 .NET 6 (LTS) 到 .NET 10 (LTS) 的現代開發模式，涵蓋控制器設計、Problem Details、全域異常處理與 API 版本控制。"
+description: >
+  Use this skill when building, debugging, refactoring, or reviewing controller-based
+  ASP.NET Core Web APIs, including ControllerBase, ActionResult<T>, Problem Details,
+  API versioning, global exception handling, DTOs, and OpenAPI behavior.
 compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK installed locally."
+metadata:
+  version: "1.0.0"
+  category: "Framework"
 ---
 
 # .NET Web API Expert Skill
@@ -46,7 +50,7 @@ compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK i
 - **Keyed Services**: More flexible dependency injection options.
 - **HybridCache**: Multi-level caching optimization.
 
-### .NET 10+ (Cutting Edge)
+### .NET 10+ (Version-Specific Features)
 - **Extension Members for Controllers**: Extending base controller functionality.
 - **Enhanced Serialization**: JSON optimization for large payloads.
 

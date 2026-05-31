@@ -1,8 +1,8 @@
 {
   "name": "@moon791017/neo-skills",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "type": "module",
-  "description": "Neo Skills: A Universal Expert Agent Extension",
+  "description": "Neo Skills: A Universal AI Agent Skills Extension",
   "homepage": "https://neo-blog-iota.vercel.app/",
   "keywords": [
     "antigravity cli",

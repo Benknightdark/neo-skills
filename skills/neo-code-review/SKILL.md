@@ -1,7 +1,9 @@
 ---
 name: neo-code-review
 description: >
-  Systematically reviews source code for quality, performance, security, and style issues. Use this skill when the user submits code for review, asks for feedback or a code audit, wants to identify bugs/vulnerabilities, or requests a review of recent changes (such as git diff, staged changes, or a specific commit).
+  Use this skill when the user asks for a code review, audit, PR/diff review, bug
+  risk scan, security/performance/style feedback, or validation of recent changes.
+  Prioritize actionable findings with file and line evidence.
 ---
 
 # Code Review Specifications

@@ -1,9 +1,13 @@
 ---
 name: neo-python
-version: "1.0.0"
-category: "Core"
-description: "用於 Python 3.10+ 開發的核心專家技能。專注於現代 Python 特性（Structural Pattern Matching, Union Types, Async Task Groups）、程式碼品質與架構設計。"
+description: >
+  Use this skill when writing, reviewing, debugging, or architecting Python 3.10+
+  code, including type hints, structural pattern matching, dataclasses, async/task
+  groups, packaging-aware project structure, testability, and maintainability.
 compatibility: "Supports Python 3.10 to 3.14. Requires a Python project structure (pyproject.toml, requirements.txt, or venv)."
+metadata:
+  version: "1.0.0"
+  category: "Core"
 ---
 
 # Python 3.10+ Expert Skill

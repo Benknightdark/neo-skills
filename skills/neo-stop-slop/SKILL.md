@@ -1,11 +1,10 @@
 ---
 name: neo-stop-slop
 description: >
-  Remove AI writing patterns, tells, and slop from prose, technical drafts, code comments,
-  git commit messages, or pull request descriptions. Supports both Traditional Chinese and English.
-  Use this skill when the user wants to polish, edit, rewrite, or review drafts to make them sound
-  more natural, concise, and direct, or when they ask to eliminate AI tells/slop, even if they don't
-  explicitly say "stop-slop".
+  Use this skill when the user wants to polish, rewrite, shorten, or review prose so
+  it sounds natural rather than AI-generated. Trigger for Traditional Chinese or English
+  drafts, technical docs, code comments, commit messages, PR descriptions, sales copy,
+  and requests to remove AI tells, slop, fluff, or formulaic phrasing.
 license: MIT
 compatibility: Requires Node.js (ESM) to run the analyze-slop.js script.
 metadata:

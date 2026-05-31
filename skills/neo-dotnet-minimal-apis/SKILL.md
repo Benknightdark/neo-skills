@@ -1,9 +1,13 @@
 ---
 name: neo-dotnet-minimal-apis
-version: "1.0.0"
-category: "Framework"
-description: "開發高效能、輕量級 .NET Minimal API 的專家指引。支援從 .NET 6 (LTS) 到 .NET 10 (LTS) 的現代開發模式，涵蓋路由群組、端點過濾器與符合 OpenAPI 規範的強型別回應。"
+description: >
+  Use this skill when building, debugging, refactoring, or reviewing ASP.NET Core
+  Minimal APIs, lightweight endpoints, route groups, endpoint filters, typed results,
+  OpenAPI metadata, or high-performance .NET API services without controllers.
 compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK installed locally."
+metadata:
+  version: "1.0.0"
+  category: "Framework"
 ---
 
 # .NET Minimal APIs Expert Skill
@@ -46,7 +50,7 @@ compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK i
 - **HybridCache**: High-performance multi-level caching support.
 - **OpenAPI Improvements**: Better OpenAPI code generation.
 
-### .NET 10+ (Cutting Edge)
+### .NET 10+ (Version-Specific Features)
 - **Native AOT Optimization**: AOT-optimized compilation tailored for Minimal APIs.
 - **Enhanced Middleware Patterns**: New middleware designed for lightweight architectures.
 

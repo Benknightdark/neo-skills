@@ -1,9 +1,14 @@
 ---
 name: neo-dotnet
-version: "1.0.0"
-category: "Framework"
-description: 用於廣泛 .NET 工作的核心路由技能。此技能將偵測本機安裝的 .NET SDK 版本（要求 .NET 6+），並根據使用者的問題，將任務引導或準備載入其他合適的子技能（例如 Minimal APIs, MVC, Web API, EF Core）。
+description: >
+  Use this skill when the user asks broad .NET questions or the project contains
+  .sln/.csproj files and the exact ASP.NET/EF/C# subdomain is not yet clear. Detect
+  the SDK/project shape, run or recommend .NET CLI commands, and route to Minimal
+  APIs, Web API, MVC, Tag Helper, EF Core, or C# skills when appropriate.
 compatibility: "Supports .NET 6.0 and above. Requires .NET SDK installed on the local machine."
+metadata:
+  version: "1.0.0"
+  category: "Framework"
 ---
 
 # .NET Core Routing Skill
@@ -26,7 +31,7 @@ This skill serves as the unified entry point for the .NET development environmen
 
 3. **Requirement Analysis and Dynamic Skill Routing**
    - Determine the involved domain based on the user's specific problem or project architecture.
-   - If the user's task falls into the following specific domains, please **prepare to load or suggest the user switch to** the corresponding sub-skill (please note that these sub-skills may not be implemented yet; inform the user of the future implementation direction):
+   - If the user's task falls into the following specific domains, prepare to use or recommend the corresponding sub-skill:
      - **`neo-dotnet-minimal-apis`**: When the requirement is for lightweight routing development, high-performance microservices, and Controllers are not used.
      - **`neo-dotnet-webapi`**: When the requirement is for traditional RESTful API development following the controller pattern.
      - **`neo-dotnet-mvc`**: When the requirement involves Server-Side Rendering (SSR), Razor views, and ViewModels.

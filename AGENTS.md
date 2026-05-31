@@ -1,61 +1,82 @@
-# Neo Skills Extension (agents.md)
+# Neo Skills
 
-**Neo Skills** 是一個專為 **Antigravity CLI (AGY)** 設計的擴充外掛，旨在將 Agent 轉化為**全方位專家代理 (Universal Expert Agent)**。它利用 Model Context Protocol (MCP) 提供特定領域的專業知識 (Skills)。目前配備了專業的 **DevOps**（Azure Pipelines）與 **Frontend/Backend** 多語系（.NET, Python, Swift, TypeScript/JavaScript, Rust, Vue）等領域的模組，其架構設計可託管任何領域的技能。
+**Neo Skills** 是給 AI Agent 使用的專家技能套件。核心交付物是 `skills/<skill-name>/SKILL.md` 與其延伸資源，並透過安裝工具同步到 Antigravity CLI 或其他支援 Agent Skills 規格的用戶端。
+
+本專案的目標不是收集提示詞，而是把可重複使用的專業工作流程、參考文件、範本、非互動式腳本與評估資料打包成可維護的技能模組。
 
 ## 回應風格
-- 使用「繁體中文 (台灣)」
-- commit訊息必須是「繁體中文 (台灣)」
 
----
+- 使用繁體中文（台灣）。
+- Commit 訊息必須使用繁體中文（台灣）。
+- 需要事實判斷時，只根據使用者提供內容、目前 worktree、專案檔案或已驗證來源回答；資料不足時直接說明不能確定。
 
-# Repository Guidelines
+## 專案結構
 
-## Project Structure & Module Organization
-`bin/` contains the installer CLI `install-system-instructions.js` and shared helpers. `skills/<skill-name>/` is the main content surface for contributors; each skill centers on a `SKILL.md` file and may also include `reference/` or `references/` docs, `assets/` templates, or reusable helper `scripts/`. Tests live in `test/*.test.js`.
+| 路徑 | 用途 |
+| :--- | :--- |
+| `skills/<skill-name>/SKILL.md` | 每個技能的主要入口；第一行必須是 `---` frontmatter。 |
+| `skills/<skill-name>/references/` 或 `reference/` | 深度知識、檢核表、反模式、設計規範；只在需要時載入。 |
+| `skills/<skill-name>/assets/` | 文件、程式碼或設定檔範本。 |
+| `skills/<skill-name>/scripts/` | 可重複執行的非互動式輔助腳本。 |
+| `skills/<skill-name>/evals/` | 觸發率與輸出品質評估資料。 |
+| `bin/` | 安裝 CLI 與共用工具。 |
+| `scripts/check-skills-syntax.py` | 技能 frontmatter 與基本結構驗證工具。 |
+| `test/*.test.js` | Node.js 測試。 |
 
-## Build, Test, and Development Commands
-Use `npm install` for local setup; CI uses `npm ci`. Use `npm test` to run the Node test suite (`node --test`).
+## 開發指令
 
-## Coding Style & Naming Conventions
-Use ESM modules, 2-space indentation, and keep code ASCII unless a file already uses localized text. Follow the existing style of the file you touch instead of reformatting unrelated lines; current JS utilities mostly use single quotes. Prefer `camelCase` for functions and variables, `UPPER_SNAKE_CASE` for shared constants, and `kebab-case` for skill directories and hook filenames (for example, `neo-python`). Keep comments brief and only where intent is not obvious.
+- `npm install`：本地安裝依賴。
+- `npm test`：執行 Node.js 測試。
+- `python3 scripts/check-skills-syntax.py --dir skills`：驗證所有技能目錄與 `SKILL.md` frontmatter。
+- `node bin/install-skills.js`：將技能同步到 Antigravity CLI 全域技能目錄。
 
-### AI Helper Script Specifications (scripts/)
-When writing scripts under `skills/<skill-name>/scripts/` or global helper scripts:
-1.  **STRICTLY Non-Interactive**: Accept inputs only via command-line arguments (using `argparse`), environment variables, or stdin. **Do NOT use interactive prompts (like `input()` or TTY confirmation dialogs), as they will hang the agent indefinitely.**
-2.  **Stdout & Stderr Separation**: Write diagnostic messages, progress logs, and errors to `stderr`. Write only clean, programmatically parseable data (such as JSON or CSV) to `stdout`.
-3.  **Inline Dependencies (PEP 723)**: Python scripts must include an inline PEP 723 dependency block (e.g., `# /// script ...`) to enable self-contained runs via `uv run`.
+## Skill 品質標準
 
-## Testing Guidelines
-Add or update tests whenever you change installer behavior, filesystem layout, or hook logic. Place tests in `test/` and name them `*.test.js`. Mirror existing patterns: use temp directories, assert on exit codes, and verify real files were created. PR CI must pass `npm test`.
+每個技能都必須符合 Agent Skills 的漸進式揭露原則：
 
-## Commit & Pull Request Guidelines
-Follow the Conventional Commits pattern already used in history: `feat:`, `fix:`, `docs:`, `test(ci):`, `refactor(skills):`. Keep subjects short and imperative; add a scope when it clarifies impact. PRs against `develop` trigger the validation workflow, while merges to `main` feed the `release-please` release flow. In each PR, summarize behavior changes, list the commands you ran, and link the related issue when applicable.
+1. `SKILL.md` 第一行必須是 `---`。
+2. frontmatter 必須包含 `name` 與 `description`。
+3. `name` 必須與父資料夾名稱完全一致，使用 lowercase kebab-case。
+4. `description` 要描述「何時使用這個技能」，優先使用 `Use this skill when...` 或等價的明確觸發語。
+5. 自訂屬性放在 `metadata` 底下；不要在 frontmatter 頂層新增未標準化欄位。
+6. `SKILL.md` 保持精簡，複雜規則放入 `references/`、`assets/`、`scripts/` 或 `evals/`。
+7. 涉及版本、官方規格、SDK 或雲端服務的內容，若答案依賴最新狀態，必須查證官方來源；不能查證時要標明不確定。
+8. 修改技能時，同步檢查 README、evals、references、assets 與 scripts 是否仍一致。
 
-## Security & Content Notes
-Do not commit secrets, sample credentials, or unsafe prompts. When updating a skill, keep its `SKILL.md`, references, and any user-facing docs aligned. When deprecating or removing a skill, ensure the skill directory is completely deleted and all references are systematically scrubbed from project documentation (such as `README.md`) to maintain the agent's knowledge database hygiene.
+## 腳本規範
 
----
+寫在 `skills/<skill-name>/scripts/` 或全域 `scripts/` 的輔助腳本必須符合：
 
-## 📂 系統架構
+1. **非互動式**：只透過 CLI 參數、環境變數或 stdin 接收輸入；不要使用 `input()`、TTY prompt 或確認對話。
+2. **stdout/stderr 分離**：stdout 只輸出可解析資料（JSON、CSV、TSV）；診斷、進度與錯誤輸出到 stderr。
+3. **可重試**：能支援 dry-run 或安全重跑時要提供；避免同一輸入造成不可預期副作用。
+4. **PEP 723**：Python 腳本需放入 inline dependency block，方便 `uv run` 直接執行。
 
-專案組織為主要核心層次：
+## 測試規範
 
-### 知識庫 (`skills/` & `.agents/skills`)
-每個子目錄代表一個包含專家知識的「技能模組」。
-*   **結構與漸進式揭露 (Progressive Disclosure) 規範：**
-    *   `SKILL.md`：**大腦**。定義該領域的 **Perceive-Reason-Act** 迴圈。**其第一行必須是 YAML frontmatter 分界符 `---`**，並包含正確 the `name`（必須與其父目錄名稱完全一致以利 Discovery 自動偵測）與 trigger-focused 的 `description`。
-    *   `references/`：**深度知識**。將詳細的檢核表、分析框架或長文檔放於此處，僅在 Reason 階段依需求由 Agent 動態載入。
-    *   `assets/`：**輸出範本**。提供標準的 Markdown 結構範本，降低 Token 開銷。
-    *   `evals/`：**評估集**。必須包含 `evals.json` 與 `eval_queries.json` 用於檢測技能的觸發率與輸出品質。
-*   **載入邏輯（對齊 npx skills add 標準）：**
-    *   **全域技能**: 載入自 `~/.gemini/skills/`，可透過 `npx skills add -g Benknightdark/neo-skills` 安裝。
-    *   **專案專屬技能**: 載入自專案根目錄下的 `.agents/skills/`，可透過 `npx skills add Benknightdark/neo-skills` 安裝。
-*   **範例：** `skills/neo-azure-pipelines/` 包含設計 CI/CD 管線的邏輯， `skills/neo-typescript/` 包含 TypeScript 強型別與互通性最佳實踐。
+- 變更 installer、檔案布局、hook 邏輯或驗證腳本時，新增或更新 `test/*.test.js`。
+- 變更技能 frontmatter 或新增技能後，執行 `python3 scripts/check-skills-syntax.py --dir skills`。
+- 變更腳本時，優先加入可由 CI 或本地命令執行的非互動式測試。
+- PR 前至少確認 `npm test` 通過。
 
-## 💡 使用哲學
+## Commit 與 PR
 
-在使用此程式碼庫時，Agent 遵循 **Perceive-Reason-Act** 協定：
+- Commit 採 Conventional Commits 1.0.0：`<type>[optional scope]: <description>`。
+- 常用 type：`feat`、`fix`、`docs`、`test`、`refactor`、`build`、`ci`、`chore`。
+- Commit 主旨使用繁體中文（台灣），不要加句號。
+- 不要加入 `Co-authored-by` 或任何 AI attribution trailer。
+- 每個 commit 聚焦單一邏輯變更，不混入不相關修改。
+- PR 說明需包含行為變更、已執行指令與相關 issue。
 
-1.  **感知 (Perceive)**：分析使用者的專案上下文（語言、框架、現有設定）。
-2.  **推理 (Reason)**：諮詢內部知識庫 (`SKILL.md`) 以制定策略。
-3.  **行動 (Act)**：執行工作流程，優先使用 `skills/**/templates/` 中的現有範本。
+## 安全與內容
+
+- 不提交 secret、token、sample credentials 或可被誤用的危險提示詞。
+- 移除技能時，完整刪除目錄並同步清理 README、安裝文件與任何引用。
+- 不確定某項外部規格是否仍正確時，不要把它寫成確定事實。
+
+## Agent 工作流程
+
+1. 先讀目前 worktree，不依賴記憶中的舊狀態。
+2. 小步修改，保留使用者既有變更。
+3. 文件、技能與驗證工具要互相對齊。
+4. 完成後回報修改重點、已跑驗證，以及仍未處理的風險或待辦。

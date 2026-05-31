@@ -1,7 +1,10 @@
 ---
 name: neo-rust
 description: >
-  Develop, refactor, or audit Rust code, covering ownership, borrowing, lifetimes, Result/Option error handling, and modern Rust design patterns. Use this skill when the user needs to write Rust programs, perform Rust Code Reviews, optimize performance (e.g., avoiding unnecessary .clone()), or discuss Rust system architecture, even if they do not explicitly say "Rust" as long as .rs files or a Cargo project are involved.
+  Use this skill when writing, refactoring, debugging, or auditing Rust code. Trigger
+  for .rs files, Cargo projects, ownership/borrowing/lifetime issues, Result/Option
+  error handling, unnecessary clone/performance work, unsafe code review, or modern
+  Rust architecture.
 license: MIT
 compatibility: Requires environment with Rust toolchain (rustc, cargo) installed
 metadata:

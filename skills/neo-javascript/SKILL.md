@@ -1,9 +1,14 @@
 ---
 name: neo-javascript
-version: "1.0.0"
-category: "Core"
-description: "跨版本 JavaScript 專家技能 (ES6 - ES2025+)。支援現代前端與純 JavaScript 開發模式，涵蓋 Arrow Functions 到 Iterator Helpers 的全方位演進。"
+description: >
+  Use this skill when writing, reviewing, debugging, or modernizing JavaScript across
+  browser, Node.js, and pure JS projects. Trigger for ES module/CommonJS issues,
+  async patterns, functional array/set/iterator code, DOM/runtime behavior, or
+  version-aware ECMAScript syntax.
 compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Adaptive to modern browser environments and pure JS runtimes."
+metadata:
+  version: "1.0.0"
+  category: "Core"
 ---
 
 # Modern JavaScript (ES6+) Expert Skill
@@ -84,7 +89,7 @@ compatibility: "Supports ES6 (ES2015) through ES2025 and Stage 3+ proposals. Ada
 - **Immutable Array Methods:** `toSorted()`, `toReversed()`, `toSpliced()`, `with()` — return new arrays without mutation.
 - **`Array.findLast()` / `findLastIndex()`:** Search arrays from the end.
 
-### ES2024 & ES2025+ (Cutting Edge)
+### ES2024 & ES2025+ (Version-Specific Features)
 - **`Promise.withResolvers()`:** Destructure `{ promise, resolve, reject }` for cleaner deferred patterns.
 - **`Object.groupBy()` / `Map.groupBy()`:** Group array elements by a classifier function.
 - **Set Methods:** `union()`, `intersection()`, `difference()`, `symmetricDifference()`, `isSubsetOf()`, `isSupersetOf()`, `isDisjointFrom()`.

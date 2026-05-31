@@ -1,7 +1,10 @@
 ---
 name: neo-typescript
 description: >
-  Use this skill when asked to write, review, debug, or architect TypeScript code, configure tsconfig.json compiler options, resolve ESM/CJS interop issues, optimize generics, or apply advanced conditional, mapped, and template literal type operators. Trigger even if the user just asks generic TS compiler or type compatibility questions.
+  Use this skill when writing, reviewing, debugging, or architecting TypeScript code.
+  Trigger for tsconfig/compiler options, strict mode, generics, conditional/mapped/template
+  literal types, structural typing, ESM/CJS interop, decorators, library typing, or
+  TypeScript runtime boundary issues.
 license: MIT
 metadata:
   author: ant-gravity-devs

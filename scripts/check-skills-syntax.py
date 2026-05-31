@@ -21,63 +21,105 @@ import json
 import re
 from typing import Dict, List, Any
 
+SUPPORTED_FRONTMATTER_KEYS = {
+    "name",
+    "description",
+    "license",
+    "compatibility",
+    "metadata",
+    "allowed-tools",
+}
+
+TRIGGER_DESCRIPTION_PATTERNS = [
+    re.compile(r"\bUse this skill when\b", re.IGNORECASE),
+    re.compile(r"\bUse when\b", re.IGNORECASE),
+    re.compile(r"當.+使用"),
+    re.compile(r"使用.+技能"),
+    re.compile(r"用於"),
+]
+
 def log_diagnostic(message: str) -> None:
     """將診斷日誌印至 stderr，避免污染 stdout 的 JSON。"""
     print(f"[LOG] {message}", file=sys.stderr)
 
-def parse_yaml_frontmatter(content: str) -> tuple[Dict[str, str], List[str]]:
+def parse_yaml_frontmatter(content: str) -> tuple[Dict[str, str], List[str], List[str]]:
     """解析 Markdown 中的 YAML Frontmatter，回傳 metadata 字典與解析錯誤清單。"""
     errors = []
     metadata = {}
+    top_level_keys = []
     
     # 檢查是否以 --- 開始
     if not content.startswith("---"):
         errors.append("檔案開頭缺少 '---' YAML delimiters 定界符。")
-        return metadata, errors
+        return metadata, top_level_keys, errors
         
     # 尋找第二個 ---
     parts = content.split("---", 2)
     if len(parts) < 3:
         errors.append("無法解析 Frontmatter，因為找不到結尾的 '---'。")
-        return metadata, errors
+        return metadata, top_level_keys, errors
         
     frontmatter_text = parts[1]
-    
-    last_key = None
-    # 逐行解析鍵值對 (簡易 YAML 解析器，因為不引進外部 yaml 庫)
-    for line_num, raw_line in enumerate(frontmatter_text.splitlines(), start=2):
-        is_indented = raw_line.startswith(" ") or raw_line.startswith("\t")
+
+    lines = frontmatter_text.splitlines()
+    line_index = 0
+
+    # 逐行解析頂層鍵值對 (簡易 YAML 解析器，避免引進外部 yaml 庫)
+    while line_index < len(lines):
+        raw_line = lines[line_index]
+        line_num = line_index + 2
         line = raw_line.strip()
         if not line or line.startswith("#"):
+            line_index += 1
             continue
-            
+
+        is_indented = raw_line.startswith(" ") or raw_line.startswith("\t")
+        if is_indented:
+            # 支援 metadata 等巢狀設定；巢狀欄位不是 frontmatter 頂層欄位。
+            line_index += 1
+            continue
+
         if ":" not in line:
-            # 支援多行值（例如多行 description）
-            if last_key and is_indented:
-                metadata[last_key] += " " + line
-                continue
             errors.append(f"第 {line_num} 行：YAML 語法錯誤，缺少冒號分界符 ': '。")
+            line_index += 1
             continue
-            
+
         key, value = line.split(":", 1)
         key = key.strip()
         value = value.strip()
-        last_key = key
+        top_level_keys.append(key)
         
         # 處理多行定義符 > 或 |
         if value in (">", "|"):
-            metadata[key] = ""
+            block_lines = []
+            line_index += 1
+            while line_index < len(lines):
+                block_raw = lines[line_index]
+                block_line = block_raw.strip()
+                next_is_top_level_key = (
+                    not block_raw.startswith((" ", "\t"))
+                    and bool(re.match(r"^[A-Za-z0-9_-]+\s*:", block_raw))
+                )
+                if next_is_top_level_key:
+                    break
+                if block_line and not block_line.startswith("#"):
+                    block_lines.append(block_line)
+                line_index += 1
+            metadata[key] = " ".join(block_lines)
+            continue
         else:
             # 去除可能的引號
             if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
                 value = value[1:-1]
             metadata[key] = value
+
+        line_index += 1
             
     # 清理並合併各屬性的連續空白
     for k in metadata:
         metadata[k] = re.sub(r'\s+', ' ', metadata[k]).strip()
         
-    return metadata, errors
+    return metadata, top_level_keys, errors
 
 def validate_skill(skill_dir: str) -> List[str]:
     """針對單一技能目錄進行結構與 Frontmatter 驗證。"""
@@ -99,10 +141,18 @@ def validate_skill(skill_dir: str) -> List[str]:
         with open(skill_md_path, "r", encoding="utf-8", errors="ignore") as f:
             content = f.read()
             
-        metadata, fm_errors = parse_yaml_frontmatter(content)
+        metadata, top_level_keys, fm_errors = parse_yaml_frontmatter(content)
         if fm_errors:
             errors.extend(fm_errors)
             return errors # 語法錯誤則不再進行屬性比對
+
+        unsupported_keys = sorted(set(top_level_keys) - SUPPORTED_FRONTMATTER_KEYS)
+        if unsupported_keys:
+            errors.append(
+                "Frontmatter 含有非標準頂層屬性: "
+                + ", ".join(unsupported_keys)
+                + "。請將自訂資料放在 'metadata' 底下。"
+            )
             
         # 4. 驗證必要屬性是否存在
         if "name" not in metadata or not metadata["name"]:
@@ -124,6 +174,10 @@ def validate_skill(skill_dir: str) -> List[str]:
             desc_val = metadata["description"]
             if len(desc_val) > 1024:
                 errors.append(f"Frontmatter 'description' 超過長度限制 1024 字元（目前為 {len(desc_val)} 字元）。")
+            if len(desc_val) < 40:
+                errors.append("Frontmatter 'description' 過短，應清楚描述技能的使用時機與觸發情境。")
+            if not any(pattern.search(desc_val) for pattern in TRIGGER_DESCRIPTION_PATTERNS):
+                errors.append("Frontmatter 'description' 不是觸發導向描述；請使用 'Use this skill when...' 或等價用語。")
                 
     except Exception as e:
         errors.append(f"讀取或解析 'SKILL.md' 時發生未預期錯誤: {str(e)}")
@@ -152,7 +206,7 @@ def main() -> None:
                 "status": "error",
                 "error_message": f"指定的技能目錄不存在: {args.dir}"
             }
-            print(json.dumps(result, indent=2))
+            print(json.dumps(result, indent=2, ensure_ascii=False))
             sys.exit(1)
             
         log_diagnostic(f"開始掃描技能目錄: {args.dir}")
@@ -182,7 +236,7 @@ def main() -> None:
             "status": "success" if not all_errors else "fail"
         }
         
-        output_str = json.dumps(result, indent=2)
+        output_str = json.dumps(result, indent=2, ensure_ascii=False)
         print(output_str)
         
         if all_errors:
@@ -198,7 +252,7 @@ def main() -> None:
             "status": "error",
             "error_message": str(e)
         }
-        print(json.dumps(error_result, indent=2))
+        print(json.dumps(error_result, indent=2, ensure_ascii=False))
         sys.exit(1)
 
 if __name__ == "__main__":

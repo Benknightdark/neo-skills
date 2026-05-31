@@ -1,9 +1,14 @@
 ---
 name: neo-csharp-interface-generator
-version: "1.0.0"
-category: "Core"
-description: "專注於C#介面生成與檔案結構管理。"
+description: >
+  Use this skill when the user asks to generate, update, or place a C# interface
+  from an existing class. Trigger for extracting public members, filtering virtual
+  or non-public members, enforcing getter-only properties, and safely creating,
+  appending, or replacing interface blocks.
 compatibility: "Supports C# 12/13 and .NET 10.0."
+metadata:
+  version: "1.0.0"
+  category: "Core"
 ---
 
 # C# Interface Generator Skill Specification

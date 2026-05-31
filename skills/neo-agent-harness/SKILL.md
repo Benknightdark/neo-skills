@@ -1,6 +1,10 @@
 ---
 name: neo-agent-harness
-description: 分析專案的 AI agent harnessability，設計 feedforward guides、feedback sensors、驗證流程與人類決策點，用於提升 agent 輔助開發品質。
+description: >
+  Use this skill when the user asks to improve AI-assisted development reliability,
+  AGENTS.md, skills, tests, CI, hooks, review loops, or agent workflow governance.
+  It designs feedforward guides, feedback sensors, verification gates, and human
+  decision points from repository evidence.
 ---
 
 # Agent Harness Architect Skill

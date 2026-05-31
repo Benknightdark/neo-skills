@@ -1,9 +1,14 @@
 ---
 name: neo-python-manager
-version: "1.1.0"
-category: "Environment"
-description: "智慧偵測與管理 Python 專案的虛擬環境與依賴套件工具（支援 uv, Poetry, venv/pip），包含工具安裝導引。"
+description: >
+  Use this skill when the user asks how to install, add, remove, update, or run
+  Python dependencies; choose between uv, Poetry, venv, or pip; create/sync a virtual
+  environment; or diagnose Python package manager setup from pyproject.toml, lock
+  files, or requirements.txt.
 compatibility: "Supports any Python project containing pyproject.toml, requirements.txt, uv.lock, or poetry.lock."
+metadata:
+  version: "1.1.0"
+  category: "Environment"
 ---
 
 # Python Environment Manager Skill

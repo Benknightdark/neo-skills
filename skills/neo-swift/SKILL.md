@@ -1,9 +1,14 @@
 ---
 name: neo-swift
-version: "1.0.0"
-category: "Language"
-description: "Swift 專家技能 (5.0+)。支援從基礎語法到 Swift 6 的現代開發模式，涵蓋 SwiftUI、Structured Concurrency、記憶體安全以及高效能 App 開發指引。"
+description: >
+  Use this skill when writing, reviewing, debugging, or modernizing Swift code for
+  iOS, macOS, server-side Swift, or shared packages. Trigger for Swift 5+ language
+  features, structured concurrency, memory safety, protocols/generics, SwiftUI
+  integration, and performance-sensitive code.
 compatibility: "Supports Swift 5.0 through 6.0+. Adaptive to iOS, macOS, and Server-side Swift environments."
+metadata:
+  version: "1.0.0"
+  category: "Language"
 ---
 
 # Modern Swift (5.0+) Expert Skill

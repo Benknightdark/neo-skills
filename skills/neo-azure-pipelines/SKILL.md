@@ -1,15 +1,20 @@
 ---
 name: neo-azure-pipelines
-version: "1.0.0"
-category: "DevOps"
-description: "根據微軟官方文件與專案需求，設計並生成符合最新標準的 Azure Pipelines YAML 腳本。優先使用模組化範本 (Templates)。"
+description: >
+  Use this skill when the user asks to create, review, debug, or modernize Azure
+  Pipelines YAML for CI/CD, especially .NET builds, Azure App Service deploys, or
+  IIS/on-premises deploys. Prefer bundled templates and verify task syntax against
+  Microsoft docs when version-specific accuracy matters.
 compatibility: "Supports .NET 6.0 up to .NET 10.0."
+metadata:
+  version: "1.0.0"
+  category: "DevOps"
 ---
 
 # Azure Pipeline Script Design Specifications
 
 ## Perceive
-1. Access and retrieve official documentation at `https://learn.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops` to obtain the latest YAML syntax architecture, Task update notes, and security best practices.
+1. When version-specific syntax or task versions matter, verify them against `https://learn.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops`; if browsing is unavailable, state the uncertainty and rely on bundled templates plus project evidence.
 2. Identify the application's development language (e.g., .NET, Java, Python, Node.js) and its specific version requirements.
 3. Identify the target deployment platform (e.g., Azure App Service, Azure Kubernetes Service, Function App, or on-premises servers).
 4. Detect the project source code structure to confirm build tools (e.g., Maven, Gradle, Npm, NuGet) and testing frameworks.
@@ -21,7 +26,7 @@ compatibility: "Supports .NET 6.0 up to .NET 10.0."
     *   **Utils**: `util/clean-artifact.yml`, `util/extract-artifact.yml`, `util/iis/*.yml`, etc.
 
 ## Reason
-1. Compare the latest versions in official documentation with existing configurations to determine if Task versions need updating (e.g., using Checkout@v1 vs. Checkout@v4).
+1. Compare documented task versions with existing configurations to determine if task versions need updating (e.g., using Checkout@v1 vs. Checkout@v4).
 2. Determine whether to adopt a multi-stage architecture based on project scale to achieve logical isolation of Build, Test, Staging, and Production.
 3. Evaluate and design build caching strategies, optimizing dependency package folders to reduce execution time.
 4. Design trigger mechanisms based on branching strategies, distinguishing trigger paths for Continuous Integration (CI) and Continuous Deployment (CD).
@@ -34,7 +39,7 @@ compatibility: "Supports .NET 6.0 up to .NET 10.0."
 ## Act
 
 ### General Output Standards
-1. Output global YAML configuration scripts that comply with the latest Azure DevOps Schema standards.
+1. Output YAML configuration scripts that comply with the current project-compatible Azure DevOps schema; state assumptions when exact task versions cannot be verified.
 2. Provide comprehensive parameter definitions to increase the flexibility and reusability of Pipeline execution.
 3. Generate configuration recommendations for Environments and Approvals and Checks.
 4. Output a list of Task resource references used in the script, labeling version numbers to ensure execution environment consistency.

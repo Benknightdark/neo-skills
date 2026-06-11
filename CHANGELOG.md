@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.77.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.76.0...neo-skills-v0.77.0) (2026-06-11)
+
+
+### Features
+
+* **skills:** 新增 neo-clean-architecture 專家技能並更新測試與說明文件 ([2655fc7](https://github.com/Benknightdark/neo-skills/commit/2655fc76cad3384875ec498d240600398db62093))
+* **skills:** 新增 neo-clean-architecture 專家技能並更新測試與說明文件 ([6cd7ff8](https://github.com/Benknightdark/neo-skills/commit/6cd7ff841ab66a6f7f9fe76ca8ebef5e59e1d9ff))
+
 ## [0.76.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.75.0...neo-skills-v0.76.0) (2026-05-31)
 
 

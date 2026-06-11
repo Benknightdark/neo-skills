@@ -1,0 +1,26 @@
+{
+  "should_trigger": [
+    "How to design a clean architecture order module?",
+    "I want to map out a Clean Architecture project structure, how should I layer it?",
+    "Could you check if this domain entity is an anemic model and tell me how to make it a Rich Domain Model?",
+    "How do I implement the Repository Pattern in Clean Architecture without leaking database concerns?",
+    "Should book loan business logic reside in the Domain or Application layer?",
+    "Can you do a Clean Architecture code review on my project structure and code?",
+    "How do I use the Result Pattern instead of Exceptions for flow control?",
+    "How should I reference associations between aggregate roots in Clean Architecture to avoid ORM performance traps?",
+    "Why shouldn't a repository return IQueryable?",
+    "Help me design microservice core logic layers using technology-neutral architecture concepts."
+  ],
+  "should_not_trigger": [
+    "How do I write an ASP.NET Core Minimal API Controller in C#?",
+    "Help me install EF Core SqlServer package and add a new Migration.",
+    "How to write a MediatR Pipeline Behavior?",
+    "How do I write a React file upload UI component?",
+    "Teach me how to write a PostgreSQL JSONB column query in SQL.",
+    "Does this code have a memory leak? Please review for performance issues.",
+    "How do I configure Docker to run a MySQL database?",
+    "What are the three pillars of object-oriented programming?",
+    "How do I implement a binary search tree in Python?",
+    "Write a simple script to parse a CSV file and sum a column."
+  ]
+}

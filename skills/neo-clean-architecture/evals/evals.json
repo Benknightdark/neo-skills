@@ -1,0 +1,29 @@
+{
+  "skill_name": "neo-clean-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design a Clean Architecture blueprint for an 'Online Library System'. Key requirements: Borrow books (limits: max 5 books per reader, book must be available, loan record automatically saves checkout date and due date). Keep it technology-neutral and concept-focused; do not use specific programming languages.",
+      "expected_output": "A structured Clean Architecture plan containing Domain layer (Entities: Book/Reader/Loan, Value Object: LoanDuration), Application layer (BorrowBookCommand & Handler, IBookRepository interface), and generic descriptions of Infrastructure and Presentation layers, without C# or Java annotations.",
+      "assertions": [
+        "The output lists the four standard layers (Domain, Application, Infrastructure, Presentation)",
+        "The domain entity includes invariant validation methods (e.g., limit checks or status validation)",
+        "The repository interface is defined in the Application layer, not the Infrastructure layer",
+        "Entities reference each other by ID (e.g., Loan references ReaderId/BookId) rather than full object nests",
+        "The design does not depend on specific libraries or frameworks (e.g., EF Core, MediatR, Prisma)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review this code snippet for Clean Architecture conformity and suggest remediation:\n```javascript\n// In Controller\napp.post('/api/orders', async (req, res) => {\n  const { userId, items } = req.body;\n  if (!userId) return res.status(400).send('User ID is required');\n  \n  // Direct database query\n  const activeOrder = await db.query('SELECT * FROM orders WHERE user_id = $1 AND status = \\'ACTIVE\\'', [userId]);\n  if (activeOrder.rows.length > 0) {\n    return res.status(409).send('Each user can have only one active order');\n  }\n  \n  const order = {\n    id: generateUUID(),\n    userId,\n    items,\n    status: 'ACTIVE',\n    createdAt: new Date()\n  };\n  await db.query('INSERT INTO orders (id, user_id, items, status, created_at) VALUES ($1, $2, $3, $4, $5)', [order.id, order.userId, JSON.stringify(order.items), order.status, order.createdAt]);\n  \n  res.status(201).json(order);\n});\n```",
+      "expected_output": "An architecture review pointing out database dependency and business logic (limit of one active order) leakage in the controller. It should offer remediation to split code into an Order entity (protecting invariants), a CreateOrderUseCase/Handler, and an IOrderRepository interface, providing technology-neutral code examples.",
+      "assertions": [
+        "Identifies business logic leakage in the controller as a violation",
+        "Identifies direct database coupling in the controller as a violation",
+        "Recommends moving 'one active order check' to the Application/Domain layer",
+        "Includes a technology-neutral refactored code example (with Repository interface and Use Case handler)",
+        "Conforms to the review report template format (containing score, findings, and remediation categories)"
+      ]
+    }
+  ]
+}

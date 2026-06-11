@@ -11,7 +11,7 @@
 
 目前專案提供：
 
-- `skills/`：22 個內建專家技能。
+- `skills/`：23 個內建專家技能。
 - `bin/install-skills.js`：同步技能到 Antigravity CLI 全域技能目錄。
 - `bin/install-system-instructions.js`：把系統提示詞安裝到 Claude Code、Copilot CLI、Codex 或 Antigravity 的指導檔。
 - `scripts/check-skills-syntax.py`：非互動式技能結構驗證工具。
@@ -41,6 +41,7 @@
 | DevOps | `neo-azure-pipelines` | 建立、審查、除錯或現代化 Azure Pipelines YAML，尤其是 .NET build、Azure App Service 或 IIS 部署。 |
 | 需求釐清 | `neo-clarification` | 將模糊、情緒化、片段式、截圖式需求轉成規格、驗收條件或釐清問題。 |
 | Code Review | `neo-code-review` | 進行程式碼審查、PR/diff review、bug 風險掃描、安全性、效能或可維護性檢查。 |
+| 系統架構 | `neo-clean-architecture` | 設計、實作、審查或重構符合 Clean Architecture 原則的系統，劃分層級並排除特定技術依賴。 |
 | C# | `neo-csharp` | 撰寫、審查、除錯或現代化 C#/.NET 程式碼，包含語言版本、NRT、records、pattern matching 與 async。 |
 | C# | `neo-csharp-interface-generator` | 從 C# class 產生或更新 interface，並安全建立、追加或替換 interface block。 |
 | .NET | `neo-dotnet` | 廣泛 .NET 問題或尚未確定子領域時，先偵測 SDK/project shape 並導向合適技能。 |
@@ -147,6 +148,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 設計 Azure Pipelines CI/CD | `neo-azure-pipelines` | `幫我建立 .NET 專案的 Azure Pipelines CI` |
 | 審查目前變更 | `neo-code-review` | `請 review 目前 git diff` |
 | 釐清模糊需求 | `neo-clarification` | `把這些零散需求整理成規格與待確認問題` |
+| 設計乾淨架構 | `neo-clean-architecture` | `幫我用 Clean Architecture 設計訂單管理模組` |
 | 寫 TypeScript 型別 | `neo-typescript` | `幫我設計這個 API response 的泛型型別` |
 | 建 Vue 3 元件 | `neo-vue` | `幫我重構這個 SFC，避免響應式踩坑` |
 | 改善 AI 開發流程 | `neo-agent-harness` | `評估這個專案讓 coding agent 協作的可靠度` |

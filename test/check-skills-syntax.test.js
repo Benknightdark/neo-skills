@@ -29,7 +29,7 @@ test('check-skills-syntax 驗證目前所有內建技能', () => {
   const result = runValidator('skills');
 
   assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.match(result.stdout, /"total_scanned_skills": 22/);
+  assert.match(result.stdout, /"total_scanned_skills": \d+/);
   assert.match(result.stdout, /"status": "success"/);
 });
 

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.79.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.78.0...neo-skills-v0.79.0) (2026-06-14)
+
+
+### Features
+
+* 優化neo-harness-skills ([5671cb0](https://github.com/Benknightdark/neo-skills/commit/5671cb0a8557e27c6cd97f9b28a5703a93b006a4))
+* 優化neo-harness-skills ([f1abc3c](https://github.com/Benknightdark/neo-skills/commit/f1abc3ce732de40be54ef0ae3a36244533126397))
+
+
+### Bug Fixes
+
+* 更新 README 中的內建專家技能數量描述 ([a79ab5e](https://github.com/Benknightdark/neo-skills/commit/a79ab5e62d8059d11683f5f0d0e0fac4ee7245b4))
+
 ## [0.78.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.77.0...neo-skills-v0.78.0) (2026-06-11)
 
 

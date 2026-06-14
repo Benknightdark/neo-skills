@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.80.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.79.0...neo-skills-v0.80.0) (2026-06-14)
+
+
+### Features
+
+* **neo-agent-harness:** 整合 Loop Engineering 概念以支援代理人迴圈設計 ([122184f](https://github.com/Benknightdark/neo-skills/commit/122184ff283fddc1b2929900a0df520dc4f6c54c))
+* 優化neo-harness-skills ([8e2dc1c](https://github.com/Benknightdark/neo-skills/commit/8e2dc1c68fbf892f2b5774bbc3b337c7d2ead114))
+
 ## [0.79.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.78.0...neo-skills-v0.79.0) (2026-06-14)
 
 

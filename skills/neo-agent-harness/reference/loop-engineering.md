@@ -2,11 +2,11 @@
 
 Use this reference when designing loop architectures that automate agent-driven workflows beyond a single session.
 
-## Loop 與 Harness 的關係
+## Relationship Between Loops and Harnesses
 
-- Harness = 單一 agent 的工作環境（guides + sensors + gates）
-- Loop = harness 之上的排程驅動層，讓 harness 自己跑
-- 設計 loop 不是取代 prompt，而是把反覆的 prompt 動作系統化
+- Harness = the working environment for a single agent (guides + sensors + gates)
+- Loop = the scheduling layer on top of the harness that lets the harness run itself
+- Designing a loop does not replace prompts; it systematizes repetitive prompt actions
 
 ```text
 Loop = Automations + Worktrees + Skills + Connectors + Sub-agents + State
@@ -14,136 +14,136 @@ Loop = Automations + Worktrees + Skills + Connectors + Sub-agents + State
                           running on top of the Harness
 ```
 
-## 五個基本原件 + State
+## Five Primitives + State
 
-### 1. Automations（心跳）
+### 1. Automations (Heartbeat)
 
-沒有 automations 的 loop 只跑一次；有了它才會重複。
+A loop without automations runs only once; automations make it repeat.
 
-- 排程式觸發，定時執行探索與分類。
-- 找到問題的送 triage inbox，沒發現的自動歸檔。
-- 可搭配 skills 維護排程任務的可維護性——呼叫 `$skill-name` 而非貼一大段指令。
-- `/loop` 按頻率重複執行；`/goal` 持續執行直到停止條件成立，且由獨立模型判斷是否完成。
+- Schedule-driven triggers that periodically run exploration and classification.
+- Findings go to the triage inbox; non-findings are auto-archived.
+- Pair with skills to keep scheduled tasks maintainable—invoke `$skill-name` instead of pasting a wall of instructions.
+- `/loop` repeats at a set frequency; `/goal` runs until a stop condition is met, with an independent model judging completion.
 
-工具對應：
+Tool mapping:
 
-- Codex：Automations tab（選專案、prompt、頻率、環境），結果進 Triage inbox；`/goal` run-until-done。
-- Claude Code：`/loop`、`/goal`、hooks、cron、GitHub Actions。
+- Codex: Automations tab (select project, prompt, frequency, environment); results go to Triage inbox; `/goal` for run-until-done.
+- Claude Code: `/loop`, `/goal`, hooks, cron, GitHub Actions.
 
-### 2. Worktrees（隔離）
+### 2. Worktrees (Isolation)
 
-多 agent 並行時避免檔案衝突。
+Prevent file conflicts when multiple agents run in parallel.
 
-- 每個 agent 在獨立的 git worktree 工作，共享 repo history。
-- 一個 agent 的編輯不會碰到另一個的 checkout。
-- 人的 review bandwidth 仍是瓶頸——worktree 解決機械衝突，但你能同時審幾條線決定了你能跑幾個 agent（orchestration tax）。
+- Each agent works in its own git worktree, sharing repo history.
+- One agent's edits never touch another agent's checkout.
+- Human review bandwidth is still the bottleneck—worktrees solve mechanical conflicts, but the number of agents you can run is limited by how many threads you can review simultaneously (orchestration tax).
 
-工具對應：
+Tool mapping:
 
-- Codex：內建 worktree per thread。
-- Claude Code：`git worktree`、`--worktree` flag、subagent 的 `isolation: worktree` 設定。
+- Codex: Built-in worktree per thread.
+- Claude Code: `git worktree`, `--worktree` flag, subagent `isolation: worktree` setting.
 
-### 3. Skills（知識固化）
+### 3. Skills (Crystallized Knowledge)
 
-把反覆解釋的專案上下文寫成 SKILL.md。
+Write repeatedly explained project context into a SKILL.md.
 
-- 消除 intent debt：每次冷啟動，agent 會用自信的猜測填補意圖缺口。Skill 把意圖寫在外面，agent 每次讀取，不需重建。
-- 沒有 skills 的 loop 每個 cycle 從零推導你的整個專案；有 skills 的 loop 每次都帶著上次的知識跑。
-- Skill 是創作格式，Plugin 是發布格式——跨 repo 分享時打包成 plugin。
+- Eliminate intent debt: on every cold start, an agent fills intent gaps with confident guesses. A skill externalizes intent so the agent reads it every time instead of reconstructing it.
+- A loop without skills re-derives your entire project from scratch each cycle; a loop with skills carries forward knowledge from the last run.
+- A skill is an authoring format; a plugin is a distribution format—package skills as plugins when sharing across repos.
 
-工具對應：
+Tool mapping:
 
-- Codex：Agent Skills (`SKILL.md`)，用 `$name` 或 `/skills` 呼叫，或由 description 自動觸發。
-- Claude Code：Agent Skills (`SKILL.md`)。
+- Codex: Agent Skills (`SKILL.md`), invoked via `$name` or `/skills`, or auto-triggered by description.
+- Claude Code: Agent Skills (`SKILL.md`).
 
-### 4. Plugins / Connectors（外部整合）
+### 4. Plugins / Connectors (External Integration)
 
-透過 MCP 連接外部工具，讓 loop 能在真實環境中行動。
+Connect external tools via MCP so the loop can act in real environments.
 
-- 可連接 issue tracker、database、staging API、Slack。
-- Codex 和 Claude Code 都用 MCP，connector 通常跨工具可用。
-- Plugins 把 connectors 和 skills 打包在一起，方便團隊成員一次安裝。
+- Can connect to issue trackers, databases, staging APIs, Slack.
+- Both Codex and Claude Code use MCP; connectors are generally cross-tool portable.
+- Plugins bundle connectors and skills together for one-step team installation.
 
-沒有 connectors 的 loop 只能輸出建議；有 connectors 的 loop 能直接開 PR、連 ticket、ping channel。
+A loop without connectors can only output suggestions; a loop with connectors can open PRs, link tickets, and ping channels directly.
 
-### 5. Sub-agents（生成與驗證分離）
+### 5. Sub-agents (Separating Generation from Verification)
 
-Loop 的結構性前提是把 maker 和 checker 分開。
+The structural premise of a loop is separating maker from checker.
 
-- 寫程式碼的 model 對自己的作業打分數太寬容。第二個 agent 用不同指令（有時不同 model）才能抓到第一個說服自己接受的問題。
-- `/goal` 底層也是 maker/checker 分離——用獨立的小模型判斷 loop 是否完成，而不是讓做事的 agent 自己說完成了。
-- 常見分工：一個 explore、一個 implement、一個 verify against spec。
-- Sub-agents 會燒更多 token，花在值得第二意見的地方。
+- The model that writes the code grades its own work too leniently. A second agent with different instructions (sometimes a different model) catches issues the first agent convinced itself to accept.
+- `/goal` also uses maker/checker separation under the hood—an independent small model judges whether the loop is done, rather than letting the working agent declare itself finished.
+- Common division of labor: one explores, one implements, one verifies against spec.
+- Sub-agents burn more tokens; spend them where a second opinion is worthwhile.
 
-> **職責邊界**：本段只講「為什麼 loop 需要 maker/checker 分離」這個設計決策。具體 sub-agent 的定義格式、指令撰寫、model 選擇等實作細節，請使用 `neo-sub-agent` 技能。
+> **Responsibility boundary**: This section only covers the design rationale for why loops need maker/checker separation. For implementation details such as sub-agent definition format, instruction writing, and model selection, use the `neo-sub-agent` skill.
 
-工具對應：
+Tool mapping:
 
-- Codex：`.codex/agents/` 下的 TOML 定義檔，每個有 name、description、instructions、optional model 和 reasoning effort。
-- Claude Code：`.claude/agents/` 下的 subagent 定義 + agent teams。
+- Codex: TOML definition files under `.codex/agents/`, each with name, description, instructions, optional model, and reasoning effort.
+- Claude Code: Subagent definitions under `.claude/agents/` + agent teams.
 
-### 6. State（外部記憶）
+### 6. State (External Memory)
 
-模型在對話之間會遺忘，進度必須寫在 repo 裡。
+Models forget between conversations; progress must be written to the repo.
 
-- 格式：markdown 檔、Linear board、或任何對話外的持久化儲存。
-- State 負責記住做過什麼、通過什麼、還剩什麼。每個 long-running agent 都依賴它：agent 會忘，repo 不會。
+- Format: markdown files, Linear boards, or any persistent store outside the conversation.
+- State tracks what was done, what passed, and what remains. Every long-running agent depends on it: agents forget, repos don't.
 
-## 原件對照表
+## Primitives Comparison Table
 
-| 原件 | Loop 中的職責 | Codex | Claude Code |
+| Primitive | Role in Loop | Codex | Claude Code |
 |:--|:--|:--|:--|
-| Automations | 排程探索與分類 | Automations tab, `/goal` | `/loop`, `/goal`, hooks, cron, GitHub Actions |
-| Worktrees | 隔離並行 | 內建 worktree per thread | `git worktree`, `--worktree`, `isolation: worktree` |
-| Skills | 固化專案知識 | Agent Skills (`SKILL.md`), `$name` | Agent Skills (`SKILL.md`) |
-| Plugins / Connectors | 外部工具整合 | Connectors (MCP) + Plugins | MCP servers + Plugins |
-| Sub-agents | 生成與驗證分離 | `.codex/agents/` TOML | `.claude/agents/` + agent teams |
-| State | 跨對話進度 | Markdown / Linear connector | Markdown (`AGENTS.md`, progress files) / Linear MCP |
+| Automations | Scheduled exploration and classification | Automations tab, `/goal` | `/loop`, `/goal`, hooks, cron, GitHub Actions |
+| Worktrees | Parallel isolation | Built-in worktree per thread | `git worktree`, `--worktree`, `isolation: worktree` |
+| Skills | Crystallized project knowledge | Agent Skills (`SKILL.md`), `$name` | Agent Skills (`SKILL.md`) |
+| Plugins / Connectors | External tool integration | Connectors (MCP) + Plugins | MCP servers + Plugins |
+| Sub-agents | Separating generation from verification | `.codex/agents/` TOML | `.claude/agents/` + agent teams |
+| State | Cross-conversation progress | Markdown / Linear connector | Markdown (`AGENTS.md`, progress files) / Linear MCP |
 
-## 範例：一個完整 loop 的流程
+## Example: A Complete Loop Flow
 
-1. **Automation** 每天早上在 repo 上執行，prompt 呼叫 triage skill。
-2. Triage skill 讀取昨天的 CI failures、open issues、recent commits。
-3. 發現值得處理的 findings，寫入 **state file** 或 Linear board。
-4. 對每個 finding，開一個隔離的 **worktree**。
-5. 送一個 **sub-agent**（maker）進 worktree 草擬修復。
-6. 送第二個 **sub-agent**（checker）用專案 **skills** 和現有 tests 審查草稿。
-7. **Connectors** 開 PR、更新 ticket、CI 通過後 ping channel。
-8. 無法處理的 finding 送到 triage inbox 給人。
-9. **State file** 記錄什麼被嘗試了、什麼通過了、什麼還開著。
-10. 明天早上的 run 從 state 接續。
+1. **Automation** runs on the repo every morning; prompt invokes the triage skill.
+2. Triage skill reads yesterday's CI failures, open issues, and recent commits.
+3. Noteworthy findings are written to a **state file** or Linear board.
+4. For each finding, an isolated **worktree** is created.
+5. A **sub-agent** (maker) is sent into the worktree to draft a fix.
+6. A second **sub-agent** (checker) reviews the draft using project **skills** and existing tests.
+7. **Connectors** open a PR, update the ticket, and ping the channel once CI passes.
+8. Findings that cannot be handled are sent to the triage inbox for humans.
+9. The **state file** records what was attempted, what passed, and what remains open.
+10. Tomorrow morning's run picks up from state.
 
-你設計了一次，之後不再手動 prompt 任何步驟。
+You design it once; after that, you never manually prompt any step.
 
-## Loop 三大風險
+## Three Major Loop Risks
 
-### 1. 驗證仍在你身上
+### 1. Verification Is Still on You
 
-Loop 無人值守時也會無人值守地犯錯。Maker/checker 分離是必要但不充分的——「done」是一個 claim，不是 proof。你的工作是 ship 你確認有效的程式碼。
+An unattended loop also makes mistakes unattended. Maker/checker separation is necessary but not sufficient—"done" is a claim, not a proof. Your job is to ship code you have confirmed works.
 
-### 2. 理解債（Comprehension Debt）
+### 2. Comprehension Debt
 
-Loop 越快產出你沒寫的程式碼，你對系統的理解缺口越大。除非你讀 loop 產出的東西，否則理解債只會加速累積。
+The faster a loop produces code you didn't write, the larger your understanding gap grows. Unless you read what the loop produces, comprehension debt only accelerates.
 
-### 3. 認知投降（Cognitive Surrender）
+### 3. Cognitive Surrender
 
-當 loop 自己跑，人很容易停止有主見、照單全收。同一個 loop 設計，有判斷力的人用來加速理解深入的工作，沒有判斷力的人用來迴避理解工作本身——同一動作，相反結果。
+When a loop runs itself, people easily stop having opinions and accept everything at face value. The same loop design, used by someone with judgment, accelerates deeply understood work; used by someone without judgment, it becomes a way to avoid understanding the work itself—same action, opposite outcomes.
 
-### 風險防護策略
+### Risk Mitigation Strategies
 
-- 定期抽查 loop 產出，不要只看 CI 綠燈。
-- 設定 loop 的產出量上限，避免 review backlog 失控。
-- 在 state file 記錄人類最後審查的時間點。
-- 高風險變更（安全、合規、產品 scope）強制跳出 loop 等人。
-- 定期用 loop 的錯誤模式回饋改善 harness（agentic flywheel）。
+- Periodically spot-check loop output; don't rely solely on green CI.
+- Set output volume caps on the loop to prevent review backlog from spiraling.
+- Record the timestamp of the last human review in the state file.
+- Force high-risk changes (security, compliance, product scope) to exit the loop and wait for a human.
+- Regularly feed loop error patterns back to improve the harness (agentic flywheel).
 
-## 何時適合引入 Loop vs 留在 Harness
+## When to Introduce a Loop vs. Stay with the Harness
 
-| 條件 | 建議 |
+| Condition | Recommendation |
 |:--|:--|
-| 專案沒有可靠的本地驗證指令 | 先建 harness |
-| CI 不穩定或經常紅燈 | 先修 CI |
-| 團隊對 agent 產出沒有 review 流程 | 先建 review 流程 |
-| Maturity Level < 3 | 先升級 harness |
-| 重複性高、風險低的任務（triage、格式修復、依賴更新） | 適合 loop |
-| 變更涉及產品 scope、安全、架構取捨 | 不適合全自動 loop |
+| Project lacks reliable local verification commands | Build the harness first |
+| CI is unstable or frequently red | Fix CI first |
+| Team has no review process for agent output | Establish a review process first |
+| Maturity Level < 3 | Upgrade the harness first |
+| Highly repetitive, low-risk tasks (triage, format fixes, dependency updates) | Good fit for a loop |
+| Changes involve product scope, security, or architecture trade-offs | Not suitable for a fully automated loop |

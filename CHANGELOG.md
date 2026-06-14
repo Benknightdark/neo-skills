@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.81.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.80.0...neo-skills-v0.81.0) (2026-06-14)
+
+
+### Features
+
+* update version ([df3ba49](https://github.com/Benknightdark/neo-skills/commit/df3ba4906715ff87507b92ff57374fb038d03b2a))
+* 翻譯和更新 Loop Engineering 文檔，將中文內容轉換為英文以增強可讀性 ([e167107](https://github.com/Benknightdark/neo-skills/commit/e1671077f7fa4d2a48d071d482dfdb905de09710))
+* 翻譯和更新 Loop Engineering 文檔，將中文內容轉換為英文以增強可讀性 ([dc84e5b](https://github.com/Benknightdark/neo-skills/commit/dc84e5baf15529295c9a3bbbbe0c018d6b28b4da))
+
 ## [0.80.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.79.0...neo-skills-v0.80.0) (2026-06-14)
 
 

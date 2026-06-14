@@ -2,9 +2,11 @@
 name: neo-agent-harness
 description: >
   Use this skill when the user asks to improve AI-assisted development reliability,
-  AGENTS.md, skills, tests, CI, hooks, review loops, or agent workflow governance.
-  It designs feedforward guides, feedback sensors, verification gates, and human
-  decision points from repository evidence.
+  AGENTS.md, skills, tests, CI, hooks, review loops, agent workflow governance,
+  loop engineering, agent automations, worktree isolation, maker/checker separation,
+  or external state design for long-running agents.
+  It designs feedforward guides, feedback sensors, verification gates, human
+  decision points, and loop architectures from repository evidence.
 ---
 
 # Agent Harness Architect Skill
@@ -14,9 +16,16 @@ description: >
 - The user wants coding agents to be more reliable, safer, or easier to supervise.
 - The user asks for AGENTS.md, skills, tests, CI, hooks, review loops, or project rules to be planned together.
 - The task is about harness engineering, agent harnessability, feedback loops, or "humans on the loop".
+- The user wants to design scheduled automations, cron-driven agent loops, or recurring agent tasks.
+- The user wants multiple agents to work in parallel and needs an isolation strategy (worktree isolation).
+- The user wants to design maker/checker separation (generation and verification by different agents).
+- The user wants to design external memory or cross-conversation state persistence for agents.
+- The user asks how to evolve from a harness to loop-driven development.
 
 ## Core Principle
 Treat agent-assisted development as a controlled engineering system. Do not only improve prompts; design the guides, sensors, verification steps, and human decision points that let agents work with higher confidence.
+
+When the task involves automations, parallel agents, or continuous loops, extend the design to cover loop architecture: the scheduling, isolation, separation, integration, and state layers that let the harness run itself.
 
 Use this skill for planning first. Do not modify files unless the user explicitly asks for implementation after the harness plan is clear.
 
@@ -27,6 +36,9 @@ Use this skill for planning first. Do not modify files unless the user explicitl
    - Validation commands: `package.json`, `pyproject.toml`, `Makefile`, CI workflow files, build scripts.
    - Safety and governance: hooks, linters, formatters, secret scanners, dependency scanners.
    - Existing documentation: README, architecture docs, ADRs, testing docs, contribution docs.
+   - Agent definitions: `.codex/agents/`, `.claude/agents/`, subagent configs, agent team definitions.
+   - Automation and scheduling: cron configs, GitHub Actions workflows, hooks, `/loop` or `/goal` usage.
+   - State files: progress markdown, task boards, Linear integrations, cross-conversation state.
 2. Identify the project type, primary languages, current test surface, CI status, and release/deploy path.
 3. Separate discoverable repository facts from product or team preferences that require user confirmation.
 
@@ -48,8 +60,15 @@ Analyze the project through these dimensions:
    - Behaviour: requirements, acceptance criteria, user journeys, fixtures, manual test points.
 5. **Human role**
    - Move human effort from repeated low-level correction to high-value decisions: scope, product fit, risk acceptance, architectural tradeoffs, and harness evolution.
+6. **Loop design** (conditional: activate only when the task involves scheduled automations, parallel agents, or continuous loops)
+   - **Automations**: which tasks suit scheduled triggers? Frequency, trigger conditions, result routing (triage inbox vs auto-process).
+   - **Worktrees**: how to isolate parallel agents? Independent branches and working directories needed?
+   - **Maker/checker separation**: which steps need generation and verification by different agents? (For sub-agent definition and implementation, use the neo-sub-agent skill.)
+   - **Connectors**: which external tools does the loop need to reach? (issue tracker, CI, Slack, staging API, database)
+   - **State**: how to persist cross-conversation progress? Format (markdown / board / Linear)? Who updates it?
+   - **Loop risks**: assess comprehension debt, cognitive surrender, and unattended verification risk levels.
 
-For detailed patterns and examples, read [reference/harness-patterns.md](reference/harness-patterns.md) when the task needs a full harness design, maturity model, or improvement roadmap. For the complete source article synthesis behind this skill, read [reference/agent-harness-engineering.md](reference/agent-harness-engineering.md) only when deeper conceptual background is needed.
+For detailed patterns and examples, read [reference/harness-patterns.md](reference/harness-patterns.md) when the task needs a full harness design, maturity model, or improvement roadmap. For the complete source article synthesis behind this skill, read [reference/agent-harness-engineering.md](reference/agent-harness-engineering.md) only when deeper conceptual background is needed. For loop engineering patterns, the five loop primitives, risk model, and maturity guidance, read [reference/loop-engineering.md](reference/loop-engineering.md) when the task involves automations, parallel agents, maker/checker separation, or loop-driven development.
 
 ## Act
 Output in Traditional Chinese (Taiwan). Use this structure:
@@ -57,6 +76,7 @@ Output in Traditional Chinese (Taiwan). Use this structure:
 ### 1. 現況盤點
 - Summarize the repository facts discovered.
 - Mention the current guides, sensors, and missing signals.
+- If loop-relevant infrastructure exists (automations, agent definitions, state files), include it here.
 
 ### 2. Harnessability 評估
 - Rate the current harnessability as `低`, `中`, or `高`.
@@ -74,9 +94,22 @@ Output in Traditional Chinese (Taiwan). Use this structure:
 - Prioritize improvements as P0, P1, and P2.
 - P0 must focus on changes that reduce repeated agent mistakes or prevent high-risk failures.
 
+### 5.5 Loop 設計（條件式：僅當任務涉及 loop 時輸出）
+- List tasks suited for scheduled automation, with suggested frequency.
+- Describe the isolation strategy for parallel agents (worktree / branch / container).
+- Identify which steps need maker/checker separation and their verification criteria.
+- List required connectors and external integrations.
+- Design the state persistence scheme and update responsibilities.
+- Assess loop risks: comprehension debt, cognitive surrender, unattended verification, and propose safeguards.
+
 ### 6. 人類決策點
 - State where humans should stay on the loop.
 - Identify decisions that should not be delegated fully to agents.
+- When loop design is involved, assess these three specific risks:
+  - **Verification responsibility**: error accumulation when the loop runs unattended.
+  - **Comprehension debt**: the faster the loop produces code, the wider the understanding gap.
+  - **Cognitive surrender**: tendency to stop having opinions when the loop runs itself.
+- Clearly mark which loop stages still require human intervention (scope decisions, risk acceptance, architectural tradeoffs).
 
 ### 7. 驗證方式
 - Provide exact commands or review steps when discoverable.
@@ -88,3 +121,7 @@ Output in Traditional Chinese (Taiwan). Use this structure:
 - Do not recommend broad automation before the project has reliable local validation commands.
 - Do not propose fully autonomous changes for security, compliance, production deploys, or product-scope decisions.
 - Keep the output actionable and tied to repository evidence.
+- Do not recommend loop-driven automations for projects that lack reliable local validation commands and stable CI.
+- When designing loops, explicitly assess comprehension debt, cognitive surrender, and unattended verification risks.
+- For sub-agent design and implementation details, defer to the neo-sub-agent skill to avoid responsibility overlap.
+- Mark loop engineering concepts as emerging practice, not established best practice.

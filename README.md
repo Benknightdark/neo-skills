@@ -11,7 +11,7 @@
 
 目前專案提供：
 
-- `skills/`：23 個內建專家技能。
+- `skills/`：內建多個專家技能。
 - `bin/install-skills.js`：同步技能到 Antigravity CLI 全域技能目錄。
 - `bin/install-system-instructions.js`：把系統提示詞安裝到 Claude Code、Copilot CLI、Codex 或 Antigravity 的指導檔。
 - `scripts/check-skills-syntax.py`：非互動式技能結構驗證工具。

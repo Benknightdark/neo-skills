@@ -178,3 +178,17 @@ Common improvement sequence:
 - Humans prioritize and approve harness changes.
 - Low-risk improvements can be automated after repeated success.
 - Harness quality itself is reviewed regularly.
+
+### Level 5: Loop-Driven Development
+
+- Harness is driven by scheduled automations, no longer relying on manual triggers.
+- Multiple agents work in parallel across isolated worktrees.
+- Generation and verification are handled by separate agents (maker/checker separation).
+- Connectors let the loop directly operate issue trackers, PRs, CI, and notification channels.
+- A state file persists progress across conversations; each run resumes from where the last one stopped.
+- The human role shifts from in-the-loop line-by-line review to on-the-loop supervision: designing loops, sampling outputs, and evolving the harness.
+- Comprehension debt, cognitive surrender, and unattended verification risks are explicitly assessed and managed.
+- High-risk changes are forced out of the loop to await human decisions.
+
+Prerequisites: Level 4 harness improvement loop is running stably, CI is reliable, and review processes are mature.
+Note: Loop engineering is still an emerging practice. Start with low-risk, repetitive tasks.

@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.82.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.81.0...neo-skills-v0.82.0) (2026-07-03)
+
+
+### Features
+
+* 新增agentic design skill ([be468d6](https://github.com/Benknightdark/neo-skills/commit/be468d6aed7f068e03f4107ee30f17ea80288781))
+* 更新版本 ([6b4eca2](https://github.com/Benknightdark/neo-skills/commit/6b4eca214217d8dd508f318f53a247b7f8452eb7))
+* 更新版本 ([befcb17](https://github.com/Benknightdark/neo-skills/commit/befcb17d0b65ce2176505f8dfab85e5b04266ebf))
+
 ## [0.81.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.80.0...neo-skills-v0.81.0) (2026-06-14)
 
 

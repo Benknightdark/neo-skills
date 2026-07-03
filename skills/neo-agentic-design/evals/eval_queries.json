@@ -1,0 +1,58 @@
+[
+  {
+    "query": "I need to design a system that routes incoming user queries to specialized LLM prompts depending on their category.",
+    "should_trigger": true
+  },
+  {
+    "query": "How do I implement reflection and self-correction in a multi-agent system to make it write better code?",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you review my LLM orchestration workflow? It currently uses prompt chaining but has high latency.",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to set up a Model Context Protocol (MCP) server for my agent so it can read local files.",
+    "should_trigger": true
+  },
+  {
+    "query": "What is the best way to handle long-term semantic memory and episodic memory in an autonomous agent?",
+    "should_trigger": true
+  },
+  {
+    "query": "Please design a pipeline workflow for generating technical reports, with a human-in-the-loop validation step.",
+    "should_trigger": true
+  },
+  {
+    "query": "How does dynamic re-prioritization work when an agent has conflicting goals?",
+    "should_trigger": true
+  },
+  {
+    "query": "Review the exception handling and recovery mechanism in my LLM agent loop.",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to write a Python script that calculates the Fibonacci sequence using recursion.",
+    "should_trigger": false
+  },
+  {
+    "query": "What is the difference between supervised learning and reinforcement learning in traditional machine learning?",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I configure my local PostgreSQL database on macOS?",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a CSS stylesheet for a dark mode website.",
+    "should_trigger": false
+  },
+  {
+    "query": "I want to build a simple web scraper in Python using beautifulsoup4.",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I write a prompt to make ChatGPT act like a professional English translator?",
+    "should_trigger": false
+  }
+]

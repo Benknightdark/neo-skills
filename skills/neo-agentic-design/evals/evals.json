@@ -1,0 +1,27 @@
+{
+  "skill_name": "neo-agentic-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design an agentic system that generates monthly financial reports. It must parse transaction raw data, categorize expenses, draft a report, let a human reviewer approve/edit the draft, and then output a final PDF. Minimize latency and ensure high accuracy.",
+      "expected_output": "An Agentic System Design Proposal containing Routing, Chaining, and Human-in-the-Loop patterns, structured with the standard output template.",
+      "assertions": [
+        "The output starts with 'Agentic System Design Proposal' or matches the template format",
+        "The proposal mentions Routing, Chaining, and Human-in-the-Loop patterns",
+        "The proposal contains a Mermaid sequence or flowchart diagram representing the topology",
+        "The proposal lists specific Gotchas or risks like latency and cost control"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need to design a system that reviews incoming code commits for potential security vulnerabilities and performance bottlenecks. It needs to check thousands of commits daily and must fail-safely if any analysis tool crashes.",
+      "expected_output": "An Agentic System Design Proposal containing Parallelization, Routing, Guardrails, and Exception Recovery patterns, structured with the standard output template.",
+      "assertions": [
+        "The proposal includes Parallelization and Exception Recovery patterns",
+        "The proposal provides a Mermaid topology diagram showing parallel evaluation and a merge point",
+        "The proposal includes specific Exception Handling rules for crashed analysis tools",
+        "The proposal includes Guardrails policies for input/output sanitization"
+      ]
+    }
+  ]
+}

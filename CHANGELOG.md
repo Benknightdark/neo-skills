@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.83.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.82.0...neo-skills-v0.83.0) (2026-07-17)
+
+
+### Features
+
+* **skills:** 新增 neo-opentelemetry 技能 ([de9cd1f](https://github.com/Benknightdark/neo-skills/commit/de9cd1f7028c1e9334fc4c14808e3fdb4b73cb3f))
+* **skills:** 新增 neo-opentelemetry 技能 ([bb6ed1a](https://github.com/Benknightdark/neo-skills/commit/bb6ed1a7e0741ba51f5e598aac83a9dfcf9f6066))
+
 ## [0.82.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.81.0...neo-skills-v0.82.0) (2026-07-03)
 
 

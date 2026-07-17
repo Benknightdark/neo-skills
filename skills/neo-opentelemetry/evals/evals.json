@@ -1,0 +1,64 @@
+{
+  "skill_name": "neo-opentelemetry",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We operate a checkout service and only have CPU dashboards. Explain which OpenTelemetry signals would help us detect reliability problems and determine why one request is slow. Do not provide instrumentation code.",
+      "expected_output": "A source-grounded explanation that distinguishes metrics, traces, logs, and profiles, describes correlation, and stays outside language SDK/API implementation.",
+      "assertions": [
+        "The response explains a distinct operational question answered by metrics, traces, logs, and profiles",
+        "The response explains that resource identity or trace context is needed for correlation",
+        "The response contains at least one official opentelemetry.io documentation link",
+        "The response contains no programming-language instrumentation code"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Plan an OpenTelemetry Collector deployment for 60 Kubernetes nodes. We need node logs and host metrics, centralized redaction, one controlled egress point, and tail sampling for traces. State assumptions where capacity data is missing.",
+      "expected_output": "An agent-to-gateway architecture with node-local agents, centralized gateway processing, trace-affine routing for tail sampling, explicit security and capacity caveats, and verification steps.",
+      "assertions": [
+        "The response assigns node logs and host metrics to node-local agents",
+        "The response assigns centralized redaction, credentials, and backend export to gateways",
+        "The response states that every span for a trace must reach the same tail-sampling instance",
+        "The response labels capacity recommendations as unresolved because telemetry volume is not provided",
+        "The response includes security, resiliency, and rollout verification checks"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review this Collector configuration:\n\nreceivers:\n  otlp:\n    protocols:\n      grpc:\n        endpoint: 0.0.0.0:4317\nprocessors:\n  batch:\nexporters:\n  otlp:\n    endpoint: vendor.example:4317\n    headers:\n      api-key: hard-coded-example-secret\nservice:\n  pipelines:\n    traces:\n      receivers: [otlp]\n      processors: [batch]\n      exporters: [otlp]\n\nIdentify operational and security risks, but do not assume whether remote clients require the unrestricted listener.",
+      "expected_output": "A configuration review that identifies the unrestricted listener, embedded secret, missing memory protection, queue/retry and TLS questions, while treating topology-dependent changes as conditional.",
+      "assertions": [
+        "The response identifies the embedded credential as a critical issue and recommends protected runtime secret injection",
+        "The response identifies 0.0.0.0 as an exposure requiring topology evidence rather than replacing it unconditionally",
+        "The response checks memory limiting, batching, queueing, retries, TLS, and Collector self-observability",
+        "Findings are ordered by impact and distinguish facts from conditional recommendations",
+        "The response includes official Collector configuration and security links"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "During a backend outage our Collector exporter queue reaches capacity, enqueue failures increase, and queued data disappears when gateway pods restart. Give us a diagnosis and a resilient remediation sequence.",
+      "expected_output": "A diagnosis grounded in queue saturation and in-memory loss, followed by bounded retry/queue tuning, persistent storage evaluation, monitoring, capacity checks, and an optional external queue only when stronger durability justifies it.",
+      "assertions": [
+        "The response identifies queue saturation and pod restart with in-memory buffering as observed loss mechanisms",
+        "The response recommends measuring arrival rate, outage duration, queue capacity, memory, disk, and backend recovery before sizing",
+        "The response discusses persistent sending queues and their disk and permission trade-offs",
+        "The response treats an external message queue as an optional higher-complexity durability layer",
+        "The response defines post-change verification using queue, failure, restart, and export evidence"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We want zero-code telemetry for mixed workloads: Kubernetes services, Linux VMs, and AWS Lambda. Produce a decision framework that covers the Operator, OBI, Collector agents, and Lambda layers. Current versions and runtime details are not supplied.",
+      "expected_output": "A platform-specific decision framework that compares supported zero-code approaches, flags missing compatibility evidence, includes least-privilege and rollout checks, and avoids unsupported version claims or language code.",
+      "assertions": [
+        "The response maps the Operator to Kubernetes, OBI or Collector agents to compatible Linux environments, and published layers to supported Lambda runtimes",
+        "The response states that runtime, kernel, architecture, region, artifact, and current-version compatibility must be verified",
+        "The response includes least-privilege, network, secret, performance, and rollback checks",
+        "The response identifies that zero-code methods cannot guarantee custom business telemetry",
+        "The response contains no manual instrumentation code"
+      ]
+    }
+  ]
+}

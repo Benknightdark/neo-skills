@@ -60,6 +60,7 @@
 | Vue | `neo-vue` | 建置、除錯、重構或審查 Vue 3、SFC、Composition API、Pinia、Vue Router、Vite 與 Vue+TypeScript。 |
 | Agent 架構 | `neo-sub-agent` | 設計、建立、審查或轉換 sub-agent、custom agent、worker/reviewer/planner agent 或 multi-agent workflow。 |
 | Agent 架構 | `neo-agentic-design` | 設計、評估或實作 Agent 工作流、提示詞鏈、路由、規劃、反思、多 Agent 協作與記憶體管理等框架無關模式。 |
+| 可觀測性 | `neo-opentelemetry` | 解釋 OpenTelemetry 概念、規劃或審查 Collector 架構與設定、處理維運排障、安全、零程式 instrumentation 及相容性遷移。 |
 | 文字潤飾 | `neo-stop-slop` | 去除繁中或英文中的 AI 腔、贅詞、公式化句式，支援文件、註解、commit message 與 PR 說明。 |
 
 ## 安裝
@@ -155,6 +156,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 改善 AI 開發流程 | `neo-agent-harness` | `評估這個專案讓 coding agent 協作的可靠度` |
 | 建立 sub-agent | `neo-sub-agent` | `幫我新增一個 Codex code-reviewer sub agent` |
 | 設計 Agent 編排架構 | `neo-agentic-design` | `幫我設計一個多 Agent 客服系統的拓撲結構與重試機制` |
+| 規劃 OpenTelemetry | `neo-opentelemetry` | `幫我審查 Collector 架構、韌性、安全與零程式觀測方案` |
 | 去掉 AI 腔 | `neo-stop-slop` | `把這段 PR 說明改得自然、直接一點` |
 
 ## 開發

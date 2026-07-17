@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Explain when I should use traces, metrics, logs, and profiles together in OpenTelemetry.",
+    "should_trigger": true
+  },
+  {
+    "query": "Review our OpenTelemetry Collector YAML for missing queues, unsafe listeners, and processor ordering.",
+    "should_trigger": true
+  },
+  {
+    "query": "Should our Kubernetes telemetry pipeline use Collector agents, gateways, or both?",
+    "should_trigger": true
+  },
+  {
+    "query": "Our otel gateway queue keeps filling and spans are being dropped. Help me isolate the bottleneck.",
+    "should_trigger": true
+  },
+  {
+    "query": "Design a resilient OpenTelemetry Collector topology that can tolerate a backend outage.",
+    "should_trigger": true
+  },
+  {
+    "query": "Check whether our baggage and resource attributes could leak customer data.",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan a zero-code observability rollout for Linux workloads using the Operator or OBI.",
+    "should_trigger": true
+  },
+  {
+    "query": "How should we migrate Prometheus metric collection into an OTLP and Collector architecture?",
+    "should_trigger": true
+  },
+  {
+    "query": "Create an operational migration plan from OpenTracing to OpenTelemetry without breaking dashboards.",
+    "should_trigger": true
+  },
+  {
+    "query": "Why are traces split after they cross a service boundary even though both services export spans?",
+    "should_trigger": true
+  },
+  {
+    "query": "Write C# ActivitySource instrumentation for my ASP.NET Core checkout endpoint.",
+    "should_trigger": false
+  },
+  {
+    "query": "Show me the Java OpenTelemetry SDK calls needed to create a custom histogram.",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement a custom OpenTelemetry Collector receiver in Go.",
+    "should_trigger": false
+  },
+  {
+    "query": "Build the OpenTelemetry Collector from source with a custom exporter.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a PromQL query for calculating HTTP error rate in Grafana.",
+    "should_trigger": false
+  },
+  {
+    "query": "Troubleshoot why my Kubernetes Deployment cannot pull its application image.",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare the current pricing of Datadog, New Relic, and Honeycomb.",
+    "should_trigger": false
+  },
+  {
+    "query": "Create OpenAPI documentation for my REST endpoints.",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me submit a pull request to translate the OpenTelemetry website.",
+    "should_trigger": false
+  },
+  {
+    "query": "Design a generic application logging API that does not use OpenTelemetry.",
+    "should_trigger": false
+  }
+]

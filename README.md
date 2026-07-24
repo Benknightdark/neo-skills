@@ -30,7 +30,7 @@
 | 漸進式揭露 | Agent 啟動時只讀 `name` 與 `description`；真正需要時才讀完整 `SKILL.md` 與 references。 |
 | 觸發導向描述 | 每個 skill 的 `description` 都說明「何時使用」，提升自動觸發準確度。 |
 | 外部知識庫 | 詳細規則放在 `references/` 或 `reference/`，避免主技能檔過長。 |
-| 可重用資源 | 透過 `assets/`、`templates/` 與 `scripts/` 提供可落地的產出基礎。 |
+| 可重用資源 | 透過 `assets/`、`templates/` 與 `scripts/` 提供可實踐的產出基礎。 |
 | 可驗證結構 | 使用 `scripts/check-skills-syntax.py` 檢查技能名稱、frontmatter 與基本規格。 |
 
 ## 內建技能
@@ -60,14 +60,17 @@
 | Vue | `neo-vue` | 建置、除錯、重構或審查 Vue 3、SFC、Composition API、Pinia、Vue Router、Vite 與 Vue+TypeScript。 |
 | Agent 架構 | `neo-sub-agent` | 設計、建立、審查或轉換 sub-agent、custom agent、worker/reviewer/planner agent 或 multi-agent workflow。 |
 | Agent 架構 | `neo-agentic-design` | 設計、評估或實作 Agent 工作流、提示詞鏈、路由、規劃、反思、多 Agent 協作與記憶體管理等框架無關模式。 |
+| 技能開發 | `generate-skill` | 建立、更新、審查或最佳化 Agent Skill，包含規格、觸發描述、延伸資源、評估資料與設計模式。 |
 | 可觀測性 | `neo-opentelemetry` | 解釋 OpenTelemetry 概念、規劃或審查 Collector 架構與設定、處理維運排障、安全、零程式 instrumentation 及相容性遷移。 |
 | 文字潤飾 | `neo-stop-slop` | 去除繁中或英文中的 AI 腔、贅詞、公式化句式，支援文件、註解、commit message 與 PR 說明。 |
+
+`generate-skill` 位於 `.agents/skills/`，可由 Agent Skills CLI 探索與安裝；其餘技能位於 `skills/`。
 
 ## 安裝
 
 ### Antigravity CLI 全域安裝
 
-同步所有技能到 `~/.gemini/antigravity-cli/skills`：
+同步 `skills/` 下的技能到 `~/.gemini/antigravity-cli/skills`：
 
 ```bash
 npx -y @moon791017/neo-skills@latest
@@ -81,23 +84,47 @@ node bin/install-skills.js
 
 ### Agent Skills CLI 安裝
 
-安裝全部技能：
+Agent Skills CLI 會從 GitHub repository 探索 `skills/` 與 `.agents/skills/`。請明確指定目標 Agent，避免使用 `--all` 時同時選取不支援全域安裝的 Agent。
+
+| Agent | `--agent` ID |
+| :--- | :--- |
+| Claude Code | `claude-code` |
+| Copilot CLI | `github-copilot` |
+| Codex | `codex` |
+| Antigravity CLI | `antigravity-cli` |
+
+安裝全部技能到目前專案（以 Codex 為例）：
 
 ```bash
-npx skills add Benknightdark/neo-skills --all
+npx skills add Benknightdark/neo-skills --skill '*' --agent codex -y
 ```
 
-安裝到全域：
+安裝全部技能到全域（以 Codex 為例）：
 
 ```bash
-npx skills add Benknightdark/neo-skills --all -g
+npx skills add Benknightdark/neo-skills --skill '*' --agent codex -g -y
 ```
 
-只安裝指定技能：
+同時安裝到多個 Agent 時，重複傳入 `--agent`：
 
 ```bash
-npx skills add Benknightdark/neo-skills --skill neo-typescript,neo-vue
+npx skills add Benknightdark/neo-skills --skill '*' \
+  --agent codex \
+  --agent antigravity-cli \
+  -g -y
 ```
+
+只安裝指定技能時，重複傳入 `--skill`：
+
+```bash
+npx skills add Benknightdark/neo-skills \
+  --skill neo-typescript \
+  --skill neo-vue \
+  --agent codex \
+  -y
+```
+
+> `--all` 等同同時選取全部技能與全部 Agent。不要使用 `--all -g` 表示「全域安裝全部技能」；Eve 與 PromptScript 僅支援專案範圍，會使該組合回報安裝失敗。
 
 ## 系統提示詞安裝
 

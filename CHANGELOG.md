@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.87.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.86.0...neo-skills-v0.87.0) (2026-07-24)
+
+
+### Features
+
+* 調整neo-pr輸出範本 ([#266](https://github.com/Benknightdark/neo-skills/issues/266)) ([bf4ee7e](https://github.com/Benknightdark/neo-skills/commit/bf4ee7e93d8161c20daf0c71030a33ad79f9b6f1))
+
 ## [0.86.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.85.0...neo-skills-v0.86.0) (2026-07-24)
 
 

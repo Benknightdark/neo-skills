@@ -79,28 +79,20 @@ Construct the PR Title and Description based on extracted commit and diff contex
 
 #### 1. PR Title Standard (Conventional Commits)
 * Format: `<type>(<scope>): <short summary>`
-* Example: `feat(auth): add JWT authorization and automatic token refresh`
+* Example: `feat(auth): 新增 JWT 驗證與 Token 自動刷新`
 * Rules:
   - Do not begin with filler phrases ("This PR implements...", "A commit to...").
   - Keep under 50 characters, imperative mood, direct and actionable.
 
-#### 2. PR Description Standard (Bulleted Structure)
-The PR body must contain the following four sections, formatted strictly with **bullet points**:
+#### 2. PR Output Standard Structure
+The PR output must strictly consist of only the following two sections:
 
 ```markdown
-## 📌 Motivation
-- Explain why this change is required, the bug it resolves, or feature requirement it fulfills.
+標題：
+<Conventional Commits 格式標題>
 
-## 🛠️ Key Changes
-- Highlight primary modification points (list critical module/file updates and structural logic shifts).
-- Avoid line-by-line code repetition; focus on high-level architecture and logic evolution.
-
-## ⚠️ Impact & Breaking Changes
-- Note any breaking changes, API contract updates, or database schema migrations.
-- Write `None` if there is no significant impact.
-
-## 🧪 Verification & Test Steps
-- List passed unit tests or manual verification steps (including exact execution commands).
+內容：
+- 列點並重點化的說明重要變更內容（包含主要模組/檔案調整、邏輯變更與重大影響）。
 ```
 
 #### 3. Strict De-slop Rules

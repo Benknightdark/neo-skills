@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.86.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.85.0...neo-skills-v0.86.0) (2026-07-24)
+
+
+### Features
+
+* **skill:** 新增 neo-pr 技能模組與 Pull Request 自動生成規範  ([#264](https://github.com/Benknightdark/neo-skills/issues/264)) ([2a0de94](https://github.com/Benknightdark/neo-skills/commit/2a0de94d726a141ee8b5d447759ad3e19a9283b1))
+
 ## [0.85.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.84.0...neo-skills-v0.85.0) (2026-07-24)
 
 

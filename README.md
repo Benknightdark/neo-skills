@@ -63,6 +63,7 @@
 | 技能開發 | `generate-skill` | 建立、更新、審查或最佳化 Agent Skill，包含規格、觸發描述、延伸資源、評估資料與設計模式。 |
 | 可觀測性 | `neo-opentelemetry` | 解釋 OpenTelemetry 概念、規劃或審查 Collector 架構與設定、處理維運排障、安全、零程式 instrumentation 及相容性遷移。 |
 | 文字潤飾 | `neo-stop-slop` | 去除繁中或英文中的 AI 腔、贅詞、公式化句式，支援文件、註解、commit message 與 PR 說明。 |
+| PR 產出 | `neo-pr` | 詢問或自動偵測 Repository 來源與目標分支，擷取變更並產生重點式且去 AI 腔的 PR Title 與 PR Description。 |
 
 `generate-skill` 位於 `.agents/skills/`，可由 Agent Skills CLI 探索與安裝；其餘技能位於 `skills/`。
 

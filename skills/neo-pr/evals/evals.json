@@ -1,0 +1,16 @@
+{
+  "skill_name": "neo-pr",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Generate a concise, non-AI-slop PR title and description for merging feature/user-auth into main.",
+      "expected_output": "A PR title adhering to Conventional Commits format, and a bulleted markdown PR description covering Motivation, Key Changes, Impact & Breaking Changes, and Verification & Test Steps with no AI fluff phrases.",
+      "assertions": [
+        "PR Title complies with Conventional Commits format",
+        "PR Description includes Motivation, Key Changes, Impact & Breaking Changes, and Verification sections",
+        "Content is structured strictly with bullet points",
+        "Does not contain AI tells like 'It is worth noting that' or 'This PR aims to'"
+      ]
+    }
+  ]
+}

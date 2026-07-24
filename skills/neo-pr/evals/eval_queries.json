@@ -1,0 +1,14 @@
+{
+  "should_trigger": [
+    "Help me generate a PR title and description for merging feature/user-auth into main",
+    "Draft a clean, bulleted Pull Request description with no AI slop",
+    "Ask me for source and target branches, then generate concise PR content",
+    "Extract git diff and output a structured PR title and body"
+  ],
+  "should_not_trigger": [
+    "Perform a code review on this file and report security risks",
+    "Run git status to show my current uncommitted changes",
+    "Write a git commit message for fixing the crash bug",
+    "Rewrite this technical blog post to remove AI tells"
+  ]
+}

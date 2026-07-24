@@ -85,8 +85,9 @@ Construct the PR Title and Description based on extracted commit and diff contex
   - Keep under 50 characters, imperative mood, direct and actionable.
 
 #### 2. PR Output Standard Structure
-The PR output must strictly consist of only the following two sections:
+The PR output **must strictly be wrapped in a Markdown code block** (i.e. raw Markdown source code ` ```markdown ... ``` `) so that users can easily copy it directly into GitHub/GitLab PR description fields. The content inside the code block must consist exclusively of the following two sections:
 
+````markdown
 ```markdown
 標題：
 <Conventional Commits 格式標題>
@@ -94,6 +95,7 @@ The PR output must strictly consist of only the following two sections:
 內容：
 - 列點並重點化的說明重要變更內容（包含主要模組/檔案調整、邏輯變更與重大影響）。
 ```
+````
 
 #### 3. Strict De-slop Rules
 * ❌ Never use: "It is worth noting that", "Needless to say", "This PR aims to", "In summary", "Clearly".

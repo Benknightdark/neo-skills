@@ -4,8 +4,9 @@
     {
       "id": 1,
       "prompt": "Generate a concise, non-AI-slop PR title and description for merging feature/user-auth into main.",
-      "expected_output": "A PR title adhering to Conventional Commits format under '標題：', and a bulleted markdown PR description under '內容：' with no AI fluff phrases.",
+      "expected_output": "A PR title adhering to Conventional Commits format under '標題：', and a bulleted markdown PR description under '內容：' wrapped in a Markdown code block for easy copying, with no AI fluff phrases.",
       "assertions": [
+        "PR output is enclosed inside a Markdown code block for easy copying",
         "PR Title complies with Conventional Commits format under 標題：",
         "PR Description includes bullet points summarizing key changes under 內容：",
         "Content is structured strictly with bullet points",

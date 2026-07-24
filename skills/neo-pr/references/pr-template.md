@@ -23,8 +23,9 @@ Titles must be clear, concise, and directly reflect the underlying changes using
 
 ## 2. PR Description Template
 
-The PR output format must strictly follow:
+The PR output **must strictly be wrapped in a Markdown code block** (i.e. raw Markdown source code ` ```markdown ... ``` `) so that users can easily copy it directly into GitHub/GitLab PR description fields. The output format must strictly follow:
 
+````markdown
 ```markdown
 標題：
 <type>(<scope>): <short summary>
@@ -33,6 +34,7 @@ The PR output format must strictly follow:
 - **[重要變更/關鍵模組 1]**：說明具體調整內容與目的。
 - **[重要變更/關鍵模組 2]**：說明具體調整內容與目的。
 ```
+````
 
 ---
 

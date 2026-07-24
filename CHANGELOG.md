@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.84.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.83.0...neo-skills-v0.84.0) (2026-07-24)
+
+
+### Features
+
+* 刪除 opentelemetry 子專案 ([921a751](https://github.com/Benknightdark/neo-skills/commit/921a75142551cd3721c6eab61fea15c67b097624))
+* 調整安裝skill說明 ([f55c941](https://github.com/Benknightdark/neo-skills/commit/f55c9417af7039696b4a96746960d8cf3766d7c4))
+* 調整安裝skill說明 ([c0824a9](https://github.com/Benknightdark/neo-skills/commit/c0824a923e1a96aef0f3a8ec51529dfcf93014a2))
+
 ## [0.83.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.82.0...neo-skills-v0.83.0) (2026-07-17)
 
 

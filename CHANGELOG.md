@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.85.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.84.0...neo-skills-v0.85.0) (2026-07-24)
+
+
+### Features
+
+* **skill:** 新增 neo-pr 技能模組與英文說明資源 ([d126d91](https://github.com/Benknightdark/neo-skills/commit/d126d91cdc95f1691a530a5227a99b271b39f1f2))
+* 更新版本 ([84f7b46](https://github.com/Benknightdark/neo-skills/commit/84f7b46f0f3e65286527a141fa1e11cb28b8bd54))
+* 更新版本 ([c2744f7](https://github.com/Benknightdark/neo-skills/commit/c2744f73423c1f9563029a606789e72a63a4fcb0))
+
 ## [0.84.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.83.0...neo-skills-v0.84.0) (2026-07-24)
 
 

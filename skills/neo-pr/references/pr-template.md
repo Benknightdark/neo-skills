@@ -19,32 +19,19 @@ Titles must be clear, concise, and directly reflect the underlying changes using
 * `chore`: Changes to the build process, auxiliary tools, or dependencies
 * `perf`: A code change that improves performance
 
-### Title Examples:
-- ✅ `feat(auth): add Google OAuth login flow and token handler`
-- ✅ `fix(cart): resolve overflow in checkout discount calculation`
-- ✅ `refactor(db): extract user repository to domain service layer`
-- ❌ `Updated some code` (Too vague)
-- ❌ `feat(auth): this PR dramatically improves auth security and UX` (Contains AI fluff)
-
 ---
 
 ## 2. PR Description Template
 
+The PR output format must strictly follow:
+
 ```markdown
-## 📌 Motivation
-- [Briefly describe the issue solved, context, or feature request fulfilled]
+標題：
+<type>(<scope>): <short summary>
 
-## 🛠️ Key Changes
-- [Key point 1: Modified module/file and rationale]
-- [Key point 2: Added logic or architectural improvement]
-- [Key point 3: Environment or dependency adjustments]
-
-## ⚠️ Impact & Breaking Changes
-- [Detail impacts on other modules, API contracts, or DB schemas. State "None" if inapplicable]
-
-## 🧪 Verification & Test Steps
-- [List automated tests executed, e.g., `npm test` or `dotnet test`]
-- [Manual verification steps and expected outcomes]
+內容：
+- **[重要變更/關鍵模組 1]**：說明具體調整內容與目的。
+- **[重要變更/關鍵模組 2]**：說明具體調整內容與目的。
 ```
 
 ---
@@ -55,7 +42,6 @@ When drafting PR descriptions, rigorously filter out filler words according to t
 
 | ❌ Fluff Phrase | ⭕ Clean Alternative | Explanation |
 | :--- | :--- | :--- |
-| It is worth noting that this PR refactors auth logic. | Refactor authorization logic to use unified middleware. | Delete throat-clearing openers; use direct action verbs. |
-| This PR aims to resolve a potential crash during login. | Fix crash during login caused by null User reference. | Omit "This PR aims to"; state goal and root cause directly. |
-| In summary, this change seamlessly boosts system performance. | Reduce DB queries, lowering API latency by 40ms. | Replace "seamlessly" with concrete metrics. |
-| Imagine a scenario where unhandled requests hit the server... | Add defensive 401 error handling for unauthenticated requests. | Remove hypothetical setups; state defensive logic clearly. |
+| It is worth noting that this PR refactors auth logic. | 重構驗證邏輯，改用統一中介軟體。 | Delete throat-clearing openers; use direct action verbs. |
+| This PR aims to resolve a potential crash during login. | 修復登入時因 null 使用者引發的閃退問題。 | Omit "This PR aims to"; state goal and root cause directly. |
+| In summary, this change seamlessly boosts system performance. | 減少 DB 查詢，降低 API 延遲 40ms。 | Replace "seamlessly" with concrete metrics. |

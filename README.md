@@ -85,47 +85,17 @@ node bin/install-skills.js
 
 ### Agent Skills CLI 安裝
 
-Agent Skills CLI 會從 GitHub repository 探索 `skills/` 與 `.agents/skills/`。請明確指定目標 Agent，避免使用 `--all` 時同時選取不支援全域安裝的 Agent。
-
-| Agent | `--agent` ID |
-| :--- | :--- |
-| Claude Code | `claude-code` |
-| Copilot CLI | `github-copilot` |
-| Codex | `codex` |
-| Antigravity CLI | `antigravity-cli` |
-
-安裝全部技能到目前專案（以 Codex 為例）：
+安裝全部技能到目前專案：
 
 ```bash
-npx skills add Benknightdark/neo-skills --skill '*' --agent codex -y
+npx skills add Benknightdark/neo-skills --skill --all -y
 ```
 
-安裝全部技能到全域（以 Codex 為例）：
+安裝全部技能到全域：
 
 ```bash
-npx skills add Benknightdark/neo-skills --skill '*' --agent codex -g -y
+npx skills add Benknightdark/neo-skills --skill --all -g -y
 ```
-
-同時安裝到多個 Agent 時，重複傳入 `--agent`：
-
-```bash
-npx skills add Benknightdark/neo-skills --skill '*' \
-  --agent codex \
-  --agent antigravity-cli \
-  -g -y
-```
-
-只安裝指定技能時，重複傳入 `--skill`：
-
-```bash
-npx skills add Benknightdark/neo-skills \
-  --skill neo-typescript \
-  --skill neo-vue \
-  --agent codex \
-  -y
-```
-
-> `--all` 等同同時選取全部技能與全部 Agent。不要使用 `--all -g` 表示「全域安裝全部技能」；Eve 與 PromptScript 僅支援專案範圍，會使該組合回報安裝失敗。
 
 ## 系統提示詞安裝
 

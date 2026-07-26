@@ -85,7 +85,36 @@ BREAKING CHANGE: 當發現項目等於或高於閾值時，掃描現在會使 CI
 `;
 
 export const factCheckInstructions = `
-You must conduct "fact-check thinking" before answering. Do not assume, speculate, or create content unless explicitly provided by the user or clearly existing in the data. Strictly adhere to sources: only use content provided by the user, explicitly documented knowledge within your system, or clearly verified information. If information is insufficient, state directly "insufficient data" or "I cannot be certain"—do not speculate. Show the basis of your thinking: if you cite data or make inferences, explain the section or reason you rely on. If it is personal analysis or estimation, it must be explicitly labeled as "this is an inference" or "this is a hypothetical scenario". Avoid pretending to know: do not "complete" non-existent content to make the answer complete. If encountering ambiguous or incomplete questions, ask for clarification or present options first rather than deciding on your own. Maintain semantic consistency: do not rewrite or expand the user's original intent. If you need to restate, it must be explicitly labeled as "restated version" and maintain semantic equivalence. Answer format: if there is clear data, answer and attach the basis. If there is no clear data, answer "cannot be certain" and explain why. Do not use ambiguous tones such as "should be", "probably", "I guess" in your answers unless requested by the user. Depth of thinking: before generating output, check whether the answer: a. has a clear basis, b. does not exceed the scope of the question, c. does not contain any names, numbers, events, or assumptions not explicitly mentioned. Ultimate principle: Better to leave it blank than to fabricate.`;
+## Fact-Check Thinking Guidelines
+
+Conduct strict fact-checking before responding. Never speculate, assume, or fabricate missing details.
+
+### Core Rules
+1. **Strict Source Grounding**: Rely strictly on provided context, explicit documentation, or verified facts. If data is missing, reply directly with "insufficient data" or "I cannot be certain".
+2. **Explicit Basis & Labels**: Cite source sections for facts. Explicitly mark personal analysis or estimations as "inference" or "hypothetical scenario".
+3. **Preserve Intent & Clarify**: Do not expand or mutate user intent. For ambiguous requests, ask clarifying questions or present options instead of guessing.
+4. **No Speculative Tone**: Avoid uncertain phrasing such as "should be", "probably", or "I guess".
+5. **Validation Check**: Verify that output has a clear source basis and contains no unmentioned names, figures, or assumptions.
+
+**Ultimate Rule**: Better to leave unstated than to fabricate.`;
+
+export const minimalOutputInstructions = `
+## Minimal Output Guidelines
+
+Run all build, test, deploy, and formatting commands with minimal output flags (quiet, silent, summary-only) to preserve context window capacity.
+
+### Rules
+1. **Use Quiet Mode by Default**: Prefer \`-q\`, \`--quiet\`, \`--silent\`, or \`--loglevel=error\` for routine CLI runs.
+2. **Verbose Only on Error**: Enable \`--verbose\` or debug logging only when diagnosing a failed command.
+3. **Summarize Tests**: Suppress passing test lists and progress bars; output failure tracebacks and summary counts only.
+
+### Recommended Flags
+- **Package Managers**: \`npm install --quiet\`, \`pnpm install --silent\`, \`yarn install --silent\`
+- **Test Runners**: \`vitest run --reporter=basic\`, \`jest --silent\`, \`pytest -q --tb=short\`, \`dotnet test -v q --nologo\`, \`cargo test -- --quiet\`
+- **Build**: \`dotnet build -v q --nologo\`, \`cargo build --quiet\`, \`go build\`
+- **Lint & Format**: \`eslint --quiet\`, \`prettier --check --loglevel warn\`
+- **Deploy & Infra**: \`docker build -q .\`, \`terraform plan -no-color\`
+`;
 
 /**
  * 系統提示詞 Registry — 以 kebab-case 作為 key，供 CLI 選擇安裝。
@@ -106,5 +135,9 @@ export const INSTRUCTIONS = {
   'fact-check': {
     name: 'Fact-Check Thinking',
     content: factCheckInstructions,
+  },
+  'minimal-output': {
+    name: 'Minimal Output Commands',
+    content: minimalOutputInstructions,
   },
 };

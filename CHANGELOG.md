@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.89.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.88.0...neo-skills-v0.89.0) (2026-07-26)
+
+
+### Features
+
+* add new system prompt ([fa4e9aa](https://github.com/Benknightdark/neo-skills/commit/fa4e9aa2220fb19b8545270ea4da43974f029025))
+* add new system prompt ([9305a3f](https://github.com/Benknightdark/neo-skills/commit/9305a3f7840a231713f3f2742c4ffa252f55525b))
+* 新增事實檢查思維與最小輸出指令的指導方針 ([30e8692](https://github.com/Benknightdark/neo-skills/commit/30e86925e1514d03eb685b28135703349a796915))
+
 ## [0.88.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.87.0...neo-skills-v0.88.0) (2026-07-24)
 
 

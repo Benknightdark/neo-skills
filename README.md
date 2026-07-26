@@ -38,6 +38,7 @@
 | 類別 | Skill | 使用時機 |
 | :--- | :--- | :--- |
 | Agent 治理 | `neo-agent-harness` | 設計或改善 AI 輔助開發流程、AGENTS.md、技能、測試、CI、hooks、review loops 與人類決策點。 |
+| Agent 治理 | `neo-agent-protocol` | 當 AI Agent 執行開發、重構、除錯或架構任務時，強制實施嚴格 harness 原則、自我驗證關卡、非破壞性編輯、上下文崩潰防禦與 Human-in-the-loop 邊界。 |
 | DevOps | `neo-azure-pipelines` | 建立、審查、除錯或現代化 Azure Pipelines YAML，尤其是 .NET build、Azure App Service 或 IIS 部署。 |
 | 需求釐清 | `neo-clarification` | 將模糊、情緒化、片段式、截圖式需求轉成規格、驗收條件或釐清問題。 |
 | Code Review | `neo-code-review` | 進行程式碼審查、PR/diff review、bug 風險掃描、安全性、效能或可維護性檢查。 |
@@ -153,6 +154,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 寫 TypeScript 型別 | `neo-typescript` | `幫我設計這個 API response 的泛型型別` |
 | 建 Vue 3 元件 | `neo-vue` | `幫我重構這個 SFC，避免響應式踩坑` |
 | 改善 AI 開發流程 | `neo-agent-harness` | `評估這個專案讓 coding agent 協作的可靠度` |
+| 遵循 Agent 執行協議 | `neo-agent-protocol` | `請按照 neo-agent-protocol 執行這項開發任務` |
 | 建立 sub-agent | `neo-sub-agent` | `幫我新增一個 Codex code-reviewer sub agent` |
 | 設計 Agent 編排架構 | `neo-agentic-design` | `幫我設計一個多 Agent 客服系統的拓撲結構與重試機制` |
 | 規劃 OpenTelemetry | `neo-opentelemetry` | `幫我審查 Collector 架構、韌性、安全與零程式觀測方案` |

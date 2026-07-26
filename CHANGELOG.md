@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.90.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.89.0...neo-skills-v0.90.0) (2026-07-26)
+
+
+### Features
+
+* update version ([7dfd230](https://github.com/Benknightdark/neo-skills/commit/7dfd23079af349f95548b7b8b98e3817ee0d0ba2))
+* update version ([5227c0a](https://github.com/Benknightdark/neo-skills/commit/5227c0a5a8e4ab742757b1d288e1a4be04cdbe9f))
+* 新增 Agent 執行協議與診斷參考文件，強化 AI Agent 開發流程的規範與檢查清單 ([9cfd431](https://github.com/Benknightdark/neo-skills/commit/9cfd431797a541b00031d1252c4121413a22ea86))
+* 新增最小輸出參數以保護 Context 空間 ([99b7aab](https://github.com/Benknightdark/neo-skills/commit/99b7aabc970c96026b0c8eb0ee4791868fd64960))
+
 ## [0.89.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.88.0...neo-skills-v0.89.0) (2026-07-26)
 
 

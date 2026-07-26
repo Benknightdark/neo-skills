@@ -140,6 +140,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | `technical-co-founder` | 讓 Agent 以 Discovery、Planning、Building、Polish、Handoff 流程協助打造可交付產品。 |
 | `git-commit` | 要求 commit message 遵守 Conventional Commits 1.0.0，並使用使用者偏好的語言。 |
 | `fact-check` | 要求 Agent 根據來源與證據回答，資料不足時明確說不能確定。 |
+| `minimal-output` | 約束 Agent 在執行建置、部署、測試與格式化時採用最小化輸出參數，保護 Context 空間。 |
 
 ## 常用情境
 

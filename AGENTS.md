@@ -59,15 +59,6 @@
 - 變更腳本時，優先加入可由 CI 或本地命令執行的非互動式測試。
 - PR 前至少確認 `npm test` 通過。
 
-## Commit 與 PR
-
-- Commit 採 Conventional Commits 1.0.0：`<type>[optional scope]: <description>`。
-- 常用 type：`feat`、`fix`、`docs`、`test`、`refactor`、`build`、`ci`、`chore`。
-- Commit 主旨使用繁體中文（台灣），不要加句號。
-- 不要加入 `Co-authored-by` 或任何 AI attribution trailer。
-- 每個 commit 聚焦單一邏輯變更，不混入不相關修改。
-- PR 說明需包含行為變更、已執行指令與相關 issue。
-
 ## 安全與內容
 
 - 不提交 secret、token、sample credentials 或可被誤用的危險提示詞。

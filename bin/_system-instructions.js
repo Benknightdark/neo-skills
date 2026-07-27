@@ -114,6 +114,12 @@ Run all build, test, deploy, and formatting commands with minimal output flags (
 - **Build**: \`dotnet build -v q --nologo\`, \`cargo build --quiet\`, \`go build\`
 - **Lint & Format**: \`eslint --quiet\`, \`prettier --check --loglevel warn\`
 - **Deploy & Infra**: \`docker build -q .\`, \`terraform plan -no-color\`
+
+### Documentation & Comment Language Rules
+1. **Single Language per Statement**: Every title, section, paragraph, list item, table cell, or code comment must use ONLY ONE natural language (Chinese OR English). Never mix side-by-side bilingual translations in a single statement.
+   - Allowed: \`## 變更架構流程\`, \`## Architectural Flow\`, \`// 取得使用者資料\`, \`// Fetch user data\`
+   - Forbidden: \`## 變更架構流程 (Architectural Flow)\`, \`// 取得使用者資料 (Fetch user data)\`
+2. **Original Code & Terms Exempted**: File names, paths, APIs, code symbols, commands, and essential technical terms may remain in their original language.
 `;
 
 /**

@@ -1,10 +1,9 @@
-# Project Agent Harness & Execution Protocol
+# neo-skills AGENTS.md
 
 ---
 
 ## 1. Project Overview
 
-- **Project Name**: `@moon791017/neo-skills`
 - **Primary Technology Stack**: `Node.js / JavaScript`
 - **Coding & Architectural Conventions**:
   - Follow modular architecture and existing code formatting.

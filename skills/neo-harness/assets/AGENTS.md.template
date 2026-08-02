@@ -1,10 +1,9 @@
-# Project Agent Harness & Execution Protocol
+# {{PROJECT_NAME}} AGENTS.md
 
 ---
 
 ## 1. Project Overview
 
-- **Project Name**: `{{PROJECT_NAME}}`
 - **Primary Technology Stack**: `{{TECH_STACK}}`
 - **Coding & Architectural Conventions**:
   - Follow modular architecture and existing code formatting.

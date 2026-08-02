@@ -124,13 +124,12 @@ def generate_agents_md_content(facts: dict) -> str:
     table_body = "\n".join(rows) if rows else "| **None** | `echo 'No commands configured'` | N/A |"
     commands_table = f"{table_header}\n{table_body}"
 
-    content = f"""# Project Agent Harness & Execution Protocol
+    content = f"""# {facts['project_name']} AGENTS.md
 
 ---
 
 ## 1. Project Overview
 
-- **Project Name**: `{facts['project_name']}`
 - **Primary Technology Stack**: `{facts['tech_stack']}`
 - **Coding & Architectural Conventions**:
   - Follow modular architecture and existing code formatting.

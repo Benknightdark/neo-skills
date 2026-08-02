@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.92.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.91.0...neo-skills-v0.92.0) (2026-08-02)
+
+
+### Features
+
+* **skills:** 整合並新增 neo-harness 技能與自動化 AGENTS.md 產生器，精簡舊有治理技能 ([c06024c](https://github.com/Benknightdark/neo-skills/commit/c06024ce4ce717f456a9748c1c80a1e951b733b2))
+* 新增 neo-harness 技能與 AGENTS.md 自動生成腳本，強化 AI Agent 開發流程 ([1f2eae7](https://github.com/Benknightdark/neo-skills/commit/1f2eae78008affa4decec89b939b04b49ce3988b))
+* 更新 AGENTS.md 標題，調整專案名稱顯示格式並移除專案名稱欄位 ([dd34c2e](https://github.com/Benknightdark/neo-skills/commit/dd34c2e5b86cb51edfcd320807f3586a41472c92))
+* 更新 AGENTS.md 模板，調整專案名稱顯示格式並移除不必要的專案名稱欄位 ([65afa46](https://github.com/Benknightdark/neo-skills/commit/65afa464b851b763fd314e390f1a2802b7458462))
+* 更新 package.json 版本號至 1.1.22 ([4d73f19](https://github.com/Benknightdark/neo-skills/commit/4d73f1914ed085a5d6c2ebffbcf9e3b123ab4a6c))
+* 更新 package.json 版本號至 1.1.22 ([4b68452](https://github.com/Benknightdark/neo-skills/commit/4b684528308e3c66f373ecb3a5d2540795141c4f))
+* 自動生成 AGENTS.md 文件，整合項目命令與工作流程 ([82cffb4](https://github.com/Benknightdark/neo-skills/commit/82cffb4b62493500a9e0d5c4bec350a7699bce81))
+
 ## [0.91.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.90.0...neo-skills-v0.91.0) (2026-07-27)
 
 

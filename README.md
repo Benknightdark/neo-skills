@@ -37,8 +37,7 @@
 
 | 類別 | Skill | 使用時機 |
 | :--- | :--- | :--- |
-| Agent 治理 | `neo-agent-harness` | 設計或改善 AI 輔助開發流程、AGENTS.md、技能、測試、CI、hooks、review loops 與人類決策點。 |
-| Agent 治理 | `neo-agent-protocol` | 當 AI Agent 執行開發、重構、除錯或架構任務時，強制實施嚴格 harness 原則、自我驗證關卡、非破壞性編輯、上下文崩潰防禦與 Human-in-the-loop 邊界。 |
+| Agent 治理 | `neo-harness` | 掃描專案環境，自動產生或升級專屬且合規的 AGENTS.md 檔，整合 Harness 評估、閉環 Workflow 與編排架構。 |
 | DevOps | `neo-azure-pipelines` | 建立、審查、除錯或現代化 Azure Pipelines YAML，尤其是 .NET build、Azure App Service 或 IIS 部署。 |
 | 需求釐清 | `neo-clarification` | 將模糊、情緒化、片段式、截圖式需求轉成規格、驗收條件或釐清問題。 |
 | Code Review | `neo-code-review` | 進行程式碼審查、PR/diff review、bug 風險掃描、安全性、效能或可維護性檢查。 |
@@ -60,7 +59,6 @@
 | TypeScript | `neo-typescript` | 處理 TypeScript、tsconfig、strict mode、泛型、conditional/mapped/template literal types、ESM/CJS 與 runtime boundaries。 |
 | Vue | `neo-vue` | 建置、除錯、重構或審查 Vue 3、SFC、Composition API、Pinia、Vue Router、Vite 與 Vue+TypeScript。 |
 | Agent 架構 | `neo-sub-agent` | 設計、建立、審查或轉換 sub-agent、custom agent、worker/reviewer/planner agent 或 multi-agent workflow。 |
-| Agent 架構 | `neo-agentic-design` | 設計、評估或實作 Agent 工作流、提示詞鏈、路由、規劃、反思、多 Agent 協作與記憶體管理等框架無關模式。 |
 | 技能開發 | `generate-skill` | 建立、更新、審查或最佳化 Agent Skill，包含規格、觸發描述、延伸資源、評估資料與設計模式。 |
 | 可觀測性 | `neo-opentelemetry` | 解釋 OpenTelemetry 概念、規劃或審查 Collector 架構與設定、處理維運排障、安全、零程式 instrumentation 及相容性遷移。 |
 | 文字潤飾 | `neo-stop-slop` | 去除繁中或英文中的 AI 腔、贅詞、公式化句式，支援文件、註解、commit message 與 PR 說明。 |
@@ -153,33 +151,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 設計乾淨架構 | `neo-clean-architecture` | `幫我用 Clean Architecture 設計訂單管理模組` |
 | 寫 TypeScript 型別 | `neo-typescript` | `幫我設計這個 API response 的泛型型別` |
 | 建 Vue 3 元件 | `neo-vue` | `幫我重構這個 SFC，避免響應式踩坑` |
-| 改善 AI 開發流程 | `neo-agent-harness` | `評估這個專案讓 coding agent 協作的可靠度` |
-| 遵循 Agent 執行協議 | `neo-agent-protocol` | `請按照 neo-agent-protocol 執行這項開發任務` |
+| 建立 Agent 治理 | `neo-harness` | `幫我針對這個專案評估並產生 AGENTS.md` |
 | 建立 sub-agent | `neo-sub-agent` | `幫我新增一個 Codex code-reviewer sub agent` |
-| 設計 Agent 編排架構 | `neo-agentic-design` | `幫我設計一個多 Agent 客服系統的拓撲結構與重試機制` |
 | 規劃 OpenTelemetry | `neo-opentelemetry` | `幫我審查 Collector 架構、韌性、安全與零程式觀測方案` |
 | 去掉 AI 腔 | `neo-stop-slop` | `把這段 PR 說明改得自然、直接一點` |
-
-## 開發
-
-```bash
-npm install
-npm test
-python3 scripts/check-skills-syntax.py --dir skills
-```
-
-## 維護技能
-
-新增或修改 skill 時，請同步檢查：
-
-1. `SKILL.md` 第一行是 `---`。
-2. frontmatter 有 `name` 與觸發導向的 `description`。
-3. `name` 與資料夾名稱一致。
-4. 深度內容放進 `references/` 或 `reference/`，範本放進 `assets/` 或 `templates/`，可執行流程放進 `scripts/`。
-5. 腳本必須非互動式，stdout 只輸出可解析資料，診斷輸出到 stderr。
-6. README 的技能清單與實際 `skills/` 內容一致。
-7. 執行 `python3 scripts/check-skills-syntax.py --dir skills` 與 `npm test`。
-
-## License
-
-MIT

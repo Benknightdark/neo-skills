@@ -1,10 +1,10 @@
-# neo-skills AGENTS.md
+# {{PROJECT_NAME}} AGENTS.md
 
 ---
 
 ## 1. Project Overview
 
-- **Primary Technology Stack**: `Node.js / JavaScript`
+- **Primary Technology Stack**: `{{TECH_STACK}}`
 - **Coding & Architectural Conventions**:
   - Follow modular architecture and existing code formatting.
   - Inspect existing implementation files before creating new utilities.
@@ -18,9 +18,10 @@ List exact command lines used for project development, testing, linting, typeche
 
 | Command Type | Exact Command Line | Purpose / Scope |
 | :--- | :--- | :--- |
-| **Unit / Integration Tests** | `npm test` | Verify behavioral correctness |
-| **Skill Syntax Check** | `python3 scripts/check-skills-syntax.py` | Verify skill markdown and frontmatter syntax |
-| **Build Check** | `npm run build` | Confirm clean compilation |
+| **Unit / Integration Tests** | `{{TEST_COMMAND}}` | Verify behavioral correctness |
+| **Type Check** | `{{TYPECHECK_COMMAND}}` | Verify static type contracts |
+| **Lint & Format** | `{{LINT_COMMAND}}` | Enforce code style and syntax rules |
+| **Build Check** | `{{BUILD_COMMAND}}` | Confirm clean compilation |
 
 ---
 

@@ -160,26 +160,3 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 規劃 OpenTelemetry | `neo-opentelemetry` | `幫我審查 Collector 架構、韌性、安全與零程式觀測方案` |
 | 去掉 AI 腔 | `neo-stop-slop` | `把這段 PR 說明改得自然、直接一點` |
 
-## 開發
-
-```bash
-npm install
-npm test
-python3 scripts/check-skills-syntax.py --dir skills
-```
-
-## 維護技能
-
-新增或修改 skill 時，請同步檢查：
-
-1. `SKILL.md` 第一行是 `---`。
-2. frontmatter 有 `name` 與觸發導向的 `description`。
-3. `name` 與資料夾名稱一致。
-4. 深度內容放進 `references/` 或 `reference/`，範本放進 `assets/` 或 `templates/`，可執行流程放進 `scripts/`。
-5. 腳本必須非互動式，stdout 只輸出可解析資料，診斷輸出到 stderr。
-6. README 的技能清單與實際 `skills/` 內容一致。
-7. 執行 `python3 scripts/check-skills-syntax.py --dir skills` 與 `npm test`。
-
-## License
-
-MIT

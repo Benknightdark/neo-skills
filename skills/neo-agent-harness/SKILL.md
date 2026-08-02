@@ -71,30 +71,30 @@ Analyze the project through these dimensions:
 For detailed patterns and examples, read [reference/harness-patterns.md](reference/harness-patterns.md) when the task needs a full harness design, maturity model, or improvement roadmap. For the complete source article synthesis behind this skill, read [reference/agent-harness-engineering.md](reference/agent-harness-engineering.md) only when deeper conceptual background is needed. For loop engineering patterns, the five loop primitives, risk model, and maturity guidance, read [reference/loop-engineering.md](reference/loop-engineering.md) when the task involves automations, parallel agents, maker/checker separation, or loop-driven development.
 
 ## Act
-Output in Traditional Chinese (Taiwan). Use this structure:
+Output in clear, structured English. Use this structure:
 
-### 1. 現況盤點
+### 1. Repository Status Audit
 - Summarize the repository facts discovered.
 - Mention the current guides, sensors, and missing signals.
 - If loop-relevant infrastructure exists (automations, agent definitions, state files), include it here.
 
-### 2. Harnessability 評估
-- Rate the current harnessability as `低`, `中`, or `高`.
+### 2. Harnessability Assessment
+- Rate the current harnessability as `Low`, `Medium`, or `High`.
 - Explain the rating with concrete evidence from the repository.
 
-### 3. Feedforward Guides 設計
+### 3. Feedforward Guides Design
 - List the rules, docs, skills, templates, or examples agents should receive before work starts.
 - Mark each item as existing, needs update, or missing.
 
-### 4. Feedback Sensors 設計
+### 4. Feedback Sensors Design
 - List fast local checks, CI checks, security checks, semantic reviews, and manual checks.
 - Distinguish computational from inferential checks.
 
-### 5. 開發前改善清單
+### 5. Pre-development Improvement Checklist
 - Prioritize improvements as P0, P1, and P2.
 - P0 must focus on changes that reduce repeated agent mistakes or prevent high-risk failures.
 
-### 5.5 Loop 設計（條件式：僅當任務涉及 loop 時輸出）
+### 5.5 Loop Design (Conditional: output only when task involves loops)
 - List tasks suited for scheduled automation, with suggested frequency.
 - Describe the isolation strategy for parallel agents (worktree / branch / container).
 - Identify which steps need maker/checker separation and their verification criteria.
@@ -102,7 +102,7 @@ Output in Traditional Chinese (Taiwan). Use this structure:
 - Design the state persistence scheme and update responsibilities.
 - Assess loop risks: comprehension debt, cognitive surrender, unattended verification, and propose safeguards.
 
-### 6. 人類決策點
+### 6. Human Decision Points
 - State where humans should stay on the loop.
 - Identify decisions that should not be delegated fully to agents.
 - When loop design is involved, assess these three specific risks:
@@ -111,7 +111,7 @@ Output in Traditional Chinese (Taiwan). Use this structure:
   - **Cognitive surrender**: tendency to stop having opinions when the loop runs itself.
 - Clearly mark which loop stages still require human intervention (scope decisions, risk acceptance, architectural tradeoffs).
 
-### 7. 驗證方式
+### 7. Verification Steps
 - Provide exact commands or review steps when discoverable.
 - If a command is unknown, state the missing fact instead of inventing one.
 

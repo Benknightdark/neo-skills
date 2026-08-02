@@ -1,6 +1,6 @@
 # Agent Execution Protocol & Safety Redlines
 
-This reference synthesizes execution laws, closed-loop SOPs, and antipattern rules from `neo-agent-protocol`.
+This reference provides execution laws, closed-loop SOPs, and antipattern rules for neo-harness.
 
 ## The 5 Agent Harness Laws
 

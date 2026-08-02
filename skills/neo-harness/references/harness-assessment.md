@@ -1,6 +1,6 @@
 # Harness Assessment & Sensor Design
 
-This reference synthesizes harness evaluation, sensor classification, and maturity rating concepts from `neo-agent-harness`.
+This reference provides harness evaluation, sensor classification, and maturity rating guidance for neo-harness.
 
 ## Core Model
 

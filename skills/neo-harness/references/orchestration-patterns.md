@@ -1,6 +1,6 @@
 # LLM Orchestration Patterns & Topology Design
 
-This reference synthesizes LLM agent orchestration architectures and safety guardrails from `neo-agentic-design`.
+This reference provides LLM agent orchestration architectures and safety guardrails for neo-harness.
 
 ## Core Orchestration Patterns
 

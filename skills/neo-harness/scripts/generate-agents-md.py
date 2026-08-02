@@ -98,11 +98,32 @@ def detect_project_facts(target_dir: Path) -> dict:
         facts["typecheck_command"] = "dotnet build --no-incremental"
         facts["build_command"] = "dotnet build"
 
+    # 6. Neo Skills Syntax Check
+    syntax_script = target_dir / "scripts" / "check-skills-syntax.py"
+    if syntax_script.exists():
+        facts["syntax_command"] = "python3 scripts/check-skills-syntax.py"
+
     return facts
 
 
 def generate_agents_md_content(facts: dict) -> str:
     """Generate the AGENTS.md Markdown content based on project facts."""
+    rows = []
+    if facts.get("test_command") and not facts["test_command"].startswith("echo 'No"):
+        rows.append(f"| **Unit / Integration Tests** | `{facts['test_command']}` | Verify behavioral correctness |")
+    if facts.get("syntax_command") and not facts["syntax_command"].startswith("echo 'No"):
+        rows.append(f"| **Skill Syntax Check** | `{facts['syntax_command']}` | Verify skill markdown and frontmatter syntax |")
+    if facts.get("typecheck_command") and not facts["typecheck_command"].startswith("echo 'No"):
+        rows.append(f"| **Type Check** | `{facts['typecheck_command']}` | Verify static type contracts |")
+    if facts.get("lint_command") and not facts["lint_command"].startswith("echo 'No"):
+        rows.append(f"| **Lint & Format** | `{facts['lint_command']}` | Enforce code style and syntax rules |")
+    if facts.get("build_command") and not facts["build_command"].startswith("echo 'No"):
+        rows.append(f"| **Build Check** | `{facts['build_command']}` | Confirm clean compilation |")
+
+    table_header = "| Command Type | Exact Command Line | Purpose / Scope |\n| :--- | :--- | :--- |"
+    table_body = "\n".join(rows) if rows else "| **None** | `echo 'No commands configured'` | N/A |"
+    commands_table = f"{table_header}\n{table_body}"
+
     content = f"""# Project Agent Harness & Execution Protocol
 
 ---
@@ -122,12 +143,7 @@ def generate_agents_md_content(facts: dict) -> str:
 
 List exact command lines used for project development, testing, linting, typechecking, and building:
 
-| Command Type | Exact Command Line | Purpose / Scope |
-| :--- | :--- | :--- |
-| **Unit / Integration Tests** | `{facts['test_command']}` | Verify behavioral correctness |
-| **Type Check** | `{facts['typecheck_command']}` | Verify static type contracts |
-| **Lint & Format** | `{facts['lint_command']}` | Enforce code style and syntax rules |
-| **Build Check** | `{facts['build_command']}` | Confirm clean compilation |
+{commands_table}
 
 ---
 

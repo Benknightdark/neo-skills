@@ -50,18 +50,18 @@ Apply the Reviewer Pattern. Follow this protocol strictly to systematically, obj
 
 Generate a highly structured and elegant Code Review Report in **Traditional Chinese (Taiwan)**. The report must strictly follow this format:
 
-### 🔍 審查摘要 (Summary)
+### 🔍 審查摘要
 - **整體評估 (Overall Assessment)**: Provide a brief summary and a clear status rating (e.g., "🔴 需要重大修正後合併" (Needs major changes before merging), "🟡 建議修正後合併" (Recommended to fix before merging), "🟢 結構優良，隨時可合併" (Excellent structure, ready to merge)).
 - **變更概述 (Change Overview)**: Briefly describe the main purpose and scope of this change.
 
-### 🔴 嚴重問題 (Critical Issues)
+### 🔴 嚴重問題
 *This section must ONLY contain **Must-fix** items (security vulnerabilities, critical logic bugs, or severe flaws that may cause system failure). If none are found, write "無" (None).*
 - **[檔案路徑 / 程式碼區段]** (File Path / Code Snippet)
   - **問題描述 (Problem Description)**: Clearly state what the problem is.
   - **嚴重原因 (Severity Reason)**: Explain *why* this is a critical issue and its potential consequences.
   - **修復方案 (Remediation)**: Provide a **concrete corrected code snippet (Code Snippet)** comparing it with the original or showing the fixed version.
 
-### 🟡 改進建議 (Suggestions)
+### 🟡 改進建議
 *Includes suggestions for performance optimization, clean code refactoring, edge-case handling, and comment improvements.*
 - **[檔案路徑 / 程式碼區段]** (File Path / Code Snippet)
   - **建議事項 (Recommendation)**: How to optimize the code for performance, readability, or maintainability.

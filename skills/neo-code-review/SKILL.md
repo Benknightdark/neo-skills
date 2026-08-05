@@ -1,81 +1,70 @@
 ---
 name: neo-code-review
 description: >
-  Use this skill when the user asks for a code review, audit, PR/diff review, bug
-  risk scan, security/performance/style feedback, or validation of recent changes.
-  Prioritize actionable findings with file and line evidence.
+  Use this skill when the user asks to review or audit source code, a PR, diff, commit,
+  or recent changes for bugs, security, performance, tests, compatibility, or
+  maintainability. Also use it after an AI agent finishes modifying code to inspect the
+  current uncommitted working tree before handoff and report actionable findings with
+  file and line evidence.
+compatibility: Requires Python 3.11+ and uv for the Git change helper.
 ---
 
-# Code Review Specifications
+# Code Review
 
-Apply the Reviewer Pattern. Follow this protocol strictly to systematically, objectively, and constructively review the user's code changes.
+Use the Reviewer workflow. Keep the review read-only and report only evidence-backed, actionable findings.
 
----
+## Trigger On
 
-## 1. Perceive Phase
+- The user requests a code, PR, diff, commit, security, performance, test, or maintainability review.
+- An AI Agent finishes modifying code, tests, configuration, or scripts before handoff.
 
-1. **Identify the Input Source**:
-   - **Scenario A: Specific files are provided**
-     - If the user provides specific file paths or directly attaches code snippets in the conversation, use them as the primary targets for review.
-   - **Scenario B: No files are specified but inside a Git repository**
-     - If the user asks to "review changes", "review PR", or asks for a review without providing explicit code but the project is a Git repository, **proactively run the helper script** to fetch the changes:
-       ```bash
-       uv run skills/neo-code-review/scripts/git-diff-reviewer.py
-       ```
-     - To review only the staging area, append the `--staged` argument.
-     - To review a specific commit range, append the `--commit <range>` argument.
-   - **Scenario C: No changes detected and not a Git repository**
-     - If no code input is detected and the environment is not a Git repository, gracefully prompt the user: "No code changes detected. Please provide a specific code snippet or file path." and terminate the review.
+## Workflow
 
-2. **Identify Programming Languages & Frameworks**:
-   - Identify the programming language (e.g., TypeScript, C#, Python) and relevant frameworks in the code changes to apply language-specific style standards in subsequent phases.
+1. **Collect the review scope**
+   - Use the files or code snippets supplied by the user as the primary scope.
+   - If no scope is supplied inside a Git repository, run:
+     ```bash
+     uv run skills/neo-code-review/scripts/git-diff-reviewer.py --working-tree
+     ```
+   - Use `--staged` for staged-only changes and `--commit <range>` for a commit range.
+   - Read surrounding code, related tests, and existing contracts. If no reviewable input exists, report it and stop.
 
----
+2. **Load the rules**
+   - Read [review-checklist.md](references/review-checklist.md) before evaluating code.
+   - Identify the actual language, framework, and affected behavior from the change. Do not infer unverified rules from filenames.
 
-## 2. Reason Phase
+3. **Analyze risk**
+   - Prioritize correctness, regressions, security, data consistency, resource lifetime, concurrency, and high-risk test gaps.
+   - `🔴 Critical Issues` contain only security vulnerabilities, data loss, incorrect behavior, authorization bypasses, or major regressions.
+   - `🟡 Suggestions` contain only actionable, non-blocking issues with a clear impact and remediation direction.
+   - Do not report preferences, unsupported speculation, or checklist items that were not triggered by evidence.
 
-1. **Load the Review Checklist**:
-   - Before evaluating any code, **always read** the external review checklist reference:
-     [review-checklist.md](file:///Users/ben/Projects/neo-skills/skills/neo-code-review/references/review-checklist.md)
-   
-2. **Systematically Evaluate Code**:
-   - Analyze the code logic deeply and compare it against the checklist dimensions: Correctness, Regression Risk, Security, Performance, Data & Concurrency, Test Gaps, SOLID/Design Principles, Logging/Observability, Maintainability, and Style.
-   - Prioritize evidence-backed findings that create concrete behavioral, security, operational, compatibility, or maintainability risk.
-   - Filter out **🔴 Critical Issues (Must-fix)** for defects such as requirement breakage, security vulnerabilities, data corruption/loss, broken authorization, severe regressions, or production-impacting reliability failures.
-   - Classify lower-risk performance, design, logging, test coverage, readability, and maintainability issues under **🟡 Suggestions** when they have a clear reason and actionable remediation.
+4. **Produce a concise report**
+   - Write in English and preserve file paths and line numbers, such as `src/user.ts:42`.
+   - Use this structure. Write `None` when a section has no findings; do not omit the severity sections:
 
----
+     ```markdown
+     ## 🔍 Review Summary
+     - **Status**: `🟢 Ready to deliver`, `🟡 Fix recommended`, `🔴 Delivery blocked`, or `⚪ No reviewable changes`
+     - **Scope**: Files or changes that were inspected.
 
-## 3. Act Phase
+     ## 🔴 Critical Issues
+     - **Location**: `path:line`
+       - **Problem**: Specific behavioral defect.
+       - **Impact**: Verifiable consequence.
+       - **Fix**: Concrete remediation direction; include code only when it clarifies the fix.
 
-Generate a highly structured and elegant Code Review Report in **Traditional Chinese (Taiwan)**. The report must strictly follow this format:
+     ## 🟡 Suggestions
+     - **Location**: `path:line`
+       - **Recommendation**: Specific, non-blocking improvement.
 
-### 🔍 審查摘要 (Summary)
-- **整體評估 (Overall Assessment)**: Provide a brief summary and a clear status rating (e.g., "🔴 需要重大修正後合併" (Needs major changes before merging), "🟡 建議修正後合併" (Recommended to fix before merging), "🟢 結構優良，隨時可合併" (Excellent structure, ready to merge)).
-- **變更概述 (Change Overview)**: Briefly describe the main purpose and scope of this change.
+     ## 🟢 Strengths
+     - List only strengths directly supported by the change.
 
-### 🔴 嚴重問題 (Critical Issues)
-*This section must ONLY contain **Must-fix** items (security vulnerabilities, critical logic bugs, or severe flaws that may cause system failure). If none are found, write "無" (None).*
-- **[檔案路徑 / 程式碼區段]** (File Path / Code Snippet)
-  - **問題描述 (Problem Description)**: Clearly state what the problem is.
-  - **嚴重原因 (Severity Reason)**: Explain *why* this is a critical issue and its potential consequences.
-  - **修復方案 (Remediation)**: Provide a **concrete corrected code snippet (Code Snippet)** comparing it with the original or showing the fixed version.
+     ## Validation
+     - List executed tests, builds, or checks that were not run.
+     ```
 
-### 🟡 改進建議 (Suggestions)
-*Includes suggestions for performance optimization, clean code refactoring, edge-case handling, and comment improvements.*
-- **[檔案路徑 / 程式碼區段]** (File Path / Code Snippet)
-  - **建議事項 (Recommendation)**: How to optimize the code for performance, readability, or maintainability.
-  - **推薦做法 (Proposed Fix)**: Provide an optimized code example.
-
-### 🟢 優秀之處 (Praise) (Optional)
-- Highlight exceptionally well-written, elegant, highly readable, or well-tested code sections to encourage best practices.
-
-### ❓ 疑問與釐清 (Questions) (Optional)
-- Ask objective questions regarding business logic or unexpected implementations to seek clarification from the user.
-
----
-
-## 4. Communication Guidelines
-
-- **Focus on the Code, not the Coder**: Be constructive, objective, respectful, and humble.
-- **Provide Code Snippets**: Always provide a "corrected code example" for identified issues where applicable. Avoid purely theoretical descriptions.
+5. **Apply the delivery gate**
+   - If an automatic review finds `🔴 Critical Issues`, cannot establish the review scope, or cannot load the skill, do not declare completion or hand off.
+   - After fixing findings, rerun the required checks and review the changes again.

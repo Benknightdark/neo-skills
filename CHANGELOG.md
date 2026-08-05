@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.93.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.92.0...neo-skills-v0.93.0) (2026-08-05)
+
+
+### Features
+
+* 更新 package.json 版本號至 1.1.23 ([3ee7a5b](https://github.com/Benknightdark/neo-skills/commit/3ee7a5be6ab79d91185ad8d55e2aca5c7f369f48))
+
 ## [0.92.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.91.0...neo-skills-v0.92.0) (2026-08-02)
 
 

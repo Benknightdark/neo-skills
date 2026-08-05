@@ -1,26 +1,28 @@
 {
   "should_trigger": [
-    "請幫我對這個拉取請求 (PR) 進行代碼審查",
-    "這段程式碼有沒有潛在的 Bug 或記憶體洩漏？",
-    "幫我看一下這個 JavaScript 檔案的安全性寫得怎麼樣",
-    "audit this python script for potential SQL injection or security flaws",
-    "我們今天的 git 變更寫得如何？執行 code review",
-    "review my latest git commit changes",
-    "幫我重構並審查這段 C# 程式碼，看有沒有違反 SOLID 原則",
-    "這段 TypeScript 程式碼寫得好嗎？有沒有改進空間？",
-    "檢查一下這段 SQL 查詢的效能，會不會有慢查詢或缺少索引的問題",
-    "進行靜態代碼分析，指出這個 Go 專案中的問題"
+    "Please review this pull request for correctness and regressions",
+    "Does this code contain potential bugs or memory leaks?",
+    "Review the security of this JavaScript file",
+    "Audit this Python script for potential SQL injection or security flaws",
+    "Review today's Git changes",
+    "Review the changes in my latest Git commit",
+    "Refactor and review this C# code for SOLID violations",
+    "Is this TypeScript code well designed? What should be improved?",
+    "Check this SQL query for performance problems, slow queries, or missing indexes",
+    "Run static code analysis and identify problems in this Go project",
+    "An AI Agent just finished modifying code. Review the uncommitted changes before handoff"
   ],
   "should_not_trigger": [
-    "如何安裝 git？",
-    "請幫我寫一個能夠上傳檔案的 FastAPI 後端介面",
-    "解釋一下什麼是 N+1 查詢問題與如何解決",
-    "幫我建立一個全新的 React 專案",
-    "請推薦好用的 Python Linter 工具",
-    "如何配置 tsconfig.json 來支援 ESM？",
-    "在 MacOS 上如何部署 Docker 容器？",
-    "幫我把這段 Python 代碼翻譯成 Rust",
-    "什麼是 SQL Injection 的原理？",
-    "幫我產生一份今天的開發進度週報"
+    "How do I install Git?",
+    "Write a FastAPI endpoint that uploads files",
+    "Explain the N+1 query problem and how to solve it",
+    "Create a new React project",
+    "Recommend a Python linter",
+    "How do I configure tsconfig.json for ESM?",
+    "How do I deploy a Docker container on macOS?",
+    "Translate this Python code into Rust",
+    "What is the principle behind SQL injection?",
+    "Generate today's development progress report",
+    "Run the current project's tests only; do not perform a code review"
   ]
 }

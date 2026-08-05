@@ -3,27 +3,38 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "請幫我審查這段 Python 程式碼：\n```python\nimport sqlite3\n\ndef get_user_data(user_id):\n    conn = sqlite3.connect('users.db')\n    cursor = conn.cursor()\n    # 存在 SQL 注入風險與資源未關閉\n    query = f\"SELECT * FROM users WHERE id = '{user_id}'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n```",
-      "expected_output": "結構化的代碼審查報告。必須明確指出 `user_id` 的 SQL 注入漏洞 (🔴 嚴重問題)，指出資料庫連接未釋放的效能/資源問題 (🟡 改進建議)，並提供參數化查詢與 `with` 語法糖的修正程式碼範例。報告應全為繁體中文，且包含標準的審查摘要與結構標題。",
+      "prompt": "Review this Python code:\n```python\nimport sqlite3\n\ndef get_user_data(user_id):\n    conn = sqlite3.connect('users.db')\n    cursor = conn.cursor()\n    query = f\"SELECT * FROM users WHERE id = '{user_id}'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n```",
+      "expected_output": "A concise English review report. It must identify SQL injection caused by user_id and the unreleased database resources, classify SQL injection as a 🔴 Critical Issue, and provide concrete remediation using a parameterized query and resource management.",
       "assertions": [
-        "輸出包含 '🔍 審查摘要'",
-        "輸出包含 '🔴 嚴重問題'",
-        "輸出包含 '🟡 改進建議'",
-        "報告使用繁體中文 (台灣)",
-        "報告中指出 SQL 注入 (SQL Injection) 漏洞",
-        "報告中指出資料庫連接或 cursor 未正確釋放/關閉的問題",
-        "提供使用參數化查詢 (parameterized query) 或 with 語法的修復代碼範例"
+        "The output contains '🔍 Review Summary', '🔴 Critical Issues', '🟡 Suggestions', and '## Validation'",
+        "The report identifies the SQL injection vulnerability and its verifiable impact",
+        "The report identifies the database connection or cursor resource leak",
+        "The report classifies SQL injection as a delivery-blocking issue",
+        "The report provides remediation using a parameterized query and resource management",
+        "The report is written in English and contains no unsupported additional findings"
       ]
     },
     {
       "id": 2,
-      "prompt": "審查這段沒有明顯問題的 TypeScript 程式碼，並給出建議：\n```typescript\nexport interface User {\n  id: string;\n  name: string;\n  email: string;\n}\n\nexport function formatUserGreeting(user: User): string {\n  return `Hello, ${user.name}! Welcome back.`;\n}\n```",
-      "expected_output": "給予正面評價的繁體中文審查報告，包含摘要、優秀之處 (🟢 優秀之處)，且無嚴重的 Must-fix 問題。可能包含一些關於型別定義或未來擴充性的輕微建議。",
+      "prompt": "Review this TypeScript code with no obvious problems and provide recommendations:\n```typescript\nexport interface User {\n  id: string;\n  name: string;\n  email: string;\n}\n\nexport function formatUserGreeting(user: User): string {\n  return `Hello, ${user.name}! Welcome back.`;\n}\n```",
+      "expected_output": "A concise English review report. 🔴 Critical Issues must be None, the status must not block delivery, and the 🟢 Strengths section should recognize the clear types and simple function design.",
       "assertions": [
-        "輸出包含 '🔍 審查摘要'",
-        "報告中沒有將此代碼列為 '🔴 嚴重問題' (Must-fix)",
-        "輸出包含 '🟢 優秀之處'",
-        "報告中讚賞其簡單明瞭、型別定義清晰與具備良好的可讀性"
+        "The output contains '🔍 Review Summary', '🔴 Critical Issues', '🟢 Strengths', and '## Validation'",
+        "The 🔴 Critical Issues section explicitly says None",
+        "The report does not invent security, performance, or test defects",
+        "The report recognizes clear type definitions, simple logic, and good readability"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "An AI Agent just finished modifying code, tests, and configuration. Before handoff, run neo-code-review against the current uncommitted working tree, including staged, unstaged, and untracked files. Stop delivery if critical issues are found.",
+      "expected_output": "A concise English report scoped to the current uncommitted working tree. It must cite actual file and line evidence and use 🔴 Critical Issues to decide whether delivery is blocked. If no readable changes exist, it must state that no reviewable changes were found without inventing findings.",
+      "assertions": [
+        "The report confirms that the current uncommitted working tree was reviewed",
+        "The report distinguishes the staged, unstaged, and untracked file inputs",
+        "The report cites file paths and line numbers or clearly explains why they are unavailable",
+        "If 🔴 Critical Issues are found, the status blocks delivery",
+        "The report invents no findings when no changes exist"
       ]
     }
   ]

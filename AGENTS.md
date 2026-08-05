@@ -46,8 +46,8 @@ graph TD
 4. **Plan Edits**: Decompose the task into small, atomic edit plans to avoid large single-turn changes.
 5. **Minimal Implementation**: Apply minimal code changes while preserving existing comments and public API contracts.
 6. **Incremental Verification**: Run local test, lint, and build commands immediately after each edit.
-7. **Self-Review**: Inspect diffs and execution logs; if checks fail, read full un-truncated error logs to find the root cause.
-8. **Remediate on Failure**: If verification or self-review fails, return to "Plan Edits / Minimal Implementation" to adjust.
+7. **Self-Review**: After an AI Agent finishes modifying code, tests, configuration, or scripts, activate `neo-code-review` and review the current uncommitted working tree with `--working-tree`. Inspect diffs and execution logs; if checks fail, read full un-truncated error logs to find the root cause.
+8. **Remediate on Failure**: If verification or review finds a critical issue, the review scope is unclear, or the skill cannot be loaded, do not declare completion or hand off. Return to "Plan Edits / Minimal Implementation", then rerun verification and `neo-code-review` after each remediation.
 9. **Handoff upon Pass**: Once all verification sensors pass, present a concise report with empirical proof for handoff.
 
 ---

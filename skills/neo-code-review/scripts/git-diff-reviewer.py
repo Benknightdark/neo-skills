@@ -4,168 +4,232 @@
 # dependencies = []
 # ///
 
-"""
-AI Agentic Git Diff & Code Reader Tool (Non-interactive)
-專為 AI Agent 設計的非互動式程式碼變更與內容擷取腳本。
+"""Non-interactive Git change and file reader for AI Agents.
 
-設計要點：
-1. 嚴禁任何互動式提示詞 (input(), confirm())。
-2. 診斷日誌、錯誤訊息一律寫入 sys.stderr。
-3. 處理結果一律以乾淨的 JSON 結構輸出至 sys.stdout (或寫入指定 --output 檔案)。
+Output rules:
+1. Never request interactive input.
+2. Write diagnostics to stderr.
+3. Write JSON results to stdout or the file supplied with --output.
 """
 
-import sys
 import argparse
-import subprocess
 import json
 import os
-from typing import Dict, List, Any
+import subprocess
+import sys
+from typing import Any, Dict, List
+
 
 def log_diagnostic(message: str) -> None:
-    """將診斷日誌印至 stderr，避免污染 stdout 的 JSON。"""
+    """Write a diagnostic message to stderr."""
     print(f"[LOG] {message}", file=sys.stderr)
 
+
 def run_command(cmd: List[str]) -> str:
-    """執行 shell 命令並返回 stdout，出錯時拋出異常。"""
+    """Run a command and return stdout while preserving stderr on failure."""
     try:
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
-            check=True
+            check=True,
         )
         return result.stdout
-    except subprocess.CalledProcessError as e:
-        error_msg = f"命令執行失敗: {' '.join(cmd)}\nStderr: {e.stderr}"
-        raise RuntimeError(error_msg)
+    except subprocess.CalledProcessError as error:
+        raise RuntimeError(
+            f"Command failed: {' '.join(cmd)}\nStderr: {error.stderr}"
+        ) from error
 
-def get_git_diff(staged_only: bool = False, commit_range: str = None) -> str:
-    """根據參數獲取 git diff 內容。"""
+
+def is_git_repository() -> bool:
+    """Return whether the current path is inside a Git worktree."""
+    try:
+        run_command(["git", "rev-parse", "--is-inside-work-tree"])
+        return True
+    except RuntimeError:
+        return False
+
+
+def has_git_head() -> bool:
+    """Return whether the repository has at least one commit."""
+    try:
+        run_command(["git", "rev-parse", "--verify", "HEAD"])
+        return True
+    except RuntimeError:
+        return False
+
+
+def get_git_diff(staged_only: bool = False, commit_range: str | None = None) -> str:
+    """Get staged changes or a requested commit range."""
     cmd = ["git", "diff"]
     if commit_range:
         cmd.append(commit_range)
     elif staged_only:
         cmd.append("--cached")
-    
-    log_diagnostic(f"執行 Git 命令: {' '.join(cmd)}")
+
+    log_diagnostic(f"Running Git command: {' '.join(cmd)}")
     return run_command(cmd)
 
+
+def get_working_tree_diff() -> str:
+    """Get tracked changes after HEAD, including staged and unstaged changes."""
+    if has_git_head():
+        cmd = ["git", "diff", "HEAD", "--"]
+        log_diagnostic(f"Running Git command: {' '.join(cmd)}")
+        return run_command(cmd)
+
+    log_diagnostic("The repository has no HEAD; collecting staged and unstaged changes separately.")
+    parts = [
+        run_command(["git", "diff", "--cached", "--"]),
+        run_command(["git", "diff", "--"]),
+    ]
+    return "\n".join(part for part in parts if part.strip())
+
+
+def get_untracked_files() -> List[str]:
+    """Get non-ignored untracked files while preserving spaces in paths."""
+    output = run_command(["git", "ls-files", "--others", "--exclude-standard", "-z"])
+    return [path for path in output.split("\0") if path]
+
+
 def read_files_content(paths: List[str]) -> List[Dict[str, str]]:
-    """讀取指定檔案的完整內容。"""
-    contents = []
+    """Read the contents of the supplied files."""
+    contents: List[Dict[str, str]] = []
     for path in paths:
         if not os.path.exists(path):
-            log_diagnostic(f"[警告] 檔案不存在，跳過: {path}")
+            log_diagnostic(f"[WARN] File does not exist; skipping: {path}")
             continue
         if os.path.isdir(path):
-            log_diagnostic(f"[警告] 路徑是目錄，跳過: {path}")
+            log_diagnostic(f"[WARN] Path is a directory; skipping: {path}")
             continue
-            
+
         try:
-            log_diagnostic(f"讀取檔案內容: {path}")
-            with open(path, "r", encoding="utf-8", errors="ignore") as f:
-                contents.append({
-                    "path": path,
-                    "content": f.read()
-                })
-        except Exception as e:
-            log_diagnostic(f"[錯誤] 無法讀取檔案 {path}: {str(e)}")
-            
+            log_diagnostic(f"Reading file: {path}")
+            with open(path, "r", encoding="utf-8", errors="ignore") as file:
+                contents.append({"path": path, "content": file.read()})
+        except OSError as error:
+            log_diagnostic(f"[ERROR] Could not read {path}: {error}")
+
     return contents
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="專為 AI Agent 設計的非互動式代碼變更與內容擷取工具。",
-        epilog="使用範例: uv run git-diff-reviewer.py --staged"
+        description="Non-interactive Git change and file reader for AI Agents.",
+        epilog="Example: uv run git-diff-reviewer.py --working-tree",
     )
     parser.add_argument(
-        "-i", "--input",
+        "-i",
+        "--input",
         nargs="*",
-        help="選填。指定審查的檔案路徑列表。若未指定，將預設讀取 Git 變更。"
+        help="File paths to review; use Git change mode when omitted.",
     )
     parser.add_argument(
         "--staged",
         action="store_true",
-        help="僅讀取已暫存 (Staged) 的 Git 變更。"
+        help="Read staged Git changes only.",
+    )
+    parser.add_argument(
+        "--working-tree",
+        action="store_true",
+        help="Read tracked changes after HEAD and non-ignored untracked files.",
     )
     parser.add_argument(
         "--commit",
-        help="選填。指定 Commit 雜湊值或範圍（例如 HEAD~1..HEAD 或 commit_sha），獲取該範圍內的變更。"
+        help="Commit hash or range, for example HEAD~1..HEAD.",
     )
     parser.add_argument(
-        "-o", "--output",
-        help="選填。將 JSON 結果寫入指定檔案，而非輸出至 stdout。"
+        "-o",
+        "--output",
+        help="Write JSON to this file instead of stdout.",
     )
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="模擬執行模式，僅在 stderr 輸出分析計畫，不輸出最終的代碼內容。"
+        help="Check the selected mode and Git state without reading change content.",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    selectors = [
+        bool(args.input),
+        args.staged,
+        args.working_tree,
+        bool(args.commit),
+    ]
+    if sum(selectors) > 1:
+        raise ValueError(
+            "The --input, --staged, --working-tree, and --commit options are mutually exclusive."
+        )
+
+    return args
+
 
 def main() -> None:
     try:
         args = parse_args()
-        
-        # 準備回傳的結構化資料
         result: Dict[str, Any] = {
             "mode": "git-diff",
             "diff": "",
             "files": [],
-            "status": "success"
+            "status": "success",
         }
-        
-        # 1. 如果指定了具體檔案
+
         if args.input:
             result["mode"] = "specific-files"
-            log_diagnostic(f"指定檔案審查模式。目標檔案數: {len(args.input)}")
+            log_diagnostic(f"Specific-file review mode; file count: {len(args.input)}")
             if not args.dry_run:
                 result["files"] = read_files_content(args.input)
-        
-        # 2. 否則，預設使用 Git 變更模式
         else:
-            result["mode"] = "git-diff"
-            log_diagnostic("未指定特定檔案，進入 Git 變更審查模式。")
-            
-            # 先檢查是否為 git 專案
-            try:
-                run_command(["git", "rev-parse", "--is-inside-work-tree"])
-            except Exception:
+            if not is_git_repository():
                 result["status"] = "error"
-                result["error_message"] = "當前目錄非 Git 專案，且未指定輸入檔案。"
-                print(json.dumps(result, indent=2))
-                log_diagnostic("[錯誤] 當前目錄非 Git 專案。")
+                result["error_message"] = "The current path is not a Git repository and no input files were supplied."
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+                log_diagnostic("[ERROR] The current path is not a Git repository.")
                 sys.exit(1)
-                
-            if not args.dry_run:
-                diff_content = get_git_diff(staged_only=args.staged, commit_range=args.commit)
-                if not diff_content.strip():
-                    log_diagnostic("未偵測到任何 Git 變更（diff 為空）。")
-                    result["status"] = "empty"
-                else:
-                    result["diff"] = diff_content
-                    
-        # 3. 輸出結果
-        output_str = json.dumps(result, indent=2)
+
+            if args.working_tree:
+                result["mode"] = "working-tree"
+                log_diagnostic("Entering working-tree review mode.")
+                if not args.dry_run:
+                    result["diff"] = get_working_tree_diff()
+                    untracked_files = get_untracked_files()
+                    result["files"] = read_files_content(untracked_files)
+                    if not result["diff"].strip() and not untracked_files:
+                        result["status"] = "empty"
+                        log_diagnostic("No tracked or untracked changes were detected.")
+            else:
+                log_diagnostic("Entering Git change review mode.")
+                if not args.dry_run:
+                    diff_content = get_git_diff(
+                        staged_only=args.staged,
+                        commit_range=args.commit,
+                    )
+                    if not diff_content.strip():
+                        result["status"] = "empty"
+                        log_diagnostic("No Git changes were detected.")
+                    else:
+                        result["diff"] = diff_content
+
+        output_str = json.dumps(result, indent=2, ensure_ascii=False)
         if args.output:
-            with open(args.output, "w", encoding="utf-8") as f:
-                f.write(output_str)
-            log_diagnostic(f"已成功將代碼變更 JSON 寫入至: {args.output}")
+            with open(args.output, "w", encoding="utf-8") as file:
+                file.write(output_str)
+            log_diagnostic(f"Wrote JSON result to: {args.output}")
         else:
-            # 乾淨地將結果印在 stdout
             print(output_str)
-            
+
         sys.exit(0)
-        
-    except Exception as e:
-        log_diagnostic(f"[致命錯誤] 執行失敗: {str(e)}")
-        # 確保即使出錯也輸出 JSON 錯誤，使調用端不易崩潰
-        error_result = {
-            "status": "error",
-            "error_message": str(e)
-        }
-        print(json.dumps(error_result, indent=2))
+    except Exception as error:
+        log_diagnostic(f"[FATAL] Execution failed: {error}")
+        print(
+            json.dumps(
+                {"status": "error", "error_message": str(error)},
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

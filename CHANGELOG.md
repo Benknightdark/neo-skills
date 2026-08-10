@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.94.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.93.0...neo-skills-v0.94.0) (2026-08-05)
+
+
+### Features
+
+* 更新 git-diff-reviewer 腳本以支援工作樹模式，並新增測試案例 ([ff5ad03](https://github.com/Benknightdark/neo-skills/commit/ff5ad03b45202e47e744327d770a31c3b93b660b))
+* 更新 package.json 版本號至 1.1.24 ([60aa6e1](https://github.com/Benknightdark/neo-skills/commit/60aa6e175b06c942f584658319dbcc776dccb774))
+* 移除標題中的括號，簡化 SKILL.md 文件格式 ([67b501d](https://github.com/Benknightdark/neo-skills/commit/67b501dbd3e3b9d28baee6c2b77cecf9f3700b39))
+
 ## [0.93.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.92.0...neo-skills-v0.93.0) (2026-08-05)
 
 

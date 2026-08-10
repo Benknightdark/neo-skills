@@ -25,7 +25,8 @@ Agent = Model (Reasoning & Generation) + Harness (Guides + Sensors + Gates + Top
 The generated `AGENTS.md` acts as the single source of truth governing all AI Agents operating in the project.
 
 > [!IMPORTANT]
-> **Size Constraint**: The generated `AGENTS.md` MUST NOT exceed 32 KiB (32,768 bytes) to prevent token pollution in session context windows.
+> **Template Compliance & Size Constraint**:
+> Any created or modified `AGENTS.md` MUST strictly adhere to the design specification of [`assets/AGENTS.md.template`](assets/AGENTS.md.template) (containing 4 mandatory sections: Project Overview, Commands Table, 9-stage Workflow Mermaid loop, and Forbidden Antipattern Redlines Table) and MUST NOT exceed 32 KiB (32,768 bytes).
 
 ---
 
@@ -39,6 +40,9 @@ python3 skills/neo-harness/scripts/generate-agents-md.py --target-dir /path/to/r
 
 # Generate AGENTS.md directly in target repository
 python3 skills/neo-harness/scripts/generate-agents-md.py --target-dir /path/to/repo --force
+
+# Validate existing AGENTS.md against assets/AGENTS.md.template design specification
+python3 skills/neo-harness/scripts/generate-agents-md.py --target-dir /path/to/repo --validate
 ```
 
 ---
@@ -59,17 +63,18 @@ Load detailed reference knowledge as needed:
 * **Execution Protocol & SOP**: Read [references/execution-protocol.md](references/execution-protocol.md) to enforce the 5 Harness Laws, dual-loop SOP, zero-fake pass, and antipattern rules.
 * **Orchestration Topologies**: Read [references/orchestration-patterns.md](references/orchestration-patterns.md) to select appropriate routing, chaining, or human-in-the-loop (HITL) gates.
 
-### Step 3 — Generate `AGENTS.md`
-Use `scripts/generate-agents-md.py` or [assets/AGENTS.md.template](assets/AGENTS.md.template) as the baseline template. Populate it with discovered project facts:
-1. **Feedforward Guides**: Exact coding styles, module boundaries, and domain conventions.
-2. **Deterministic Feedback Sensors**: Exact one-click test/lint/build commands.
-3. **The 5 Agent Harness Laws**: Mandatory execution principles.
-4. **Dual Closed-Loop Execution SOP**: Perceive ➔ Execute ➔ Sense ➔ Remediate.
-5. **Forbidden Antipatterns**: Strict redlines (no silent exception swallowing, no test deletion, no hallucinated signatures).
-6. **Human Decision Points & Safety Redlines**: Explicit boundaries requiring human approval.
+### Step 3 — Generate & Format `AGENTS.md`
+Use `scripts/generate-agents-md.py` with [assets/AGENTS.md.template](assets/AGENTS.md.template) as the strict baseline template.
+All created or modified `AGENTS.md` files MUST strictly contain the following 4 structural sections in order:
+1. **`## 1. Project Overview`**: Primary tech stack, modular architecture, and coding conventions.
+2. **`## 2. Commands`**: Standard markdown table (`Command Type`, `Exact Command Line`, `Purpose / Scope`) listing test, typecheck, lint, build, or syntax check commands.
+3. **`## 3. Workflow`**: The mandatory 9-stage closed loop Mermaid diagram (`graph TD` from Step1 to Step9) followed by the 9 numbered step definitions.
+4. **`## 4. Forbidden Antipattern Redlines`**: Standard markdown table (`Forbidden Action`, `Why It Is Prohibited`, `Required Behavior`) specifying non-negotiable redlines.
 
-### Step 4 — Verify Size & Quality Gate
-1. Check the file size of the generated `AGENTS.md`:
+### Step 4 — Verify Template Compliance & Quality Gate
+1. Validate structural compliance against `assets/AGENTS.md.template`:
+   - Run `python3 skills/neo-harness/scripts/generate-agents-md.py --target-dir /path/to/repo --validate`.
+2. Check the file size of the generated `AGENTS.md`:
    - Must be `<= 32,768 bytes`.
    - If over 32 KiB, prune redundant descriptions or move extended reference docs to separate files under `.agents/` or `docs/`.
-2. Validate syntax and formatting.
+3. Validate syntax and markdown formatting.

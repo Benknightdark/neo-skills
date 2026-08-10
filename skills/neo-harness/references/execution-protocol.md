@@ -45,3 +45,20 @@ Immediately pause and request human intervention when encountering:
 2. Identify the exact file line number and root cause exception message.
 3. Formulate a targeted fix addressing the root cause, not just masking the symptom.
 4. Re-run verification commands to confirm the fix works cleanly.
+
+---
+
+## AGENTS.md Template Specification Gate
+
+All created or updated `AGENTS.md` files MUST comply with the design specification of `assets/AGENTS.md.template`:
+
+1. **Mandatory Sections**:
+   - Section 1: `## 1. Project Overview` (Tech stack, architecture, modularity)
+   - Section 2: `## 2. Commands` (3-column markdown table: `Command Type`, `Exact Command Line`, `Purpose / Scope`)
+   - Section 3: `## 3. Workflow` (9-stage closed loop Mermaid diagram `graph TD` and 9 numbered steps)
+   - Section 4: `## 4. Forbidden Antipattern Redlines` (3-column markdown table: `Forbidden Action`, `Why It Is Prohibited`, `Required Behavior`)
+2. **File Size Limit**:
+   - Strictly `<= 32,768 bytes` (32 KiB).
+3. **Automated Validation**:
+   - Run `python3 skills/neo-harness/scripts/generate-agents-md.py --target-dir <repo-path> --validate`.
+

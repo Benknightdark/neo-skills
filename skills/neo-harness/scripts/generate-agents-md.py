@@ -202,9 +202,51 @@ def enforce_size_limit(content: str) -> str:
     return pruned_content
 
 
+def validate_agents_md_structure(content: str) -> list[str]:
+    """
+    Validate content against assets/AGENTS.md.template structural requirements.
+    Returns a list of error validation messages (empty list if compliant).
+    """
+    errors = []
+
+    # 1. Size limit check
+    byte_size = len(content.encode("utf-8"))
+    if byte_size > MAX_BYTES:
+        errors.append(f"File size ({byte_size} bytes) exceeds maximum limit of 32 KiB ({MAX_BYTES} bytes).")
+
+    # 2. Section 1 check
+    if "## 1. Project Overview" not in content:
+        errors.append("Missing required section: '## 1. Project Overview'")
+
+    # 3. Section 2 check
+    if "## 2. Commands" not in content:
+        errors.append("Missing required section: '## 2. Commands'")
+    else:
+        if "| Command Type | Exact Command Line | Purpose / Scope |" not in content:
+            errors.append("Section 2 missing required table header: '| Command Type | Exact Command Line | Purpose / Scope |'")
+
+    # 4. Section 3 check
+    if "## 3. Workflow" not in content:
+        errors.append("Missing required section: '## 3. Workflow'")
+    else:
+        if "```mermaid" not in content or "graph TD" not in content:
+            errors.append("Section 3 missing required Mermaid diagram ('```mermaid' with 'graph TD').")
+        if "1. **Perceive Task**" not in content or "9. **Handoff upon Pass**" not in content:
+            errors.append("Section 3 missing standard 9-stage closed loop workflow steps.")
+
+    # 5. Section 4 check
+    if "## 4. Forbidden Antipattern Redlines" not in content:
+        errors.append("Missing required section: '## 4. Forbidden Antipattern Redlines'")
+    else:
+        if "| Forbidden Action | Why It Is Prohibited | Required Behavior |" not in content:
+            errors.append("Section 4 missing required table header: '| Forbidden Action | Why It Is Prohibited | Required Behavior |'")
+
+    return errors
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Non-interactive AGENTS.md generator for neo-harness."
+        description="Non-interactive AGENTS.md generator and validator for neo-harness."
     )
     parser.add_argument(
         "--target-dir",
@@ -228,6 +270,11 @@ def main():
         action="store_true",
         help="Overwrite output file if it already exists",
     )
+    parser.add_argument(
+        "--validate",
+        action="store_true",
+        help="Validate target AGENTS.md against AGENTS.md.template design specification",
+    )
 
     args = parser.parse_args()
 
@@ -238,12 +285,37 @@ def main():
 
     output_path = Path(args.output) if args.output else target_dir / "AGENTS.md"
 
+    if args.validate:
+        if not output_path.exists():
+            log_diag(f"Validation Error: Target file '{output_path}' does not exist.")
+            sys.exit(1)
+
+        log_diag(f"Validating AGENTS.md file: {output_path}")
+        with open(output_path, "r", encoding="utf-8") as f:
+            target_content = f.read()
+
+        val_errors = validate_agents_md_structure(target_content)
+        if val_errors:
+            log_diag("AGENTS.md Template Validation Failed:")
+            for err in val_errors:
+                log_diag(f"  - {err}")
+            sys.exit(1)
+        else:
+            log_diag(f"AGENTS.md Template Validation Passed for '{output_path}'.")
+            sys.exit(0)
+
     log_diag(f"Scanning target directory: {target_dir}")
     facts = detect_project_facts(target_dir)
     log_diag(f"Detected project name: {facts['project_name']}, tech stack: {facts['tech_stack']}")
 
     content = generate_agents_md_content(facts)
     content = enforce_size_limit(content)
+
+    val_errors = validate_agents_md_structure(content)
+    if val_errors:
+        log_diag("Warning: Generated AGENTS.md failed template validation:")
+        for err in val_errors:
+            log_diag(f"  - {err}")
 
     byte_size = len(content.encode("utf-8"))
     log_diag(f"Generated AGENTS.md size: {byte_size} bytes ({byte_size/1024:.2f} KiB)")
@@ -264,3 +336,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

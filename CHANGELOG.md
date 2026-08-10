@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.95.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.94.0...neo-skills-v0.95.0) (2026-08-10)
+
+
+### Features
+
+* 調整neo-harness ([a482f7e](https://github.com/Benknightdark/neo-skills/commit/a482f7efc077339ab7244d8b2ba146ce93304fa7))
+* 調整neo-harness ([04623a1](https://github.com/Benknightdark/neo-skills/commit/04623a16be9b154b3494ff4002561556bcf97583))
+
 ## [0.94.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.93.0...neo-skills-v0.94.0) (2026-08-05)
 
 

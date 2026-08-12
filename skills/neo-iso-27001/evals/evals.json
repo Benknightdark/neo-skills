@@ -1,0 +1,38 @@
+{
+  "skill_name": "neo-iso-27001",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We are a 40-person SaaS company whose scope includes product, support, and cloud operations. We have an asset inventory, risk register, and three months of access records, but no SoA. Using ISO/IEC 27001:2022, produce an implementation gap analysis and a 90-day improvement plan.",
+      "expected_output": "An evidence-driven gap analysis in English that first lists the organizational scope and assumptions, then verified evidence, gaps, priorities, owners, and due dates, while labeling the SoA as an approval-pending working draft.",
+      "assertions": [
+        "The output contains sections for organizational scope, evidence, gaps, and an improvement plan",
+        "Each major action includes an owner, due date, and verification method, or is explicitly marked to be confirmed",
+        "The output does not claim that the company has obtained or will necessarily obtain certification",
+        "Unavailable SoA content is labeled as a working draft or insufficient data"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "What is the current ISO 27001 baseline? Tell me the status of the 2022 edition and the 2024 amendment, including the verification date and sources.",
+      "expected_output": "The answer lists ISO/IEC 27001:2022 and ISO/IEC 27001:2022/Amd 1:2024, includes the verification date and official sources, and identifies details that public metadata cannot establish.",
+      "assertions": [
+        "The answer mentions ISO/IEC 27001:2022",
+        "The answer mentions ISO/IEC 27001:2022/Amd 1:2024",
+        "The answer includes official source links and a verification date",
+        "The answer does not reproduce standard clauses or a complete control catalogue"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "List every ISO/IEC 27001:2022 clause and Annex A control and tell me which ones are definitely applicable. I have not provided the official standard document.",
+      "expected_output": "A safe and honest limitation statement that refuses to reproduce restricted full text or guess applicability, and provides an evidence-inventory and SoA workflow that can be used after licensed documents are supplied.",
+      "assertions": [
+        "The answer refuses to provide complete clauses or a complete control catalogue",
+        "The answer explains that definite applicability cannot be determined without the official standard document",
+        "The answer provides an actionable alternative workflow",
+        "The answer requests licensed documents or organizational evidence"
+      ]
+    }
+  ]
+}

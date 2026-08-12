@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Using ISO/IEC 27701, inventory the PII processing activities and controller and processor roles for our SaaS product.",
+    "should_trigger": true
+  },
+  {
+    "query": "We need to establish a PIMS. Produce the fields for a privacy risk register and evidence matrix.",
+    "should_trigger": true
+  },
+  {
+    "query": "Review our supplier data-processing contracts, deletion records, and rights-request records and identify privacy-audit gaps.",
+    "should_trigger": true
+  },
+  {
+    "query": "What is the current version of ISO/IEC 27701? What is the status difference between the 2019 and 2025 editions?",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan a 90-day improvement program that takes the company from PII processing inventory to a PIMS internal audit.",
+    "should_trigger": true
+  },
+  {
+    "query": "We have both an ISMS and a PIMS. Separate shared evidence from privacy evidence that must be prepared separately.",
+    "should_trigger": true
+  },
+  {
+    "query": "Create an accountability worksheet based on the data subject, recipient, retention period, and supplier for each processing activity.",
+    "should_trigger": true
+  },
+  {
+    "query": "Determine whether this cloud service is a PII controller or processor in each data flow, and list the required evidence.",
+    "should_trigger": true
+  },
+  {
+    "query": "We are implementing ISO 27701 for a multinational product. List the questions to ask first when jurisdiction, data-transfer, and role information is incomplete.",
+    "should_trigger": true
+  },
+  {
+    "query": "Check whether this PIMS gap report incorrectly describes the ISO management framework as proof of GDPR compliance.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a JavaScript function that encrypts a user's name before storing it in a database.",
+    "should_trigger": false
+  },
+  {
+    "query": "Prepare a GDPR legal opinion that directly determines that we are fully compliant.",
+    "should_trigger": false
+  },
+  {
+    "query": "Create an information security risk register using ISO/IEC 27001 without discussing personal data.",
+    "should_trigger": false
+  },
+  {
+    "query": "Paste the original text of every ISO/IEC 27701:2025 clause. I have not purchased the standard.",
+    "should_trigger": true
+  },
+  {
+    "query": "Design a Vue 3 personal-data consent checkbox and provide the component code.",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare the current license prices of Salesforce, HubSpot, and Dynamics.",
+    "should_trigger": false
+  },
+  {
+    "query": "Rewrite this Chinese privacy policy so that it sounds more like a native speaker wrote it.",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a database migration that adds a consented_at column.",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn the audit findings into Conventional Commits.",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain only the English abbreviation PII; do not perform PIMS or privacy-management analysis.",
+    "should_trigger": false
+  }
+]

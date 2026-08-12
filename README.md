@@ -38,6 +38,8 @@
 | 類別 | Skill | 使用時機 |
 | :--- | :--- | :--- |
 | Agent 治理 | `neo-harness` | 掃描專案環境，自動產生或升級專屬且合規的 AGENTS.md 檔，整合 Harness 評估、閉環 Workflow 與編排架構。 |
+| 資訊安全 | `neo-iso-27001` | 依 ISO/IEC 27001 進行 ISMS 範圍、風險、證據、差距分析、稽核準備與改善計畫。 |
+| 隱私管理 | `neo-iso-27701` | 依 ISO/IEC 27701 進行 PIMS、PII 角色、處理活動、隱私風險、證據與稽核準備。 |
 | DevOps | `neo-azure-pipelines` | 建立、審查、除錯或現代化 Azure Pipelines YAML，尤其是 .NET build、Azure App Service 或 IIS 部署。 |
 | 需求釐清 | `neo-clarification` | 將模糊、情緒化、片段式、截圖式需求轉成規格、驗收條件或釐清問題。 |
 | Code Review | `neo-code-review` | 進行程式碼審查、PR/diff review、bug 風險掃描、安全性、效能或可維護性檢查。 |

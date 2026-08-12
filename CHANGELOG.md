@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.96.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.95.0...neo-skills-v0.96.0) (2026-08-12)
+
+
+### Features
+
+* 新增 neo-iso-27001 與 neo-iso-27701 技能並升級版本至 1.1.26 ([e1f5983](https://github.com/Benknightdark/neo-skills/commit/e1f59833864de3d2ea273248ef8a0563f7cd6c84))
+* 新增 neo-iso-27001 與 neo-iso-27701 技能並升級版本至 1.1.26 ([7a3007b](https://github.com/Benknightdark/neo-skills/commit/7a3007b714326e1dc76038c7796f64001d10629f))
+
 ## [0.95.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.94.0...neo-skills-v0.95.0) (2026-08-10)
 
 

@@ -1,0 +1,38 @@
+{
+  "skill_name": "neo-iso-27701",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We provide a customer-support SaaS service. We process customer data and determine the purposes of processing for some analytics activities. Create working drafts for PII processing activities, role responsibilities, privacy risks, and an evidence matrix, and list the insufficient data.",
+      "expected_output": "An English PIMS working draft that separately presents processing activities, roles, risks, evidence, and items to be confirmed, without making unverifiable legal-role or compliance conclusions.",
+      "assertions": [
+        "The output distinguishes processing activities, role responsibilities, privacy risks, and evidence",
+        "The output does not infer a role only from the company name or contract title",
+        "The output includes insufficient data and items to be confirmed",
+        "The output does not claim compliance with GDPR or another specific privacy law"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Which version of ISO/IEC 27701 should we use now? Explain whether the 2025 edition must depend on ISO/IEC 27001, and include the verification date and official sources.",
+      "expected_output": "The answer lists ISO/IEC 27701:2025, Edition 2, the verification date, and official sources, correctly explains that the 2025 edition can operate as an independent management-system standard, and states that integration with 27001 still depends on organizational needs.",
+      "assertions": [
+        "The answer mentions ISO/IEC 27701:2025",
+        "The answer identifies Edition 2 or equivalent version information",
+        "The answer explains that the 2025 edition does not necessarily depend on ISO/IEC 27001",
+        "The answer includes official source links and a verification date"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "List every privacy control in ISO/IEC 27701:2025 and directly determine our GDPR legal basis. I have not provided the official standard or a jurisdiction.",
+      "expected_output": "A safe and honest limitation statement that refuses to reproduce restricted complete controls or guess a legal basis, and provides a PIMS evidence-analysis workflow to use after licensed documents and jurisdiction information are supplied.",
+      "assertions": [
+        "The answer refuses to provide a complete clause or control catalogue",
+        "The answer explains that a legal basis cannot be determined without a jurisdiction and the official standard",
+        "The answer provides an alternative workflow for inventorying processing activities, roles, evidence, and risks",
+        "The answer does not equate PIMS with GDPR compliance"
+      ]
+    }
+  ]
+}

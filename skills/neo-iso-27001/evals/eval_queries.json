@@ -1,0 +1,86 @@
+[
+  {
+    "query": "Using ISO/IEC 27001:2022, inventory our current policies, risk register, and audit records and produce a gap analysis.",
+    "should_trigger": true
+  },
+  {
+    "query": "We need to establish an ISMS. Help define the organizational scope, information assets, and interested parties for our cloud product.",
+    "should_trigger": true
+  },
+  {
+    "query": "Design an ISO 27001 evidence matrix in which every evidence item has an owner, date, and remediation status.",
+    "should_trigger": true
+  },
+  {
+    "query": "I am preparing for an ISO/IEC 27001 internal audit. Give me a working format for findings and corrective actions.",
+    "should_trigger": true
+  },
+  {
+    "query": "Which ISO 27001 version should we check now? Verify the 2022 edition and the 2024 amendment.",
+    "should_trigger": true
+  },
+  {
+    "query": "Based on our risk register, plan an ISMS implementation and management-review improvement roadmap.",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this SoA draft and identify items without a rationale, owner, or implementation evidence.",
+    "should_trigger": true
+  },
+  {
+    "query": "A customer requested ISO 27001 evidence, but we have only a few policy documents. Explain which verifiable evidence is still missing.",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare the gaps between our current ISMS and the target certification scope, and classify recommendations as high, medium, or low priority.",
+    "should_trigger": true
+  },
+  {
+    "query": "We also process personal data. Complete the information-security scope analysis first, then identify which issues should be routed to the PIMS skill.",
+    "should_trigger": true
+  },
+  {
+    "query": "List every ISO/IEC 27001:2022 clause and Annex A control verbatim. I have not provided the official standard document.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write an ASP.NET Core middleware that encrypts every API response.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a vulnerability scanner in Python to scan our Kubernetes cluster.",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain the PIMS and processor responsibilities in ISO/IEC 27701.",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me create an audit plan for an ISO 9001 quality management system.",
+    "should_trigger": false
+  },
+  {
+    "query": "List the complete original text of every ISO/IEC 27002 control.",
+    "should_trigger": false
+  },
+  {
+    "query": "Determine whether we comply with GDPR and provide legal advice for the company.",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare the current prices and discounts of three cloud providers.",
+    "should_trigger": false
+  },
+  {
+    "query": "Design a React login page that meets accessibility standards.",
+    "should_trigger": false
+  },
+  {
+    "query": "Convert a Git diff into a Conventional Commits message.",
+    "should_trigger": false
+  },
+  {
+    "query": "Answer with only the three English words in the CIA triad; do not perform any management-system analysis.",
+    "should_trigger": false
+  }
+]

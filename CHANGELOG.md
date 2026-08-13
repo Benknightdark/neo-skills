@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.97.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.96.0...neo-skills-v0.97.0) (2026-08-13)
+
+
+### Features
+
+* update version ([24ad112](https://github.com/Benknightdark/neo-skills/commit/24ad112393b38f317f17a2fb7164ff8e4a304820))
+* 新增 config.toml 檔案以設定模型參數 ([e2903c0](https://github.com/Benknightdark/neo-skills/commit/e2903c0e985dc16ab2c93913f6309999d201d2b9))
+* 新增 neo-rabbitmq 技能以支援 RabbitMQ 系統設計與效能分析 ([98164a7](https://github.com/Benknightdark/neo-skills/commit/98164a7ced6e9f0a67ecfa5ead772bb6d2bb0845))
+* 新增rabbitmq skill ([e8fc6c0](https://github.com/Benknightdark/neo-skills/commit/e8fc6c0652b93509e55dfa31f5a05fa27dc9cc4e))
+
 ## [0.96.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.95.0...neo-skills-v0.96.0) (2026-08-12)
 
 

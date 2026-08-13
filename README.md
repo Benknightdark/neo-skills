@@ -63,6 +63,7 @@
 | Agent 架構 | `neo-sub-agent` | 設計、建立、審查或轉換 sub-agent、custom agent、worker/reviewer/planner agent 或 multi-agent workflow。 |
 | 技能開發 | `generate-skill` | 建立、更新、審查或最佳化 Agent Skill，包含規格、觸發描述、延伸資源、評估資料與設計模式。 |
 | 可觀測性 | `neo-opentelemetry` | 解釋 OpenTelemetry 概念、規劃或審查 Collector 架構與設定、處理維運排障、安全、零程式 instrumentation 及相容性遷移。 |
+| queue | `neo-rabbitmq` | 以 RabbitMQ 4.3 為預設，提供語言中立的訊息拓撲、Broker 營運、監控排障與效能優化指引。 |
 | 文字潤飾 | `neo-stop-slop` | 去除繁中或英文中的 AI 腔、贅詞、公式化句式，支援文件、註解、commit message 與 PR 說明。 |
 | PR 產出 | `neo-pr` | 詢問或自動偵測 Repository 來源與目標分支，擷取變更並產生重點式且去 AI 腔的 PR Title 與 PR Description。 |
 
@@ -156,4 +157,5 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 建立 Agent 治理 | `neo-harness` | `幫我針對這個專案評估並產生 AGENTS.md` |
 | 建立 sub-agent | `neo-sub-agent` | `幫我新增一個 Codex code-reviewer sub agent` |
 | 規劃 OpenTelemetry | `neo-opentelemetry` | `幫我審查 Collector 架構、韌性、安全與零程式觀測方案` |
+| 設計 RabbitMQ 系統 | `neo-rabbitmq` | `請分析 RabbitMQ Queue 堆積、叢集營運與效能瓶頸` |
 | 去掉 AI 腔 | `neo-stop-slop` | `把這段 PR 說明改得自然、直接一點` |

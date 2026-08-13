@@ -1,0 +1,3 @@
+model_verbosity = "low"
+tool_output_token_limit = 8000
+model_auto_compact_token_limit = 100000

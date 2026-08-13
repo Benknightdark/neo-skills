@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Using language-neutral RabbitMQ 4.3 concepts, design the Exchange, Binding, Queue, confirmation, and retry topology for order events.",
+    "should_trigger": true
+  },
+  {
+    "query": "Choose between a general Queue, Quorum Queue, and Stream in RabbitMQ. Analyze the trade-offs for data safety, ordering, replay, and resource use.",
+    "should_trigger": true
+  },
+  {
+    "query": "Explain Publisher Confirms and Consumer Acknowledgements, then design a workflow that handles duplicate delivery.",
+    "should_trigger": true
+  },
+  {
+    "query": "RabbitMQ publishing is occasionally blocked. Plan read-only troubleshooting steps using Memory Alarms, Disk Alarms, Flow Control, and Consumer rate.",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan TLS, Virtual Host, least privilege, Management, and CLI administration for a RabbitMQ 4.3 cluster.",
+    "should_trigger": true
+  },
+  {
+    "query": "A RabbitMQ Queue keeps growing. Use Consumer Capacity, Prefetch, Ack Rate, Redelivery, and disk metrics to locate the bottleneck.",
+    "should_trigger": true
+  },
+  {
+    "query": "Design Prometheus monitoring and a RabbitMQ capacity baseline, including the cost of Per-object metrics.",
+    "should_trigger": true
+  },
+  {
+    "query": "We are preparing a node-by-node RabbitMQ upgrade. List checks for the Upgrade Path, Erlang, Feature Flags, backups, cluster health, and rollback.",
+    "should_trigger": true
+  },
+  {
+    "query": "RabbitMQ Connection and Channel counts keep increasing. Investigate Churn, File Descriptors, memory, and the application lifecycle.",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan Kubernetes storage, TLS, monitoring, upgrades, and failure troubleshooting from the RabbitMQ Operator perspective.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write Python code with pika to create a RabbitMQ Exchange, Queue, and Consumer.",
+    "should_trigger": false
+  },
+  {
+    "query": "Give me a Java RabbitMQ Client Publisher Confirm API example.",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement automatic RabbitMQ reconnect and Prefetch configuration in C#.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a RabbitMQ Stream Producer using the Go Client.",
+    "should_trigger": false
+  },
+  {
+    "query": "Show me how to modify React components and the Docusaurus Sidebar in the RabbitMQ website.",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize the latest RabbitMQ Blog post and republish it in full.",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare Kafka Broker partition performance without discussing RabbitMQ.",
+    "should_trigger": false
+  },
+  {
+    "query": "Optimize PostgreSQL indexes and execution plans.",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a general HTTP API retry service without a message Broker.",
+    "should_trigger": false
+  },
+  {
+    "query": "Install npm packages and fix dependency conflicts in a Node.js project.",
+    "should_trigger": false
+  }
+]

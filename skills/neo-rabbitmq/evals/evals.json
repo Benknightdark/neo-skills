@@ -1,0 +1,114 @@
+{
+  "skill_name": "neo-rabbitmq",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Using language-neutral RabbitMQ 4.3 concepts, design the Exchange, Binding, Queue, confirmation, and retry topology for order events.",
+      "expected_output": "State assumptions first, then describe the protocol, Virtual Host, Exchange, Binding, Queue type, Publisher Confirm, Consumer Ack, retry, and Dead Letter paths. Do not include Client code in any programming language.",
+      "assertions": [
+        "It clearly uses RabbitMQ 4.3 as the baseline before current-version verification",
+        "It distinguishes routing success, Publisher Confirm, and Consumer Ack semantics",
+        "It lists verification methods for duplicate delivery, retry limits, and Dead Lettering",
+        "It uses only topology and protocol semantics and contains no Java, Python, C#, or other language API code"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Choose between a general Queue, Quorum Queue, and Stream. Analyze the trade-offs for data safety, ordering, replay, and resource use.",
+      "expected_output": "Use a requirements matrix to compare the three data structures. Distinguish replication, ordering, Retention, Offset, replay, Consumer model, and resource cost, and require workload-based performance validation.",
+      "assertions": [
+        "It does not claim that one Queue type is fastest for every workload",
+        "It identifies Quorum Queue replication and resource trade-offs",
+        "It identifies Stream Offset, Retention, or replay semantics",
+        "It provides capacity and failure verification conditions after selection"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "RabbitMQ publishing is occasionally blocked. Plan a safe troubleshooting workflow.",
+      "expected_output": "Request the version, nodes, time range, and metrics first. Then isolate Memory Alarms, Disk Alarms, Flow Control, Queue backlog, Consumer rate, disk, and network with read-only checks before proposing changes with rollback steps.",
+      "assertions": [
+        "It treats alarms as protection mechanisms and bottleneck signals instead of immediately raising thresholds",
+        "It lists read-only checks before changes and rollback",
+        "It mentions that cluster alarms can affect multiple nodes",
+        "It explicitly states that the root cause cannot be determined without environment evidence"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Plan TLS, Virtual Host, least privilege, Management, and CLI administration for a RabbitMQ 4.3 cluster.",
+      "expected_output": "Separate network and certificates, Authentication, Authorization, Virtual Host, Management, CLI, monitoring accounts, and verification steps. Keep secrets out of examples.",
+      "assertions": [
+        "It distinguishes Authentication from Authorization",
+        "It uses Virtual Hosts for isolation and permission scope",
+        "It checks TLS Peer Verification, Listeners, or certificate rotation",
+        "It contains no passwords, Tokens, Cookies, private keys, or personal information"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Design Prometheus monitoring and a RabbitMQ performance baseline.",
+      "expected_output": "Cover Cluster, Node, Queue, Connection, Channel, Publisher, Consumer, Stream, Alarm, and host metrics. Explain aggregated versus Per-object metrics, scrape frequency, and monitoring cost.",
+      "assertions": [
+        "It first defines SLO, message size, rate, processing time, and topology baselines",
+        "It includes actionable metrics such as Consumer Capacity, Queue Depth, Ack latency, or Confirm latency",
+        "It warns about high cardinality and output cost from Per-object or Detailed metrics",
+        "It does not invent universal monitoring thresholds without source evidence"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We are preparing a node-by-node RabbitMQ upgrade. List the checks before, during, and after the upgrade.",
+      "expected_output": "Order checks around Upgrade Path, Erlang version, Release Notes, Feature Flags, Plugins, backups, cluster health, capacity, per-node verification, and rollback.",
+      "assertions": [
+        "It requires confirmation of the upgrade path from the source to target version",
+        "It includes Erlang, stable Feature Flag, Plugin, and cluster-capacity checks",
+        "Each node has stop, upgrade, start, and health-verification steps",
+        "It explains when a Rolling Upgrade is not applicable"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "A RabbitMQ Queue keeps growing. Find the possible performance bottlenecks.",
+      "expected_output": "Treat Queue backlog as a symptom. Isolate Publish, Routing, Storage, Network, Consumer, Prefetch, Ack, Redelivery, Alarm, and resource evidence. Label adding Consumers as a hypothesis to validate.",
+      "assertions": [
+        "It compares Publish Rate, Deliver Rate, Ack Rate, and Consumer Capacity",
+        "It checks unacknowledged messages, Prefetch, redelivery, and retry loops",
+        "It does not present adding Consumers as a universal solution",
+        "It lists Queue, Alarm, latency, and resource signals for post-fix verification"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Analyze why RabbitMQ Connection and Channel counts keep increasing.",
+      "expected_output": "Check lifecycle, creation and closure rates, File Descriptors, memory, reconnect spikes, Client distribution, and Connection or Channel Churn. Then propose reuse and capacity measures.",
+      "assertions": [
+        "It distinguishes Connection Churn from Channel Churn",
+        "It includes File Descriptor and memory evidence",
+        "It recommends long-lived resources and reasonable Publisher and Consumer separation",
+        "It does not produce connection-management code for a specific programming language"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Plan Kubernetes RabbitMQ operations from the Operator perspective.",
+      "expected_output": "Request Operator, RabbitMQ, Kubernetes, and CRD versions first. Then check storage, TLS, monitoring, Pod Disruption, upgrades, Operator logs, and RabbitMQ Broker health separately.",
+      "assertions": [
+        "It does not treat non-versioned Operator documentation as RabbitMQ 4.3 Broker documentation",
+        "It requires version and CRD compatibility checks",
+        "It covers storage, TLS, monitoring, upgrades, and troubleshooting",
+        "It does not provide unverified deletion, rebuild, or downtime commands"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Give me Python pika code for RabbitMQ automatic reconnect and Prefetch.",
+      "expected_output": "The request is outside the skill's language-specific Client API scope. Refuse to produce Python code, but provide language-neutral reconnect, Ack, Prefetch, duplicate-delivery, and verification semantics when useful, and point to the official Client Library documentation.",
+      "assertions": [
+        "It does not produce Python code or invent an API",
+        "It still explains language-neutral reliability and performance considerations",
+        "It clearly states the skill boundary and the need to consult official Client documentation"
+      ]
+    }
+  ]
+}

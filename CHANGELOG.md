@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.98.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.97.0...neo-skills-v0.98.0) (2026-08-17)
+
+
+### Features
+
+* 更新 neo-code-review 技能以支援重複邏輯與硬編碼值的檢查 ([6a10bcd](https://github.com/Benknightdark/neo-skills/commit/6a10bcdca4e5848339903addc3ed6122d5472d5c))
+* 更新版本至 1.1.28 ([0133814](https://github.com/Benknightdark/neo-skills/commit/013381487ffb272d4d0325a478e7462dee4ce668))
+* 更新版本至 1.1.28 ([0d53b8f](https://github.com/Benknightdark/neo-skills/commit/0d53b8f0c6bd390b4df6ad6f71b021628baea333))
+
 ## [0.97.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.96.0...neo-skills-v0.97.0) (2026-08-13)
 
 

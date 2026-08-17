@@ -10,7 +10,10 @@
     "Is this TypeScript code well designed? What should be improved?",
     "Check this SQL query for performance problems, slow queries, or missing indexes",
     "Run static code analysis and identify problems in this Go project",
-    "An AI Agent just finished modifying code. Review the uncommitted changes before handoff"
+    "An AI Agent just finished modifying code. Review the uncommitted changes before handoff",
+    "Review this pull request and check whether validation logic or hard-coded limits are duplicated in other source files",
+    "Audit the repository for copy-pasted business rules and repeated URLs, timeouts, or thresholds introduced by these changes",
+    "Check whether the same implementation appears in different files and whether repeated configuration should be centralized"
   ],
   "should_not_trigger": [
     "How do I install Git?",
@@ -23,6 +26,8 @@
     "Translate this Python code into Rust",
     "What is the principle behind SQL injection?",
     "Generate today's development progress report",
-    "Run the current project's tests only; do not perform a code review"
+    "Run the current project's tests only; do not perform a code review",
+    "How should I extract duplicated code into a shared helper?",
+    "Write a script that detects repeated literals across a repository"
   ]
 }

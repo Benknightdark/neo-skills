@@ -36,6 +36,40 @@
         "If 🔴 Critical Issues are found, the status blocks delivery",
         "The report invents no findings when no changes exist"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review these changed TypeScript files for correctness and compare them with each other for duplicated logic and hard-coded values. File: src/orders/createOrder.ts\n```typescript\nconst MAX_ITEMS = 50;\n\nexport function validateCreateItems(items: Item[]): void {\n  if (items.length > MAX_ITEMS) throw new Error('Too many items');\n  for (const item of items) {\n    if (item.quantity <= 0) throw new Error('Invalid quantity');\n  }\n}\n```\nFile: src/orders/updateOrder.ts\n```typescript\nconst MAX_ITEMS = 50;\n\nexport function validateUpdateItems(items: Item[]): void {\n  if (items.length > MAX_ITEMS) throw new Error('Too many items');\n  for (const item of items) {\n    if (item.quantity <= 0) throw new Error('Invalid quantity');\n  }\n}\n```",
+      "expected_output": "A concise English review report that identifies the duplicated item-validation logic and repeated MAX_ITEMS hard-coded value in both files, cites both file locations, classifies the maintainability issue as a 🟡 Suggestion rather than a 🔴 Critical Issue, and recommends extracting shared validation and a single source of truth for the limit. It must not invent unrelated defects.",
+      "assertions": [
+        "The report contains both src/orders/createOrder.ts and src/orders/updateOrder.ts as evidence locations",
+        "The report identifies the duplicated validation behavior rather than only matching function names",
+        "The report identifies the repeated MAX_ITEMS value as hard-coded configuration duplication",
+        "The duplication findings appear under 🟡 Suggestions and do not block delivery",
+        "The report recommends a shared validator and centralized constant or configuration",
+        "The report contains no unsupported security, performance, or correctness findings"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review these two test files and check for meaningful cross-file duplication or hard-coded configuration. File: tests/orders.test.ts\n```typescript\nit('returns HTTP 200 for a valid order', async () => {\n  expect(response.status).toBe(200);\n});\n```\nFile: tests/payments.test.ts\n```typescript\nit('returns HTTP 200 for a valid payment', async () => {\n  expect(response.status).toBe(200);\n});\n```\nThese tests cover different endpoints and share only a normal HTTP status literal.",
+      "expected_output": "A concise English review report that performs or clearly scopes the cross-file check but reports no duplication finding. It must not treat a normal repeated test literal or separate endpoint fixture as meaningful hard-coded configuration, and it must not invent other issues.",
+      "assertions": [
+        "The report does not raise a duplicated-logic or hard-coded-configuration finding for the shared 200 test literal",
+        "The report does not claim the two endpoint tests implement the same business rule",
+        "The report explicitly states the cross-file scan scope or limitation",
+        "The report invents no unrelated findings"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Review only this Python snippet and check whether the same code or hard-coded values appear in other files:\n```python\ndef is_active(user):\n    return user.status == 'active'\n```\nNo repository or additional files are available.",
+      "expected_output": "A concise English review report that states the supplied snippet was reviewed but cross-file verification was unavailable because no repository context or additional files were provided. It must not invent duplicate locations or line evidence.",
+      "assertions": [
+        "The report states that cross-file verification could not be performed",
+        "The report does not invent another file path, duplicate match, or line number",
+        "The report still uses the required review sections and severity headings"
+      ]
     }
   ]
 }

@@ -1,42 +1,45 @@
-# 中文 AI Tells 贅詞庫 (Chinese Phrases to Remove)
+# Chinese AI Tells: Filler Phrases
 
-這些詞彙與片語是中文 AI（例如 Gemini, ChatGPT, Claude）在生成繁體中文時極高機率會使用的「AI 腔調」。它們會讓文章顯得累贅、空洞、像罐頭行銷文或八股論文。**請徹底清除它們，直接陳述事實。**
+These words and phrases appear frequently when AI systems such as Gemini, ChatGPT, and Claude generate Traditional Chinese. They make prose feel padded, vague, like canned marketing copy, or like a formulaic essay. **Remove them and state the facts directly.**
 
 ---
 
-## 1. 廢話起手式與過渡詞 (Throat-Clearing Openers)
-AI 在進入主題前，非常喜歡使用這些空洞的過渡句來「清喉嚨」。**直接剪掉，從真正的內容開始寫起。**
+## 1. Throat-Clearing Openers and Transitions
 
-*   **「值得注意的是，...」** (AI 最愛) -> *直接說出值得注意的事實即可。*
+AI often uses empty transitions before reaching the topic. **Cut them and start with the actual content.**
+
+*   **「值得注意的是，...」** (especially common) -> *State the relevant fact directly.*
 *   **「不得不說，...」**
 *   **「老實說，...」 /「坦白說，...」**
 *   **「不可否認的是，...」**
 *   **「毫無疑問地，...」**
-*   **「簡單來說，...」 /「換句話說，...」** -> *如果能簡單說，一開始就簡單說，不需要在前面加上這句。*
-*   **「總結來說，...」 /「綜上所述，...」** -> *直接下結論，刪除宣告語。*
+*   **「簡單來說，...」 /「換句話說，...」** -> *If it can be said simply, say it simply from the start.*
+*   **「總結來說，...」 /「綜上所述，...」** -> *State the conclusion directly; remove the announcement.*
 *   **「讓我們來看看...」 /「我們需要深入探討...」**
 *   **「正如我們所知，...」 /「眾所周知，...」**
-*   **「好消息是，...」 /「壞消息是，...」** (常見於美式 AI 翻譯腔)
+*   **「好消息是，...」 /「壞消息是，...」** (common in American AI translationese)
 *   **「正如前面所提到的，...」**
 
 ---
 
-## 2. 刻意渲染與誇大字眼 (Emphasis Crutches)
-AI 喜歡用誇張的語氣來強調某個普通的事情，這會降低文字的專業度與可信度。**刪除它們，讓事實自己說話。**
+## 2. Emphasis Crutches and Exaggerated Wording
 
-*   **「不容忽視」 /「不容小覷」** -> *例如：「這項改變是不容忽視的。」改寫為：「這項改變會影響 [具體人事物]。」*
-*   **「扮演著舉足輕重的角色」 /「至關重要」** -> *過度誇大。改用「是關鍵」、「有助於」或直接說明其影響。*
-*   **「無疑是...」** -> *例如：「這無疑是最好的解決方案。」改寫為：「這是最好的解決方案。」*
+AI often uses exaggerated language to emphasize ordinary facts. This reduces clarity and credibility. **Remove the exaggeration and let the facts speak.**
+
+*   **「不容忽視」 /「不容小覷」** -> *For example, replace 「這項改變是不容忽視的。」 with a concrete statement such as 「這項改變會影響 [具體人事物]。」*
+*   **「扮演著舉足輕重的角色」 /「至關重要」** -> *Avoid exaggeration. Use 「是關鍵」 or 「有助於」 only when supported, or state the impact directly.*
+*   **「無疑是...」** -> *For example, replace 「這無疑是最好的解決方案。」 with 「這是最好的解決方案。」*
 *   **「...的縮影」 /「...的完美體現」**
-*   **「令人驚嘆的」 /「令人興奮的」** -> *少用情緒煽動詞。*
+*   **「令人驚嘆的」 /「令人興奮的」** -> *Use emotional intensifiers sparingly.*
 *   **「不言而喻」**
 
 ---
 
-## 3. 經典 AI 高頻詞彙對照表 (Classic Chinese AI Slop)
-這些詞彙被 AI 嚴重濫用。它們聽起來很「高級」，實則模糊且空洞。**請替換為更具體、更自然的日常中文。**
+## 3. Classic Chinese AI Slop
 
-| 避免使用 (Avoid) | AI 濫用情境 | 推薦替換為 (Use instead) |
+AI overuses the following words. They sound sophisticated but are often vague and empty. **Replace them with concrete, ordinary Chinese.**
+
+| Avoid | Common AI usage | Use instead |
 | :--- | :--- | :--- |
 | **維度** | 「從這個維度來看...」 | 角度、方面、部分、層面 |
 | **畫卷** | 「展開一幅...的畫卷」 | 展現、呈現、面貌、前景 |
@@ -54,10 +57,11 @@ AI 喜歡用誇張的語氣來強調某個普通的事情，這會降低文字�
 
 ---
 
-## 4. 無謂的副詞與弱化詞 (Adverbs & Hedges)
-中文副詞會讓語氣變得不確定、不堅定，或是顯得累贅。**精簡語句，去除贅字。**
+## 4. Unnecessary Adverbs and Hedges
 
-*   **弱化與不確定詞**：「基本上」、「原則上」、「實質上」、「可以說是」、「似乎」。
-*   **過度修飾副詞**：「非常」、「極其」、「相當」、「簡直」、「深刻地」。
-    *   *反例*：「我們需要深刻地理解這個問題。」
-    *   *正例*：「我們必須理解這個問題。」
+Chinese adverbs can make a statement sound uncertain, weak, or padded. **Tighten the sentence and remove filler.**
+
+*   **Softening and uncertainty**: 「基本上」、「原則上」、「實質上」、「可以說是」、「似乎」。
+*   **Overused intensifiers**: 「非常」、「極其」、「相當」、「簡直」、「深刻地」。
+    *   *Weak*: 「我們需要深刻地理解這個問題。」
+    *   *Direct*: 「我們必須理解這個問題。」

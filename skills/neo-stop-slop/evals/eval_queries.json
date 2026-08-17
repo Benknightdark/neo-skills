@@ -16,6 +16,18 @@
     "should_trigger": true
   },
   {
+    "query": "請把這些破碎筆記整理成一篇自然的台灣繁體中文文章，只使用我提供的資訊，不要補充背景",
+    "should_trigger": true
+  },
+  {
+    "query": "將以下新聞素材重排成文章，保留不確定語氣與消息來源，不要輸出分析過程",
+    "should_trigger": true
+  },
+  {
+    "query": "Rewrite this rough technology source into a clear article using only the supplied facts",
+    "should_trigger": true
+  },
+  {
     "query": "如何用 Python 實作一個快速排序演算法？",
     "should_trigger": false
   },
@@ -25,6 +37,14 @@
   },
   {
     "query": "這段程式碼有記憶體洩漏嗎？幫我做 Code Review",
+    "should_trigger": false
+  },
+  {
+    "query": "請搜尋外部資料，補充這篇文章缺少的產業背景與市場反應",
+    "should_trigger": false
+  },
+  {
+    "query": "幫我查證這篇文章的日期和數據是否正確",
     "should_trigger": false
   }
 ]

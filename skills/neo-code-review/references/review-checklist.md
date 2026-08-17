@@ -1,8 +1,8 @@
 # Code Review Checklist
 
-This checklist is the review baseline for `neo-code-review`. During review, compare the code changes against these criteria and categorize findings by severity: Critical Issues (🔴 Must-fix), Suggestions (🟡 Clean Code/Performance), and Praise (🟢 High Quality).
+Use this checklist as the baseline for `neo-code-review`. Compare each change against these criteria and report findings under `Critical Issues` (🔴 must fix), `Suggestions` (🟡 non-blocking), or `Strengths` (🟢).
 
-Only report a finding when the risk is supported by the diff, surrounding code, tests, runtime behavior, or a clearly stated requirement. Do not turn every checklist item into a finding.
+Report a finding only when the diff, surrounding code, tests, runtime behavior, or a stated requirement supports the risk. Do not turn every checklist item into a finding.
 
 ---
 
@@ -122,8 +122,18 @@ Only list SOLID/design findings when the violation clearly increases defect risk
   - Is a function, method, component, or query too long or deeply nested to review safely?
   - Is cyclomatic complexity high enough to hide bugs or make tests brittle?
 - [ ] **Modularity & Duplication**:
-  - Does the code avoid meaningful duplication, copy-pasted business rules, and divergent validation logic?
+  - Does the code avoid meaningful duplication and copy-pasted implementations across changed and relevant repository files?
+  - Are business, validation, authorization, state-transition, error-handling, or request/query rules implemented in more than one place?
+  - Are apparently different implementations materially equivalent after comparing inputs, conditions, side effects, and failure behavior?
   - Is shared behavior placed at the right abstraction level without over-engineering?
+- [ ] **Hard-coded Values & Single Source of Truth**:
+  - Are non-trivial URLs, routes, timeouts, retry counts, thresholds, regexes, feature flags, error messages, or other configuration values repeated across production files?
+  - Should a repeated value be moved to a shared constant, configuration source, or domain-level policy to prevent drift?
+  - Are hard-coded credentials, tokens, private keys, or other secrets treated as security findings rather than ordinary maintainability suggestions?
+  - Do not report common one-time literals, test fixtures, snapshots, generated files, vendor code, or matches based only on a shared keyword.
+- [ ] **Cross-file Evidence**:
+  - Does every duplication finding cite both file paths and line numbers with enough surrounding context to verify the match?
+  - If repository context is unavailable, does the review state that cross-file verification could not be performed instead of inventing evidence?
 - [ ] **Testability**:
   - Is the code easy to unit test or integration test?
   - Are dependencies injectable or isolatable where tests need control over time, I/O, network calls, randomness, or external systems?

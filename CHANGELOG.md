@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.99.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.98.0...neo-skills-v0.99.0) (2026-08-18)
+
+
+### Features
+
+* 調整README.md內容 ([9cbd930](https://github.com/Benknightdark/neo-skills/commit/9cbd930007a56db6f232f3cd534c125b2606327a))
+
+
+### Bug Fixes
+
+* 修正 README.md 中的語句與格式，增強可讀性 ([bfb19a9](https://github.com/Benknightdark/neo-skills/commit/bfb19a98065d4c03393fdc7e762a0b3e681671c1))
+
 ## [0.98.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.97.0...neo-skills-v0.98.0) (2026-08-17)
 
 

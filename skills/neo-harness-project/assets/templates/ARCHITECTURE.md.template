@@ -1,0 +1,29 @@
+# Architecture
+
+## 系統概觀
+
+{{EVIDENCE_BASED_OVERVIEW}}
+
+## 主要元件
+
+| 元件 | 責任 | 允許依賴 | 禁止依賴 | 證據 |
+| :--- | :--- | :--- | :--- | :--- |
+| {{COMPONENT}} | {{RESPONSIBILITY}} | {{ALLOWED_DEPENDENCY}} | {{FORBIDDEN_DEPENDENCY}} | `{{EVIDENCE_PATH}}` |
+
+## 資料與控制流程
+
+{{OBSERVED_DATA_AND_CONTROL_FLOW}}
+
+## 執行邊界
+
+{{RUNTIME_BOUNDARIES}}
+
+## 不變量與機械驗證
+
+| 不變量 | 狀態 | 驗證方式 |
+| :--- | :--- | :--- |
+| {{INVARIANT}} | 文件規則／可執行規則 | `{{VERIFICATION_COMMAND_OR_REFERENCE}}` |
+
+## 未確認事項
+
+- {{UNKNOWN_OR_PENDING_DECISION}}

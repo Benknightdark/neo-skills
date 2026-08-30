@@ -38,6 +38,7 @@
 | 類別 | Skill | 使用時機 |
 | :--- | :--- | :--- |
 | Agent 治理 | `neo-harness` | 自動掃描專案環境，產生或更新專案專用的 AGENTS.md，並整合 Harness 評估、Workflow 與編排架構。 |
+| Agent 治理 | `neo-harness-project` | 盤點目前專案並依證據建立完整 Harness 知識、計畫、驗證與工程治理資產。 |
 | 資訊安全 | `neo-iso-27001` | 依 ISO/IEC 27001 進行 ISMS 範圍、風險、證據、差距分析、稽核準備與改善計畫。 |
 | 隱私管理 | `neo-iso-27701` | 依 ISO/IEC 27701 進行 PIMS、PII 角色、處理活動、隱私風險、證據與稽核準備。 |
 | DevOps | `neo-azure-pipelines` | 建立、審查、除錯或現代化 Azure Pipelines YAML，尤其是 .NET build、Azure App Service 或 IIS 部署。 |
@@ -155,6 +156,7 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 寫 TypeScript 型別 | `neo-typescript` | `幫我設計這個 API response 的泛型型別` |
 | 建 Vue 3 元件 | `neo-vue` | `幫我重構這個 SFC，避免響應式踩坑` |
 | 建立 Agent 治理 | `neo-harness` | `幫我針對這個專案評估並產生 AGENTS.md` |
+| 建立完整專案 Harness | `neo-harness-project` | `盤點目前專案並建立可驗證、可恢復的 Harness 工程環境` |
 | 建立 sub-agent | `neo-sub-agent` | `幫我新增一個 Codex code-reviewer sub agent` |
 | 規劃 OpenTelemetry | `neo-opentelemetry` | `幫我審查 Collector 架構、韌性、安全與零程式觀測方案` |
 | 設計 RabbitMQ 系統 | `neo-rabbitmq` | `請分析 RabbitMQ Queue 堆積、叢集營運與效能瓶頸` |

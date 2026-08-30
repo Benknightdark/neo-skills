@@ -1,0 +1,71 @@
+# {{CHANGE_NAME}}
+
+## 目的與成果
+
+{{OBSERVABLE_OUTCOME}}
+
+## 背景
+
+{{SELF_CONTAINED_CONTEXT}}
+
+重要路徑：
+
+- `{{RELEVANT_PATH}}`
+
+## 目前與期望行為
+
+目前：{{CURRENT_BEHAVIOR}}
+
+期望：{{DESIRED_BEHAVIOR}}
+
+## 架構與限制
+
+- {{VERIFIED_CONSTRAINT}}
+
+## 工作計畫
+
+### 里程碑 1：{{MILESTONE}}
+
+{{IMPLEMENTATION_SEQUENCE}}
+
+## 進度
+
+- [ ] {{CONCRETE_PROGRESS_ITEM}}
+
+## 發現
+
+- {{DISCOVERY_WITH_EVIDENCE}}
+
+## 決策紀錄
+
+### {{DECISION_TITLE}}
+
+決策：{{DECISION}}
+
+依據：{{RATIONALE_AND_EVIDENCE}}
+
+## 具體步驟
+
+命令：
+
+    {{COMMAND}}
+
+預期結果：{{EXPECTED_RESULT}}
+
+## 驗證
+
+自動驗證：
+
+    {{VERIFICATION_COMMAND}}
+
+手動驗收：
+
+1. {{MANUAL_ACCEPTANCE_STEP}}
+
+## 冪等與復原
+
+{{IDEMPOTENCE_AND_RECOVERY}}
+
+## 結果
+
+{{OUTCOME_AND_REMAINING_WORK}}

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.100.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.99.0...neo-skills-v0.100.0) (2026-08-30)
+
+
+### Features
+
+* 新增 neo-harness-project 技能並升級版本至 1.1.30 ([87617f0](https://github.com/Benknightdark/neo-skills/commit/87617f07558836881a5c13543696e7be00cffb3a))
+* 新增 neo-harness-project 技能並升級版本至 1.1.30 ([9a6b143](https://github.com/Benknightdark/neo-skills/commit/9a6b143031074db6d82b8e9c88a49d2705641484))
+
 ## [0.99.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.98.0...neo-skills-v0.99.0) (2026-08-18)
 
 

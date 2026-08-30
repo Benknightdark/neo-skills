@@ -1,0 +1,17 @@
+{
+  "should_trigger": [
+    "請盤點目前 repository，建立完整且可自行驗證的 Harness 工程環境",
+    "幫這個專案補齊架構文件、長任務計畫、統一驗證入口與必要目錄",
+    "Assess this repository and build an evidence-based project harness with persistent plans and validation gates",
+    "重建目前專案的 Harness 文件，但先列出會覆寫的檔案給我確認",
+    "檢查現有工程環境的成熟度，並依實際工具補齊缺少的治理資產"
+  ],
+  "should_not_trigger": [
+    "只幫我產生一份 AGENTS.md",
+    "修正這個 JavaScript 函式的錯誤",
+    "請 review 目前的 git diff",
+    "新增一條單元測試",
+    "解釋什麼是架構測試",
+    "更新 README 的安裝步驟"
+  ]
+}

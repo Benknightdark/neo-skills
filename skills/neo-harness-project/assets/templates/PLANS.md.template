@@ -1,14 +1,14 @@
 # Execution Plans
 
-下列工作必須使用持久執行計畫：
+下列工作必須建立持久執行計畫：
 
 - {{PLAN_THRESHOLD}}
 
-進行中計畫放在 `docs/exec-plans/active/`；完成且已記錄結果的計畫移至 `docs/exec-plans/completed/`。
+進行中的計畫放在 `docs/exec-plans/active/`；完成並記錄結果的計畫移至 `docs/exec-plans/completed/`。
 
 新建立的執行計畫檔名使用 `YYYYMMDDHHmmss_<原計畫檔名>.md`。時間戳取建立當下執行環境的本地時間，計畫移至 `completed` 時沿用原時間戳。既有未加時間戳的計畫不批次改名。
 
-每份計畫必須自包含。讀者只需要目前工作樹與計畫本身，不應依賴先前對話或未連結的外部資訊。
+每份計畫必須自包含；讀者只需目前工作樹與計畫本身，不得依賴先前對話或未連結的外部資訊。
 
 ## 必要內容
 

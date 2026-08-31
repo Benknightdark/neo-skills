@@ -15,13 +15,14 @@
 | :--- | :--- |
 | 架構 | `ARCHITECTURE.md` |
 | 執行計畫 | `docs/exec-plans/` |
+| 專案指令 | `docs/scripts.md` |
 | {{KNOWLEDGE_TOPIC}} | `{{KNOWLEDGE_PATH}}` |
 
 ## 命令
 
-| 用途 | 精確命令 |
-| :--- | :--- |
-| {{COMMAND_PURPOSE}} | `{{VERIFIED_COMMAND}}` |
+完整命令清單：`docs/scripts.md`
+
+統一驗證命令：`{{CANONICAL_VERIFY_COMMAND}}`
 
 ## 工作閉環
 

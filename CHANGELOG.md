@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.101.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.100.0...neo-skills-v0.101.0) (2026-08-31)
+
+
+### Features
+
+* **harness:** 新增可排序計畫檔名與指令文件 ([692f27d](https://github.com/Benknightdark/neo-skills/commit/692f27d5369d3a97e4a6cee8eeadce7c2f4cc64f))
+
 ## [0.100.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.99.0...neo-skills-v0.100.0) (2026-08-30)
 
 

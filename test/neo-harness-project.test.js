@@ -17,6 +17,7 @@ const expectedFiles = [
   'assets/templates/ARCHITECTURE.md.template',
   'assets/templates/PLANS.md.template',
   'assets/templates/exec-plan.md.template',
+  'assets/templates/scripts.md.template',
   'evals/eval_queries.json',
   'evals/evals.json',
 ];
@@ -55,6 +56,19 @@ test('neo-harness-project 包含完整技能資源且連結有效', async () => 
     access(resolve(skillRoot, path)),
     `SKILL.md 連結不存在：${path}`,
   )));
+
+  assert.match(skillText, /docs\/scripts\.md/);
+  assert.match(skillText, /YYYYMMDDHHmmss_/);
+
+  const scriptsTemplate = await readFile(
+    join(skillRoot, 'assets', 'templates', 'scripts.md.template'),
+    'utf8',
+  );
+  assert.deepEqual(
+    scriptsTemplate.trim().split('\n'),
+    ['| 指令 | 用途 |', '| :--- | :--- |'],
+    'scripts.md 模板必須是只有兩欄的 Markdown table',
+  );
 });
 
 test('neo-harness-project 評估資料格式有效', async () => {

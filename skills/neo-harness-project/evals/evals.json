@@ -4,13 +4,15 @@
     {
       "id": 1,
       "prompt": "請針對目前的 Node.js 專案建立完整 Harness。package.json 只有 test 與 build scripts，專案目前沒有任何治理文件。",
-      "expected_output": "先提供唯讀盤點與精確寫入預覽，不立即建立檔案。核心資產應納入，驗證入口只能組合實際存在的 test 與 build，沒有證據的 CI、可觀測性或架構檢查應略過。",
+      "expected_output": "先提供唯讀盤點與精確寫入預覽，不立即建立檔案。核心資產應納入，包含以時間戳命名規則管理的執行計畫與兩欄命令表；驗證入口只能組合實際存在的 test 與 build，沒有證據的 CI、可觀測性或架構檢查應略過。",
       "assertions": [
         "確認前沒有修改任何檔案",
         "預覽列出每個精確路徑、動作、證據、驗證與復原方式",
         "只採用 package.json 實際存在的 test 與 build 命令",
         "不虛構 lint、typecheck、CI、可觀測性或架構工具",
-        "核心資產包含知識地圖、目前架構、計畫規範與執行計畫目錄"
+        "核心資產包含知識地圖、目前架構、計畫規範、docs/scripts.md 與執行計畫目錄",
+        "新建立的執行計畫使用 YYYYMMDDHHmmss_ 前綴，移至 completed 時保留前綴",
+        "docs/scripts.md 僅使用 指令 與 用途 兩欄並只收錄可驗證命令"
       ]
     },
     {
@@ -55,6 +57,18 @@
         "不刪改必要事實以假裝合規",
         "受影響資產標記為 blocked",
         "未受衝突影響的盤點仍可繼續"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "專案已有未加時間戳的 active 計畫與數個散落在設定及文件中的實際命令。請補齊 Harness 導航與命令文件，但不要未經確認批次改名。",
+      "expected_output": "保留既有計畫檔名與連結；新計畫使用本地時間的 14 位數字前綴，建立只含指令與用途兩欄的 docs/scripts.md，並將所有有來源證據的命令集中整理。",
+      "assertions": [
+        "既有未加前綴的計畫不直接改名",
+        "新計畫檔名符合 YYYYMMDDHHmmss_<原計畫檔名>.md",
+        "計畫移動至 completed 時保留原時間戳",
+        "docs/scripts.md 是只含 指令 與 用途 兩欄的 Markdown table",
+        "未經專案設定或文件驗證的命令不加入 scripts.md"
       ]
     }
   ]

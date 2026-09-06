@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.102.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.101.0...neo-skills-v0.102.0) (2026-09-06)
+
+
+### Features
+
+* **harness:** 集中 Harness 資產至 .neo_harness 並支援舊路徑安全搬遷 (v1.1.32) ([30c6373](https://github.com/Benknightdark/neo-skills/commit/30c637331fab0bfb059c3c719ed4de1336b1db5a))
+* **harness:** 集中 Harness 資產至 .neo_harness 並支援舊路徑安全搬遷 (v1.1.32) ([d15555a](https://github.com/Benknightdark/neo-skills/commit/d15555a37f85d534cf3e8405a1f764f976abf3be))
+
+
+### Bug Fixes
+
+* 修正文件中的語句與格式，增強可讀性 ([3a1144c](https://github.com/Benknightdark/neo-skills/commit/3a1144cc0aef832f680a9513f84e8c55c48c2b0f))
+
 ## [0.101.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.100.0...neo-skills-v0.101.0) (2026-08-31)
 
 

@@ -4,15 +4,16 @@
     {
       "id": 1,
       "prompt": "請針對目前的 Node.js 專案建立完整 Harness。package.json 只有 test 與 build scripts，專案目前沒有任何治理文件。",
-      "expected_output": "先提供唯讀盤點與精確寫入預覽，不立即建立檔案。核心資產應納入，包含以時間戳命名規則管理的執行計畫與兩欄命令表；驗證入口只能組合實際存在的 test 與 build，沒有證據的 CI、可觀測性或架構檢查應略過。",
+      "expected_output": "先提供唯讀盤點與精確寫入預覽，不立即建立檔案。核心資產應納入，包含根目錄 AGENTS.md、.neo_harness/ARCHITECTURE.md、.neo_harness/PLANS.md、.neo_harness/docs/scripts.md 與 .neo_harness/docs/exec-plans/；執行計畫使用時間戳命名規則與兩欄命令表；驗證入口只能組合實際存在的 test 與 build，沒有證據的 CI、可觀測性或架構檢查應略過。",
       "assertions": [
         "確認前沒有修改任何檔案",
         "預覽列出每個精確路徑、動作、證據、驗證與復原方式",
         "只採用 package.json 實際存在的 test 與 build 命令",
         "不虛構 lint、typecheck、CI、可觀測性或架構工具",
-        "核心資產包含知識地圖、目前架構、計畫規範、docs/scripts.md 與執行計畫目錄",
+        "根目錄只有 AGENTS.md 作為入口，其餘核心資產位於 .neo_harness/",
+        ".neo_harness/docs/scripts.md 僅使用 指令 與 用途 兩欄並只收錄可驗證命令",
         "新建立的執行計畫使用 YYYYMMDDHHmmss_ 前綴，移至 completed 時保留前綴",
-        "docs/scripts.md 僅使用 指令 與 用途 兩欄並只收錄可驗證命令"
+        "沒有證據的條件式資產應略過"
       ]
     },
     {
@@ -23,6 +24,7 @@
         "不把初始重建要求當成未知清單的覆寫確認",
         "預覽區分仍正確的專案事實與需要替換的內容",
         "確認重建前檢查目標是否由版本控制追蹤",
+        "正式 Harness 產出位於 .neo_harness/，AGENTS.md 留在根目錄",
         "不修改預覽以外的路徑"
       ]
     },
@@ -62,13 +64,26 @@
     {
       "id": 6,
       "prompt": "專案已有未加時間戳的 active 計畫與數個散落在設定及文件中的實際命令。請補齊 Harness 導航與命令文件，但不要未經確認批次改名。",
-      "expected_output": "保留既有計畫檔名與連結；新計畫使用本地時間的 14 位數字前綴，建立只含指令與用途兩欄的 docs/scripts.md，並將所有有來源證據的命令集中整理。",
+      "expected_output": "保留既有計畫檔名與連結；新計畫使用本地時間的 14 位數字前綴，建立只含指令與用途兩欄的 .neo_harness/docs/scripts.md，並將所有有來源證據的命令集中整理。",
       "assertions": [
         "既有未加前綴的計畫不直接改名",
         "新計畫檔名符合 YYYYMMDDHHmmss_<原計畫檔名>.md",
         "計畫移動至 completed 時保留原時間戳",
-        "docs/scripts.md 是只含 指令 與 用途 兩欄的 Markdown table",
-        "未經專案設定或文件驗證的命令不加入 scripts.md"
+        ".neo_harness/docs/scripts.md 是只含 指令 與 用途 兩欄的 Markdown table",
+        "未經專案設定或文件驗證的命令不加入 .neo_harness/docs/scripts.md"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "盤點發現根目錄已有 ARCHITECTURE.md、PLANS.md、docs/scripts.md 與 docs/exec-plans/active/plan.md，但沒有 .neo_harness。請集中 Harness 資產，且不要在確認前直接搬移。",
+      "expected_output": "先提供來源到 .neo_harness/ 的 migrate 預覽，列出連結更新、驗證與復原方式；確認前不搬遷、不刪除、不批次改名。若目的地已存在、內容衝突或被忽略規則排除，相關動作標為 blocked；根目錄 AGENTS.md 保留原位。",
+      "assertions": [
+        "逐項列出 ARCHITECTURE.md、PLANS.md、docs/scripts.md 與 docs/exec-plans/ 的來源及正式目的地",
+        "搬遷前要求使用者確認精確清單",
+        "既有 active 計畫保留原檔名與時間戳規則",
+        "目的地衝突或被忽略時標記為 blocked",
+        "不建立 .neo_harness/AGENTS.md",
+        "不建立重複副本或符號連結"
       ]
     }
   ]

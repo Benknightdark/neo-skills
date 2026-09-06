@@ -4,23 +4,23 @@
 
 ## 開始工作
 
-1. 閱讀 `ARCHITECTURE.md`。
+1. 閱讀 `.neo_harness/ARCHITECTURE.md`。
 2. 閱讀任務相關的模組文件與既有實作。
-3. 複雜或跨工作階段的任務，依 `PLANS.md` 建立或更新執行計畫。
+3. 複雜或跨工作階段的任務，依 `.neo_harness/PLANS.md` 建立或更新執行計畫。
 4. 修改前確認目前基準與驗收條件。
 
 ## 專案知識
 
 | 主題 | 來源 |
 | :--- | :--- |
-| 架構 | `ARCHITECTURE.md` |
-| 執行計畫 | `docs/exec-plans/` |
-| 專案指令 | `docs/scripts.md` |
+| 架構 | `.neo_harness/ARCHITECTURE.md` |
+| 執行計畫 | `.neo_harness/docs/exec-plans/` |
+| 專案指令 | `.neo_harness/docs/scripts.md` |
 | {{KNOWLEDGE_TOPIC}} | `{{KNOWLEDGE_PATH}}` |
 
 ## 命令
 
-完整命令清單：`docs/scripts.md`
+完整命令清單：`.neo_harness/docs/scripts.md`
 
 統一驗證命令：`{{CANONICAL_VERIFY_COMMAND}}`
 

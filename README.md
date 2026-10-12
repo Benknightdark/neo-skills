@@ -39,8 +39,6 @@
 | :--- | :--- | :--- |
 | Agent 治理 | `neo-harness` | 自動掃描專案環境，產生或更新專案專用的 AGENTS.md，並整合 Harness 評估、Workflow 與編排架構。 |
 | Agent 治理 | `neo-harness-project` | 盤點目前專案並依證據建立完整 Harness 知識、計畫、驗證與工程治理資產。 |
-| 資訊安全 | `neo-iso-27001` | 依 ISO/IEC 27001 進行 ISMS 範圍、風險、證據、差距分析、稽核準備與改善計畫。 |
-| 隱私管理 | `neo-iso-27701` | 依 ISO/IEC 27701 進行 PIMS、PII 角色、處理活動、隱私風險、證據與稽核準備。 |
 | DevOps | `neo-azure-pipelines` | 建立、審查、除錯或現代化 Azure Pipelines YAML，尤其是 .NET build、Azure App Service 或 IIS 部署。 |
 | 需求釐清 | `neo-clarification` | 將模糊、情緒化、片段式或截圖式需求整理成規格、驗收條件和待釐清問題。 |
 | Code Review | `neo-code-review` | 檢查程式碼、PR/diff、bug 風險、安全性、效能與可維護性。 |

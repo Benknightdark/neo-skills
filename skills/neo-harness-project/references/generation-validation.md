@@ -32,7 +32,7 @@
 
 - 定義需要持久計畫的門檻，例如多階段、跨模組、遷移、陌生領域或可能跨工作階段的任務。
 - 每份計畫必須自包含；讀者只需目前工作樹與計畫本身，不得依賴先前對話或未連結的外部資訊。
-- 計畫目錄固定為 `.neo_harness/docs/exec-plans/active/` 與 `.neo_harness/docs/exec-plans/completed/`。
+- 計畫目錄固定為 `.neo_harness/docs/exec-plans/active/` 與 `.neo_harness/docs/exec-plans/completed/`；兩個目錄都必須包含 `.GITKEEP`，且不新增 `README.md`。
 - 新建立的計畫檔名使用 `YYYYMMDDHHmmss_<原計畫檔名>.md`；時間戳取本地時間，從 `active` 移至 `completed` 時沿用。
 - 既有未加時間戳的計畫不批次改名；更新既有計畫時維持原檔名與既有連結。
 - 從舊路徑搬遷既有計畫時保留原檔名與時間戳，不因搬遷而重新命名。

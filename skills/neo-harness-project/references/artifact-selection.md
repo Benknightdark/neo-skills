@@ -10,8 +10,8 @@
 | `.neo_harness/docs/scripts.md` | 保存專案所有已驗證命令及用途 | 一律評估；不存在時建立，存在時保留有效內容並補齊已驗證命令 |
 | `.neo_harness/ARCHITECTURE.md` | 記錄目前元件、責任、依賴方向、邊界與可執行約束 | 一律評估；未知架構明確標示，不畫理想架構 |
 | `.neo_harness/PLANS.md` | 定義何時使用持久計畫、必要章節及生命週期 | 一律評估；沿用專案既有計畫命名時同步調整連結 |
-| `.neo_harness/docs/exec-plans/active/` | 保存進行中且可由新工作階段接續的計畫 | 沒有現行計畫時只建立最小追蹤檔 |
-| `.neo_harness/docs/exec-plans/completed/` | 保存完成結果、決策與驗證證據 | 沒有完成計畫時只建立最小追蹤檔 |
+| `.neo_harness/docs/exec-plans/active/` | 保存進行中且可由新工作階段接續的計畫 | 必須包含 `.GITKEEP`；沒有現行計畫時以此檔案追蹤目錄，不新增 `README.md` |
+| `.neo_harness/docs/exec-plans/completed/` | 保存完成結果、決策與驗證證據 | 必須包含 `.GITKEEP`；沒有完成計畫時以此檔案追蹤目錄，不新增 `README.md` |
 
 根目錄 `AGENTS.md` 是唯一入口；不得建立 `.neo_harness/AGENTS.md`。專案已有等價且廣泛引用的舊路徑時，先列入搬遷預覽，不另建第二套真相來源。
 

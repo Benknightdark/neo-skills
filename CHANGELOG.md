@@ -1,5 +1,144 @@
 # Changelog
 
+## [0.102.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.101.0...neo-skills-v0.102.0) (2026-09-06)
+
+
+### Features
+
+* **harness:** 集中 Harness 資產至 .neo_harness 並支援舊路徑安全搬遷 (v1.1.32) ([30c6373](https://github.com/Benknightdark/neo-skills/commit/30c637331fab0bfb059c3c719ed4de1336b1db5a))
+* **harness:** 集中 Harness 資產至 .neo_harness 並支援舊路徑安全搬遷 (v1.1.32) ([d15555a](https://github.com/Benknightdark/neo-skills/commit/d15555a37f85d534cf3e8405a1f764f976abf3be))
+
+
+### Bug Fixes
+
+* 修正文件中的語句與格式，增強可讀性 ([3a1144c](https://github.com/Benknightdark/neo-skills/commit/3a1144cc0aef832f680a9513f84e8c55c48c2b0f))
+
+## [0.101.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.100.0...neo-skills-v0.101.0) (2026-08-31)
+
+
+### Features
+
+* **harness:** 新增可排序計畫檔名與指令文件 ([692f27d](https://github.com/Benknightdark/neo-skills/commit/692f27d5369d3a97e4a6cee8eeadce7c2f4cc64f))
+
+## [0.100.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.99.0...neo-skills-v0.100.0) (2026-08-30)
+
+
+### Features
+
+* 新增 neo-harness-project 技能並升級版本至 1.1.30 ([87617f0](https://github.com/Benknightdark/neo-skills/commit/87617f07558836881a5c13543696e7be00cffb3a))
+* 新增 neo-harness-project 技能並升級版本至 1.1.30 ([9a6b143](https://github.com/Benknightdark/neo-skills/commit/9a6b143031074db6d82b8e9c88a49d2705641484))
+
+## [0.99.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.98.0...neo-skills-v0.99.0) (2026-08-18)
+
+
+### Features
+
+* 調整README.md內容 ([9cbd930](https://github.com/Benknightdark/neo-skills/commit/9cbd930007a56db6f232f3cd534c125b2606327a))
+
+
+### Bug Fixes
+
+* 修正 README.md 中的語句與格式，增強可讀性 ([bfb19a9](https://github.com/Benknightdark/neo-skills/commit/bfb19a98065d4c03393fdc7e762a0b3e681671c1))
+
+## [0.98.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.97.0...neo-skills-v0.98.0) (2026-08-17)
+
+
+### Features
+
+* 更新 neo-code-review 技能以支援重複邏輯與硬編碼值的檢查 ([6a10bcd](https://github.com/Benknightdark/neo-skills/commit/6a10bcdca4e5848339903addc3ed6122d5472d5c))
+* 更新版本至 1.1.28 ([0133814](https://github.com/Benknightdark/neo-skills/commit/013381487ffb272d4d0325a478e7462dee4ce668))
+* 更新版本至 1.1.28 ([0d53b8f](https://github.com/Benknightdark/neo-skills/commit/0d53b8f0c6bd390b4df6ad6f71b021628baea333))
+
+## [0.97.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.96.0...neo-skills-v0.97.0) (2026-08-13)
+
+
+### Features
+
+* update version ([24ad112](https://github.com/Benknightdark/neo-skills/commit/24ad112393b38f317f17a2fb7164ff8e4a304820))
+* 新增 config.toml 檔案以設定模型參數 ([e2903c0](https://github.com/Benknightdark/neo-skills/commit/e2903c0e985dc16ab2c93913f6309999d201d2b9))
+* 新增 neo-rabbitmq 技能以支援 RabbitMQ 系統設計與效能分析 ([98164a7](https://github.com/Benknightdark/neo-skills/commit/98164a7ced6e9f0a67ecfa5ead772bb6d2bb0845))
+* 新增rabbitmq skill ([e8fc6c0](https://github.com/Benknightdark/neo-skills/commit/e8fc6c0652b93509e55dfa31f5a05fa27dc9cc4e))
+
+## [0.96.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.95.0...neo-skills-v0.96.0) (2026-08-12)
+
+
+### Features
+
+* 新增 neo-iso-27001 與 neo-iso-27701 技能並升級版本至 1.1.26 ([e1f5983](https://github.com/Benknightdark/neo-skills/commit/e1f59833864de3d2ea273248ef8a0563f7cd6c84))
+* 新增 neo-iso-27001 與 neo-iso-27701 技能並升級版本至 1.1.26 ([7a3007b](https://github.com/Benknightdark/neo-skills/commit/7a3007b714326e1dc76038c7796f64001d10629f))
+
+## [0.95.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.94.0...neo-skills-v0.95.0) (2026-08-10)
+
+
+### Features
+
+* 調整neo-harness ([a482f7e](https://github.com/Benknightdark/neo-skills/commit/a482f7efc077339ab7244d8b2ba146ce93304fa7))
+* 調整neo-harness ([04623a1](https://github.com/Benknightdark/neo-skills/commit/04623a16be9b154b3494ff4002561556bcf97583))
+
+## [0.94.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.93.0...neo-skills-v0.94.0) (2026-08-05)
+
+
+### Features
+
+* 更新 git-diff-reviewer 腳本以支援工作樹模式，並新增測試案例 ([ff5ad03](https://github.com/Benknightdark/neo-skills/commit/ff5ad03b45202e47e744327d770a31c3b93b660b))
+* 更新 package.json 版本號至 1.1.24 ([60aa6e1](https://github.com/Benknightdark/neo-skills/commit/60aa6e175b06c942f584658319dbcc776dccb774))
+* 移除標題中的括號，簡化 SKILL.md 文件格式 ([67b501d](https://github.com/Benknightdark/neo-skills/commit/67b501dbd3e3b9d28baee6c2b77cecf9f3700b39))
+
+## [0.93.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.92.0...neo-skills-v0.93.0) (2026-08-05)
+
+
+### Features
+
+* 更新 package.json 版本號至 1.1.23 ([3ee7a5b](https://github.com/Benknightdark/neo-skills/commit/3ee7a5be6ab79d91185ad8d55e2aca5c7f369f48))
+
+## [0.92.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.91.0...neo-skills-v0.92.0) (2026-08-02)
+
+
+### Features
+
+* **skills:** 整合並新增 neo-harness 技能與自動化 AGENTS.md 產生器，精簡舊有治理技能 ([c06024c](https://github.com/Benknightdark/neo-skills/commit/c06024ce4ce717f456a9748c1c80a1e951b733b2))
+* 新增 neo-harness 技能與 AGENTS.md 自動生成腳本，強化 AI Agent 開發流程 ([1f2eae7](https://github.com/Benknightdark/neo-skills/commit/1f2eae78008affa4decec89b939b04b49ce3988b))
+* 更新 AGENTS.md 標題，調整專案名稱顯示格式並移除專案名稱欄位 ([dd34c2e](https://github.com/Benknightdark/neo-skills/commit/dd34c2e5b86cb51edfcd320807f3586a41472c92))
+* 更新 AGENTS.md 模板，調整專案名稱顯示格式並移除不必要的專案名稱欄位 ([65afa46](https://github.com/Benknightdark/neo-skills/commit/65afa464b851b763fd314e390f1a2802b7458462))
+* 更新 package.json 版本號至 1.1.22 ([4d73f19](https://github.com/Benknightdark/neo-skills/commit/4d73f1914ed085a5d6c2ebffbcf9e3b123ab4a6c))
+* 更新 package.json 版本號至 1.1.22 ([4b68452](https://github.com/Benknightdark/neo-skills/commit/4b684528308e3c66f373ecb3a5d2540795141c4f))
+* 自動生成 AGENTS.md 文件，整合項目命令與工作流程 ([82cffb4](https://github.com/Benknightdark/neo-skills/commit/82cffb4b62493500a9e0d5c4bec350a7699bce81))
+
+## [0.91.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.90.0...neo-skills-v0.91.0) (2026-07-27)
+
+
+### Features
+
+* **system-instructions:** 新增文件與註解單一語言規範 ([d1e990d](https://github.com/Benknightdark/neo-skills/commit/d1e990d13edb3ec02f96560d46bce37f7e41ba22))
+* **system-instructions:** 新增文件與註解單一語言規範 ([0413937](https://github.com/Benknightdark/neo-skills/commit/0413937b7e8cfa77ac07a821e6cc3d32d6cedc1d))
+
+## [0.90.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.89.0...neo-skills-v0.90.0) (2026-07-26)
+
+
+### Features
+
+* update version ([7dfd230](https://github.com/Benknightdark/neo-skills/commit/7dfd23079af349f95548b7b8b98e3817ee0d0ba2))
+* update version ([5227c0a](https://github.com/Benknightdark/neo-skills/commit/5227c0a5a8e4ab742757b1d288e1a4be04cdbe9f))
+* 新增 Agent 執行協議與診斷參考文件，強化 AI Agent 開發流程的規範與檢查清單 ([9cfd431](https://github.com/Benknightdark/neo-skills/commit/9cfd431797a541b00031d1252c4121413a22ea86))
+* 新增最小輸出參數以保護 Context 空間 ([99b7aab](https://github.com/Benknightdark/neo-skills/commit/99b7aabc970c96026b0c8eb0ee4791868fd64960))
+
+## [0.89.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.88.0...neo-skills-v0.89.0) (2026-07-26)
+
+
+### Features
+
+* add new system prompt ([fa4e9aa](https://github.com/Benknightdark/neo-skills/commit/fa4e9aa2220fb19b8545270ea4da43974f029025))
+* add new system prompt ([9305a3f](https://github.com/Benknightdark/neo-skills/commit/9305a3f7840a231713f3f2742c4ffa252f55525b))
+* 新增事實檢查思維與最小輸出指令的指導方針 ([30e8692](https://github.com/Benknightdark/neo-skills/commit/30e86925e1514d03eb685b28135703349a796915))
+
+## [0.88.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.87.0...neo-skills-v0.88.0) (2026-07-24)
+
+
+### Features
+
+* update version ([0160b14](https://github.com/Benknightdark/neo-skills/commit/0160b140826d1c841ae85a4d908673299fa4c2ae))
+* update version ([66ddb72](https://github.com/Benknightdark/neo-skills/commit/66ddb7224662ac10cdfe2c5ec7d92f10689d098b))
+
 ## [0.87.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.86.0...neo-skills-v0.87.0) (2026-07-24)
 
 

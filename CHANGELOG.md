@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.103.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.102.0...neo-skills-v0.103.0) (2026-10-25)
+
+
+### Features
+
+* 更新版本號至 1.1.33 ([4cf85f5](https://github.com/Benknightdark/neo-skills/commit/4cf85f57446502315bda437e24befe16bfbc0241))
+* 更新版本號至 1.1.33 ([1cddeb4](https://github.com/Benknightdark/neo-skills/commit/1cddeb425ce3af1cec47f5ea15a500d361e54934))
+* 更新版本號至 1.1.33 ([818dd3d](https://github.com/Benknightdark/neo-skills/commit/818dd3d8259e3b81fd24dffc8f8869d47545a8de))
+
+
+### Bug Fixes
+
+* **config:** 注釋掉 model_auto_compact_token_limit 設定 ([c2eac40](https://github.com/Benknightdark/neo-skills/commit/c2eac40911123939be4d1484baa39ff129a11ce7))
+* **config:** 移除 tool_output_token_limit 設定 ([20c02c1](https://github.com/Benknightdark/neo-skills/commit/20c02c16c63784cd1ad7b44ad62d4fa72afe4e23))
+* **docs:** 更新執行計畫目錄規範，要求包含 .GITKEEP 並禁止新增 README.md ([d0ada40](https://github.com/Benknightdark/neo-skills/commit/d0ada402f397f7d6a4390b30f2fd1e36ef0203ea))
+
 ## [0.102.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.101.0...neo-skills-v0.102.0) (2026-09-06)
 
 

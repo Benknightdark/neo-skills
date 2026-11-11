@@ -4,9 +4,9 @@ description: >
   Use this skill when the user asks to design, implement, refactor, or review custom
   ASP.NET Core Tag Helpers in C#, including TagBuilder usage, strongly typed attributes,
   dependency injection, ProcessAsync, and reusable Razor UI behavior.
-compatibility: "Supports .NET 6.0 through 10.0+ environments."
+compatibility: "Supports .NET 6.0 through 11.0+ environments."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: "Framework"
   pattern: generator
   output-format: csharp

@@ -123,6 +123,31 @@ This document lists common mistakes (Anti-Patterns) in C# development and their 
   public string Name { get; set => field = value.Trim(); } // Using the field keyword
   ```
 
+### 4.4 Discarding Cases in Union Type Pattern Matching (C# 15+)
+- **Legacy / Bad**:
+  ```csharp
+  // Blindly adding a discard case bypasses compile-time exhaustiveness checking!
+  string desc = pet switch
+  {
+      Cat c => "Cat",
+      _ => "Other" // When a new variant (e.g. Bird) is added to the union, no compiler error will trigger
+  };
+  ```
+- **Modern / Good**:
+  ```csharp
+  // Rely on compiler exhaustiveness enforcement:
+  string desc = pet switch
+  {
+      Cat c => "Cat",
+      Dog d => "Dog",
+      Bird b => "Bird"
+  };
+  ```
+
+### 4.5 Leaking Domain Inheritance Without Closed Hierarchies (C# 15+)
+- **Bad**: Exposing domain state hierarchies publicly without `closed`, allowing external assemblies to inherit and corrupt domain invariants.
+- **Good**: Mark domain state record or class hierarchies as `closed` so only the defining assembly can declare subclasses.
+
 ---
 
 ## 5. Resource Management

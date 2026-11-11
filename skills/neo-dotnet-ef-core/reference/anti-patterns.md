@@ -49,3 +49,28 @@ This document lists common mistakes in Entity Framework Core development and the
 ### 4.1 Avoid Decoupling the Development Database from Migration Scripts
 - **Problem**: Directly modifying the database schema without creating Migrations.
 - **Good**: Always use `dotnet ef migrations add` to manage schema changes, ensuring team environment consistency.
+
+---
+
+## 5. EF Core 11 Breaking Changes & Anti-Patterns
+
+### 5.1 Expecting Automatic `SqlVector<T>` Loading
+- **Problem**: In EF Core 11, `SqlVector<T>` properties return `null` by default in regular entity queries to prevent dragging multi-megabyte embeddings across the wire.
+- **Bad**:
+  ```csharp
+  var doc = await context.Documents.FindAsync(id);
+  // doc.Embedding will be null in EF Core 11!
+  ```
+- **Good**: Explicitly project the vector property when needed:
+  ```csharp
+  var embedding = await context.Documents
+      .Where(d => d.Id == id)
+      .Select(d => d.Embedding)
+      .FirstOrDefaultAsync();
+  ```
+
+### 5.2 Synchronous Calls in Azure Cosmos DB Provider
+- **Problem**: EF Core 11 completely removed synchronous I/O from the Azure Cosmos DB provider.
+- **Bad**: Calling `.ToList()`, `.FirstOrDefault()`, or `.SaveChanges()` on Cosmos DB context.
+- **Good**: Always use `.ToListAsync()`, `.FirstOrDefaultAsync()`, and `.SaveChangesAsync()`.
+

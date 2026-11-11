@@ -4,9 +4,9 @@ description: >
   Use this skill when the task involves Entity Framework Core models, DbContext,
   migrations, LINQ queries, change tracking, database providers, performance tuning,
   or data access review in .NET projects.
-compatibility: "Supports .NET 6.0 through 10.0 environments. Compatible with SQL Server, PostgreSQL, MySQL, and SQLite."
+compatibility: "Supports .NET 6.0 through 11.0 environments. Compatible with SQL Server, PostgreSQL, MySQL, and SQLite."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: "Framework"
 ---
 
@@ -36,7 +36,7 @@ metadata:
    - Validate concurrency conflict handling logic.
    - Ensure all database accesses follow asynchronous patterns.
 
-## Feature Roadmap (.NET 6 - 10)
+## Feature Roadmap (.NET 6 - 11)
 
 ### .NET 6 & 7 (Foundation)
 - **Split Queries**: Solve the Cartesian product problem.
@@ -50,9 +50,15 @@ metadata:
 - **Auto-compiled Queries**: Further optimize the query compilation process.
 - **Complex Types**: Better support for Value Objects.
 
-### .NET 10+ (Version-Specific Features)
+### .NET 10 (Interceptors & AOT)
 - **Advanced Interceptors**: More query lifecycle hooks.
 - **Optimized AOT Support**: AOT pre-compilation optimization for cloud-native environments.
+
+### .NET 11 (Advanced Querying & AI Vector Integration)
+- **Complex Types & JSON Columns in TPT/TPC**: Full modeling support for complex types and JSON columns across Table-Per-Type and Table-Per-Concrete-Type hierarchies.
+- **LINQ Translation Enhancements**: `Queryable.FullJoin` translating directly to SQL `FULL OUTER JOIN`, `NULLIF` translation, and `EF.Functions.JsonPathExists()`.
+- **Approximate Vector Search (SQL Server 2025)**: Native `.VectorSearch().WithApproximate()` leveraging `WITH APPROXIMATE` vector index searches; default SQL Server compatibility level upgraded to 160 (SQL Server 2022+).
+- **Breaking Changes Awareness**: `SqlVector<T>` columns return `null` by default on queries without explicit projection; Cosmos DB synchronous I/O and `__jObject` shadow property removed; generic `CoreTypeMapping<T>` for NativeAOT.
 
 ## Coding Standards
 - **Fluent API Preference**: Prioritize entity configuration classes over Data Annotations.
@@ -72,6 +78,7 @@ metadata:
 
 ## Documentation
 ### Official References
+- [What's new in EF Core 11](https://learn.microsoft.com/en-us/ef/core/what-is-new/ef-core-11.0/whatsnew)
 - [Entity Framework Core Overview](https://learn.microsoft.com/en-us/ef/core/)
 - [Performance Optimization in EF Core](https://learn.microsoft.com/en-us/ef/core/performance/)
 - [Supported Database Providers](https://learn.microsoft.com/en-us/ef/core/providers/)

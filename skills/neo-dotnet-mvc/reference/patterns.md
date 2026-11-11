@@ -1,6 +1,6 @@
 # .NET MVC Modern Patterns
 
-This document introduces recommended development patterns in the ASP.NET Core MVC mode for .NET 6 to 10+.
+This document introduces recommended development patterns in the ASP.NET Core MVC mode for .NET 6 to 11+.
 
 ## 1. UI Modularization
 
@@ -54,3 +54,40 @@ public class ShoppingCartViewComponent : ViewComponent
 
 ### 5.1 Extension Types for IHtmlHelper
 **Recommendation**: Leverage C# 14's Extension Types to add domain-specific rendering methods to `IHtmlHelper`, not just static extension methods.
+
+---
+
+## 6. .NET 11 Modern Patterns
+
+### 6.1 Zstandard (zstd) Compression for Server-Side Rendering
+**Recommendation**: Enable Zstandard compression provider to dramatically accelerate the transmission of large HTML DOM trees rendered by Razor views:
+```csharp
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<ZstandardCompressionProvider>();
+});
+```
+
+### 6.2 Asynchronous Validation in MVC Forms
+**Recommendation**: Coordinate async form validation rules with ViewModels to perform async verification (e.g. database uniqueness checks) before committing form transactions:
+```csharp
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> RegisterAsync(RegisterViewModel model, IUserService userService)
+{
+    if (await userService.IsEmailTakenAsync(model.Email))
+    {
+        ModelState.AddModelError(nameof(model.Email), "Email is already registered.");
+    }
+
+    if (!ModelState.IsValid)
+    {
+        return View(model);
+    }
+
+    await userService.CreateUserAsync(model);
+    return RedirectToAction(nameof(Index));
+}
+```
+

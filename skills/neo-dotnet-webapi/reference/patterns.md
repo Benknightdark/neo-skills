@@ -1,6 +1,6 @@
 # .NET Web API Modern Patterns
 
-This document introduces recommended development patterns in the Controller-based mode for .NET 6 to 10+.
+This document introduces recommended development patterns in the Controller-based mode for .NET 6 to 11+.
 
 ## 1. Error Handling and Response Formats
 
@@ -50,3 +50,38 @@ This document introduces recommended development patterns in the Controller-base
 
 ### 5.1 Extension Types for Controllers
 **Recommendation**: Leverage Extension Types to expand common auxiliary properties or methods for the base `ControllerBase`.
+
+---
+
+## 6. .NET 11 Modern Patterns
+
+### 6.1 Zstandard (zstd) Response Compression for Controllers
+**Recommendation**: Configure Zstandard compression options to reduce payload size on heavy JSON responses from API controllers:
+```csharp
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<ZstandardCompressionProvider>();
+});
+builder.Services.Configure<ZstandardCompressionProviderOptions>(options =>
+{
+    options.Level = System.IO.Compression.CompressionLevel.Fastest;
+});
+```
+
+### 6.2 OpenAPI 3.2 Specification Integration
+**Recommendation**: Target OpenAPI 3.2 metadata in API controllers to provide richer schema details for downstream clients and agentic tools:
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+[Produces("application/json")]
+public class CatalogController : ControllerBase
+{
+    [HttpGet("{id:int}")]
+    [EndpointSummary("Retrieve item by unique identifier")]
+    [ProducesResponseType(typeof(ItemDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ItemDto>> GetItemAsync(int id, CancellationToken ct) => ...;
+}
+```
+

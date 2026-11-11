@@ -5,9 +5,9 @@ description: >
   from an existing class. Trigger for extracting public members, filtering virtual
   or non-public members, enforcing getter-only properties, and safely creating,
   appending, or replacing interface blocks.
-compatibility: "Supports C# 12/13 and .NET 10.0."
+compatibility: "Supports C# 12 through 15 and .NET 10.0/11.0."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: "Core"
 ---
 
@@ -19,6 +19,7 @@ metadata:
    - Identify members with the `virtual` keyword.
    - Identify non-`public` members.
 3. **Environment Awareness**: When the user specifies a target file, read the file content to check for the existence of an Interface with the same name.
+4. **Language Constructs Check (C# 15)**: Verify whether the target type is a C# 15 `union` or a standard class/record. Union types represent closed type choices and usually do not require extracting traditional interfaces.
 
 ## Reason
 1. **Interface Generation Logic**:

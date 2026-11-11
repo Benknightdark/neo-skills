@@ -1,6 +1,6 @@
 # .NET Minimal APIs Modern Patterns
 
-This document introduces recommended development patterns in the Minimal APIs domain for .NET 6 to 10+.
+This document introduces recommended development patterns in the Minimal APIs domain for .NET 6 to 11+.
 
 ## 1. Architectural Patterns
 
@@ -66,3 +66,51 @@ app.MapGet("/users", () => ...)
 ```csharp
 app.MapGet("/health", static () => "Healthy");
 ```
+
+---
+
+## 5. .NET 11 Modern Patterns
+
+### 5.1 Asynchronous Endpoint Validation
+**Recommendation**: In .NET 11, leverage native async validation directly in endpoint filters or validation pipelines to perform async service lookups without blocking threads.
+```csharp
+app.MapPost("/users", async (UserCreateDto dto, IUserService userService) =>
+{
+    // Native async validation flows through EndpointFilter cleanly
+    return TypedResults.Created($"/users/{dto.Username}");
+}).AddEndpointFilter(async (invocationContext, next) =>
+{
+    var dto = invocationContext.GetArgument<UserCreateDto>(0);
+    var userService = invocationContext.HttpContext.RequestServices.GetRequiredService<IUserService>();
+    if (await userService.ExistsAsync(dto.Username))
+    {
+        return TypedResults.Conflict("Username already taken.");
+    }
+    return await next(invocationContext);
+});
+```
+
+### 5.2 Zstandard (zstd) HTTP Response Compression
+**Recommendation**: Register Zstandard response compression provider in `Program.cs` to achieve higher compression ratios and faster streaming for high-throughput Minimal APIs.
+```csharp
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<ZstandardCompressionProvider>();
+});
+```
+
+### 5.3 OpenAPI 3.2 Environment Transformers
+**Recommendation**: Utilize OpenAPI 3.2 default generation and environment transformers to separate development and production schemas.
+```csharp
+builder.Services.AddOpenApi(options =>
+{
+    // OpenAPI 3.2 is default in .NET 11
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info.Description = $"Generated for {builder.Environment.EnvironmentName}";
+        return Task.CompletedTask;
+    });
+});
+```
+

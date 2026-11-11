@@ -5,9 +5,9 @@ description: >
   Pipelines YAML for CI/CD, especially .NET builds, Azure App Service deploys, or
   IIS/on-premises deploys. Prefer bundled templates and verify task syntax against
   Microsoft docs when version-specific accuracy matters.
-compatibility: "Supports .NET 6.0 up to .NET 10.0."
+compatibility: "Supports .NET 6.0 up to .NET 11.0."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: "DevOps"
 ---
 
@@ -53,7 +53,7 @@ metadata:
 
 ### CI Workflow: .NET Build Pipeline
 When configuring a CI process for a .NET project:
-1. Scan the project directory to identify the .NET version (e.g., .NET 6/8), project name, and solution file (`.sln`).
+1. Scan the project directory to identify the .NET version (e.g., .NET 8/10/11), project name, and solution file (`.sln`).
 2. Check for any existing pipeline configurations.
 3. Create the `.pipelines/templates/build/` and `.pipelines/templates/util/` directories.
 4. Copy `build/build-dotnet.yml` and `util/clean-artifact.yml` templates to their respective locations.

@@ -5,9 +5,9 @@ description: >
   projects. Trigger for .cs/.csproj files, C# language-version questions, nullable
   reference types, records, pattern matching, async/cancellation, or version-appropriate
   syntax from C# 10+.
-compatibility: "Supports C# 10 through 14. Adaptive to .NET 6.0, 7.0, 8.0, 9.0, and 10.0 environments."
+compatibility: "Supports C# 10 through 15. Adaptive to .NET 6.0 through 11.0 environments."
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
   category: "Core"
 ---
 
@@ -27,6 +27,7 @@ metadata:
      - `net8.0`: C# 12 (Primary Constructors, Collection Expressions).
      - `net9.0`: C# 13 (`params` collections, `Lock` object).
      - `net10.0`: C# 14 (Extension members, `field` keyword).
+     - `net11.0`: C# 15 (Union types, closed hierarchies, collection-spread arguments, labeled break/continue, extension indexers, inline unsafe expressions).
 2. **Reason (Planning Phase):**
    - Evaluate the modernization level of the current code to determine the refactoring strategy.
    - In lower version environments (like .NET 6), avoid using higher version syntax (like Primary Constructors), but prioritize using File-scoped namespaces.
@@ -40,7 +41,7 @@ metadata:
    - Check if asynchronous operations correctly handle cancellation tokens (`CancellationToken`).
    - Ensure naming conventions comply with official .NET recommendations.
 
-## Feature Roadmap (C# 10 - 14)
+## Feature Roadmap (C# 10 - 15)
 
 ### C# 10 & 11 (Foundation)
 - **File-scoped Namespaces:** Reduce indentation levels.
@@ -55,11 +56,19 @@ metadata:
 - **`params` Collections:** Method parameters support various collection types.
 - **Implicit Span Conversion:** Handle memory-safe code more naturally.
 
-### C# 14+ (Version-Specific Features)
+### C# 14 (Language Extensions)
 - **Extension Members:** Extension properties, operators, and static members.
 - **`field` Keyword:** Directly access backing fields in property logic.
 - **Null-conditional Assignment:** `target?.Property = value;`.
 - **Scripting:** Support `dotnet run file.cs` for direct execution.
+
+### C# 15 (Advanced Types & Productivity)
+- **Union Types:** `public union Pet(Cat, Dog, Bird);` with exhaustive compiler-checked `switch` expressions without discarding `_`.
+- **Closed Hierarchies:** `public closed record class State;` restricts inheritance strictly within the defining project/assembly for domain safety.
+- **Collection Expression Arguments:** `[with(capacity: values.Length * 2), .. values]` or `[with(StringComparer.OrdinalIgnoreCase), ...]` for inline constructor customization.
+- **Labeled Break & Continue:** Jump out of deeply nested loops directly with `break outer;` and `continue outer;`.
+- **Extension Indexers:** Support `this[int index]` on extended types.
+- **Localized Unsafe Expressions:** Fine-grained `unsafe(...)` expressions for localized pointer operations without marking entire methods unsafe.
 
 ## Coding Standards
 - **Clean Structure:** Prioritize using File-scoped namespaces.
@@ -79,6 +88,7 @@ metadata:
 
 ## Documentation
 ### Official References
+- [What's new in C# 15 (Union types, closed hierarchies)](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-15)
 - [What's new in C# 14 (Extension Members, field keyword)](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
 - [What's new in C# 13 (params collections, Lock object)](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-13)
 - [What's new in C# 12 (Primary Constructors, Collection Expressions)](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12)

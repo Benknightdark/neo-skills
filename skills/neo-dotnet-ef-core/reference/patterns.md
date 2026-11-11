@@ -1,6 +1,6 @@
 # EF Core Modern Patterns
 
-This document introduces recommended development patterns in the Entity Framework Core domain for .NET 6 to 10+.
+This document introduces recommended development patterns in the Entity Framework Core domain for .NET 6 to 11+.
 
 ## 1. Advanced Query Patterns
 
@@ -51,3 +51,41 @@ await context.Orders
 
 ### 5.1 Extension Types for Computed Properties on Entities
 **Recommendation**: Leverage C# 14's Extension Types to add computed properties to POCO entities without affecting the database schema.
+
+---
+
+## 6. EF Core 11 Modern Patterns
+
+### 6.1 LINQ FullJoin (SQL FULL OUTER JOIN)
+**Recommendation**: Use `Queryable.FullJoin` to express full outer joins directly in LINQ rather than writing complex union queries or raw SQL:
+```csharp
+var query = context.Customers
+    .FullJoin(
+        context.Orders,
+        c => c.Id,
+        o => o.CustomerId,
+        (customer, order) => new { Customer = customer, Order = order });
+```
+
+### 6.2 Approximate Nearest Neighbor Vector Search (SQL Server 2025)
+**Recommendation**: For high-dimensional vector search with vector indexing, use `.WithApproximate()` to trigger SQL Server's approximate search:
+```csharp
+var results = await context.Documents
+    .OrderBy(d => EF.Functions.VectorDistance("cosine", d.Embedding, queryVector))
+    .VectorSearch()
+    .WithApproximate()
+    .Take(5)
+    .Select(d => new { d.Id, d.Title }) // Always explicitly project non-vector fields
+    .ToListAsync();
+```
+
+### 6.3 Complex Types & JSON in TPT/TPC Hierarchies
+**Recommendation**: Model domain value objects as complex types or JSON columns even on polymorphic hierarchies using Table-Per-Type (TPT) or Table-Per-Concrete-Type (TPC):
+```csharp
+public abstract class Payment
+{
+    public int Id { get; set; }
+    public required Money Amount { get; set; } // Complex Type supported in EF Core 11 TPT/TPC
+}
+```
+

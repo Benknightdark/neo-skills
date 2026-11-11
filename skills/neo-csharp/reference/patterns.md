@@ -1,6 +1,6 @@
 # Modern C# Patterns Guide
 
-This document introduces recommended development patterns in C# 10 through 14+, aiming to simplify code and improve performance using modern syntax.
+This document introduces recommended development patterns in C# 10 through 15+, aiming to simplify code and improve performance using modern syntax.
 
 ## 1. Architecture and Declaration Patterns
 
@@ -139,4 +139,62 @@ if (input is not null) { ... }
 
 // Use null-coalescing assignment operator
 _logger ??= NullLogger.Instance;
+```
+
+---
+
+## 7. C# 15 Modern Patterns
+
+### 7.1 Union Types for Domain Modeling
+**Recommendation**: Use `union` types to model closed variants without complex inheritance hierarchies, enabling exhaustive pattern matching.
+```csharp
+public record class Cat(string Name);
+public record class Dog(string Name);
+public record class Bird(string Name);
+
+public union Pet(Cat, Dog, Bird);
+
+// Exhaustive switch expression enforced by compiler
+public string DescribePet(Pet pet) => pet switch
+{
+    Cat c => $"Cat named {c.Name}",
+    Dog d => $"Dog named {d.Name}",
+    Bird b => $"Bird named {b.Name}"
+    // No default discard _ needed
+};
+```
+
+### 7.2 Closed Hierarchies for Secure Domain Classes
+**Recommendation**: Use the `closed` modifier on base classes or records to prevent external libraries from subclassing domain states.
+```csharp
+public closed abstract record class OrderStatus;
+public record class Pending() : OrderStatus;
+public record class Shipped(DateTime ShippedAt) : OrderStatus;
+```
+
+### 7.3 Collection Expressions with Arguments
+**Recommendation**: Use `with(...)` at the start of a collection expression to supply constructor arguments such as capacity or comparers inline.
+```csharp
+// Inline capacity
+List<string> items = [with(capacity: initialCount * 2), .. existingItems];
+
+// Inline comparer
+HashSet<string> keywords = [with(StringComparer.OrdinalIgnoreCase), "NET", "C#", "Rust"];
+```
+
+### 7.4 Labeled Break and Continue
+**Recommendation**: In nested loops, use labeled `break` or `continue` to escape directly to the desired level without boolean flags.
+```csharp
+search:
+foreach (var batch in batches)
+{
+    foreach (var item in batch)
+    {
+        if (item.IsTarget)
+        {
+            Process(item);
+            break search;
+        }
+    }
+}
 ```

@@ -4,9 +4,9 @@ description: >
   Use this skill when building, debugging, refactoring, or reviewing ASP.NET Core
   MVC apps with Razor views, controllers, ViewModels, validation, Tag Helpers,
   View Components, layouts, or server-rendered workflows.
-compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK installed locally."
+compatibility: "Supports .NET 6.0 through 11.0 environments. Requires .NET SDK installed locally."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: "Framework"
 ---
 
@@ -36,7 +36,7 @@ metadata:
    - Check whether model validation correctly operates on both the frontend and backend.
    - Ensure Antiforgery tokens are correctly applied to all state-modifying requests.
 
-## Feature Roadmap (.NET 6 - 10)
+## Feature Roadmap (.NET 6 - 11)
 
 ### .NET 6 & 7 (Foundation)
 - **Tag Helpers**: Declarative HTML attribute extensions.
@@ -50,9 +50,15 @@ metadata:
 - **Keyed Services in Controllers**: Finer-grained dependency injection support.
 - **Native AOT for MVC**: Metadata compilation optimization tailored for AOT.
 
-### .NET 10+ (Version-Specific Features)
+### .NET 10 (Extensions & Serialization)
 - **Extension Members for IHtmlHelper**: Extending view helper functions.
 - **Advanced Serialization in Views**: Performance optimization for large view models.
+
+### .NET 11+ (Version-Specific Features)
+- **Zstandard (zstd) Compression for SSR**: High-efficiency compression for server-rendered HTML payloads and static assets.
+- **Asynchronous Form Validation**: Extended async validation coordination for complex input pipelines.
+- **Agentic UI & Blazor Component Integration**: Native AG-UI / Blazor AI components in hybrid MVC apps, with `TempData` support in static SSR.
+- **Runtime Async Performance**: Reduced async allocation and cleaner execution traces in Razor view generation.
 
 ## Coding Standards
 - **Strongly Typed Views**: All views must have an explicit `@model`.
@@ -72,6 +78,7 @@ metadata:
 
 ## Documentation
 ### Official References
+- [What's new in ASP.NET Core in .NET 11](https://learn.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-11.0)
 - [Overview of ASP.NET Core MVC](https://learn.microsoft.com/en-us/aspnet/core/mvc/overview)
 - [Tag Helpers in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/intro)
 - [View components in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/mvc/views/view-components)

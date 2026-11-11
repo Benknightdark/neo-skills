@@ -4,9 +4,9 @@ description: >
   Use this skill when building, debugging, refactoring, or reviewing controller-based
   ASP.NET Core Web APIs, including ControllerBase, ActionResult<T>, Problem Details,
   API versioning, global exception handling, DTOs, and OpenAPI behavior.
-compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK installed locally."
+compatibility: "Supports .NET 6.0 through 11.0 environments. Requires .NET SDK installed locally."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: "Framework"
 ---
 
@@ -36,7 +36,7 @@ metadata:
    - Check NRT (Nullable Reference Types) safety.
    - Ensure asynchronous operations correctly pass down `CancellationToken`.
 
-## Feature Roadmap (.NET 6 - 10)
+## Feature Roadmap (.NET 6 - 11)
 
 ### .NET 6 & 7 (Foundation)
 - **Controllers Architecture**: Traditional controller patterns and attribute routing.
@@ -50,9 +50,15 @@ metadata:
 - **Keyed Services**: More flexible dependency injection options.
 - **HybridCache**: Multi-level caching optimization.
 
-### .NET 10+ (Version-Specific Features)
+### .NET 10 (Extensions & Serialization)
 - **Extension Members for Controllers**: Extending base controller functionality.
 - **Enhanced Serialization**: JSON optimization for large payloads.
+
+### .NET 11+ (Version-Specific Features)
+- **OpenAPI 3.2 Specification by Default**: Upgraded documentation standards with enhanced schema generation.
+- **Zstandard (zstd) Compression**: Native high-speed, high-ratio compression via `ZstandardCompressionProviderOptions`.
+- **TLS Channel Binding for Negotiate Authentication**: Enhanced transport security for Kerberos / NTLM multi-round auth.
+- **Runtime Async Controller Execution**: Reduced Task allocation overhead and cleaner stack traces during controller action execution.
 
 ## Coding Standards
 - **Strong Typing**: Prioritize `ActionResult<T>` to improve Swagger support.
@@ -72,6 +78,7 @@ metadata:
 
 ## Documentation
 ### Official References
+- [What's new in ASP.NET Core in .NET 11](https://learn.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-11.0)
 - [ASP.NET Core Web API Overview](https://learn.microsoft.com/en-us/aspnet/core/web-api/)
 - [Handle errors in ASP.NET Core web APIs (Problem Details)](https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors)
 - [Controller action return types in ASP.NET Core web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types)

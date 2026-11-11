@@ -4,9 +4,9 @@ description: >
   Use this skill when building, debugging, refactoring, or reviewing ASP.NET Core
   Minimal APIs, lightweight endpoints, route groups, endpoint filters, typed results,
   OpenAPI metadata, or high-performance .NET API services without controllers.
-compatibility: "Supports .NET 6.0 through 10.0 environments. Requires .NET SDK installed locally."
+compatibility: "Supports .NET 6.0 through 11.0 environments. Requires .NET SDK installed locally."
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: "Framework"
 ---
 
@@ -36,7 +36,7 @@ metadata:
    - Check whether the generated OpenAPI documentation is complete.
    - Ensure asynchronous operations correctly pass the `CancellationToken`.
 
-## Feature Roadmap (.NET 6 - 10)
+## Feature Roadmap (.NET 6 - 11)
 
 ### .NET 6 & 7 (Foundation)
 - **Minimal Hosting**: Simplified startup process and top-level statements.
@@ -50,9 +50,15 @@ metadata:
 - **HybridCache**: High-performance multi-level caching support.
 - **OpenAPI Improvements**: Better OpenAPI code generation.
 
-### .NET 10+ (Version-Specific Features)
+### .NET 10 (AOT & Middleware)
 - **Native AOT Optimization**: AOT-optimized compilation tailored for Minimal APIs.
 - **Enhanced Middleware Patterns**: New middleware designed for lightweight architectures.
+
+### .NET 11+ (Version-Specific Features)
+- **Asynchronous Validation Support**: Native async validation rules across Minimal API endpoints and parameter binding, awaiting validation logic seamlessly.
+- **OpenAPI 3.2 by Default**: Updated default specification to OpenAPI 3.2, with support for `OpenApiGenerationEnvironment` in build-time generation.
+- **Zstandard (zstd) Compression**: Native high-ratio, low-latency compression provider for response compression and request decompression.
+- **Runtime Async Performance**: Reduced task state machine allocations and cleaner async stack traces across endpoint handlers.
 
 ## Coding Standards
 - **Clean Routing**: Prioritize using extension methods to modularize routes.
@@ -72,6 +78,7 @@ metadata:
 
 ## Documentation
 ### Official References
+- [What's new in ASP.NET Core in .NET 11](https://learn.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-11.0)
 - [Minimal APIs Overview](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis)
 - [Route groups and filters](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/route-handlers)
 - [Typed responses in Minimal APIs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/responses)

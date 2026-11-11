@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.104.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.103.0...neo-skills-v0.104.0) (2026-11-11)
+
+
+### Features
+
+* **dotnet:** 升級 .NET 11 與 C# 15 技能規範與參考架構 ([2ab97d3](https://github.com/Benknightdark/neo-skills/commit/2ab97d3ca65ed4a35a618fbf73808cd546443d8c))
+
 ## [0.103.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.102.0...neo-skills-v0.103.0) (2026-10-25)
 
 

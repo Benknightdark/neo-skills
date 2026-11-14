@@ -352,3 +352,170 @@ Ask yourself first:
 ### Principle
 
 `unsafe` is not a performance switch; it is taking over the safety responsibilities that the compiler can no longer guarantee.
+
+---
+
+## Anti-pattern 11: Nested `if let` Pyramids Instead of `let...else` or `let` Chains (Rust 1.88+)
+
+### Bad
+
+```rust
+fn parse_port(cfg: Option<&Config>) -> Option<u16> {
+    if let Some(c) = cfg {
+        if let Some(raw) = c.port_str() {
+            if let Ok(port) = raw.parse::<u16>() {
+                if port > 0 {
+                    return Some(port);
+                }
+            }
+        }
+    }
+    None
+}
+```
+
+### Good
+
+```rust
+fn parse_port(cfg: Option<&Config>) -> Option<u16> {
+    if let Some(c) = cfg
+        && let Some(raw) = c.port_str()
+        && let Ok(port) = raw.parse::<u16>()
+        && port > 0
+    {
+        return Some(port);
+    }
+    None
+}
+```
+
+Or use `let ... else` for early exits inside functions returning `Result` or `Option`:
+
+```rust
+fn require_port(cfg: Option<&Config>) -> Result<u16, ConfigError> {
+    let Some(c) = cfg else {
+        return Err(ConfigError::MissingConfig);
+    };
+    let Some(raw) = c.port_str() else {
+        return Err(ConfigError::MissingPort);
+    };
+    raw.parse::<u16>().map_err(|_| ConfigError::InvalidPort)
+}
+```
+
+### Principle
+
+Avoid rightward drift. Use `let` chains (`if let ... && let ...`) in Edition 2024 / Rust 1.88+ and `let ... else` for crisp early-return control flow.
+
+---
+
+## Anti-pattern 12: Using `#[allow(...)]` Instead of `#[expect(...)]` for Targeted Lint Suppression (Edition 2024)
+
+### Bad
+
+```rust
+// If the underlying issue is fixed later, `#[allow]` silently remains forever
+#[allow(clippy::too_many_arguments)]
+fn build_request(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) {
+    // ...
+}
+```
+
+### Good
+
+```rust
+#[expect(
+    clippy::too_many_arguments,
+    reason = "Legacy C-FFI wrapper; tracked for builder refactor in issue #42"
+)]
+fn build_request(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) {
+    // ...
+}
+```
+
+### Principle
+
+Use `#[expect(lint, reason = "...")]` when intentionally suppressing a specific lint so the compiler notifies you as soon as the suppression is no longer needed.
+
+---
+
+## Anti-pattern 13: Calling `std::env::set_var` in Multi-Threaded Code or Tests (Rust 2024 Edition)
+
+### Bad
+
+```rust
+// In Rust 2024 Edition, `std::env::set_var` is `unsafe` because process-wide
+// environment mutation causes data races with concurrent `getenv` calls.
+#[test]
+fn test_reads_custom_endpoint() {
+    unsafe {
+        std::env::set_var("API_ENDPOINT", "http://localhost:8080");
+    }
+    let cfg = load_config_from_env();
+    assert_eq!(cfg.endpoint, "http://localhost:8080");
+}
+```
+
+### Good
+
+```rust
+fn load_config(lookup: impl Fn(&str) -> Option<String>) -> Config {
+    let endpoint = lookup("API_ENDPOINT").unwrap_or_else(|| "https://api.example.com".into());
+    Config { endpoint }
+}
+
+#[test]
+fn test_reads_custom_endpoint() {
+    let cfg = load_config(|key| match key {
+        "API_ENDPOINT" => Some("http://localhost:8080".into()),
+        _ => None,
+    });
+    assert_eq!(cfg.endpoint, "http://localhost:8080");
+}
+```
+
+For child processes, pass environment variables safely with `std::process::Command::env`.
+
+### Principle
+
+Never mutate process-global environment variables in concurrent applications or parallel unit tests; inject configuration readers or pass isolated subprocess environments instead.
+
+---
+
+## Anti-pattern 14: Manual Index Splitting or `unsafe` Pointers Instead of `get_disjoint_mut` / `array_windows` (Rust 1.86+ / 1.94+)
+
+### Bad
+
+```rust
+// Prone to off-by-one bounds panics or unnecessary `unsafe` aliasing bugs
+fn update_pair(values: &mut [i32], i: usize, j: usize) {
+    if i < j {
+        let (left, right) = values.split_at_mut(j);
+        left[i] += 1;
+        right[0] += 1;
+    }
+}
+
+fn max_delta(samples: &[i32]) -> Option<i32> {
+    samples.windows(2).map(|w| (w[1] - w[0]).abs()).max()
+}
+```
+
+### Good
+
+```rust
+fn update_pair(values: &mut [i32], i: usize, j: usize) {
+    if let Ok([a, b]) = values.get_disjoint_mut([i, j]) {
+        *a += 1;
+        *b += 1;
+    }
+}
+
+fn max_delta(samples: &[i32]) -> Option<i32> {
+    samples.array_windows::<2>().map(|&[a, b]| (b - a).abs()).max()
+}
+```
+
+### Principle
+
+Rely on `slice::get_disjoint_mut` (1.86+) and `slice::array_windows` (1.94+) to express disjoint mutation and fixed-width iteration safely without index arithmetic or runtime slice-length indexing.

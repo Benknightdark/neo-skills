@@ -782,3 +782,221 @@ async fn main() {
 ### Principle
 
 Async tasks should have a cap. Do not `spawn` without limits.
+
+---
+
+# 3. Modern Rust Patterns (Rust 1.85 / 2024 Edition – 1.100+)
+
+---
+
+## Pattern 16: `let` Chains and `if let` Match Guards (Rust 1.88+ / 1.95+)
+
+Requires Rust 1.88+ (in Rust 2024 Edition) for `let` chains and Rust 1.95+ for `if let` guards in `match` arms.
+
+### Bad Practice
+
+```rust
+fn extract_bearer_token(header: Option<&str>) -> Option<&str> {
+    if let Some(raw) = header {
+        if let Some(token) = raw.strip_prefix("Bearer ") {
+            if !token.is_empty() {
+                return Some(token);
+            }
+        }
+    }
+    None
+}
+```
+
+### Best Practice
+
+```rust
+fn extract_bearer_token(header: Option<&str>) -> Option<&str> {
+    if let Some(raw) = header
+        && let Some(token) = raw.strip_prefix("Bearer ")
+        && !token.is_empty()
+    {
+        Some(token)
+    } else {
+        None
+    }
+}
+
+enum Event<'a> {
+    Payload(&'a str),
+    Heartbeat,
+}
+
+fn handle_event(event: Event<'_>) {
+    match event {
+        Event::Payload(raw) if let Ok(id) = raw.parse::<u64>() => {
+            println!("valid payload id: {id}");
+        }
+        Event::Payload(raw) => println!("invalid payload: {raw}"),
+        Event::Heartbeat => println!("heartbeat"),
+    }
+}
+```
+
+### Principle
+
+Use `let` chains and `if let` match guards to flatten nested conditional bindings and eliminate rightward drift.
+
+---
+
+## Pattern 17: Async Closures (`async || {}`) with `AsyncFn` Traits (Rust 1.85+ / Edition 2024)
+
+### Best Practice
+
+```rust
+async fn retry_with_prefix<F>(prefix: &str, items: &[&str], op: F) -> Result<(), String>
+where
+    F: AsyncFn(&str, &str) -> Result<(), String>,
+{
+    for item in items {
+        op(prefix, item).await?;
+    }
+    Ok(())
+}
+
+async fn run(client_tag: String) -> Result<(), String> {
+    let items = ["order-1", "order-2"];
+
+    retry_with_prefix("sync", &items, async |prefix, item| {
+        // Native async closures can borrow `client_tag` across `.await`
+        println!("[{client_tag}] {prefix}:{item}");
+        Ok(())
+    })
+    .await
+}
+```
+
+### Principle
+
+Prefer native `async || {}` closures and `AsyncFn` / `AsyncFnMut` / `AsyncFnOnce` bounds over `Fn(...) -> Fut` workarounds when callbacks need to borrow captured state across `.await` boundaries.
+
+---
+
+## Pattern 18: Precise Capturing (`use<...>`) in Return-Position `impl Trait` (Rust 1.85+ / 1.87+)
+
+In Rust 2024 Edition, return-position `impl Trait` (RPIT) captures all in-scope generic lifetime and type parameters by default.
+
+### Best Practice
+
+```rust
+// Explicitly capture only `'a`, decoupling the returned iterator from `_filter_tag`'s borrow
+fn non_empty_lines<'a>(
+    input: &'a str,
+    _filter_tag: &str,
+) -> impl Iterator<Item = &'a str> + use<'a> {
+    input.lines().filter(|line| !line.is_empty())
+}
+```
+
+### Principle
+
+When compiling under Rust 2024 Edition, add `+ use<'a, T>` to RPIT return types (and trait methods in 1.87+) whenever an unrelated input reference does not need to outlive the returned opaque value.
+
+---
+
+## Pattern 19: Trait Upcasting, `get_disjoint_mut`, and `array_windows` (Rust 1.86+ / 1.94+)
+
+### Best Practice
+
+```rust
+trait BaseService {
+    fn name(&self) -> &str;
+}
+
+trait HealthChecked: BaseService {
+    fn is_healthy(&self) -> bool;
+}
+
+fn log_service(service: &dyn BaseService) {
+    println!("service: {}", service.name());
+}
+
+fn inspect(checked: &dyn HealthChecked) {
+    if checked.is_healthy() {
+        // Direct trait object upcast (Rust 1.86+)
+        log_service(checked);
+    }
+}
+
+fn swap_endpoints(scores: &mut [i32]) {
+    let Some(last_idx) = scores.len().checked_sub(1) else {
+        return;
+    };
+    // Safe simultaneous mutable borrow of disjoint elements (Rust 1.86+)
+    if let Ok([first, last]) = scores.get_disjoint_mut([0, last_idx]) {
+        std::mem::swap(first, last);
+    }
+}
+
+fn has_ascending_pair(values: &[i32]) -> bool {
+    // Fixed-size array windows without runtime bounds indexing (Rust 1.94+)
+    values.array_windows::<2>().any(|&[prev, next]| next > prev)
+}
+```
+
+### Principle
+
+Prefer standard library safe abstractions (`get_disjoint_mut`, `array_windows`, trait upcasting) over manual index math, helper boilerplate traits, or `unsafe` pointer splitting.
+
+---
+
+## Pattern 20: Never Type (`!`), `DropGuard`, and Custom Allocators (Rust 1.100+)
+
+### Best Practice
+
+```rust
+use std::alloc::{Allocator, System};
+use std::mem::DropGuard;
+
+trait Handler {
+    type Error;
+    fn handle(&self, input: &str) -> Result<usize, Self::Error>;
+}
+
+struct CountingHandler;
+
+impl Handler for CountingHandler {
+    // Canonical uninhabited type `!` stabilized in Rust 1.100+
+    type Error = !;
+
+    fn handle(&self, input: &str) -> Result<usize, !> {
+        Ok(input.len())
+    }
+}
+
+fn write_staged_file(path: &str, commit: bool) -> Result<(), String> {
+    let guard = DropGuard::new(path.to_string(), |staged_path| {
+        println!("rolling back uncommitted file: {staged_path}");
+    });
+
+    if !commit {
+        return Err("aborted before commit".to_string());
+    }
+
+    let committed_path = DropGuard::dismiss(guard);
+    println!("committed: {committed_path}");
+    Ok(())
+}
+
+fn collect_in<A: Allocator>(alloc: A) -> Vec<u32, A> {
+    let mut items = Vec::with_capacity_in(4, alloc);
+    items.push(1);
+    items.push(2);
+    items
+}
+
+fn main() {
+    let boxed = Box::new_in("system-allocated", System);
+    let items = collect_in(System);
+    println!("{boxed}, len={}", items.len());
+}
+```
+
+### Principle
+
+Use `!` to model infallible branches in generic APIs, `std::mem::DropGuard` for inline scope-based cleanup without custom RAII structs, and `std::alloc::Allocator` when explicit allocation control is needed.

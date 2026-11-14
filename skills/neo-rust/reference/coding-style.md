@@ -230,6 +230,36 @@ jobs:
         run: cargo test
 ```
 
+## Modern `Cargo.toml` & Edition 2024 Configuration
+
+For new projects and modernized crates, specify Edition 2024, an explicit MSRV (`rust-version`), and centralized `[lints]` configuration:
+
+```toml
+[package]
+name = "example-service"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100"
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+mismatched_lifetime_syntaxes = "warn"
+
+[lints.cargo]
+unused_dependencies = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+unwrap_used = "warn"
+```
+
+### Modern Cargo & Conditional Compilation Notes
+- **MSRV-Aware Dependency Resolution (1.85+ / Edition 2024)**: Cargo respects `package.rust-version` automatically when resolving compatible dependency versions.
+- **Workspace Publishing (1.90+)**: Use `cargo publish --workspace` to publish multi-crate workspaces in dependency order.
+- **Cargo Config `include` & TOML 1.1 (1.94+)**: Split shared `.cargo/config.toml` settings cleanly via `include` keys.
+- **Supply-Chain Cooldowns (1.100+)**: Configure `min-publish-age` (or `global-min-publish-age` in `.cargo/config.toml`) to guard against newly published malicious crate versions.
+- **Conditional Compilation (`cfg_select!`, 1.95+)**: Prefer `cfg_select! { unix => { ... } windows => { ... } _ => { ... } }` over chained `#[cfg(...)]` / `#[cfg(not(...))]` blocks or external `cfg-if` crates.
+
 ---
 
 # 6. Summary Table: Good vs. Bad Practices
@@ -246,9 +276,15 @@ jobs:
 | State transitions | Typestate | Runtime flags |
 | Abstract behavior | trait | Hard-coding concrete dependencies |
 | Data conversion | iterator chain | Large temporary mutable vectors |
-| Resource management | RAII / `Drop` | Manual close (easy to forget) |
+| Resource management | RAII / `Drop` / `DropGuard` | Manual close (easy to forget) |
 | Shared data | Clear ownership / channel | `Arc<Mutex<T>>` everywhere |
 | Async concurrency | Bounded concurrency | Unrestricted `spawn` |
+| Multi-condition pattern matching | `let` chains / `let...else` | Deep `if let` pyramids |
+| Async callbacks | `async \|\| {}` / `AsyncFn` | Manual `BoxFuture` closures |
+| Multi-element mutation | `get_disjoint_mut` | Index math / `unsafe` raw pointers |
+| Fixed-size sliding windows | `array_windows::<N>()` | `windows(N)` with runtime indexing `w[0]`, `w[1]` |
+| Lint suppression | `#[expect(lint, reason = "...")]` | Unannotated `#[allow(lint)]` |
+| Infallible results | `Result<T, !>` / `Infallible` | Dummy error enums |
 | Formatting | `cargo fmt` | Manual formatting |
 | Static analysis | `cargo clippy` | Relying on manual review |
 
@@ -459,6 +495,13 @@ True Rust design patterns aren't about "making classes look pretty," but rather:
 
 - Cargo Check
   https://doc.rust-lang.org/cargo/commands/cargo-check.html
+
+- Rust Edition Guide (Rust 2024 Edition)
+  https://doc.rust-lang.org/edition-guide/rust-2024/index.html
+
+- Rust Release Notes & Announcements
+  https://releases.rs/
+  https://blog.rust-lang.org/releases/
 
 - Tokio Tutorial - Channels
   https://tokio.rs/tokio/tutorial/channels

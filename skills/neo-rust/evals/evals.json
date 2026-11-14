@@ -22,6 +22,17 @@
         "Provides a corrected, idiomatic Rust example",
         "The Markdown output format strictly follows the structure of Template A: Code Review Report"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Modernize this Rust 2024 Edition (Rust 1.94+) function:\n```rust\n#[allow(clippy::cast_possible_wrap)]\nfn first_valid_jump(samples: &[i32], header: Option<&str>) -> Option<i32> {\n    if let Some(h) = header {\n        if let Some(tag) = h.strip_prefix(\"v1:\") {\n            if !tag.is_empty() {\n                return samples.windows(2).find(|w| w[1] > w[0]).map(|w| w[1] - w[0]);\n            }\n        }\n    }\n    None\n}\n```",
+      "expected_output": "Refactors nested `if let` blocks into a flat `let` chain (`if let Some(h) = header && let Some(tag) = h.strip_prefix(\"v1:\") && !tag.is_empty()`), replaces `#[allow(...)]` with `#[expect(..., reason = \"...\")]` (or removes it if unused), and upgrades `samples.windows(2)` with runtime indexing to `samples.array_windows::<2>()` using Template B.",
+      "assertions": [
+        "Flattens the nested `if let` blocks using a Rust 1.88+ `let` chain (`&&`)",
+        "Replaces `#[allow(...)]` with `#[expect(..., reason = \"...\")]` or explains why `#[expect]` is preferred",
+        "Replaces `windows(2)` and `w[0]`/`w[1]` indexing with `array_windows::<2>()` destructuring",
+        "Follows Template B: Implementation & Refactoring Summary"
+      ]
     }
   ]
 }

@@ -1,271 +1,188 @@
-# 3. Anti-patterns
+# Rust Anti-Patterns, Hazards & Modernization Fixes
+
+Code-review pitfalls, safety traps, and legacy-to-modern migrations (Rust 2021 / 2024 Editions through **1.100+**). For constructive architectural patterns (`Builder`, `Typestate`, `Newtype`, `Smart Constructor`, `DropGuard`, `AsyncFn`, `RPIT use<..>`, `Allocator`), see [patterns.md](patterns.md).
 
 ---
 
-## Anti-pattern 1: Using `.clone()` everywhere to avoid the borrow checker
+## Ownership, Borrowing & Abstraction Traps
 
-### Bad
+### 1. Excessive Cloning and Owned Input Params
 
+**Problem**: Taking `String` or `&Vec<T>` when only reading forces callers to `.clone()` or construct heap allocations just to satisfy the borrow checker.
+
+#### Bad
 ```rust
-fn process(name: String) {
-    println!("{name}");
-}
+fn process(name: String) { println!("{name}"); }
+fn sum(numbers: &Vec<i32>) -> i32 { numbers.iter().sum() }
 
-fn main() {
-    let name = String::from("Alice");
-
-    process(name.clone());
-    process(name.clone());
-    process(name.clone());
-}
+let name = String::from("Alice");
+process(name.clone());
+process(name.clone());
 ```
 
-### Good
-
+#### Good
 ```rust
-fn process(name: &str) {
-    println!("{name}");
-}
+fn process(name: &str) { println!("{name}"); }
+fn sum(numbers: &[i32]) -> i32 { numbers.iter().sum() }
 
-fn main() {
-    let name = String::from("Alice");
-
-    process(&name);
-    process(&name);
-    process(&name);
-}
+let name = String::from("Alice");
+process(&name);
+process("Bob");
+let _ = sum(&[1, 2, 3]);
 ```
 
-### Principle
+**Rule**: Clone only when independent ownership is required; default to `&str` and `&[T]` (see [Parameter Intake Priority](patterns.md#1-parameter-intake-priority)).
 
-`.clone()` is not forbidden, but you should know why you are cloning.
-If you only need to read the data, use a borrow instead.
+### 2. Public Mutable Fields Breaking Invariants
 
----
+**Problem**: Exposing fields as `pub` lets any caller violate domain constraints (`account.balance = -999`).
 
-## Anti-pattern 2: Excessive use of `String`
-
-### Bad
-
+#### Bad
 ```rust
-fn is_admin(role: String) -> bool {
-    role == "admin"
-}
+pub struct Account { pub balance: i64 }
 ```
 
-### Good
-
-```rust
-fn is_admin(role: &str) -> bool {
-    role == "admin"
-}
-```
-
-### Principle
-
-Use `String` when you need ownership; prefer `&str` for reading text.
-
----
-
-## Anti-pattern 3: Using `bool` to represent complex states
-
-### Bad
-
-```rust
-struct User {
-    is_active: bool,
-    is_deleted: bool,
-    is_locked: bool,
-}
-```
-
-Problem: Contradictory states can occur, such as being both `active` and `deleted`.
-
-### Good
-
-```rust
-enum UserStatus {
-    Active,
-    Deleted,
-    Locked,
-}
-
-struct User {
-    status: UserStatus,
-}
-```
-
----
-
-## Anti-pattern 4: Using `String` for errors
-
-### Bad
-
-```rust
-fn parse_age(input: &str) -> Result<u8, String> {
-    input.parse::<u8>().map_err(|_| "invalid age".to_string())
-}
-```
-
-Acceptable for short scripts, but not recommended for libraries or large systems.
-
-### Good
-
+#### Good
 ```rust
 #[derive(Debug)]
-enum ParseAgeError {
-    InvalidNumber,
-    TooLarge,
-}
+pub enum AccountError { NegativeBalance, NonPositiveDeposit }
 
-fn parse_age(input: &str) -> Result<u8, ParseAgeError> {
-    let age = input.parse::<u8>().map_err(|_| ParseAgeError::InvalidNumber)?;
-
-    if age > 120 {
-        return Err(ParseAgeError::TooLarge);
-    }
-
-    Ok(age)
-}
-```
-
-### Principle
-
-Errors should be categorizable, testable, and handleable.
-
----
-
-## Anti-pattern 5: Random `panic!` inside a library
-
-### Bad
-
-```rust
-pub fn divide(a: i32, b: i32) -> i32 {
-    if b == 0 {
-        panic!("divide by zero");
-    }
-
-    a / b
-}
-```
-
-### Good
-
-```rust
-#[derive(Debug)]
-pub enum DivideError {
-    DivideByZero,
-}
-
-pub fn divide(a: i32, b: i32) -> Result<i32, DivideError> {
-    if b == 0 {
-        return Err(DivideError::DivideByZero);
-    }
-
-    Ok(a / b)
-}
-```
-
-### Principle
-
-Return `Result` unless it is an unrecoverable programming error.
-
----
-
-## Anti-pattern 6: Over-abstraction with Traits
-
-### Bad
-
-```rust
-trait UserNameProvider {
-    fn user_name(&self) -> &str;
-}
-
-struct User {
-    name: String,
-}
-
-impl UserNameProvider for User {
-    fn user_name(&self) -> &str {
-        &self.name
-    }
-}
-```
-
-Problem: When there's only one struct, one method, and no need for substitution, a trait is just noise.
-
-### Good
-
-```rust
-struct User {
-    name: String,
-}
-
-impl User {
-    fn name(&self) -> &str {
-        &self.name
-    }
-}
-```
-
-### Principle
-
-Use concrete types first. Abstract into traits only when actually needed.
-
----
-
-## Anti-pattern 7: Public fields breaking invariants
-
-### Bad
-
-```rust
-pub struct Account {
-    pub balance: i64,
-}
-
-fn main() {
-    let mut account = Account { balance: 100 };
-    account.balance = -999;
-}
-```
-
-### Good
-
-```rust
-pub struct Account {
-    balance: i64,
-}
+pub struct Account { balance: i64 }
 
 impl Account {
-    pub fn new(balance: i64) -> Result<Self, String> {
-        if balance < 0 {
-            return Err("balance cannot be negative".to_string());
-        }
-
-        Ok(Self { balance })
+    pub fn new(balance: i64) -> Result<Self, AccountError> {
+        (balance >= 0).then_some(Self { balance }).ok_or(AccountError::NegativeBalance)
     }
 
-    pub fn balance(&self) -> i64 {
-        self.balance
-    }
+    pub fn balance(&self) -> i64 { self.balance }
 
-    pub fn deposit(&mut self, amount: i64) -> Result<(), String> {
-        if amount <= 0 {
-            return Err("amount must be positive".to_string());
-        }
-
+    pub fn deposit(&mut self, amount: i64) -> Result<(), AccountError> {
+        if amount <= 0 { return Err(AccountError::NonPositiveDeposit); }
         self.balance += amount;
         Ok(())
     }
 }
 ```
 
+**Rule**: Keep invariant-bearing fields private and validate inside constructors and mutators (see [Smart Constructors](patterns.md#4-smart-constructors-and-private-invariants)).
+
+### 3. Over-Abstraction with Traits
+
+**Problem**: Creating a single-implementation trait (`UserNameProvider` for `User`) adds boilerplate indirection with no substitution benefit.
+
+#### Bad
+```rust
+trait UserNameProvider { fn user_name(&self) -> &str; }
+struct User { name: String }
+impl UserNameProvider for User { fn user_name(&self) -> &str { &self.name } }
+```
+
+#### Good
+```rust
+struct User { name: String }
+impl User { fn name(&self) -> &str { &self.name } }
+```
+
+**Rule**: Start with concrete types; introduce traits only when multiple implementations or test doubles are needed (see [Trait Dispatch](patterns.md#7-trait-dispatch-and-upcasting)).
+
 ---
 
-## Anti-pattern 8: Passing `Arc<Mutex<T>>` everywhere
+## Error Handling, Indexing & State Bugs
 
-### Bad
+### 4. Unchecked Unwrap, Panic, and Indexing
 
+**Problem**: Calling `.unwrap()`, `panic!()`, or indexing `slice[idx]` in library or production paths crashes the process on malformed inputs or edge cases.
+
+#### Bad
+```rust
+pub fn divide(a: i32, b: i32) -> i32 {
+    if b == 0 { panic!("divide by zero"); }
+    a / b
+}
+
+fn role_at(roles: &[&str], id: i32) -> String {
+    roles[id as usize].to_string() // Negative i32 wraps; out-of-bounds panics
+}
+```
+
+#### Good
+```rust
+#[derive(Debug)]
+pub enum DivideError { DivideByZero }
+
+pub fn divide(a: i32, b: i32) -> Result<i32, DivideError> {
+    if b == 0 { return Err(DivideError::DivideByZero); }
+    Ok(a / b)
+}
+
+fn role_at(roles: &[&str], id: i32) -> Option<String> {
+    let idx = usize::try_from(id).ok()?;
+    roles.get(idx).map(|role| (*role).to_string())
+}
+```
+
+**Rule**: Return `Result<T, E>` or `Option<T>`, propagate with `?`, and replace unchecked `slice[idx]` with `.get(...)`.
+
+### 5. String Errors and Sentinel Magic Values
+
+**Problem**: Returning `Result<T, String>` prevents programmatic matching, while empty strings (`""`) or `-1` confuse missing data with valid values.
+
+#### Bad
+```rust
+fn find_user_name(id: u64) -> String {
+    if id == 1 { "Alice".into() } else { String::new() }
+}
+
+fn parse_age(input: &str) -> Result<u8, String> {
+    input.parse::<u8>().map_err(|_| "invalid age".to_string())
+}
+```
+
+#### Good
+```rust
+fn find_user_name(id: u64) -> Option<String> {
+    (id == 1).then(|| "Alice".to_string())
+}
+
+#[derive(Debug)]
+enum ParseAgeError { InvalidNumber, TooLarge }
+
+fn parse_age(input: &str) -> Result<u8, ParseAgeError> {
+    let age = input.parse::<u8>().map_err(|_| ParseAgeError::InvalidNumber)?;
+    if age > 120 { return Err(ParseAgeError::TooLarge); }
+    Ok(age)
+}
+```
+
+**Rule**: Use `Option<T>` for absence and typed error `enum`s for library/domain failures (see [coding-style.md](coding-style.md#module--project-structure) for CLI entrypoints).
+
+### 6. Stringly-Typed States and Boolean Flags
+
+**Problem**: `String` state tags allow typos (`"paied"`), and overlapping `bool` fields permit contradictory states (both active and deleted).
+
+#### Bad
+```rust
+struct User { is_active: bool, is_deleted: bool, is_locked: bool }
+struct Payment { status: String }
+```
+
+#### Good
+```rust
+enum UserStatus { Active, Deleted, Locked }
+struct User { status: UserStatus }
+```
+
+**Rule**: Model mutually exclusive states with an `enum` and exhaustive `match` (see [Enums & Newtypes](patterns.md#3-enums-and-newtypes)).
+
+---
+
+## Concurrency & `unsafe` Hazards
+
+### 7. Spreading Arc and Mutex Everywhere
+
+**Problem**: Wrapping unrelated fields in `Arc<Mutex<T>>` creates lock-ordering deadlock risks, unclear ownership, and brittle tests.
+
+#### Bad
 ```rust
 use std::sync::{Arc, Mutex};
 
@@ -276,218 +193,176 @@ struct AppState {
 }
 ```
 
-Problem: Too many locks, unclear responsibilities, prone to deadlocks, and difficult to test.
-
-### Good
-
+#### Good
 ```rust
-struct UserService {
-    users: Vec<String>,
-}
+struct UserService { users: Vec<String> }
 
 impl UserService {
-    fn create_user(&mut self, name: String) {
-        self.users.push(name);
+    fn create_user(&mut self, name: String) { self.users.push(name); }
+}
+```
+
+**Rule**: Prefer single ownership or [Message Passing](patterns.md#11-message-passing-and-actors); reserve `Arc<Mutex<T>>` for genuinely shared cross-thread state.
+
+### 8. Holding Locks Across Await
+
+**Problem**: Holding `std::sync::MutexGuard` across `.await` causes a `!Send` compile error; holding `tokio::sync::MutexGuard` across slow I/O stalls concurrent tasks.
+
+#### Bad
+```rust
+async fn bad_lock(state: &std::sync::Mutex<Vec<u32>>) {
+    let mut guard = state.lock().expect("mutex not poisoned");
+    do_async_work(0).await;
+    guard.push(1);
+}
+```
+
+#### Good
+```rust
+async fn do_async_work(count: u32) { let _ = count; }
+
+async fn good_lock(state: &std::sync::Mutex<Vec<u32>>, item: u32) {
+    let count = {
+        let mut guard = state.lock().expect("mutex not poisoned");
+        guard.push(item);
+        guard.len() as u32
+    }; // Guard drops before `.await`
+    do_async_work(count).await;
+}
+```
+
+**Rule**: Keep lock critical sections synchronous inside `{}` before `.await`; use `tokio::sync::Mutex` only when a guard truly must span `.await`.
+
+### 9. Unbounded Task Spawning
+
+**Problem**: Calling `tokio::spawn` inside an unthrottled loop can exhaust memory, DB connection pools, and upstream API rate limits.
+
+#### Bad
+```rust
+async fn fan_out(items: Vec<u32>) {
+    for item in items {
+        tokio::spawn(async move { let _ = item; });
     }
 }
 ```
 
-### Principle
+**Rule**: Always cap concurrency using `Semaphore` permits or buffered streams (see [Bounded Async Concurrency](patterns.md#12-bounded-async-concurrency)).
 
-Prefer single ownership over shared state. Consider `Arc<Mutex<T>>` only when cross-thread access is required.
+### 10. Unsafe Shortcuts
 
----
-
-## Anti-pattern 9: Holding a lock across `.await` in async code
-
-### Bad
-
-```rust
-// Conceptual illustration
-let mut guard = state.lock().await;
-do_async_work().await;
-guard.push(1);
-```
-
-Problem: Holding a lock for too long can cause performance issues or deadlock-like behavior.
-
-### Good
-
-```rust
-let data = {
-    let mut guard = state.lock().await;
-    guard.push(1);
-    guard.clone()
-};
-
-do_async_work(data).await;
-```
-
-### Principle
-
-Keep the code inside a lock as short, synchronous, and necessary as possible.
+Before writing `unsafe`, verify:
+1. Can ownership or borrowing express the invariant safely?
+2. Can `Rc` / `Arc` / `RefCell` / `Mutex` satisfy sharing safely?
+3. Can slices/structs be split safely (`split_at_mut`, `get_disjoint_mut`)?
+4. Is `unsafe` strictly required for FFI, SIMD, or low-level memory layout?
+5. Is every invariant documented in a `// SAFETY: ...` comment?
 
 ---
 
-## Anti-pattern 10: Abuse of `unsafe`
+## Edition 2024 and Modern Migrations (1.81 – 1.95+)
 
-### Bad
+### 11. Global Env Mutation and Legacy FFI
 
+**Problem**: In Edition 2024 (`1.85+`), `std::env::set_var` / `remove_var` are `unsafe` (data races with parallel `getenv` calls), `extern` blocks require `unsafe extern`, and linker attributes require `#[unsafe(...)]`.
+
+#### Bad
 ```rust
-unsafe {
-    // Using raw pointers haphazardly to bypass the borrow checker
+#[no_mangle]
+pub extern "C" fn legacy_init() {}
+
+#[test]
+fn test_endpoint() {
+    unsafe { std::env::set_var("API_ENDPOINT", "http://localhost:8080"); }
 }
 ```
 
-### Good
-
-Ask yourself first:
-
-1. Can the design be changed using ownership?
-2. Can `Rc` / `Arc` be used?
-3. Can `RefCell` / `Mutex` be used?
-4. Can the data structure be split?
-5. Do you really need FFI, SIMD, or low-level memory operations?
-
-### Principle
-
-`unsafe` is not a performance switch; it is taking over the safety responsibilities that the compiler can no longer guarantee.
-
----
-
-## Anti-pattern 11: Nested `if let` Pyramids Instead of `let...else` or `let` Chains (Rust 1.88+)
-
-### Bad
-
+#### Good
 ```rust
-fn parse_port(cfg: Option<&Config>) -> Option<u16> {
-    if let Some(c) = cfg {
-        if let Some(raw) = c.port_str() {
-            if let Ok(port) = raw.parse::<u16>() {
-                if port > 0 {
-                    return Some(port);
-                }
-            }
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn stable_init() {}
+
+unsafe extern "C" {
+    fn external_tick() -> u32;
+}
+
+fn load_endpoint(lookup: impl Fn(&str) -> Option<String>) -> String {
+    lookup("API_ENDPOINT").unwrap_or_else(|| "https://api.example.com".into())
+}
+
+#[test]
+fn test_endpoint() {
+    let endpoint = load_endpoint(|k| (k == "API_ENDPOINT").then(|| "http://localhost:8080".into()));
+    assert_eq!(endpoint, "http://localhost:8080");
+}
+```
+
+**Rule**: Inject config lookup functions in tests, use `std::process::Command::env` for child processes, and mark Edition 2024 FFI with `unsafe extern` and `#[unsafe(...)]`.
+
+### 12. Nested `if let` Pyramids
+
+**Problem**: Chained `if let` nesting creates rightward drift and obscures early exits.
+
+#### Bad
+```rust
+fn parse_token(header: Option<&str>) -> Option<&str> {
+    if let Some(raw) = header {
+        if let Some(token) = raw.strip_prefix("Bearer ") {
+            if !token.is_empty() { return Some(token); }
         }
     }
     None
 }
 ```
 
-### Good
-
+#### Good
 ```rust
-fn parse_port(cfg: Option<&Config>) -> Option<u16> {
-    if let Some(c) = cfg
-        && let Some(raw) = c.port_str()
-        && let Ok(port) = raw.parse::<u16>()
-        && port > 0
+// Rust 1.88+ / Edition 2024 `let` chain
+fn parse_token(header: Option<&str>) -> Option<&str> {
+    if let Some(raw) = header
+        && let Some(token) = raw.strip_prefix("Bearer ")
+        && !token.is_empty()
     {
-        return Some(port);
+        Some(token)
+    } else {
+        None
     }
-    None
+}
+
+fn require_port(raw_header: Option<&str>) -> Result<u16, &'static str> {
+    let Some(raw) = raw_header else { return Err("missing port") };
+    raw.parse::<u16>().map_err(|_| "invalid port")
 }
 ```
 
-Or use `let ... else` for early exits inside functions returning `Result` or `Option`:
+**Rule**: Flatten multi-condition bindings with `let` chains (`1.88+`), use `let-else` for early returns, and use `if let` match guards (`1.95+`) inside `match`.
 
+### 13. Using `allow` Instead of `expect`
+
+**Problem**: `#[allow(lint)]` stays silent forever even after the underlying code is fixed.
+
+#### Bad
 ```rust
-fn require_port(cfg: Option<&Config>) -> Result<u16, ConfigError> {
-    let Some(c) = cfg else {
-        return Err(ConfigError::MissingConfig);
-    };
-    let Some(raw) = c.port_str() else {
-        return Err(ConfigError::MissingPort);
-    };
-    raw.parse::<u16>().map_err(|_| ConfigError::InvalidPort)
-}
-```
-
-### Principle
-
-Avoid rightward drift. Use `let` chains (`if let ... && let ...`) in Edition 2024 / Rust 1.88+ and `let ... else` for crisp early-return control flow.
-
----
-
-## Anti-pattern 12: Using `#[allow(...)]` Instead of `#[expect(...)]` for Targeted Lint Suppression (Edition 2024)
-
-### Bad
-
-```rust
-// If the underlying issue is fixed later, `#[allow]` silently remains forever
 #[allow(clippy::too_many_arguments)]
-fn build_request(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) {
-    // ...
-}
+fn build_request(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) {}
 ```
 
-### Good
-
+#### Good
 ```rust
 #[expect(
     clippy::too_many_arguments,
     reason = "Legacy C-FFI wrapper; tracked for builder refactor in issue #42"
 )]
-fn build_request(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) {
-    // ...
-}
+fn build_request(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) {}
 ```
 
-### Principle
+**Rule**: Prefer `#[expect(lint, reason = "...")]` (`1.81+` / Edition 2024) so the compiler warns as soon as the suppression is obsolete.
 
-Use `#[expect(lint, reason = "...")]` when intentionally suppressing a specific lint so the compiler notifies you as soon as the suppression is no longer needed.
+### 14. Manual Slice Math and Runtime Windows
 
----
+**Problem**: Manual `split_at_mut` index arithmetic and `.windows(N)` runtime indexing (`w[1] - w[0]`) invite off-by-one panics and unnecessary bounds checks.
 
-## Anti-pattern 13: Calling `std::env::set_var` in Multi-Threaded Code or Tests (Rust 2024 Edition)
-
-### Bad
-
+#### Bad
 ```rust
-// In Rust 2024 Edition, `std::env::set_var` is `unsafe` because process-wide
-// environment mutation causes data races with concurrent `getenv` calls.
-#[test]
-fn test_reads_custom_endpoint() {
-    unsafe {
-        std::env::set_var("API_ENDPOINT", "http://localhost:8080");
-    }
-    let cfg = load_config_from_env();
-    assert_eq!(cfg.endpoint, "http://localhost:8080");
-}
-```
-
-### Good
-
-```rust
-fn load_config(lookup: impl Fn(&str) -> Option<String>) -> Config {
-    let endpoint = lookup("API_ENDPOINT").unwrap_or_else(|| "https://api.example.com".into());
-    Config { endpoint }
-}
-
-#[test]
-fn test_reads_custom_endpoint() {
-    let cfg = load_config(|key| match key {
-        "API_ENDPOINT" => Some("http://localhost:8080".into()),
-        _ => None,
-    });
-    assert_eq!(cfg.endpoint, "http://localhost:8080");
-}
-```
-
-For child processes, pass environment variables safely with `std::process::Command::env`.
-
-### Principle
-
-Never mutate process-global environment variables in concurrent applications or parallel unit tests; inject configuration readers or pass isolated subprocess environments instead.
-
----
-
-## Anti-pattern 14: Manual Index Splitting or `unsafe` Pointers Instead of `get_disjoint_mut` / `array_windows` (Rust 1.86+ / 1.94+)
-
-### Bad
-
-```rust
-// Prone to off-by-one bounds panics or unnecessary `unsafe` aliasing bugs
 fn update_pair(values: &mut [i32], i: usize, j: usize) {
     if i < j {
         let (left, right) = values.split_at_mut(j);
@@ -501,21 +376,18 @@ fn max_delta(samples: &[i32]) -> Option<i32> {
 }
 ```
 
-### Good
-
+#### Good
 ```rust
 fn update_pair(values: &mut [i32], i: usize, j: usize) {
-    if let Ok([a, b]) = values.get_disjoint_mut([i, j]) {
+    if let Ok([a, b]) = values.get_disjoint_mut([i, j]) { // Rust 1.86+
         *a += 1;
         *b += 1;
     }
 }
 
 fn max_delta(samples: &[i32]) -> Option<i32> {
-    samples.array_windows::<2>().map(|&[a, b]| (b - a).abs()).max()
+    samples.array_windows::<2>().map(|&[a, b]| (b - a).abs()).max() // Rust 1.94+
 }
 ```
 
-### Principle
-
-Rely on `slice::get_disjoint_mut` (1.86+) and `slice::array_windows` (1.94+) to express disjoint mutation and fixed-width iteration safely without index arithmetic or runtime slice-length indexing.
+**Rule**: Prefer `get_disjoint_mut` (`1.86+`) and `array_windows::<N>()` (`1.94+`) over manual slice splitting or runtime window indexing.

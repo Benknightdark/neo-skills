@@ -38,5 +38,21 @@
   {
     "query": "Please write a technical research report comparing the performance between Rust and Go.",
     "should_trigger": false
+  },
+  {
+    "query": "Help me migrate my Cargo project to edition = \"2024\" and fix RPIT lifetime capture errors and unsafe env::set_var calls.",
+    "should_trigger": true
+  },
+  {
+    "query": "Show me how to use Rust 1.100 Allocator API with Vec::new_in and async closures in Rust 2024.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a TypeScript Express middleware to spawn a compiled Rust CLI subprocess.",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize the release history of rustc from 1.0 to 1.100 in a blog post outline.",
+    "should_trigger": false
   }
 ]

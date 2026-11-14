@@ -1,88 +1,73 @@
 ---
 name: neo-rust
 description: >
-  Use this skill when writing, refactoring, debugging, or auditing Rust code. Trigger
-  for .rs files, Cargo projects, ownership/borrowing/lifetime issues, Result/Option
-  error handling, unnecessary clone/performance work, unsafe code review, or modern
-  Rust architecture.
+  Use this skill when writing, refactoring, debugging, modernizing, or auditing Rust
+  code. Trigger for .rs files, Cargo projects, Rust 2024 Edition or version-specific
+  features (up to Rust 1.100+), ownership/borrowing/lifetime issues, Result/Option
+  error handling, async closures, unnecessary clone/performance work, unsafe code
+  review, or modern Rust architecture.
 license: MIT
-compatibility: Requires environment with Rust toolchain (rustc, cargo) installed
+compatibility: "Supports Rust 2021 and 2024 Editions (Rust 1.75 through 1.100+). Requires Rust toolchain (rustc, cargo, clippy, rustfmt) installed."
 metadata:
+  version: "1.2.0"
   pattern: tool-wrapper, reviewer
   domain: rust
 ---
 
 # Neo Rust Expert
 
-Write safe, maintainable, and idiomatic Rust code by strictly following the official design patterns, leveraging Rust's powerful type system, and avoiding anti-patterns.
+Write safe, maintainable, and idiomatic Rust code (targeting Rust 2021 / 2024 Editions through **Rust 1.100+**) by leveraging the type system, ownership boundaries, and modern language/Cargo conventions.
 
 ## Gotchas
 
-* **Gotcha 1 (Async Mutex Deadlock / Send Error)**: 
-  In an `async` function, using the standard library's `std::sync::Mutex` and holding its `MutexGuard` across an `.await` boundary will cause a compiler error because `MutexGuard` does not implement `Send` and cannot be transferred across threads.
-  * *Solution*: Use a local block `{}` to limit the MutexGuard lifetime before the `.await`, or use `tokio::sync::Mutex` instead.
-* **Gotcha 2 (Excessive Cloning)**: 
-  To satisfy the Borrow Checker, beginners often call `.clone()` excessively, which introduces significant memory allocation and copy overhead.
-  * *Solution*: Prioritize passing borrowed references (e.g., `&str` instead of `String`, `&[T]` instead of `Vec<T>`), or refactor ownership structures and lifetimes.
-* **Gotcha 3 (Unsafe Unwrapping)**: 
-  Using `.unwrap()` or `panic!()` directly in library or production-grade code will cause the application to crash, violating Rust's safety-first principle.
-  * *Solution*: Always return `Result<T, E>` or `Option<T>` for graceful error propagation, and use the `?` operator or `match` expression to handle them.
+* **Async Mutex Across `.await`**: `std::sync::MutexGuard` is not `Send` and cannot cross `.await` points. Limit the lock to an inner `{}` block before `.await`, or use `tokio::sync::Mutex`.
+* **Excessive `.clone()`**: Do not clone just to appease the borrow checker. Prefer borrowed parameters (`&str`, `&[T]`, `&T`) or restructure ownership and lifetimes.
+* **Unchecked `.unwrap()` / `panic!()`**: Never call `.unwrap()` or `panic!()` in library or production paths; propagate errors with `Result<T, E>`, `Option<T>`, `?`, or `let...else`.
+* **Edition 2024 Unsafe Env & FFI**: In Rust 2024 Edition (1.85+), `std::env::set_var` / `remove_var` are `unsafe` (multi-threaded data races), and FFI requires `unsafe extern` blocks plus `#[unsafe(no_mangle | export_name | link_section)]`. Prefer config injection or `Command::env` for child processes.
+* **Edition 2024 RPIT Capture & `#[expect]`**: Return-position `impl Trait` (`-> impl Trait`) captures all in-scope lifetimes by default in Edition 2024—use `+ use<'a, T>` to restrict captures. Prefer `#[expect(lint, reason = "...")]` over `#[allow(lint)]` so obsolete suppressions surface as warnings.
 
-## Workflow Checklist
+## Feature Roadmap (Rust 1.85 / 2024 Edition – 1.100.0)
 
-Progress:
-- [ ] Step 1: Perceive & Inventory (Check if `Cargo.toml` and `.rs` files exist in the project, and clarify whether the task is "feature development", "refactoring", or "Code Review").
-- [ ] Step 2: Load Reference (Based on the task type, dynamically load corresponding reference files: load `reference/patterns.md` and `reference/coding-style.md` for writing new code, and load `reference/anti-patterns.md` for reviews and debugging).
-- [ ] Step 3: Implement & Validate (After writing or modifying code, compile and analyze it locally using `cargo check` and `cargo clippy`. Fix any warnings or errors until compilation passes cleanly without warnings).
-- [ ] Step 4: Format & Finalize (Run `cargo fmt` to format the code according to official guidelines, and present output using the Output Templates).
+* **Rust 1.85 & 2024 Edition**: Native async closures (`async || {}`, `AsyncFn*`), RPIT `use<..>` precise capturing, `Future`/`IntoFuture` in prelude, narrower `if let`/tail temporary scopes, `unsafe extern` & `#[unsafe(...)]`, MSRV-aware Cargo resolver.
+* **Rust 1.86 – 1.93**: Trait upcasting (`&dyn Subtrait` -> `&dyn Supertrait`), `slice`/`HashMap::get_disjoint_mut`, `std::io::pipe`, `let` chains (`if let ... && let ...`), `#[unsafe(naked)]`, const generic `_` inference, `mismatched_lifetime_syntaxes` lint, `cargo publish --workspace`.
+* **Rust 1.94 – 1.99**: `slice::array_windows::<N>()`, Cargo config `include` & TOML 1.1, `cfg_select!` macro, `if let` match guards, `Copy` range types (`core::range::*`), `assert_matches!`, default `v0` symbol mangling, `Layout::for_value_raw` & `extern "C"` variadics.
+* **Rust 1.100.0**: Stabilized Never Type (`!`), `std::alloc::Allocator` (`Box::new_in`, `Vec::new_in`), `std::mem::DropGuard` (`new`, `dismiss`), `bool::toggle` / `Vec::from_fn` / `str::trim_prefix`, Cargo `min-publish-age` & `cargo::unused_dependencies`.
 
-## Detailed Guidelines
+## Workflow
 
-### Step 1 — Parse & Inventory
-1. Inspect the current directory to verify if `Cargo.toml` exists.
-2. Analyze the task. For Code Review tasks, read existing changes; for feature development, determine the target modules to create or modify.
-
-### Step 2 — Dynamic Reference Loading
-To save context space, only this `SKILL.md` is loaded initially. Once executing the task, the Agent **must** load the following resources:
-* **Development & Architecture**: Load [patterns.md](file:///Users/ben/Projects/neo-skills/skills/neo-rust/reference/patterns.md) and [coding-style.md](file:///Users/ben/Projects/neo-skills/skills/neo-rust/reference/coding-style.md).
-* **Review, Refactoring & Debugging**: Load [anti-patterns.md](file:///Users/ben/Projects/neo-skills/skills/neo-rust/reference/anti-patterns.md).
-
-### Step 3 — Compile & Clippy Validation Loop
-Verify newly written or modified Rust code to ensure it is 100% compilable:
-1. Run `cargo check` to verify syntax and type checking.
-2. Run `cargo clippy --all-targets -- -D warnings` to perform strict static analysis and catch potential code smells.
-3. If validation fails:
-   - Carefully inspect the `stderr` compiler errors or Clippy suggestions.
-   - Modify the corresponding code.
-   - Re-run validation until it passes cleanly.
+1. **Perceive (Inventory & Version Check)**: Check `Cargo.toml` for `edition` (`"2021"` vs `"2024"`) and `rust-version` (MSRV), scan `.rs` files, and identify the task type (feature development, refactoring, or code review).
+2. **Reason (Dynamic Reference Routing)**: Load only the reference docs needed for the task:
+   * **Architecture, Design & Modern Rust APIs**: Load [patterns.md](reference/patterns.md).
+   * **Code Review, Refactoring & Pitfall Fixes**: Load [anti-patterns.md](reference/anti-patterns.md).
+   * **Naming, Project Layout, Cargo & Toolchain Setup**: Load [coding-style.md](reference/coding-style.md).
+3. **Act & Validate (Compile & Clippy Loop)**: Implement changes matching the target edition/MSRV, then run `cargo check` and `cargo clippy --all-targets -- -D warnings`. Inspect compiler diagnostics and iterate until zero warnings remain.
+4. **Format & Deliver**: Run `cargo fmt` and present the output using the matching template below.
 
 ## Output Templates
-
-Present your output using the following structured templates depending on the task type.
 
 ### Template A: Code Review Report
 ```markdown
 # Rust Code Review Report
 
 ## 1. Executive Summary
-*   **Score**: [1-10 rating]
-*   **Summary**: [Overall feedback on code quality, ownership usage, and error handling]
+* **Score**: [1-10 rating]
+* **Summary**: [Overall feedback on code quality, ownership usage, and error handling]
 
 ## 2. Findings
 > [!IMPORTANT]
 > Order findings by severity (Error > Warning > Info).
 
-*   **[Severity] Location: `src/main.rs:L12` - [Finding Title]**
-    *   **Description**: [Why is this an issue? Which Rust best practice is violated?]
-    *   **Recommendation**:
-        ```rust
-        // Idiomatic Rust example demonstrating the fix
-        ```
+* **[Severity] Location: `src/main.rs:L12` - [Finding Title]**
+  * **Description**: [Why is this an issue? Which Rust best practice is violated?]
+  * **Recommendation**:
+    ```rust
+    // Idiomatic Rust example demonstrating the fix
+    ```
 
 ## 3. Top 3 Recommendations
-1.  [First actionable improvement]
-2.  [Second actionable improvement]
-3.  [Third actionable improvement]
+1. [First actionable improvement]
+2. [Second actionable improvement]
+3. [Third actionable improvement]
 ```
 
 ### Template B: Implementation & Refactoring Summary
@@ -93,8 +78,8 @@ Present your output using the following structured templates depending on the ta
 [Briefly summarize what Rust modules, structs, or traits were added or refactored]
 
 ## 2. Applied Design Patterns & Best Practices
-*   [e.g., Applied the Typestate Pattern to ensure state safety]
-*   [e.g., Replaced `.clone()` with `&str` for performance gains]
+* [e.g., Applied `let` chains and `array_windows` for safe, flat logic]
+* [e.g., Replaced `.clone()` with `&str` for zero-copy borrowing]
 
 ## 3. Local Verification Results
 - [x] `cargo check` passed
@@ -102,6 +87,25 @@ Present your output using the following structured templates depending on the ta
 - [x] `cargo fmt` completed successfully
 
 ## 4. Next Steps
-1.  [Recommended next action, e.g., run cargo test]
-2.  [Other relevant suggestions]
+1. [Recommended next action, e.g., run `cargo test`]
+2. [Other relevant suggestions]
 ```
+
+## Documentation
+
+### Official References
+- [The Rust Programming Language (The Book)](https://doc.rust-lang.org/book/)
+- [Rust Edition Guide (Rust 2024 Edition)](https://doc.rust-lang.org/edition-guide/rust-2024/index.html)
+- [Rust Standard Library (`std`) Documentation](https://doc.rust-lang.org/std/)
+- [The Rust Reference](https://doc.rust-lang.org/reference/)
+- [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)
+- [The Cargo Book](https://doc.rust-lang.org/cargo/)
+- [Rustc Book (Lints & Compiler Options)](https://doc.rust-lang.org/rustc/)
+- [Clippy Lints Documentation](https://doc.rust-lang.org/stable/clippy/lints.html)
+- [Official Rust Release Notes & Blog](https://blog.rust-lang.org/releases/)
+- [Tokio Async Runtime & Sync Documentation](https://docs.rs/tokio/latest/tokio/)
+
+### Internal References
+- [Rust Design Patterns & Modern 1.85–1.100+ Idioms](reference/patterns.md)
+- [Rust Anti-Patterns, Hazards & Modernization Fixes](reference/anti-patterns.md)
+- [Rust Coding Style, Toolchain & Cargo Standards](reference/coding-style.md)

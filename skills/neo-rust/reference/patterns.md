@@ -1,488 +1,151 @@
-# 1. Core Principles of Rust Design
+# Rust Design Patterns & Modern Idioms
 
-Rust's core is not about simply porting OOP / GoF Design Patterns, but rather utilizing:
+Constructive design patterns and modern language idioms (Rust 2021 / 2024 Editions through **1.100+**) for shifting errors to compile time using ownership, types, traits, and RAII. For code-review pitfalls and legacy-to-modern fixes, see [anti-patterns.md](anti-patterns.md).
 
-- ownership
-- borrowing
-- lifetime
-- enum
-- trait
-- `Option<T>`
-- `Result<T, E>`
-- iterator
-- RAII / `Drop`
-- type system
+## Core Principles & Decision Matrix
 
-to shift as many errors as possible to compile-time.
-
-## Decision Matrix
-
-| Question | Rust Best Practice |
-|---|---|
-| Who owns this value? | Use ownership to express lifetime |
-| Only reading? | Pass `&T`, `&str`, `&[T]` |
-| Need to modify? | Pass `&mut T` |
-| Might fail? | Return `Result<T, E>` |
-| Might be empty? | Return `Option<T>` |
-| Finite states? | Use `enum` |
-| Abstract behavior? | Use `trait` |
-| Illegal state? | Use the type system to prevent it |
-| Need resource cleanup? | Use RAII / `Drop` |
-| Shared state? | Prioritize clear ownership boundaries, then consider `Arc<Mutex<T>>` |
+| Goal / Scenario | Constructive Pattern | Avoid / Pitfall |
+|---|---|---|
+| Read-only vs owned parameters | [Parameter Intake Priority](#1-parameter-intake-priority) (`&T`, `&str`, `&[T]`) | [Cloning / Owned Params](anti-patterns.md#1-excessive-cloning-and-owned-input-params) |
+| Absence & recoverable failure | [Result & Option Composition](#2-result-and-option-composition) | [`unwrap` / `panic` / Indexing](anti-patterns.md#4-unchecked-unwrap-panic-and-indexing), [`String` Errors](anti-patterns.md#5-string-errors-and-sentinel-magic-values) |
+| Distinct IDs & finite states | [Enums & Newtypes](#3-enums-and-newtypes) | [String / `bool` Flag States](anti-patterns.md#6-stringly-typed-states-and-boolean-flags) |
+| Type invariants | [Smart Constructors](#4-smart-constructors-and-private-invariants) | [Public Mutable Fields](anti-patterns.md#2-public-mutable-fields-breaking-invariants) |
+| Multi-option configuration | [Builder Pattern](#5-builder-pattern) | Long positional constructors |
+| Compile-time state machines | [Typestate Pattern](#6-typestate-pattern) | Runtime state flags + panics |
+| Polymorphism & upcasting | [Trait Dispatch & Upcasting](#7-trait-dispatch-and-upcasting) (`1.86+`) | [Over-Abstraction](anti-patterns.md#3-over-abstraction-with-traits) |
+| Data transformation pipelines | [Iterator Pipelines](#8-iterator-pipelines) | Temporary mutable `Vec` loops |
+| Deterministic cleanup | [RAII, Drop & DropGuard](#9-raii-drop-and-dropguard) (`1.100+`) | Manual close / rollback calls |
+| Shared state & actors | [Smart Pointers](#10-smart-pointers-matrix), [Actors](#11-message-passing-and-actors) | [`Arc<Mutex<T>>` Sprawl](anti-patterns.md#7-spreading-arc-and-mutex-everywhere), [Lock Across `.await`](anti-patterns.md#8-holding-locks-across-await) |
+| Throttled async tasks | [Bounded Concurrency](#12-bounded-async-concurrency) (`Semaphore`) | [Unbounded `spawn`](anti-patterns.md#9-unbounded-task-spawning) |
+| Conditional match & bindings | [`if let` Match Guards](#13-match-guards-with-if-let) (`1.95+`) | [Nested `if let` Pyramids](anti-patterns.md#12-nested-if-let-pyramids) |
+| Async callbacks & RPIT | [Async Closures](#14-async-closures-and-asyncfn) (`1.85+`), [RPIT `use<..>`](#15-precise-capturing-in-rpit) | Manual `BoxFuture`, over-captured borrows |
+| Infallibility & allocation | [Never Type `!` & Allocators](#16-never-type-and-custom-allocators) (`1.100+`) | Dummy error enums |
+| Safe slicing & lint hygiene | `get_disjoint_mut` (`1.86+`), `array_windows` (`1.94+`), `#[expect]` | [`#[allow]` Drift](anti-patterns.md#13-using-allow-instead-of-expect), [Manual Slice Math](anti-patterns.md#14-manual-slice-math-and-runtime-windows) |
 
 ---
 
-# 2. Design Patterns: Best Practices
+## API & Type-Driven Design
 
----
+### 1. Parameter Intake Priority
 
-## Pattern 1: Borrowing-first API
+Choose the least-restrictive ownership mode required by the function:
 
-### Bad Practice
+| Priority | Signature | Use When |
+|---|---|---|
+| 1 | `&T`, `&str`, `&[T]` | Reading values without taking ownership (default) |
+| 2 | `&mut T`, `&mut [T]` | Mutating caller-owned data in place |
+| 3 | `T` | Consuming or storing the value directly |
+| 4 | `impl Into<T>` | Accepting flexible borrowed/owned inputs when constructing owned state |
+
+### 2. Result and Option Composition
+
+Compose fallible and optional steps with `?`, `Option` combinators, and checked indexing rather than sentinel values or early panics:
 
 ```rust
-fn print_name(name: String) {
-    println!("{name}");
-}
+use std::{fs, io};
 
-fn main() {
-    let name = String::from("Alice");
-    print_name(name);
-
-    // name has been moved and can no longer be used
-    // println!("{name}");
+fn read_port(path: &str, ports: &[u16], raw_idx: i32) -> Result<Option<u16>, io::Error> {
+    let _config = fs::read_to_string(path)?;
+    let maybe_port = usize::try_from(raw_idx)
+        .ok()
+        .and_then(|idx| ports.get(idx).copied());
+    Ok(maybe_port)
 }
 ```
 
-Problem: Consumes ownership when only reading is required.
+For domain/library error design, define explicit error `enum`s (see [anti-patterns.md](anti-patterns.md#5-string-errors-and-sentinel-magic-values)); reserve `Box<dyn std::error::Error>` for CLI/binary boundaries (see [coding-style.md](coding-style.md#module--project-structure)).
 
-### Best Practice
+### 3. Enums and Newtypes
 
-```rust
-fn print_name(name: &str) {
-    println!("{name}");
-}
-
-fn main() {
-    let name = String::from("Alice");
-
-    print_name(&name);
-    print_name("Bob");
-
-    println!("{name}");
-}
-```
-
-### Principle
-
-`String` owns the data; `&str` is a borrowed string slice. Prefer `&str` when only reading text.
-
----
-
-## Pattern 2: Slice API
-
-### Bad Practice
+Model closed domain variants with `enum` + exhaustive `match`, and distinguish domain primitives with zero-cost Newtypes:
 
 ```rust
-fn sum(numbers: &Vec<i32>) -> i32 {
-    numbers.iter().sum()
-}
-```
+enum PaymentStatus { Pending, Paid, Refunded, Failed }
 
-Problem: Restricts the caller to pass a `Vec<i32>`.
-
-### Best Practice
-
-```rust
-fn sum(numbers: &[i32]) -> i32 {
-    numbers.iter().sum()
-}
-
-fn main() {
-    let v = vec![1, 2, 3];
-    let arr = [4, 5, 6];
-
-    println!("{}", sum(&v));
-    println!("{}", sum(&arr));
-}
-```
-
-### Principle
-
-When only contiguous data is needed, use `&[T]` instead of binding to `Vec<T>`.
-
----
-
-## Pattern 3: `Option<T>` for "Possible Absence"
-
-### Bad Practice
-
-```rust
-fn find_user_name(id: u64) -> String {
-    if id == 1 {
-        "Alice".to_string()
-    } else {
-        "".to_string()
-    }
-}
-```
-
-Problem: Is an empty string "missing data" or "the name is actually empty"?
-
-### Best Practice
-
-```rust
-fn find_user_name(id: u64) -> Option<String> {
-    if id == 1 {
-        Some("Alice".to_string())
-    } else {
-        None
-    }
-}
-
-fn main() {
-    match find_user_name(2) {
-        Some(name) => println!("user: {name}"),
-        None => println!("user not found"),
-    }
-}
-```
-
-### Principle
-
-Use `Option<T>` for "no value." Avoid using `null`, empty strings, or `-1` as magic values.
-
----
-
-## Pattern 4: `Result<T, E>` for "Possible Failure"
-
-### Bad Practice
-
-```rust
-use std::fs;
-
-fn read_config() -> String {
-    fs::read_to_string("config.toml").unwrap()
-}
-```
-
-Problem: `unwrap()` will cause the program to panic in production.
-
-### Best Practice
-
-```rust
-use std::fs;
-use std::io;
-
-fn read_config() -> Result<String, io::Error> {
-    let text = fs::read_to_string("config.toml")?;
-    Ok(text)
-}
-
-fn main() {
-    match read_config() {
-        Ok(text) => println!("{text}"),
-        Err(err) => eprintln!("failed to read config: {err}"),
-    }
-}
-```
-
-### Principle
-
-Avoid reckless `unwrap()` in core logic (libraries, services, CLIs). Return `Result` when errors can occur.
-
----
-
-## Pattern 5: Enum + Exhaustive Match
-
-### Bad Practice
-
-```rust
-struct Payment {
-    status: String,
-}
-
-fn can_refund(payment: &Payment) -> bool {
-    payment.status == "paid"
-}
-```
-
-Problem: Values like `"paied"`, `"PAID"`, or `"unknown"` could creep in.
-
-### Best Practice
-
-```rust
-enum PaymentStatus {
-    Pending,
-    Paid,
-    Refunded,
-    Failed,
-}
-
-struct Payment {
-    status: PaymentStatus,
-}
-
-fn can_refund(payment: &Payment) -> bool {
-    match payment.status {
+fn can_refund(status: PaymentStatus) -> bool {
+    match status {
         PaymentStatus::Paid => true,
-        PaymentStatus::Pending
-        | PaymentStatus::Refunded
-        | PaymentStatus::Failed => false,
+        PaymentStatus::Pending | PaymentStatus::Refunded | PaymentStatus::Failed => false,
     }
 }
-```
 
-### Principle
-
-Use `enum` instead of `String` for finite states.
-
----
-
-## Pattern 6: Newtype Pattern
-
-Purpose: Prevent mixing up different domain values with the same underlying type.
-
-### Bad Practice
-
-```rust
-fn load_user(user_id: u64) {}
-fn load_order(order_id: u64) {}
-
-fn main() {
-    let user_id = 100;
-    load_order(user_id); // Compiles, but semantically incorrect
-}
-```
-
-### Best Practice
-
-```rust
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 struct UserId(u64);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 struct OrderId(u64);
 
-fn load_user(user_id: UserId) {}
-fn load_order(order_id: OrderId) {}
-
-fn main() {
-    let user_id = UserId(100);
-
-    load_user(user_id);
-    // load_order(user_id); // Compile error, prevents semantic mistakes
+fn load_order(order_id: OrderId) {
+    let _ = order_id;
 }
+// load_order(UserId(1)) fails at compile time
 ```
 
-### Principle
+### 4. Smart Constructors and Private Invariants
 
-Wrap IDs, amounts, units, permissions, and states in Newtypes.
-
----
-
-## Pattern 7: Smart Constructor
-
-Purpose: Ensure invariants when creating objects.
-
-### Bad Practice
-
-```rust
-struct Email(String);
-
-fn main() {
-    let email = Email("not-an-email".to_string());
-}
-```
-
-### Best Practice
-
-```rust
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct Email(String);
-
-impl Email {
-    pub fn new(value: impl Into<String>) -> Result<Self, String> {
-        let value = value.into();
-
-        if value.contains('@') {
-            Ok(Self(value))
-        } else {
-            Err("invalid email".to_string())
-        }
-    }
-
-    pub fn as_str(&self) -> &str {
-        &self.0
-    }
-}
-
-fn main() -> Result<(), String> {
-    let email = Email::new("user@example.com")?;
-    println!("{}", email.as_str());
-
-    Ok(())
-}
-```
-
-### Principle
-
-Do not allow illegal objects to be constructed haphazardly. Keep fields private and provide a constructor.
-
----
-
-## Pattern 8: Builder Pattern
-
-Suitable for objects with many parameters or optional settings.
-
-### Bad Practice
-
-```rust
-struct ServerConfig {
-    host: String,
-    port: u16,
-    workers: usize,
-    timeout_ms: u64,
-    tls: bool,
-}
-
-fn new_config(
-    host: String,
-    port: u16,
-    workers: usize,
-    timeout_ms: u64,
-    tls: bool,
-) -> ServerConfig {
-    ServerConfig {
-        host,
-        port,
-        workers,
-        timeout_ms,
-        tls,
-    }
-}
-```
-
-Problem: Parameter order is error-prone, and extension is difficult.
-
-### Best Practice
+Keep representation fields private and validate invariants at construction and mutation boundaries:
 
 ```rust
 #[derive(Debug)]
-struct ServerConfig {
-    host: String,
-    port: u16,
-    workers: usize,
-    timeout_ms: u64,
-    tls: bool,
-}
+pub enum EmailError { InvalidFormat }
 
-struct ServerConfigBuilder {
-    host: String,
-    port: u16,
-    workers: usize,
-    timeout_ms: u64,
-    tls: bool,
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Email(String);
+
+impl Email {
+    pub fn new(value: impl Into<String>) -> Result<Self, EmailError> {
+        let value = value.into();
+        value.contains('@').then_some(Self(value)).ok_or(EmailError::InvalidFormat)
+    }
+
+    pub fn as_str(&self) -> &str { &self.0 }
 }
+```
+
+### 5. Builder Pattern
+
+Use Builders when types have many optional fields or defaults where positional constructors invite argument-order bugs:
+
+```rust
+#[derive(Debug)]
+struct ServerConfig { host: String, port: u16, workers: usize, tls: bool }
+
+struct ServerConfigBuilder { host: String, port: u16, workers: usize, tls: bool }
 
 impl ServerConfigBuilder {
     fn new(host: impl Into<String>) -> Self {
-        Self {
-            host: host.into(),
-            port: 8080,
-            workers: 4,
-            timeout_ms: 30_000,
-            tls: false,
-        }
+        Self { host: host.into(), port: 8080, workers: 4, tls: false }
     }
-
-    fn port(mut self, port: u16) -> Self {
-        self.port = port;
-        self
-    }
-
-    fn workers(mut self, workers: usize) -> Self {
-        self.workers = workers;
-        self
-    }
-
-    fn tls(mut self, tls: bool) -> Self {
-        self.tls = tls;
-        self
-    }
-
+    fn port(mut self, port: u16) -> Self { self.port = port; self }
+    fn workers(mut self, workers: usize) -> Self { self.workers = workers; self }
+    fn tls(mut self, tls: bool) -> Self { self.tls = tls; self }
     fn build(self) -> ServerConfig {
-        ServerConfig {
-            host: self.host,
-            port: self.port,
-            workers: self.workers,
-            timeout_ms: self.timeout_ms,
-            tls: self.tls,
-        }
-    }
-}
-
-fn main() {
-    let config = ServerConfigBuilder::new("127.0.0.1")
-        .port(3000)
-        .workers(8)
-        .tls(true)
-        .build();
-
-    println!("{config:?}");
-}
-```
-
----
-
-## Pattern 9: Typestate Pattern
-
-Purpose: Incorporate state flows into the type system, making invalid state transitions uncompilable.
-
-### Bad Practice
-
-```rust
-struct Connection {
-    connected: bool,
-}
-
-impl Connection {
-    fn send(&self, msg: &str) {
-        if self.connected {
-            println!("send: {msg}");
-        } else {
-            panic!("not connected");
-        }
+        ServerConfig { host: self.host, port: self.port, workers: self.workers, tls: self.tls }
     }
 }
 ```
 
-### Best Practice
+### 6. Typestate Pattern
+
+Encode strict protocol/lifecycle states as generic type parameters so illegal transitions fail to compile:
 
 ```rust
+use std::marker::PhantomData;
+
 struct Disconnected;
 struct Connected;
 
 struct Connection<State> {
     address: String,
-    _state: std::marker::PhantomData<State>,
+    _state: PhantomData<State>,
 }
 
 impl Connection<Disconnected> {
     fn new(address: impl Into<String>) -> Self {
-        Self {
-            address: address.into(),
-            _state: std::marker::PhantomData,
-        }
+        Self { address: address.into(), _state: PhantomData }
     }
-
     fn connect(self) -> Connection<Connected> {
-        println!("connect to {}", self.address);
-
-        Connection {
-            address: self.address,
-            _state: std::marker::PhantomData,
-        }
+        Connection { address: self.address, _state: PhantomData }
     }
 }
 
@@ -491,282 +154,127 @@ impl Connection<Connected> {
         println!("send to {}: {msg}", self.address);
     }
 }
-
-fn main() {
-    let conn = Connection::<Disconnected>::new("localhost");
-    let conn = conn.connect();
-
-    conn.send("hello");
-}
 ```
 
-### Principle
+### 7. Trait Dispatch and Upcasting
 
-When state flows are fixed, Typestate can cause incorrect usage to fail at compile time.
+Start with concrete methods; reach for traits only when polymorphism or test substitution is required:
 
----
-
-## Pattern 10: Trait Abstraction
-
-Polymorphism in Rust primarily relies on traits.
-
-| Form | Syntax | Best For |
+| Dispatch | Syntax | Best For |
 |---|---|---|
-| Static dispatch | `T: Trait` | Type decided at compile-time; better performance |
-| Dynamic dispatch | `dyn Trait` | Implementation type decided at runtime |
-
-### Static Dispatch
+| Static (default) | `R: Repository` / `&impl Repository` | Known compile-time type; zero indirection |
+| Dynamic | `&dyn Repository` / `Box<dyn Repository>` | Heterogeneous collections or runtime selection |
 
 ```rust
-trait Repository {
-    fn save(&self, value: &str);
+trait BaseService { fn name(&self) -> &str; }
+trait HealthChecked: BaseService { fn is_healthy(&self) -> bool; }
+
+fn log_service(service: &dyn BaseService) {
+    println!("service: {}", service.name());
 }
 
-struct SqlRepository;
-
-impl Repository for SqlRepository {
-    fn save(&self, value: &str) {
-        println!("save to sql: {value}");
+fn inspect(checked: &dyn HealthChecked) {
+    if checked.is_healthy() {
+        log_service(checked); // Direct trait object upcast (Rust 1.86+)
     }
-}
-
-fn create_user<R: Repository>(repo: &R, name: &str) {
-    repo.save(name);
 }
 ```
 
-### Dynamic Dispatch
+### 8. Iterator Pipelines
+
+Prefer lazy iterator chains over imperative temporary `Vec` loops for filter/map transformations:
 
 ```rust
-trait Repository {
-    fn save(&self, value: &str);
-}
-
-struct SqlRepository;
-
-impl Repository for SqlRepository {
-    fn save(&self, value: &str) {
-        println!("save to sql: {value}");
-    }
-}
-
-fn create_user(repo: &dyn Repository, name: &str) {
-    repo.save(name);
-}
-```
-
-### Recommendation
-
-Default to generic `T: Trait`. Use `Box<dyn Trait>` / `&dyn Trait` only when you need to put different implementations into the same collection or when runtime injection is required.
-
----
-
-## Pattern 11: Iterator Pattern
-
-### Bad Practice
-
-```rust
-fn active_names(users: Vec<User>) -> Vec<String> {
-    let mut result = Vec::new();
-
-    for user in users {
-        if user.active {
-            result.push(user.name);
-        }
-    }
-
-    result
-}
-```
-
-### Best Practice
-
-```rust
-struct User {
-    name: String,
-    active: bool,
-}
+struct User { name: String, active: bool }
 
 fn active_names(users: Vec<User>) -> Vec<String> {
-    users
-        .into_iter()
-        .filter(|user| user.active)
-        .map(|user| user.name)
-        .collect()
+    users.into_iter().filter(|u| u.active).map(|u| u.name).collect()
 }
 ```
 
-### Principle
+### 9. RAII, Drop, and DropGuard
 
-Data transformation flows are well-suited for iterator chains. However, do not over-engineer simple logic to the point of being unreadable.
-
----
-
-## Pattern 12: RAII / Drop Guard
-
-Purpose: DB transactions, file locks, mutex guards, temp files, resource cleanup.
+Bind cleanup to scope lifetime via custom `Drop` implementations or `std::mem::DropGuard` (`1.100+`) for inline rollback without boilerplate structs:
 
 ```rust
-struct Transaction {
-    committed: bool,
-}
+use std::mem::DropGuard;
 
+struct Transaction { committed: bool }
 impl Transaction {
-    fn new() -> Self {
-        println!("BEGIN");
-        Self { committed: false }
-    }
-
-    fn commit(mut self) {
-        println!("COMMIT");
-        self.committed = true;
-    }
+    fn new() -> Self { Self { committed: false } }
+    fn commit(mut self) { self.committed = true; }
 }
-
 impl Drop for Transaction {
     fn drop(&mut self) {
-        if !self.committed {
-            println!("ROLLBACK");
-        }
+        if !self.committed { println!("ROLLBACK"); }
     }
 }
 
-fn main() {
-    let tx = Transaction::new();
-
-    // If a return or panic occurs midway, Drop will trigger a rollback
-    tx.commit();
+fn write_staged_file(path: &str, commit: bool) -> Result<(), &'static str> {
+    let guard = DropGuard::new(path.to_string(), |staged| {
+        println!("rolling back uncommitted file: {staged}");
+    });
+    if !commit { return Err("aborted before commit"); }
+    let committed = DropGuard::dismiss(guard);
+    println!("committed: {committed}");
+    Ok(())
 }
 ```
 
-### Principle
-
-Resource acquisition and release are bound to object lifetime. Cleanup is handled by `Drop` when a value leaves scope.
-
 ---
 
-## Pattern 13: Choosing Smart Pointers
+## Concurrency & Resource Ownership
 
-| Type | Purpose |
+### 10. Smart Pointers Matrix
+
+| Type | Ownership / Mutability Model |
 |---|---|
-| `Box<T>` | Heap allocation, recursive types, trait object ownership |
-| `Rc<T>` | Single-threaded shared ownership |
-| `Arc<T>` | Multi-threaded shared ownership |
-| `RefCell<T>` | Single-threaded interior mutability, runtime borrow check |
-| `Mutex<T>` | Multi-threaded mutable shared data |
-| `RwLock<T>` | Multiple readers, single writer |
-| `Cow<'a, T>` | Clone-on-write; can be either borrowed or owned |
+| `Box<T>` | Unique heap ownership, recursive types, trait objects |
+| `Rc<T>` / `Arc<T>` | Single-threaded / multi-threaded shared ownership |
+| `RefCell<T>` | Single-threaded runtime-checked interior mutability |
+| `Mutex<T>` / `RwLock<T>` | Multi-threaded exclusive / reader-writer synchronization |
+| `Cow<'a, T>` | Clone-on-write; borrowed until mutation is needed |
 
-### Typical Example
+### 11. Message Passing and Actors
 
-```rust
-use std::sync::{Arc, Mutex};
-use std::thread;
-
-fn main() {
-    let counter = Arc::new(Mutex::new(0));
-
-    let handles: Vec<_> = (0..10)
-        .map(|_| {
-            let counter = Arc::clone(&counter);
-
-            thread::spawn(move || {
-                let mut value = counter.lock().unwrap();
-                *value += 1;
-            })
-        })
-        .collect();
-
-    for handle in handles {
-        handle.join().unwrap();
-    }
-
-    println!("{}", *counter.lock().unwrap());
-}
-```
-
-### Note
-
-`Arc<Mutex<T>>` is common but not the default answer. Using channels or an actor pattern to split ownership is often clearer.
-
----
-
-## Pattern 14: Message Passing / Actor-like Pattern
-
-Suitable for:
-
-- Queue workers
-- Background tasks
-- Pipelines
-- Command processors
-- Proxy servers
+Isolate mutable state inside a dedicated worker driven by channels for queues, pipelines, and command loops:
 
 ```rust
 use std::sync::mpsc;
 use std::thread;
 
-enum Command {
-    CreateUser(String),
-    Shutdown,
-}
+enum Command { CreateUser(String), Shutdown }
 
-fn main() {
+fn spawn_worker() -> (mpsc::Sender<Command>, thread::JoinHandle<()>) {
     let (tx, rx) = mpsc::channel::<Command>();
-
-    let worker = thread::spawn(move || {
+    let handle = thread::spawn(move || {
         while let Ok(cmd) = rx.recv() {
             match cmd {
-                Command::CreateUser(name) => {
-                    println!("create user: {name}");
-                }
+                Command::CreateUser(name) => println!("create user: {name}"),
                 Command::Shutdown => break,
             }
         }
     });
-
-    tx.send(Command::CreateUser("Alice".to_string())).unwrap();
-    tx.send(Command::Shutdown).unwrap();
-
-    worker.join().unwrap();
+    (tx, handle)
 }
 ```
 
----
+### 12. Bounded Async Concurrency
 
-## Pattern 15: Async Bounded Concurrency
-
-### Bad Practice
-
-```rust
-// Conceptual illustration: Spawning tasks without limits
-for item in items {
-    tokio::spawn(async move {
-        process(item).await;
-    });
-}
-```
-
-Problem: Can overwhelm CPU, memory, DB connections, or API rate limits.
-
-### Best Practice
+Cap concurrent spawned tasks with `tokio::sync::Semaphore` or buffered streams to protect memory, connection pools, and downstream rate limits:
 
 ```rust
 use std::sync::Arc;
 use tokio::sync::Semaphore;
 
-async fn process(item: u32) {
-    println!("process {item}");
-}
+async fn process(item: u32) { println!("process {item}"); }
 
-#[tokio::main]
-async fn main() {
+async fn run_bounded(items: Vec<u32>) {
     let limit = Arc::new(Semaphore::new(10));
+    let mut handles = Vec::with_capacity(items.len());
 
-    let mut handles = Vec::new();
-
-    for item in 0..100 {
-        let permit = Arc::clone(&limit).acquire_owned().await.unwrap();
-
+    for item in items {
+        let Ok(permit) = Arc::clone(&limit).acquire_owned().await else { break };
         handles.push(tokio::spawn(async move {
             let _permit = permit;
             process(item).await;
@@ -774,11 +282,99 @@ async fn main() {
     }
 
     for handle in handles {
-        handle.await.unwrap();
+        if let Err(err) = handle.await {
+            eprintln!("task failed: {err}");
+        }
     }
 }
 ```
 
-### Principle
+---
 
-Async tasks should have a cap. Do not `spawn` without limits.
+## Modern Rust Capabilities (1.85 / Edition 2024 – 1.100+)
+
+> Legacy-to-modern migrations (`let` chains, `let-else`, `#[expect]`, `get_disjoint_mut`, `array_windows`) are documented in [anti-patterns.md](anti-patterns.md#edition-2024-and-modern-migrations-181--195).
+
+### 13. Match Guards with `if let`
+
+Requires Rust `1.95+`; combine pattern arms with inline fallible destructuring:
+
+```rust
+enum Event<'a> { Payload(&'a str), Heartbeat }
+
+fn handle_event(event: Event<'_>) {
+    match event {
+        Event::Payload(raw) if let Ok(id) = raw.parse::<u64>() => println!("id: {id}"),
+        Event::Payload(raw) => println!("invalid payload: {raw}"),
+        Event::Heartbeat => println!("heartbeat"),
+    }
+}
+```
+
+### 14. Async Closures and `AsyncFn`
+
+Requires Rust `1.85+` / Edition 2024; native `async || {}` closures borrow captured state across `.await` without `Fn(...) -> Fut` boilerplate:
+
+```rust
+async fn retry_with_prefix<F, E>(prefix: &str, items: &[&str], op: F) -> Result<(), E>
+where
+    F: AsyncFn(&str, &str) -> Result<(), E>,
+{
+    for item in items {
+        op(prefix, item).await?;
+    }
+    Ok(())
+}
+
+async fn run(client_tag: String) -> Result<(), &'static str> {
+    retry_with_prefix("sync", &["order-1", "order-2"], async |prefix, item| {
+        println!("[{client_tag}] {prefix}:{item}");
+        Ok(())
+    })
+    .await
+}
+```
+
+### 15. Precise Capturing in RPIT
+
+In Rust 2024 Edition (`1.85+`, trait methods in `1.87+`), return-position `impl Trait` captures all generic parameters by default; restrict captures with `+ use<'a, T>`:
+
+```rust
+fn non_empty_lines<'a>(
+    input: &'a str,
+    _filter_tag: &str,
+) -> impl Iterator<Item = &'a str> + use<'a> {
+    input.lines().filter(|line| !line.is_empty())
+}
+```
+
+### 16. Never Type and Custom Allocators
+
+Requires Rust `1.100+`; model infallible results with `!` and explicit memory placement with `std::alloc::Allocator`:
+
+```rust
+use std::alloc::{Allocator, System};
+
+trait Handler {
+    type Error;
+    fn handle(&self, input: &str) -> Result<usize, Self::Error>;
+}
+
+struct CountingHandler;
+impl Handler for CountingHandler {
+    type Error = !;
+    fn handle(&self, input: &str) -> Result<usize, !> { Ok(input.len()) }
+}
+
+fn collect_in<A: Allocator>(alloc: A) -> Vec<u32, A> {
+    let mut items = Vec::with_capacity_in(4, alloc);
+    items.push(1);
+    items
+}
+
+fn example_alloc() {
+    let boxed = Box::new_in("system-allocated", System);
+    let items = collect_in(System);
+    println!("{boxed}, len={}", items.len());
+}
+```

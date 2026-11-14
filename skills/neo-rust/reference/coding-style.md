@@ -1,41 +1,25 @@
-# 4. Coding Style
-
----
+# Rust Coding Style & Toolchain Standards
 
 ## Naming Conventions
 
-| Type | Best Practice |
-|---|---|
-| struct | `UserProfile` |
-| enum | `PaymentStatus` |
-| enum variant | `Pending`, `Paid` |
-| trait | `Repository`, `Serialize` |
-| function | `create_user` |
-| method | `find_by_id` |
-| variable | `user_name` |
-| constant | `MAX_RETRY_COUNT` |
-| module | `user_service` |
-| lifetime | `'a`, `'de`, `'src` |
+| Construct | Convention | Example |
+|---|---|---|
+| `struct` | `PascalCase` | `UserProfile` |
+| `enum` | `PascalCase` | `PaymentStatus` |
+| `enum` variant | `PascalCase` | `Pending`, `Paid` |
+| `trait` | `PascalCase` | `Repository`, `Serialize` |
+| Function / method | `snake_case` | `create_user`, `find_by_id` |
+| Variable | `snake_case` | `user_name` |
+| Constant / `static` | `SCREAMING_SNAKE_CASE` | `MAX_RETRY_COUNT` |
+| Module | `snake_case` | `user_service` |
+| Lifetime | Short lowercase | `'a`, `'de`, `'src` |
 
----
-
-## Getter Naming
-
-Rust convention typically does not include the `get_` prefix.
-
-### Bad
+### Getter Naming
+Rust omits the `get_` prefix on property accessors:
 
 ```rust
-impl User {
-    fn get_name(&self) -> &str {
-        &self.name
-    }
-}
-```
-
-### Good
-
-```rust
+// Bad: fn get_name(&self) -> &str
+// Good:
 impl User {
     fn name(&self) -> &str {
         &self.name
@@ -47,302 +31,53 @@ impl User {
 }
 ```
 
----
+### Conversion Naming (`as_`, `to_`, `into_`)
 
-## Conversion Naming: `as_`, `to_`, `into_`
-
-| Naming | Meaning | Example |
+| Prefix | Ownership & Cost | Example |
 |---|---|---|
-| `as_` | Cheap borrowing conversion | `as_str()` |
-| `to_` | Produces a new value, may allocate memory | `to_string()` |
-| `into_` | Consumes self, converts to another owned value | `into_bytes()` |
+| `as_` | Free/cheap borrowed view (`&self -> &T`) | `as_str()` |
+| `to_` | Expensive or allocating conversion (`&self -> T`) | `to_string()` |
+| `into_` | Consuming ownership conversion (`self -> T`) | `into_bytes()` |
 
-### Example
-
-```rust
-struct UserName(String);
-
-impl UserName {
-    fn as_str(&self) -> &str {
-        &self.0
-    }
-
-    fn into_string(self) -> String {
-        self.0
-    }
-}
-```
-
----
-
-## Iterator Naming
-
-For Collection types, it is recommended to provide:
+### Iterator Naming
+Collection types should expose standard iteration methods:
 
 ```rust
-fn iter(&self) -> Iter
-fn iter_mut(&mut self) -> IterMut
+fn iter(&self) -> Iter<'_>
+fn iter_mut(&mut self) -> IterMut<'_>
 fn into_iter(self) -> IntoIter
 ```
 
 ---
 
-## Module Style
-
-Recommended structure:
-
-```text
-src/
-  main.rs          # binary entry
-  lib.rs           # library entry
-  config.rs
-  error.rs
-  domain/
-    mod.rs
-    user.rs
-    order.rs
-  infra/
-    mod.rs
-    db.rs
-    http.rs
-  service/
-    mod.rs
-    user_service.rs
-```
-
-### Principles
-
-| Principle | Description |
-|---|---|
-| Thin `main.rs` | Only responsible for assembly and startup |
-| Business logic in `lib.rs` | Facilitates testing |
-| Domain types don't depend on infra | Avoids coupling |
-| Minimize `pub` | Private by default |
-| Centralized error management | Don't use `String` for errors everywhere |
-| Tests near code | Small unit tests can be placed in the same file under `mod tests` |
-
----
-
 ## Import Style
 
-### Bad
+Group imports from the same module path and avoid wildcard (`*`) globs outside `tests` or `prelude` modules:
 
 ```rust
-use crate::domain::user::User;
-use crate::domain::user::UserId;
-use crate::domain::user::UserStatus;
-```
-
-### Good
-
-```rust
+// Good
 use crate::domain::user::{User, UserId, UserStatus};
-```
 
-### Not Recommended
-
-```rust
+// Avoid in production modules
 use crate::domain::user::*;
 ```
 
-The glob operator `*` is acceptable in tests or preludes, but should be avoided in formal modules.
-
 ---
 
-## Error Style
+## Module & Project Structure
 
-### Application / CLI
+### Core Layering Principles
 
-Flexible errors can be used:
+| Principle | Guideline |
+|---|---|
+| Thin `main.rs` | Handle CLI/runtime wiring and process exit codes only |
+| Business logic in `lib.rs` | Enables integration testing and crate reuse |
+| Domain independence | `domain` types must not depend on `infra` adapters |
+| Minimal `pub` surface | Keep fields and helpers private by default |
+| Crate-layer error boundaries | Typed error `enum`s in `domain`/`lib` ([anti-patterns.md](anti-patterns.md#5-string-errors-and-sentinel-magic-values)); `Box<dyn std::error::Error>` or context wrappers at CLI/app entrypoints |
+| Tests near code | Place small unit tests in `#[cfg(test)] mod tests` beside implementation |
 
-```rust
-fn run() -> Result<(), Box<dyn std::error::Error>> {
-    Ok(())
-}
-```
-
-### Library / Domain
-
-Explicit enums are recommended:
-
-```rust
-#[derive(Debug)]
-pub enum CreateUserError {
-    InvalidEmail,
-    DuplicateEmail,
-}
-```
-
-### Service
-
-Preserve error context:
-
-```rust
-fn create_user(email: &str) -> Result<(), CreateUserError> {
-    if !email.contains('@') {
-        return Err(CreateUserError::InvalidEmail);
-    }
-
-    Ok(())
-}
-```
-
----
-
-# 5. Rust Toolchain Coding Standard
-
-## Recommended Commands
-
-```bash
-cargo fmt -- --check
-cargo check
-cargo clippy -- -D warnings
-cargo test
-cargo build --release
-```
-
-## Recommended CI
-
-```yaml
-name: Rust CI
-
-on:
-  push:
-  pull_request:
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Format
-        run: cargo fmt -- --check
-
-      - name: Check
-        run: cargo check
-
-      - name: Clippy
-        run: cargo clippy -- -D warnings
-
-      - name: Test
-        run: cargo test
-```
-
----
-
-# 6. Summary Table: Good vs. Bad Practices
-
-| Topic | Good Practice | Bad Practice |
-|---|---|---|
-| Reading text | `&str` | `String` |
-| Reading arrays | `&[T]` | `&Vec<T>` |
-| Optional values | `Option<T>` | Empty string, `-1`, dummy data |
-| Possible failure | `Result<T, E>` | `panic!`, `unwrap()` |
-| Finite states | `enum` | `String`, multiple booleans |
-| ID / Amount / Units | Newtype | Always using `u64` / `String` |
-| Many parameters | Builder | Extremely long constructor |
-| State transitions | Typestate | Runtime flags |
-| Abstract behavior | trait | Hard-coding concrete dependencies |
-| Data conversion | iterator chain | Large temporary mutable vectors |
-| Resource management | RAII / `Drop` | Manual close (easy to forget) |
-| Shared data | Clear ownership / channel | `Arc<Mutex<T>>` everywhere |
-| Async concurrency | Bounded concurrency | Unrestricted `spawn` |
-| Formatting | `cargo fmt` | Manual formatting |
-| Static analysis | `cargo clippy` | Relying on manual review |
-
----
-
-# 7. Practical Rust Coding Guidelines
-
----
-
-## When Writing Functions
-
-Priority order:
-
-```rust
-fn read_only(value: &T)
-fn read_text(value: &str)
-fn read_list(value: &[T])
-fn mutate(value: &mut T)
-fn consume(value: T)
-fn flexible_owned(value: impl Into<T>)
-```
-
----
-
-## When Writing Structs
-
-```rust
-pub struct User {
-    id: UserId,
-    email: Email,
-}
-
-impl User {
-    pub fn new(id: UserId, email: Email) -> Self {
-        Self { id, email }
-    }
-
-    pub fn id(&self) -> UserId {
-        self.id
-    }
-
-    pub fn email(&self) -> &Email {
-        &self.email
-    }
-}
-```
-
----
-
-## When Writing Enums
-
-```rust
-enum Command {
-    CreateUser { email: Email },
-    DeleteUser { id: UserId },
-    Shutdown,
-}
-```
-
-Better than:
-
-```rust
-struct Command {
-    action: String,
-    payload: String,
-}
-```
-
----
-
-## When Writing Errors
-
-```rust
-#[derive(Debug)]
-enum AppError {
-    ConfigMissing,
-    InvalidInput,
-    DatabaseUnavailable,
-}
-```
-
-Better than:
-
-```rust
-Err("something went wrong".to_string())
-```
-
----
-
-# 8. Project Starter Recommendations
-
----
-
-## CLI / Small Tools
+### CLI / Small Tools
 
 ```text
 src/
@@ -351,8 +86,6 @@ src/
   config.rs
   error.rs
 ```
-
-Key points:
 
 ```rust
 fn main() {
@@ -367,101 +100,78 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
----
-
-## Web API / Proxy Server
+### Web API / Layered Service
 
 ```text
 src/
-  main.rs
+  main.rs          # Binary entrypoint
+  lib.rs           # Crate root & reusable logic
+  app.rs           # DI, router & runtime assembly
   config.rs
   error.rs
-  app.rs
-  domain/
-  service/
-  infra/
-    http_client.rs
-    repository.rs
+  domain/          # Entities, rules & state enums
+  service/         # Application use cases
+  infra/           # DB, HTTP, cache & file adapters
 ```
-
-Key points:
-
-| Layer | Responsibility |
-|---|---|
-| `domain` | Types, rules, states |
-| `service` | Use cases |
-| `infra` | DB, HTTP, Redis, Files |
-| `app` | DI / Router / Runtime assembly |
-| `main` | Startup |
 
 ---
 
-# 9. Key Conclusion
+## Toolchain, CI & Modern Cargo Standards
 
-Good Rust code typically looks like this:
+### Verification Commands
 
-```rust
-pub fn create_user(repo: &impl UserRepository, email: &str) -> Result<UserId, CreateUserError> {
-    let email = Email::new(email).map_err(|_| CreateUserError::InvalidEmail)?;
-
-    if repo.exists(&email)? {
-        return Err(CreateUserError::DuplicateEmail);
-    }
-
-    repo.insert(&email)
-}
+```bash
+cargo fmt -- --check
+cargo check
+cargo clippy --all-targets -- -D warnings
+cargo test
+cargo build --release
 ```
 
-It possesses several characteristics:
+### Recommended CI Workflow
 
-1. Inputs use borrows: `&str`
-2. Invalid data is blocked by smart constructors: `Email::new`
-3. Errors use `Result`
-4. Business errors are categorizable: `CreateUserError`
-5. Dependencies are abstracted via traits: `UserRepository`
-6. No reckless `unwrap`
-7. No stringly-typed states
-8. No redundant clones
-9. Easy to test
-10. The compiler prevents a large class of errors
+```yaml
+name: Rust CI
 
-True Rust design patterns aren't about "making classes look pretty," but rather:
+on: [push, pull_request]
 
-> Making illegal states unrepresentable, forcing error paths to be handled by the type system, and making ownership so clear it doesn't need to be guessed.
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo fmt -- --check
+      - run: cargo check
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo test
+```
 
----
+### Modern `Cargo.toml` & Edition 2024 Configuration
 
-# 10. References
+Specify `edition = "2024"`, an explicit MSRV (`rust-version`), and centralized `[lints]` tables:
 
-- Rust Book - Understanding Ownership
-  https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html
+```toml
+[package]
+name = "example-service"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100"
 
-- Rust Book - Recoverable Errors with Result
-  https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+mismatched_lifetime_syntaxes = "warn"
 
-- Rust Book - Match Control Flow Construct
-  https://doc.rust-lang.org/book/ch06-02-match.html
+[lints.cargo]
+unused_dependencies = "warn"
 
-- Rust Book - Smart Pointers
-  https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+unwrap_used = "warn"
+```
 
-- Rust Book - Message Passing
-  https://doc.rust-lang.org/book/ch16-02-message-passing.html
-
-- Rust Book - Async and Await
-  https://doc.rust-lang.org/book/ch17-01-futures-and-syntax.html
-
-- Rust API Guidelines - Naming
-  https://rust-lang.github.io/api-guidelines/naming.html
-
-- Clippy Lints
-  https://doc.rust-lang.org/stable/clippy/lints.html
-
-- Cargo Check
-  https://doc.rust-lang.org/cargo/commands/cargo-check.html
-
-- Tokio Tutorial - Channels
-  https://tokio.rs/tokio/tutorial/channels
-
-- Tokio Mutex Documentation
-  https://docs.rs/tokio/latest/tokio/sync/struct.Mutex.html
+### Cargo & Conditional Compilation Notes (1.85 – 1.100+)
+* **MSRV-Aware Dependency Resolution (1.85+ / Edition 2024)**: Cargo automatically respects `package.rust-version` when selecting dependency versions.
+* **Workspace Publishing (1.90+)**: Use `cargo publish --workspace` to publish multi-crate workspaces in topological dependency order.
+* **Cargo Config `include` & TOML 1.1 (1.94+)**: Modularize shared `.cargo/config.toml` settings via `include`.
+* **Supply-Chain Cooldowns (1.100+)**: Configure `min-publish-age` (or `global-min-publish-age` in `.cargo/config.toml`) to avoid newly published malicious crate versions.
+* **Conditional Compilation (`cfg_select!`, 1.95+)**: Prefer `cfg_select! { unix => { ... } windows => { ... } _ => { ... } }` over chained `#[cfg(...)]` / `#[cfg(not(...))]` blocks or external `cfg-if` crates.

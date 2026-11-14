@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.105.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.104.0...neo-skills-v0.105.0) (2026-11-14)
+
+
+### Features
+
+* **rust:** 更新 neo-rust 技能文檔，增加 Rust 2024 相關內容與最佳實踐 ([f15544c](https://github.com/Benknightdark/neo-skills/commit/f15544c0969180ccc2bd66dddf5566abe9657057))
+* 更新版本 ([158f05c](https://github.com/Benknightdark/neo-skills/commit/158f05c5ade5a440450713cc3bb9d773307aa8b4))
+* 更新版本 ([6a95b93](https://github.com/Benknightdark/neo-skills/commit/6a95b93b8f4b9db0e3f7bbe23e7bb2b6a36ec77a))
+
 ## [0.104.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.103.0...neo-skills-v0.104.0) (2026-11-11)
 
 

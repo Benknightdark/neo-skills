@@ -1,0 +1,39 @@
+{
+  "skill_name": "neo-bdd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have a user story: As an online shopper, I want free shipping when my order subtotal reaches $50 so that I can save on delivery fees. Can you help us run an Example Mapping breakdown, write a declarative Gherkin .feature file, and implement the initial Cucumber-JS (@cucumber/cucumber) step definitions in JavaScript?",
+      "expected_output": "Produces an Example Mapping breakdown (Yellow story, Blue rules, Green concrete examples, Red questions if any), a concise declarative Gherkin .feature file using Rule/Example/Scenario Outline, and JavaScript step definitions importing from '@cucumber/cucumber' using regular functions (`function () {}`) for `this` World state and `node:assert` assertions.",
+      "assertions": [
+        "Separates Discovery (Example Mapping with Story, Rules, Concrete Examples, Questions) before Gherkin and step code",
+        "Writes declarative Gherkin without UI click/field implementation details",
+        "Uses `@cucumber/cucumber` step definitions with `function () {}` rather than arrow functions when accessing `this` World state",
+        "Uses Node.js `assert` (or `chai`) to verify observable outcomes in `Then` steps",
+        "References `https://cucumber.io/docs` or bundled reference documentation where appropriate"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Please review and refactor this Cucumber-JS test suite:\n```gherkin\nFeature: Login\n  Scenario: Valid user logs in\n    Given I open \"/login\" and seed user \"alice\" in the users table\n    When I type \"alice@example.com\" in \"#email\" and click \"#submit\"\n    Then the database session table should contain \"alice@example.com\"\n```\n```javascript\nimport { Given, When, Then } from '@cucumber/cucumber';\nlet sharedUser;\nGiven(/^I open {string} and seed user {string} in the users table$/, (path, name) => {\n  sharedUser = name;\n});\n```",
+      "expected_output": "Follows Template C (BDD & Cucumber-JS Audit Report), identifying imperative UI steps, conjunction steps, internal database assertion in `Then`, mixing RegExp and Cucumber Expression syntax, module-level shared state (`let sharedUser`), arrow function breaking `this` World binding, and feature-coupled naming, then provides declarative Gherkin and fixed JS step definitions.",
+      "assertions": [
+        "Identifies mixing RegExp delimiters `/.../` with Cucumber Expression `{string}` syntax",
+        "Flags the arrow function `() => {}` and module-level mutable state `let sharedUser` in favor of `function () {}` and isolated `this` (`World`)",
+        "Flags imperative UI selectors/routes, conjunction steps (`and`), and checking internal database state in `Then`",
+        "Provides refactored declarative Gherkin and domain-organized JavaScript step definitions following Template C"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Show how to implement a Cucumber-JS Scenario Outline for calculating order discounts by membership tier (`gold`, `silver`, `bronze`) using a custom Cucumber Expression parameter type `{tier}`, a DataTable of cart items, and a `@browser` conditional Before/After hook that attaches a screenshot on failure.",
+      "expected_output": "Uses `Scenario Outline` + `Examples` in Gherkin, defines `{tier}` via `defineParameterType`, passes `dataTable` as the last argument in the step definition, uses `Before({ tags: '@browser' }, async function () {})` and `After({ tags: '@browser' }, async function (scenario) {})` with `Status.FAILED` and `this.attach(..., 'image/png')`.",
+      "assertions": [
+        "Uses valid Gherkin `Scenario Outline` and `Examples` table syntax",
+        "Registers `{tier}` with `defineParameterType` from `@cucumber/cucumber`",
+        "Passes `dataTable` as the trailing parameter of the step definition function",
+        "Implements conditional `Before`/`After` hooks using tag expressions and `async function` to preserve `this` World context and attach screenshots on failure"
+      ]
+    }
+  ]
+}

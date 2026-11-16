@@ -1,0 +1,58 @@
+[
+  {
+    "query": "We want to adopt BDD for our checkout discount story—help us run an Example Mapping session and turn the rules into Gherkin scenarios.",
+    "should_trigger": true
+  },
+  {
+    "query": "Help me write a BDD .feature specification using Rule, Background, and Scenario Outline for our subscription billing feature.",
+    "should_trigger": true
+  },
+  {
+    "query": "We are using BDD with @cucumber/cucumber in JavaScript—why is `this.currentUser` undefined inside our When step definition?",
+    "should_trigger": true
+  },
+  {
+    "query": "For our JavaScript BDD suite in cucumber-js, how do I define a custom parameter type with `defineParameterType` and pass a DataTable?",
+    "should_trigger": true
+  },
+  {
+    "query": "Please review our BDD Gherkin scenarios and step definitions—they are full of CSS selectors and keep breaking whenever the frontend changes.",
+    "should_trigger": true
+  },
+  {
+    "query": "In our Behaviour-Driven Development workflow, how should we organize `features/step_definitions/*_steps.js` to avoid duplicate step definitions?",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up a BDD test project in Node.js with `@cucumber/cucumber`, `cucumber.json`, and `@browser` hooks for screenshot-on-failure reporting.",
+    "should_trigger": true
+  },
+  {
+    "query": "Our Three Amigos BDD discovery workshop keeps taking over an hour per user story—how do we structure Example Mapping better?",
+    "should_trigger": true
+  },
+  {
+    "query": "Write Jest unit tests with `jest.spyOn` for a pure JavaScript utility function.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write Playwright end-to-end tests in TypeScript for our login page using Page Object Model.",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn these messy customer support complaints into product acceptance criteria and clarifying questions.",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a Selenium WebDriver script in Node.js to scrape product titles and take a screenshot.",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how to set up Vitest snapshot testing for a Vue 3 Pinia store component.",
+    "should_trigger": false
+  },
+  {
+    "query": "Refactor this vanilla JavaScript file from CommonJS and `var` to ES2024 modules with `Object.groupBy`.",
+    "should_trigger": false
+  }
+]

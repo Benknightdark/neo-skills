@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.106.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.105.0...neo-skills-v0.106.0) (2026-11-16)
+
+
+### Features
+
+* 新增neo-bdd技能 ([485f778](https://github.com/Benknightdark/neo-skills/commit/485f7783b84b918b33e105cc88d9def5e32006e4))
+* 新增neo-bdd技能 ([e121d59](https://github.com/Benknightdark/neo-skills/commit/e121d598ae364ccc51e21e335d4fef3d0e3c59cb))
+
 ## [0.105.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.104.0...neo-skills-v0.105.0) (2026-11-14)
 
 

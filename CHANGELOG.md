@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.107.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.106.0...neo-skills-v0.107.0) (2026-11-17)
+
+
+### Features
+
+* 新增app資安審核skill ([7771152](https://github.com/Benknightdark/neo-skills/commit/7771152a2920afa25d9e946ae12c3b4e2d7a17b2))
+* 更新版本 ([c66a9bd](https://github.com/Benknightdark/neo-skills/commit/c66a9bd2d770ef537eafb5fda6dca39a12947b3a))
+
 ## [0.106.0](https://github.com/Benknightdark/neo-skills/compare/neo-skills-v0.105.0...neo-skills-v0.106.0) (2026-11-16)
 
 

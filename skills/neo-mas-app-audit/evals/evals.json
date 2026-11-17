@@ -1,0 +1,47 @@
+{
+  "skill_name": "neo-mas-app-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "請幫我審核這個具備使用者登入與信用卡付款功能的 Android App 專案是否符合 MAS 行動應用 App 基本資安檢測基準。",
+      "expected_output": "Executes scripts/check-mas-update.py before auditing, classifies the App as L3 (since it has both authentication and payment transactions), loads the V4.0 references, inspects AndroidManifest.xml/network config/source files with file:line evidence, and outputs the fixed 6-section Markdown report matching assets/audit-report-template.md.",
+      "assertions": [
+        "Runs scripts/check-mas-update.py (or agent-browser fallback) first and reports the update check status in Section 1",
+        "Classifies the App as L3 (39 mandatory items) rather than L2 because transaction functionality is present",
+        "Preserves all 6 exact top-level sections from assets/audit-report-template.md",
+        "Cites concrete file:line evidence for findings and marks runtime/store-only checks as 待人工／動態確認 instead of guessing pass"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "這個僅供企業內部員工查詢公告、沒有登入與交易功能的 iOS App，請幫我做一次資安審核。",
+      "expected_output": "Runs the update check, classifies the App as L1 (25 items) with 不公開（企業內部） publish status, marks 4.1.1.1.2 and 4.1.5.1.3 as 不適用 with accurate V4.0 reasons, and returns the fixed 6-section report.",
+      "assertions": [
+        "Classifies the App as L1 (25 mandatory items) and publish status as 不公開（企業內部）",
+        "Marks 4.1.1.1.2 as 不適用 due to internal non-public release and 4.1.5.1.3 as 不適用 for iOS",
+        "Still evaluates 4.1.2.1.1 / 4.1.2.3.1 / 4.1.2.5.1 in-app consent rules if sensitive data is collected/stored/shared",
+        "Follows the fixed 6-section output structure strictly"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "請幫我進行 App 資安審核。假設官網檢測基準偵測到更新（例如出現 V4.1 新版中文 PDF），請先更新 Skill 內容再審核。",
+      "expected_output": "Detects update_available from check-mas-update.py, downloads the new PDF to OS temp storage (not the App project), diffs and updates Skill files within permitted filesystem scope, records the exact modified files and changes in Section 1 of the fixed report, and proceeds with the audit.",
+      "assertions": [
+        "Downloads the updated PDF to a temporary directory rather than the target App workspace",
+        "Updates references/source-manifest.json and affected references/ or assets/ files within allowed scope",
+        "Lists all modified Skill files and version diff summary in Section 1 (Skill 同步變更清單)",
+        "Completes the audit using the updated criteria and outputs the fixed 6-section report"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "請幫我用 Kotlin Jetpack Compose 寫一個登入頁面 UI，包含帳號與密碼輸入欄位。",
+      "expected_output": "Does NOT trigger neo-mas-app-audit because the user asked for feature/UI implementation rather than an App security audit.",
+      "assertions": [
+        "neo-mas-app-audit is NOT activated",
+        "Does not output the MAS 6-section security audit report template"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "source_page_url": "https://www.mas.org.tw/app/questAndAnswer",
+  "benchmark_title": "行動應用App基本資安檢測基準",
+  "language": "zh-TW",
+  "current_version_label": "行動應用App基本資安檢測基準V4.0",
+  "published_date_roc": "中華民國 113 年 9 月",
+  "current_pdf_url": "http://s3.ap-northeast-1.amazonaws.com/www.mas.org.tw/public/files/25074/original/468970968241101328a3.pdf",
+  "pdf_etag": "\"7c0e17799456beb517fae9825a7659f7\"",
+  "pdf_last_modified": "Wed, 14 May 2025 03:41:54 GMT",
+  "pdf_content_length": 1252440,
+  "pdf_sha256": "adf79c43bfd8a9566744ecf45587157fa0ae0bad26321c82d29a1733b1c50ef1",
+  "counts": {
+    "L1": 25,
+    "L2": 31,
+    "L3": 39,
+    "F": 9,
+    "mandatory_unique_items": 49,
+    "reference_items": 16
+  }
+}

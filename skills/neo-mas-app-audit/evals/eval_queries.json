@@ -1,0 +1,66 @@
+[
+  {
+    "query": "請幫我用行動應用 App 基本資安檢測基準 V4.0 審核我開發的這個 Android App 是否符合資安規範。",
+    "should_trigger": true
+  },
+  {
+    "query": "我做了一個有登入跟線上刷卡結帳功能的 Flutter App，請幫我做資安審核，檢查哪些地方還沒合規。",
+    "should_trigger": true
+  },
+  {
+    "query": "我們公司的內部 iOS App 準備送第三方實驗室做 MAS 檢測（L2+F），先幫我掃描專案原始碼做一次資安自評。",
+    "should_trigger": true
+  },
+  {
+    "query": "Check if our React Native banking app passes Taiwan MAS Mobile App Security Benchmark L3+F requirements.",
+    "should_trigger": true
+  },
+  {
+    "query": "請幫我審核這個 iOS 專案的 Info.plist、Keychain 和網路傳輸設定有沒有符合行動應用 App 基本資安檢測基準。",
+    "should_trigger": true
+  },
+  {
+    "query": "我們 app 下個月要上架 Google Play 了，幫我做一次行動應用 App 資安檢測合規審查，確認密碼輸入、log 和 TLS 有沒有違規。",
+    "should_trigger": true
+  },
+  {
+    "query": "請對目前這個行動 App 專案進行資安審核（先檢查官網基準有沒有新版，再回傳完整分析報告）。",
+    "should_trigger": true
+  },
+  {
+    "query": "Audit my mobile app codebase against MASVS / Taiwan MAS App security baseline L2 criteria.",
+    "should_trigger": true
+  },
+  {
+    "query": "幫我用 SwiftUI 寫一個包含帳號密碼輸入框與登入按鈕的 LoginView。",
+    "should_trigger": false
+  },
+  {
+    "query": "請幫我檢查這段 git diff 是否有重複的程式碼或硬編碼常數（一般 PR code review）。",
+    "should_trigger": false
+  },
+  {
+    "query": "我的 Android 專案在跑 Gradle build 時出現 Duplicate class 錯誤，幫我修好它。",
+    "should_trigger": false
+  },
+  {
+    "query": "幫我幫 Flutter 購物車模組撰寫 unit tests 和 widget tests。",
+    "should_trigger": false
+  },
+  {
+    "query": "請用 Vue 3 和 Pinia 設計一個後台商品管理列表頁面。",
+    "should_trigger": false
+  },
+  {
+    "query": "幫我將這份模糊的客訴紀錄整理成軟體需求規格與驗收條件。",
+    "should_trigger": false
+  },
+  {
+    "query": "為我們的 Node.js Express 後端 API 建立 Azure Pipelines CI/CD YAML。",
+    "should_trigger": false
+  },
+  {
+    "query": "寫一段 Kotlin Coroutines 的 Repository 範例用來呼叫 REST API。",
+    "should_trigger": false
+  }
+]

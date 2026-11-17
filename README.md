@@ -64,6 +64,7 @@
 | 可觀測性 | `neo-opentelemetry` | 解釋 OpenTelemetry 概念、規劃或審查 Collector 架構與設定、處理維運排障、安全、零程式 instrumentation 及相容性遷移。 |
 | queue | `neo-rabbitmq` | 以 RabbitMQ 4.3 為預設，提供語言中立的訊息拓撲、Broker 營運、監控排障與效能優化指引。 |
 | BDD | `neo-bdd` | 當使用者明確要求使用 BDD（Behaviour-Driven Development）時，協助進行 Example Mapping、撰寫 Gherkin `.feature` 規格，或以 JavaScript (`@cucumber/cucumber`) 實作與審查驗收測試。 |
+| 資安審核 | `neo-mas-app-audit` | 僅當使用者明確要求依《行動應用 App 基本資安檢測基準 V4.0》審核自開發 App 時觸發；調用前自動檢查官網基準更新，並回傳固定 6 章節審核報告。 |
 | 文字潤飾 | `neo-stop-slop` | 去除繁中或英文中的 AI 腔、贅詞和公式化句式，適用於文件、註解、commit message 和 PR 說明。 |
 | PR 產出 | `neo-pr` | 詢問或自動偵測 Repository 的來源與目標分支，擷取變更，產生重點式且自然的 PR Title 和 PR Description。 |
 
@@ -161,3 +162,4 @@ npx -p @moon791017/neo-skills install-system-instructions \
 | 設計 RabbitMQ 系統 | `neo-rabbitmq` | `請分析 RabbitMQ Queue 堆積、叢集營運與效能瓶頸` |
 | 去掉 AI 腔 | `neo-stop-slop` | `把這段 PR 說明改得自然、直接一點` |
 | 導入 BDD 與 Cucumber-JS | `neo-bdd` | `幫我用 BDD 進行 Example Mapping 並產生 Gherkin .feature 與 Cucumber-JS 測試` |
+| 審核 App 是否符合 MAS 資安基準 | `neo-mas-app-audit` | `請依行動應用 App 基本資安檢測基準審核我這個 App 專案是否合規` |
